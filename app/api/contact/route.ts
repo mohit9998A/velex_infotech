@@ -43,7 +43,7 @@ export async function POST(request: Request) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "Velex Infotech <onboarding@resend.dev>", // TODO: Replace with a verified domain
+      from: "Velex Infotech <hello@velexinfotech.com>",
       to: ["velexinfotech@gmail.com"],
       subject: `New Lead: ${lead.name} (${lead.service})`,
       html: `
