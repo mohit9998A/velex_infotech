@@ -43,8 +43,8 @@ export async function POST(request: Request) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "Velex Infotech <hello@velexinfotech.com>",
-      to: ["velexinfotech@gmail.com"],
+      from: "Velex Infotech <onboarding@resend.dev>",
+      to: ["mohitdutta0407@gmail.com"],
       subject: `New Lead: ${lead.name} (${lead.service})`,
       html: `
         <h2>New Consultation Request</h2>
