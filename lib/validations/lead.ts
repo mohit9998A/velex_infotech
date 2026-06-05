@@ -20,21 +20,31 @@ export const BUDGET_OPTIONS = [
 ] as const;
 
 export const leadFormSchema = z.object({
-  name: z.string().min(2, "Please enter your full name.").max(80),
-  email: z.string().email("Enter a valid email address."),
+  name: z
+    .string()
+    .trim()
+    .min(2, "Please enter a valid name (at least 2 characters).")
+    .max(80, "Name is too long.")
+    .regex(/^[a-zA-Z\s.\-']+$/, "Name can only contain letters, spaces, hyphens, and apostrophes."),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Please enter a valid email address."),
   phone: z
     .string()
-    .min(8, "Enter a valid phone number.")
-    .max(20)
-    .regex(/^[+\d][\d\s-]{6,}$/, "Enter a valid phone number."),
-  company: z.string().max(120).optional().or(z.literal("")),
+    .trim()
+    .min(10, "Phone number is too short (minimum 10 digits).")
+    .max(20, "Phone number is too long.")
+    .regex(/^\+?[\d\s-]{10,20}$/, "Please enter a valid phone number (digits, spaces, and dashes only)."),
+  company: z.string().trim().max(120, "Company name is too long.").optional().or(z.literal("")),
   service: z.enum(SERVICE_OPTIONS, {
-    message: "Select a service.",
+    errorMap: () => ({ message: "Please select a service from the list." }),
   }),
   budget: z.enum(BUDGET_OPTIONS, {
-    message: "Select a budget range.",
+    errorMap: () => ({ message: "Please select a budget range." }),
   }),
-  message: z.string().max(2000).optional().or(z.literal("")),
+  message: z.string().trim().max(2000, "Message is too long (maximum 2000 characters).").optional().or(z.literal("")),
   source: z.string().optional(),
 });
 

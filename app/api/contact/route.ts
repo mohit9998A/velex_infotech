@@ -9,6 +9,10 @@ import { leadFormSchema } from "@/lib/validations/lead";
  * client, then logs the lead. Wiring to Supabase + Resend + WhatsApp API is a
  * later phase — see plan §7. No secrets are required for this stub.
  */
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -27,17 +31,43 @@ export async function POST(request: Request) {
 
   const lead = parsed.data;
 
-  // TODO(phase-2): persist to Supabase, notify team via Resend, ping CEO on WhatsApp.
-  console.info("[velex:lead]", {
-    name: lead.name,
-    email: lead.email,
-    phone: lead.phone,
-    service: lead.service,
-    budget: lead.budget,
-    company: lead.company || "—",
-    source: lead.source || "—",
-    receivedAt: new Date().toISOString(),
-  });
+  // Log the lead for debugging purposes
+  console.info("[velex:lead]", lead);
 
-  return NextResponse.json({ ok: true });
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("RESEND_API_KEY is not configured. Email was not sent.");
+    // In production, we might want to return an error, but for now we'll pretend it worked
+    // to avoid breaking the frontend during setup if the API key is missing.
+    return NextResponse.json({ ok: true, note: "No API key configured" });
+  }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: "Velex Infotech <onboarding@resend.dev>", // TODO: Replace with a verified domain
+      to: ["velexinfotech@gmail.com"],
+      subject: `New Lead: ${lead.name} (${lead.service})`,
+      html: `
+        <h2>New Consultation Request</h2>
+        <p><strong>Name:</strong> ${lead.name}</p>
+        <p><strong>Email:</strong> ${lead.email}</p>
+        <p><strong>Phone:</strong> ${lead.phone}</p>
+        <p><strong>Service of Interest:</strong> ${lead.service}</p>
+        <p><strong>Budget:</strong> ${lead.budget}</p>
+        <p><strong>Company:</strong> ${lead.company || "Not provided"}</p>
+        <p><strong>Source:</strong> ${lead.source || "Not provided"}</p>
+        <hr />
+        <p><small>Received at: ${new Date().toISOString()}</small></p>
+      `,
+    });
+
+    if (error) {
+      console.error("[velex:email-error]", error);
+      return NextResponse.json({ ok: false, error: "Failed to send email" }, { status: 500 });
+    }
+
+    return NextResponse.json({ ok: true, data });
+  } catch (error) {
+    console.error("[velex:email-error]", error);
+    return NextResponse.json({ ok: false, error: "Internal Server Error" }, { status: 500 });
+  }
 }
