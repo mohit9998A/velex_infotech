@@ -39,10 +39,10 @@ export const leadFormSchema = z.object({
     .regex(/^\+?[\d\s-]{10,20}$/, "Please enter a valid phone number (digits, spaces, and dashes only)."),
   company: z.string().trim().max(120, "Company name is too long.").optional().or(z.literal("")),
   service: z.enum(SERVICE_OPTIONS, {
-    errorMap: () => ({ message: "Please select a service from the list." }),
+    message: "Please select a service from the list.",
   }),
   budget: z.enum(BUDGET_OPTIONS, {
-    errorMap: () => ({ message: "Please select a budget range." }),
+    message: "Please select a budget range.",
   }),
   message: z.string().trim().max(2000, "Message is too long (maximum 2000 characters).").optional().or(z.literal("")),
   source: z.string().optional(),
