@@ -1,0 +1,72 @@
+[
+  {
+    "name": "OpenAI",
+    "abbr": "AI",
+    "logo": "https://icon.horse/icon/openai.com"
+  },
+  {
+    "name": "Anthropic Claude",
+    "abbr": "CL",
+    "logo": "https://cdn.simpleicons.org/anthropic"
+  },
+  {
+    "name": "n8n",
+    "abbr": "n8",
+    "logo": "https://cdn.simpleicons.org/n8n"
+  },
+  {
+    "name": "Make.com",
+    "abbr": "Mk",
+    "logo": "https://cdn.simpleicons.org/make"
+  },
+  {
+    "name": "Zapier",
+    "abbr": "Zp",
+    "logo": "https://cdn.simpleicons.org/zapier"
+  },
+  {
+    "name": "WhatsApp Business",
+    "abbr": "Wa",
+    "logo": "https://cdn.simpleicons.org/whatsapp"
+  },
+  {
+    "name": "Twilio",
+    "abbr": "Tw",
+    "logo": "https://icon.horse/icon/twilio.com"
+  },
+  {
+    "name": "LangChain",
+    "abbr": "Lc",
+    "logo": "https://cdn.simpleicons.org/langchain"
+  },
+  {
+    "name": "Supabase",
+    "abbr": "Sb",
+    "logo": "https://cdn.simpleicons.org/supabase"
+  },
+  {
+    "name": "Slack",
+    "abbr": "Sl",
+    "logo": "https://icon.horse/icon/slack.com"
+  },
+  {
+    "name": "HubSpot",
+    "abbr": "Hb",
+    "logo": "https://cdn.simpleicons.org/hubspot"
+  },
+  {
+    "name": "Notion",
+    "abbr": "No",
+    "logo": "https://cdn.simpleicons.org/notion"
+  },
+  {
+    "name": "Stripe",
+    "abbr": "St",
+    "logo": "https://cdn.simpleicons.org/stripe"
+  },
+  {
+    "name": "Google Workspace",
+    "abbr": "Gw",
+    "logo": "https://icon.horse/icon/workspace.google.com"
+  }
+]

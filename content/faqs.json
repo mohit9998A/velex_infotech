@@ -1,0 +1,32 @@
+[
+  {
+    "id": "faq-services",
+    "question": "What AI services does Velex Infotech offer?",
+    "answer": "Velex Infotech offers AI Automation, Agentic AI development, Voice AI Agents, WhatsApp AI Chatbots, Website Development, App Development, and AI Integration services for B2B and B2C clients across India."
+  },
+  {
+    "id": "faq-location",
+    "question": "Where is Velex Infotech located?",
+    "answer": "Velex Infotech is based in Ludhiana, Punjab, India, and serves clients across India and internationally."
+  },
+  {
+    "id": "faq-timeline",
+    "question": "How long does a typical project take?",
+    "answer": "Timelines depend on scope. A focused AI chatbot or automation can ship in 2–4 weeks, while a custom agentic AI system or luxury website typically runs 4–8 weeks. We confirm exact milestones during your free consultation."
+  },
+  {
+    "id": "faq-roi",
+    "question": "What kind of ROI can I expect from AI automation?",
+    "answer": "Most automation engagements reduce manual operations by an average of 78% and reach measurable ROI within 8 weeks. We define success metrics with you up front, so results are tracked, not assumed."
+  },
+  {
+    "id": "faq-existing",
+    "question": "Can you integrate AI into our existing tools?",
+    "answer": "Yes. Our AI Integration service embeds models, agents, and automations into the stack you already use — CRMs, helpdesks, spreadsheets, and internal apps — with no rip-and-replace required."
+  },
+  {
+    "id": "faq-support",
+    "question": "Do you provide support after launch?",
+    "answer": "Absolutely. Every plan includes ongoing support, and Pro and Enterprise clients get priority 24/7 support with a dedicated success manager and regular performance reviews."
+  }
+]
