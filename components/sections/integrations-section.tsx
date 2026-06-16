@@ -7,8 +7,12 @@ const integrations = integrationsData as IntegrationItem[];
 function Tile({ item }: { item: IntegrationItem }) {
   return (
     <div className="flex w-max items-center gap-3 rounded-xl border border-vx-border bg-surface/60 px-5 py-3 backdrop-blur-sm">
-      <span className="flex size-9 items-center justify-center rounded-lg bg-purple-core/15 font-mono text-sm font-semibold text-purple-glow">
-        {item.abbr}
+      <span className="flex size-9 items-center justify-center rounded-lg bg-white/5 font-mono text-sm font-semibold text-purple-glow">
+        {item.logo ? (
+          <img src={item.logo} alt={`${item.name} logo`} className="size-5" />
+        ) : (
+          item.abbr
+        )}
       </span>
       <span className="whitespace-nowrap text-sm font-medium text-secondary">
         {item.name}

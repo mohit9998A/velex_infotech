@@ -22,6 +22,7 @@ export interface ServiceItem {
   useCases?: string[];
   metaTitle?: string;
   metaDescription?: string;
+  image?: string;
 }
 
 export interface PricingTier {
@@ -71,6 +72,7 @@ export interface StatItem {
 export interface IntegrationItem {
   name: string;
   abbr: string;
+  logo?: string;
 }
 
 export interface PortfolioItem {
