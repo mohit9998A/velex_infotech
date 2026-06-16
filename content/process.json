@@ -1,0 +1,30 @@
+[
+  {
+    "id": "discovery",
+    "index": "01",
+    "title": "Discovery",
+    "description": "We map your workflows, goals, and bottlenecks. No assumptions — we find where intelligence creates the most leverage.",
+    "deliverables": ["Workflow audit", "Opportunity map", "Success metrics"]
+  },
+  {
+    "id": "strategy",
+    "index": "02",
+    "title": "Strategy",
+    "description": "We architect the solution: models, agents, integrations, and a delivery roadmap with clear, measurable milestones.",
+    "deliverables": ["Solution blueprint", "Tech architecture", "Milestone plan"]
+  },
+  {
+    "id": "execution",
+    "index": "03",
+    "title": "Execution",
+    "description": "Our pod builds, tests, and iterates in tight loops — shipping working software you can see every week.",
+    "deliverables": ["Weekly builds", "QA & testing", "Live previews"]
+  },
+  {
+    "id": "launch",
+    "index": "04",
+    "title": "Launch & Scale",
+    "description": "We deploy, monitor, and optimise. Then we scale what works and compound the results over time.",
+    "deliverables": ["Production launch", "Monitoring", "Continuous optimisation"]
+  }
+]

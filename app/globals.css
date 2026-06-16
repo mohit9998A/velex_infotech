@@ -1,26 +1,404 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+/* ============================================
+   VELEX INFOTECH — DESIGN TOKENS
+   Aesthetic: "Crystalline Intelligence"
+   ============================================ */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand */
+  --vx-purple-deep: #3b0fa0;
+  --vx-purple-core: #6b21ff;
+  --vx-purple-glow: #a855f7;
+  --vx-gold: #e4c76b;
+
+  /* Backgrounds (dark, default) */
+  --vx-void: #04040a;
+  --vx-surface: #080813;
+  --vx-elevated: #0e0e1d;
+  --vx-glass: rgba(14, 14, 29, 0.7);
+
+  /* Borders */
+  --vx-border: rgba(107, 33, 255, 0.2);
+  --vx-border-bright: rgba(168, 85, 247, 0.5);
+
+  /* Scrolled navbar background (theme-aware) */
+  --vx-nav-bg: rgba(4, 4, 10, 0.8);
+  --vx-nav-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+
+  /* Text */
+  --vx-text-primary: #f0eeff;
+  --vx-text-secondary: #9b9bb4;
+  --vx-text-muted: #5c5c7a;
+
+  /* Status */
+  --vx-success: #22d3a5;
+  --vx-warning: #f5a623;
+  --vx-error: #ff4757;
+
+  /* Effects */
+  --vx-glow-sm: 0 0 20px rgba(107, 33, 255, 0.3);
+  --vx-glow-md: 0 0 60px rgba(107, 33, 255, 0.4);
+  --vx-glow-lg: 0 0 120px rgba(107, 33, 255, 0.5);
+  --vx-glow-gold: 0 0 40px rgba(228, 199, 107, 0.3);
+
+  --background: var(--vx-void);
+  --foreground: var(--vx-text-primary);
 }
 
+/* Light theme — remaps surfaces & text so the toggle is genuine, not broken.
+   The brand remains purple/gold; only the canvas inverts. */
+html.light {
+  --vx-void: #f6f5ff;
+  --vx-surface: #ffffff;
+  --vx-elevated: #ffffff;
+  --vx-glass: rgba(255, 255, 255, 0.72);
+  --vx-border: rgba(107, 33, 255, 0.16);
+  --vx-border-bright: rgba(107, 33, 255, 0.4);
+  --vx-text-primary: #160f2e;
+  --vx-text-secondary: #4a4763;
+  --vx-text-muted: #8b88a3;
+  --vx-nav-bg: rgba(255, 255, 255, 0.85);
+  --vx-nav-shadow: 0 8px 30px rgba(22, 15, 46, 0.08);
+  --background: var(--vx-void);
+  --foreground: var(--vx-text-primary);
+}
+
+/* Map tokens into Tailwind's theme so utilities like bg-void, text-primary, border-vx work */
 @theme inline {
+  --color-void: var(--vx-void);
+  --color-surface: var(--vx-surface);
+  --color-elevated: var(--vx-elevated);
+
+  --color-purple-deep: var(--vx-purple-deep);
+  --color-purple-core: var(--vx-purple-core);
+  --color-purple-glow: var(--vx-purple-glow);
+  --color-gold: var(--vx-gold);
+
+  --color-vx-border: var(--vx-border);
+  --color-vx-border-bright: var(--vx-border-bright);
+
+  --color-primary: var(--vx-text-primary);
+  --color-secondary: var(--vx-text-secondary);
+  --color-muted: var(--vx-text-muted);
+
+  --color-success: var(--vx-success);
+  --color-warning: var(--vx-warning);
+  --color-error: var(--vx-error);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================
+   BASE
+   ============================================ */
+
+* {
+  border-color: var(--vx-border);
+}
+
+html {
+  scrollbar-color: var(--vx-purple-core) var(--vx-void);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--vx-void);
+  color: var(--vx-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(107, 33, 255, 0.35);
+  color: #fff;
+}
+
+/* Lenis smooth scroll base styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.font-mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.text-hero {
+  font-size: clamp(3rem, 8vw, 7rem);
+}
+.text-h1 {
+  font-size: clamp(2.5rem, 5vw, 5rem);
+}
+.text-h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+.text-h3 {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+}
+
+.text-gradient {
+  background: linear-gradient(
+    110deg,
+    var(--vx-purple-glow) 0%,
+    var(--vx-purple-core) 45%,
+    var(--vx-gold) 110%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(110deg, #fff 0%, var(--vx-gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ============================================
+   GLASSMORPHISM
+   ============================================ */
+
+.glass-card {
+  background: var(--vx-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--vx-border);
+  border-radius: 16px;
+  transition:
+    border-color 0.4s ease,
+    box-shadow 0.4s ease,
+    transform 0.4s ease;
+}
+
+.glass-card:hover {
+  border-color: var(--vx-border-bright);
+  box-shadow: var(--vx-glow-sm);
+}
+
+.glass-gold {
+  border-color: rgba(228, 199, 107, 0.3);
+  box-shadow: var(--vx-glow-gold);
+}
+
+.glassmorphism {
+  background: var(--vx-nav-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--vx-border);
+  box-shadow: var(--vx-nav-shadow);
+}
+
+/* ============================================
+   BUTTONS / PILLS / GLOWS
+   ============================================ */
+
+.btn-glow {
+  position: relative;
+  box-shadow: var(--vx-glow-sm);
+  transition:
+    box-shadow 0.35s ease,
+    transform 0.2s ease;
+}
+.btn-glow:hover {
+  box-shadow: var(--vx-glow-md);
+}
+
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid var(--vx-border-bright);
+  background: rgba(107, 33, 255, 0.08);
+  box-shadow: var(--vx-glow-sm);
+}
+
+.glow-ring {
+  box-shadow:
+    var(--vx-glow-md),
+    inset 0 0 0 1px var(--vx-border-bright);
+}
+
+/* Radial backdrop used in CTA / hero */
+.radial-glow {
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 50%,
+    rgba(107, 33, 255, 0.35) 0%,
+    rgba(168, 85, 247, 0.12) 40%,
+    transparent 75%
+  );
+}
+
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-scroll-left {
+  animation: scroll-left 40s linear infinite;
+}
+.animate-scroll-left-slow {
+  animation: scroll-left 60s linear infinite;
+}
+
+@keyframes scroll-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.animate-scroll-right {
+  animation: scroll-right 50s linear infinite;
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+.animate-float {
+  animation: float-y 6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 0.5;
+  }
+}
+.animate-bob {
+  animation: bob 2s ease-in-out infinite;
+}
+
+.pause-on-hover:hover {
+  animation-play-state: paused;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+
+.section-pad {
+  padding-top: clamp(5rem, 10vw, 8rem);
+  padding-bottom: clamp(5rem, 10vw, 8rem);
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(to right, var(--vx-border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--vx-border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 75%);
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-scroll-left,
+  .animate-scroll-left-slow,
+  .animate-scroll-right,
+  .animate-float,
+  .animate-bob {
+    animation: none !important;
+  }
 }

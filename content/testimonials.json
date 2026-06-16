@@ -1,0 +1,38 @@
+[
+  {
+    "id": "t1",
+    "quote": "Velex transformed our entire customer support pipeline with an AI agent that handles 80% of queries automatically. We saw ROI within 6 weeks.",
+    "author": "Rajesh Kumar",
+    "role": "CEO",
+    "company": "TechCorp India",
+    "rating": 5,
+    "placeholder": true
+  },
+  {
+    "id": "t2",
+    "quote": "The WhatsApp chatbot they built captures and qualifies leads around the clock. Our response time went from hours to seconds.",
+    "author": "Simran Kaur",
+    "role": "Founder",
+    "company": "Bloom Retail",
+    "rating": 5,
+    "placeholder": true
+  },
+  {
+    "id": "t3",
+    "quote": "Their voice agent now answers every inbound call in Hindi and English. It feels less like a vendor and more like an engineering partner.",
+    "author": "Amit Verma",
+    "role": "Operations Head",
+    "company": "Northline Logistics",
+    "rating": 5,
+    "placeholder": true
+  },
+  {
+    "id": "t4",
+    "quote": "Easily the most premium website we've ever shipped. The motion and polish put us a tier above every competitor in our space.",
+    "author": "Priya Nair",
+    "role": "Marketing Director",
+    "company": "Aether Studios",
+    "rating": 5,
+    "placeholder": true
+  }
+]

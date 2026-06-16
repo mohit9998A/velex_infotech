@@ -1,0 +1,80 @@
+[
+  {
+    "id": "bonn",
+    "title": "Bonn — Brand Web Experience",
+    "client": "Bonn",
+    "category": "Web Development",
+    "segment": "B2C",
+    "description": "A premium, conversion-focused brand website with refined motion, fast load times, and a luxury editorial feel.",
+    "result": "Premium brand presence, built for speed.",
+    "href": "https://www.bonn.in",
+    "external": true,
+    "accent": "from-purple-core/30 to-purple-deep/10",
+    "placeholder": false
+  },
+  {
+    "id": "fabxpert",
+    "title": "FabXpert Metal — Industrial Web Platform",
+    "client": "FabXpert Metal",
+    "category": "Web Development",
+    "segment": "B2B",
+    "description": "A polished web platform for a UAE metal-fabrication business, showcasing capabilities and driving qualified enquiries.",
+    "result": "Enterprise-grade web presence for the UAE market.",
+    "href": "https://www.fabxpertmetal.ae",
+    "external": true,
+    "accent": "from-gold/25 to-purple-core/10",
+    "placeholder": false
+  },
+  {
+    "id": "support-agent",
+    "title": "Autonomous Support Agent",
+    "client": "Confidential · SaaS",
+    "category": "Agentic AI",
+    "segment": "B2B",
+    "description": "An agentic AI support system that triages, resolves, and escalates customer queries across email and chat.",
+    "result": "80% of tickets resolved without a human.",
+    "href": null,
+    "external": false,
+    "accent": "from-purple-glow/25 to-purple-core/10",
+    "placeholder": true
+  },
+  {
+    "id": "whatsapp-commerce",
+    "title": "WhatsApp Commerce Bot",
+    "client": "Confidential · Retail",
+    "category": "WhatsApp Chatbot",
+    "segment": "B2C",
+    "description": "A conversational commerce bot that captures leads, answers product questions, and books orders inside WhatsApp.",
+    "result": "3x faster lead response, 24/7.",
+    "href": null,
+    "external": false,
+    "accent": "from-success/20 to-purple-core/10",
+    "placeholder": true
+  },
+  {
+    "id": "ops-automation",
+    "title": "Operations Automation Suite",
+    "client": "Confidential · Manufacturing",
+    "category": "AI Automation",
+    "segment": "B2B",
+    "description": "An end-to-end automation suite connecting inventory, invoicing, and reporting for a Ludhiana manufacturer.",
+    "result": "Manual ops cut by 78%.",
+    "href": null,
+    "external": false,
+    "accent": "from-purple-core/25 to-purple-glow/10",
+    "placeholder": true
+  },
+  {
+    "id": "voice-receptionist",
+    "title": "AI Voice Receptionist",
+    "client": "Confidential · Healthcare",
+    "category": "Voice Agent",
+    "segment": "B2B",
+    "description": "A bilingual voice agent that answers calls, books appointments, and routes urgent cases 24/7.",
+    "result": "Zero missed calls, day or night.",
+    "href": null,
+    "external": false,
+    "accent": "from-gold/20 to-purple-deep/10",
+    "placeholder": true
+  }
+]

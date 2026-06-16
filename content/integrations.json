@@ -1,0 +1,16 @@
+[
+  { "name": "OpenAI", "abbr": "AI" },
+  { "name": "Anthropic Claude", "abbr": "CL" },
+  { "name": "n8n", "abbr": "n8" },
+  { "name": "Make.com", "abbr": "Mk" },
+  { "name": "Zapier", "abbr": "Zp" },
+  { "name": "WhatsApp Business", "abbr": "Wa" },
+  { "name": "Twilio", "abbr": "Tw" },
+  { "name": "LangChain", "abbr": "Lc" },
+  { "name": "Supabase", "abbr": "Sb" },
+  { "name": "Slack", "abbr": "Sl" },
+  { "name": "HubSpot", "abbr": "Hb" },
+  { "name": "Notion", "abbr": "No" },
+  { "name": "Stripe", "abbr": "St" },
+  { "name": "Google Workspace", "abbr": "Gw" }
+]
