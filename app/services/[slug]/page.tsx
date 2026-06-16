@@ -91,6 +91,17 @@ export default async function ServicePage({
           <div className="mt-9 flex justify-center">
             <ConsultButtons presetService={service.title} />
           </div>
+
+          {service.image && (
+            <div className="mt-16 relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-vx-border bg-surface/50 p-2 shadow-2xl backdrop-blur-sm sm:p-4">
+              <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent z-10 pointer-events-none rounded-2xl" />
+              <img 
+                src={service.image} 
+                alt={`${service.title} Hero Illustration`} 
+                className="w-full aspect-[16/9] object-cover rounded-xl border border-vx-border-bright/50"
+              />
+            </div>
+          )}
         </div>
       </section>
 
