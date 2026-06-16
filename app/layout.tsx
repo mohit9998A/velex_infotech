@@ -47,6 +47,14 @@ export const metadata: Metadata = {
     description: "Premium AI solutions for Indian businesses.",
     images: ["/og-default.jpg"],
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: { url: "/favicon.ico" },
+    shortcut: "/favicon.ico",
+  },
   alternates: { canonical: siteConfig.url },
   robots: {
     index: true,
@@ -110,6 +118,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fontVariables} dark`} suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://prod.spline.design" />
       </head>
