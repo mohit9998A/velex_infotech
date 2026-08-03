@@ -1,0 +1,76 @@
+WhatsApp is where Indian customers already are, which makes it the most attractive channel to automate and the one with the most rules to get wrong. Most guides skip the rules and go straight to the chatbot. The rules are the hard part — they decide what you're allowed to build, what it costs, and whether your number survives.
+
+## What is the WhatsApp Business API, and how is it different from the app?
+
+Three different products share the name:
+
+- **WhatsApp Messenger** — the consumer app. Not for business automation.
+- **WhatsApp Business App** — free, for small businesses, manually operated on a phone. No real automation, limited to one device-bound number.
+- **WhatsApp Business Platform (the API)** — programmatic access. This is the only one you can build on, and the only one this article is about.
+
+The API has no interface of its own. You either build one or use a provider's inbox. Access is through Meta directly or, more commonly, through a **Business Solution Provider (BSP)** who handles onboarding, number provisioning and billing.
+
+## What are the rules you cannot design around?
+
+These constrain the product, so understand them before you scope anything.
+
+**The 24-hour customer service window.** Once a customer messages you, you can reply freely with any content for 24 hours. After that window closes, you cannot send a free-form message. You may only send a pre-approved template. This single rule shapes every WhatsApp automation: your agent can converse naturally inside the window and essentially cannot outside it.
+
+**Template approval.** Any message initiating a conversation, or sent after the window, must use a template submitted to Meta and approved in advance. Templates support variables, but the structure is fixed. You cannot have an AI compose a novel outbound message — it can only fill approved slots.
+
+**Opt-in.** You need documented consent before messaging someone. Where and how you collected it matters, and "we had their number" is not consent.
+
+**Quality rating and messaging limits.** Meta scores your number based on how recipients react — blocks and reports drive it down. A poor rating restricts how many unique users you can message daily and can end in a ban. This is the real penalty for aggressive outbound, and it's enforced automatically.
+
+**Conversation-based pricing.** You're billed per conversation window, not per message, with different rates by category (marketing, utility, authentication, service) and by country. India is a large and competitively-priced market, but marketing conversations cost meaningfully more than service ones. Model your volume by category — a design that turns service conversations into marketing ones can multiply your bill.
+
+## Where does AI actually fit?
+
+Inside the 24-hour window, and specifically here:
+
+- **Intent understanding.** The customer types "kal wala order kahan hai" — free-text, code-switched, no menu could catch it. This is the single highest-value use of AI on the channel.
+- **Retrieval and answering.** Pulling order status, availability, policy answers from your systems and replying conversationally.
+- **Qualification.** Working out what an enquiry actually needs and either resolving it or routing it with context.
+- **Drafting for human review.** Where a person sends the final message, but doesn't write it from scratch.
+
+Where AI does **not** fit: composing outbound messages (templates are fixed), and deciding to message someone who hasn't opted in.
+
+The realistic architecture is a hybrid. Templates and buttons carry the structured, compliance-bound parts. AI handles the free-text middle. Interactive list and button replies are underrated — they're faster for the customer than typing and they remove entire categories of misunderstanding.
+
+## What does an integration actually involve?
+
+1. **Business verification with Meta.** Your legal entity is verified. Have your registration documents ready; this step is frequently the longest, and it is not something a developer can shortcut.
+2. **Pick a BSP** — or go direct if you have the engineering capacity. Compare on pricing markup, webhook reliability, and whether you can export your conversation history if you leave.
+3. **Provision the number.** It must not be active on the consumer WhatsApp app. Migrating an existing business number is possible but plan for the downtime.
+4. **Set up webhooks.** Inbound messages arrive as webhook events. You need an endpoint that responds quickly and processes asynchronously — slow webhook responses cause retries and duplicate handling.
+5. **Submit templates** and expect rejections on the first pass. Write them plainly; anything that reads as bait is refused.
+6. **Connect your systems.** This is where the actual work is — the order lookup, the CRM write, the handover to a human inbox.
+7. **Build the handover.** A person must be able to take over a conversation mid-flow, see everything that happened, and reply.
+
+## What does WhatsApp automation cost to run?
+
+Three lines:
+
+- **Conversation fees** to Meta, per 24-hour window, by category and country.
+- **BSP markup** — per-conversation, per-seat, monthly platform fee, or some combination. Compare on total cost at your projected volume, not headline rate.
+- **AI inference**, per message handled.
+
+The pattern that catches people out: costs scale with conversations, and a badly designed flow that forces customers to start new conversations repeatedly multiplies the bill. Design to resolve inside one window.
+
+## How do you avoid getting your number restricted?
+
+Quality rating is driven by blocks and reports, so:
+
+- **Send only what people opted in for.** The gap between "opted in for delivery updates" and "receives promotions" is where numbers die.
+- **Make opting out trivial** and honour it immediately, everywhere.
+- **Respect timing.** Marketing messages late at night generate blocks.
+- **Don't send bulk marketing on a number your customers rely on for service.** Separate the numbers if you do both.
+- **Watch the rating in Meta Business Manager weekly.** Decline is visible before restriction hits, and recoverable if you act.
+
+The uncomfortable truth: the cheapest way to protect quality rating is to send less. Volume targets set without reference to it are how businesses lose the channel.
+
+## The short version
+
+WhatsApp automation is constrained by the 24-hour window, template approval, opt-in and quality rating — and every good design works with those constraints rather than around them. AI belongs inside the window, handling free text and retrieval; templates carry everything else.
+
+Get the compliance model right and the channel is exceptional. Get it wrong and you lose the number. See [WhatsApp AI chatbot development](/services/whatsapp-bot) for what we build, or [tell us your use case](/contact) and we'll say whether it fits inside the rules.

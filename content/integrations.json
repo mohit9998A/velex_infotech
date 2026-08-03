@@ -1,72 +1,69 @@
 [
   {
     "name": "OpenAI",
-    "abbr": "AI",
-    "logo": "https://icon.horse/icon/openai.com"
+    "abbr": "AI"
   },
   {
     "name": "Anthropic Claude",
     "abbr": "CL",
-    "logo": "https://cdn.simpleicons.org/anthropic"
+    "logo": "/images/integrations/anthropic.svg"
   },
   {
     "name": "n8n",
     "abbr": "n8",
-    "logo": "https://cdn.simpleicons.org/n8n"
+    "logo": "/images/integrations/n8n.svg"
   },
   {
     "name": "Make.com",
     "abbr": "Mk",
-    "logo": "https://cdn.simpleicons.org/make"
+    "logo": "/images/integrations/make.svg"
   },
   {
     "name": "Zapier",
     "abbr": "Zp",
-    "logo": "https://cdn.simpleicons.org/zapier"
+    "logo": "/images/integrations/zapier.svg"
   },
   {
     "name": "WhatsApp Business",
     "abbr": "Wa",
-    "logo": "https://cdn.simpleicons.org/whatsapp"
+    "logo": "/images/integrations/whatsapp.svg"
   },
   {
     "name": "Twilio",
-    "abbr": "Tw",
-    "logo": "https://icon.horse/icon/twilio.com"
+    "abbr": "Tw"
   },
   {
     "name": "LangChain",
     "abbr": "Lc",
-    "logo": "https://cdn.simpleicons.org/langchain"
+    "logo": "/images/integrations/langchain.svg"
   },
   {
     "name": "Supabase",
     "abbr": "Sb",
-    "logo": "https://cdn.simpleicons.org/supabase"
+    "logo": "/images/integrations/supabase.svg"
   },
   {
     "name": "Slack",
-    "abbr": "Sl",
-    "logo": "https://icon.horse/icon/slack.com"
+    "abbr": "Sl"
   },
   {
     "name": "HubSpot",
     "abbr": "Hb",
-    "logo": "https://cdn.simpleicons.org/hubspot"
+    "logo": "/images/integrations/hubspot.svg"
   },
   {
     "name": "Notion",
     "abbr": "No",
-    "logo": "https://cdn.simpleicons.org/notion"
+    "logo": "/images/integrations/notion.svg"
   },
   {
     "name": "Stripe",
     "abbr": "St",
-    "logo": "https://cdn.simpleicons.org/stripe"
+    "logo": "/images/integrations/stripe.svg"
   },
   {
     "name": "Google Workspace",
     "abbr": "Gw",
-    "logo": "https://icon.horse/icon/workspace.google.com"
+    "logo": "/images/integrations/google.svg"
   }
 ]

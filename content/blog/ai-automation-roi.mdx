@@ -1,0 +1,98 @@
+Ask a vendor for the ROI on an AI automation project and you'll usually get a percentage with no denominator. "Cuts handling time by 70%." Seventy percent of what, measured how, against which baseline, including or excluding the cases it couldn't handle?
+
+Unfalsifiable numbers are easy to produce and impossible to argue with, which is why they're everywhere. Here is the arithmetic that survives scrutiny.
+
+## What does ROI actually mean for AI automation?
+
+The formula is unglamorous:
+
+**ROI = (annual value released − annual cost of the system) ÷ total cost to build and run it**
+
+Everything difficult is in defining "value released" honestly. There are only four categories, and only the first two are usually real:
+
+- **Labour hours removed** — time your team no longer spends, which they demonstrably spend on something else of value.
+- **Revenue captured that was previously lost** — enquiries answered in time, carts recovered, quotes sent same-day instead of next-week.
+- **Error cost avoided** — rework, refunds, penalties. Real, but you need a historical error rate to claim it.
+- **"Improved experience"** — usually unquantifiable. Leave it out of the business case and treat it as a bonus.
+
+## What baseline do you need before you start?
+
+If you take one thing from this article: **measure before you build.** After deployment, every number is contested, because nobody wrote down what "before" looked like.
+
+You need four figures, and they take about a week to gather:
+
+| Metric | How to get it |
+|---|---|
+| Volume | Cases per month, from your ticketing or CRM export |
+| Handling time | Time 20-30 real cases with a stopwatch. Do not ask people to estimate — estimates are consistently wrong |
+| Fully-loaded hourly cost | Salary plus employer costs plus overhead, divided by actual worked hours |
+| Current error/rework rate | Share of cases that come back |
+
+Sample the timing across a normal week, not a quiet Tuesday. And record the distribution, not just the average — many processes are a fast majority and a slow tail, and automation usually eats the fast majority first. That distinction changes the answer completely.
+
+## How do you calculate the hours actually saved?
+
+The mistake is multiplying total volume by total handling time. Automation doesn't remove whole cases; it removes parts of them.
+
+Work it out in three pieces:
+
+**1. Deflection rate.** The share of cases the system handles end-to-end with no human touch. Be conservative. In most real deployments this is well short of 100%, and a business case that assumes near-total deflection is a business case that will fail.
+
+**2. Assist saving.** For cases still touched by a human, the time saved because context was gathered, the draft was written, or the record was pre-filled. Often a smaller percentage of a much larger number — and frequently the bigger prize.
+
+**3. Added handling time.** The cases the system made *worse*: the ones it attempted, got wrong, and a person then had to unpick. This is real and it belongs in the model.
+
+So:
+
+```
+Hours saved = (deflected cases × full handling time)
+            + (assisted cases × time saved per case)
+            − (failed cases × cleanup time)
+```
+
+A system deflecting 40% of a 2,000-case month at 12 minutes each, assisting the remaining 1,200 by 4 minutes, and needing 10 minutes of cleanup on 5% of attempts, saves roughly 160 + 80 − 17 = **223 hours a month**. That number you can defend.
+
+## What costs do vendors leave out?
+
+Four, routinely:
+
+- **Per-case inference cost.** Unlike traditional software, running cost scales with volume. Get a per-case figure and multiply by your real monthly volume, at the high end of your range.
+- **Integration work on your side.** Someone in your business will spend days on access, data cleanup, and answering questions about edge cases. That time is a project cost.
+- **Maintenance.** Policies change, systems get upgraded, and behaviour has to be re-tested. Budget for it as an ongoing line, not a one-off.
+- **The cost of being wrong.** Model the downside: what does a mishandled case cost you, and how often can you tolerate it?
+
+## How long until AI automation pays back?
+
+It depends almost entirely on volume, and the relationship is not subtle.
+
+A process running 50 cases a month will rarely justify a bespoke build — the arithmetic doesn't work no matter how good the technology is. The same process at 5,000 cases a month usually pays back quickly. Volume is the single strongest predictor of whether a project succeeds financially, which is why "what's your monthly volume?" should be the first question anyone asks you.
+
+Be suspicious of any payback claim quoted without your volume figures. It cannot be calculated without them.
+
+## Which metrics are worth tracking after launch?
+
+Track the ones that would change your decision:
+
+- **Deflection rate**, weekly — the headline number, and it should stabilise after the first few weeks.
+- **Escalation reasons**, categorised — this tells you what to fix next, and is the most useful diagnostic you have.
+- **Time-to-resolution**, before and after, on the same case mix.
+- **Cost per case**, all-in, versus the human baseline.
+- **Rework rate** on automated cases specifically. If this climbs, deflection is being bought with quality.
+
+Watch for the mix shifting. If the system absorbs the easy cases, your team's *average* handling time goes up while total hours go down. That looks like a regression on a dashboard and is actually success — but only if you predicted it.
+
+## Why do AI automation projects fail to show ROI?
+
+In roughly this order:
+
+1. **No baseline**, so nothing can be proven and the project becomes a matter of opinion.
+2. **Volume too low** to repay the build, which was knowable before starting.
+3. **The removed hours went nowhere.** If nobody's workload actually changed and no headcount was redeployed, the saving is theoretical. Decide in advance what the freed time is for.
+4. **The hard 20% was scoped out**, so the process still needs a specialist and the team can't be reduced.
+5. **Nobody owns it after launch.** Performance degrades, trust erodes, people route around it.
+
+## The short version
+
+ROI on AI automation is measurable, but only if you measure first. Get volume, handling time, loaded cost and error rate before anything is built. Model deflection conservatively, count assist savings, subtract cleanup, and include inference and maintenance in the cost side.
+
+If a vendor quotes a percentage before asking for those four numbers, they're guessing. We'd rather tell you a process isn't worth automating — see [AI automation services](/services/ai-automation), or [send us the process](/contact) and we'll work through the arithmetic with you.

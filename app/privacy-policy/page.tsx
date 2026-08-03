@@ -1,13 +1,15 @@
-import type { Metadata } from "next";
-
 import { siteConfig } from "@/config/site";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | Velex Infotech",
+export const metadata = pageMetadata({
+  path: "/privacy-policy",
+  title: "Privacy Policy",
   description: "How Velex Infotech collects, uses, and protects your information.",
-  alternates: { canonical: `${siteConfig.url}/privacy-policy` },
-  robots: { index: true, follow: false },
-};
+  // Was `follow: false`, which told crawlers to ignore every link on the page —
+  // including the footer nav back into the site. Nofollowing your own legal
+  // pages only strangles internal link flow; there is nothing to protect here.
+  robots: { index: true, follow: true },
+});
 
 export default function PrivacyPolicyPage() {
   return (

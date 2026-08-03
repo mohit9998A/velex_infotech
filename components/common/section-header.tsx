@@ -1,7 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
-
 import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
@@ -12,6 +8,15 @@ interface SectionHeaderProps {
   className?: string;
 }
 
+/**
+ * Was a `"use client"` component wrapping a framer-motion `whileInView` fade.
+ *
+ * Because four *server* sections import it (bento, integrations, services,
+ * faq), that single directive pulled framer-motion (~185 KiB raw) into the
+ * client bundle of essentially every page, purely for a fade-up. The reveal is
+ * now CSS scroll-driven (`.reveal-on-scroll` in globals.css), so this is a
+ * plain server component with no JS cost.
+ */
 export function SectionHeader({
   eyebrow,
   title,
@@ -20,14 +25,12 @@ export function SectionHeader({
   className,
 }: SectionHeaderProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+    <div
       className={cn(
-        "flex flex-col gap-4",
-        align === "center" ? "items-center text-center mx-auto max-w-2xl" : "items-start text-left",
+        "reveal-on-scroll flex flex-col gap-4",
+        align === "center"
+          ? "items-center text-center mx-auto max-w-2xl"
+          : "items-start text-left",
         className,
       )}
     >
@@ -38,6 +41,6 @@ export function SectionHeader({
       {subtitle && (
         <p className="text-base text-secondary md:text-lg text-pretty">{subtitle}</p>
       )}
-    </motion.div>
+    </div>
   );
 }

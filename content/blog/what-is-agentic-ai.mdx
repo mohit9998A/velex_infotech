@@ -1,0 +1,90 @@
+Most "AI" a business buys today answers questions. You ask, it responds, and nothing happens until a person acts on the answer. Agentic AI is the category where the software acts — it decides what steps to take, takes them, checks the result, and adjusts.
+
+That difference sounds academic until you price it. A system that drafts a reply is a writing tool. A system that reads the enquiry, checks stock, applies your discount rules, issues the quote and books the follow-up is a member of staff's morning. The second one is worth far more and costs far more to get wrong.
+
+## What is agentic AI, exactly?
+
+Agentic AI is a system that pursues a goal you set by choosing its own sequence of actions, using tools it has access to, without a human approving each step.
+
+Three properties have to be present:
+
+- **A goal, not a script.** You specify the outcome ("resolve this refund request in line with policy"), not the steps.
+- **Tools it can actually use.** It can read your CRM, call an API, send the email, update the record. Without tools it's a chatbot with ambition.
+- **A feedback loop.** It observes what happened after each action and decides the next one. If the payment API fails, it retries or escalates rather than continuing blindly.
+
+Remove any one and you have something else. A system with a goal and a loop but no tools can only think. A system with tools but a fixed script is ordinary [AI automation](/services/ai-automation) — valuable, often the right answer, but not agentic.
+
+## How is agentic AI different from a chatbot?
+
+A chatbot maps input to output. Even a very good one, running on a strong model with your documents attached, is still a question-answering surface: the conversation ends and your systems are unchanged.
+
+An agent's output is a change in the world. It has written to a database, sent a message, moved a ticket. That is the whole point, and it's also why the engineering is different. A wrong chatbot answer is an embarrassment. A wrong agent action is a refund you didn't authorise.
+
+Practically, this means agentic systems need things chatbots don't: permission boundaries, an audit trail of every action taken, spending or rate limits, and a defined escalation path to a human. Most of the build cost is here, not in the model.
+
+## Where does agentic AI actually pay off?
+
+The honest filter is this: agentic AI earns its cost where the work is **high-volume, decision-heavy, and currently done by a person reading context and choosing between known options**.
+
+Cases that tend to work:
+
+- **Order and enquiry triage.** Reading an incoming message, classifying it, pulling the relevant account history, and either resolving it or routing it with a summary attached.
+- **Quote and proposal generation.** Where pricing depends on several variables a person currently looks up across systems.
+- **Reconciliation and exception handling.** Matching records that mostly agree, and investigating the ones that don't.
+- **Multi-step onboarding.** Collecting documents, validating them, chasing what's missing, and provisioning access once complete.
+
+Cases that usually don't:
+
+- **Anything with one deterministic path.** If the process never branches, a plain automation is cheaper, faster and more reliable. Don't pay for judgement you don't need.
+- **Low volume.** An agent that handles four cases a week will not repay its build and maintenance cost.
+- **Decisions with legal or safety consequence and no human check.** Not because the technology can't attempt it, but because the failure cost is asymmetric.
+
+## What does agentic AI cost to run?
+
+Two costs, and businesses consistently underestimate the second.
+
+The first is **build**: integrating your systems, defining the goal and guardrails, and testing against real cases. This is a project, typically measured in weeks.
+
+The second is **per-action inference**. An agent that reasons across several steps makes multiple model calls per task, and a task that loops makes more. Cost scales with volume and with how much thinking each case needs — unlike traditional software, where the marginal cost of one more transaction rounds to zero. Model the unit economics before you commit: cost per case, times cases per month, against the labour hours actually removed.
+
+The third cost, which nobody quotes for, is **maintenance**. Your policies change, your systems change, and the agent's behaviour has to be re-tested when they do.
+
+## Is agentic AI safe to let loose on real systems?
+
+Not without boundaries, and any vendor who says otherwise is selling.
+
+The controls that matter in practice:
+
+- **Least privilege.** The agent gets access to exactly the records and actions its job requires, and nothing else.
+- **Reversible by default.** Prefer actions you can undo. Draft the refund rather than issuing it, until the system has earned trust on volume.
+- **Hard limits.** Caps on spend, on message volume, on how many times a loop can retry.
+- **Full audit trail.** Every action, with the reasoning that led to it, logged and reviewable. When something goes wrong you need to reconstruct why.
+- **A real escalation path.** Defined conditions under which the agent stops and hands to a person, including "I am not confident."
+
+A sensible rollout runs the agent in shadow mode first — it proposes actions, a human executes them, and you measure how often it was right before you give it the keys.
+
+## Agentic AI vs AI automation: which should you start with?
+
+Start with automation unless you have a specific reason not to.
+
+Ordinary automation is cheaper, more predictable, easier to debug, and solves a surprising share of what businesses describe as an "AI problem." If your process is genuinely the same every time, an agent adds cost and variance for no benefit.
+
+Move to agentic when the branching is the work — when the reason a human does the job is that they have to look at the case and decide. We cover the decision in more depth in [AI automation vs agentic AI](/blog/ai-automation-vs-agentic-ai).
+
+## How do you start without betting the business?
+
+Pick one process. The best first candidate is high-volume, annoying, well-understood by whoever does it today, and low-consequence if it errs.
+
+Then, in order:
+
+1. **Write down the current process** as the person actually performs it, including the exceptions. This document is most of the specification, and producing it usually exposes decisions nobody had written down.
+2. **Baseline it.** Cases per month, minutes per case, current error rate. Without this you cannot prove ROI later, and you will be arguing about vibes. There's more on this in [AI automation ROI](/blog/ai-automation-roi).
+3. **Build against real historical cases**, including the messy ones. Systems that only work on clean examples fail on contact with reality.
+4. **Run it in shadow mode** until its judgement matches your team's on the cases that matter.
+5. **Give it the smallest useful set of permissions**, then widen as it earns them.
+
+## The short version
+
+Agentic AI is worth it when the work requires judgement, happens often, and currently consumes real hours. It's the wrong tool for deterministic processes and low volumes, and it's dangerous without permission boundaries and an audit trail.
+
+If you're weighing it up for a specific process, we'll tell you honestly whether it's an agentic problem or a much cheaper automation one — see [agentic AI development](/services/agentic-ai), or [get in touch](/contact) and describe the process.

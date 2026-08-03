@@ -2,7 +2,11 @@ export const siteConfig = {
   name: "Velex Infotech",
   shortName: "Velex",
   tagline: "Intelligent Solutions. Premium Results.",
-  url: "https://velexinfotech.ai",
+  // The canonical origin. Every canonical tag, og:url, sitemap entry, robots
+  // directive and JSON-LD @id is derived from this — no other file should hold
+  // the domain as a literal. Must match the live domain exactly (no trailing
+  // slash, no `www.`, which 301s to the apex via next.config.ts).
+  url: "https://velexinfotech.com",
   description:
     "Premium AI-powered digital services for businesses that demand intelligence and luxury-grade execution. AI Automation, Agentic AI, Voice Agents, WhatsApp Chatbots, and luxury web development.",
   founder: "Mohit Dutta",

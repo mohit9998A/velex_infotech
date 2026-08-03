@@ -1,0 +1,76 @@
+The two terms get used interchangeably in sales conversations, and the confusion is expensive. They describe different architectures with different costs, different failure modes, and different reasons to fail. Picking the wrong one is the most common way an AI project quietly becomes a write-off.
+
+Here is the distinction, and how to tell which your process actually needs.
+
+## What is the difference between AI automation and agentic AI?
+
+**AI automation follows a path you define.** You map the process, decide what happens at each branch, and the system executes it. AI does the parts that need intelligence — reading an unstructured email, classifying an image, extracting fields from an invoice — but the sequence is yours.
+
+**Agentic AI chooses the path.** You define the goal and the tools available. The system decides which steps to take, in what order, and when it's finished.
+
+The one-line test: **if you can draw the process as a flowchart and the flowchart is complete, you want automation.** If the honest answer is "it depends what the case looks like, the person figures it out," you're in agentic territory.
+
+## Which is cheaper?
+
+Automation, substantially, and on both axes.
+
+**Build cost** is lower because the logic is explicit. You're integrating systems and specifying rules, not designing guardrails for open-ended behaviour.
+
+**Running cost** is lower and — this is the part people miss — **predictable**. An automation makes a fixed number of model calls per case. An agent reasons in a loop, so a hard case costs more than an easy one, and a pathological case can cost many times the average before a limit stops it. Your monthly bill varies with case difficulty, not just volume.
+
+**Debugging cost** is where the gap is widest. When an automation misbehaves you can point at the rule. When an agent misbehaves you're reconstructing a chain of decisions from logs, and the same input may not reproduce it.
+
+None of that means agentic is wrong. It means you should only pay for it when the flexibility is doing real work.
+
+## When is automation clearly the right answer?
+
+- **The process is genuinely the same every time.** Invoice arrives, fields extracted, record created, notification sent.
+- **The branches are few and known.** Three categories of enquiry routed three ways is a rule, not a judgement.
+- **The output must be identical given identical input.** Regulatory reporting, financial calculation, anything audited.
+- **The consequence of an error is high.** Deterministic systems fail predictably, which is a feature.
+- **Volume is high and margins per case are thin.** You need the cheap, fixed per-case cost.
+
+Most requests that arrive described as "we need an AI agent" are this. That's not a criticism of the requester — it's that the marketing has made "agent" the default word.
+
+## When do you genuinely need agentic AI?
+
+- **The number of paths is large or unbounded.** Not three branches — dozens, with combinations you can't enumerate in advance.
+- **The work is investigative.** Something doesn't reconcile and someone has to look into why, checking different things depending on what they find.
+- **The steps depend on intermediate results.** You can't know the second action until you see the outcome of the first.
+- **The process changes faster than you can re-specify it.** Rewriting flowcharts monthly is its own cost.
+- **A human currently does it by reading context and deciding**, and their decision genuinely varies case to case.
+
+The honest test: ask whoever does the job today to write the complete flowchart. If they can, build the flowchart. If they keep saying "well, it depends" — that dependency is the thing you'd be buying an agent for.
+
+## Can you combine them?
+
+Yes, and this is usually the right architecture in production.
+
+The pattern that works: **deterministic automation for the spine, agentic reasoning for the branches that need judgement.** Intake, validation, routing, logging and the final write-back are all fixed. The middle — where a person would have had to look at the case and decide — is where the agent operates, inside a bounded set of tools.
+
+This gives you the cost profile of automation on the majority of cases, the flexibility of agents where it matters, and an audit trail that makes sense because the framework around the agent is deterministic.
+
+It also gives you a migration path. Build the automation first, instrument where it escalates to a human, and let the escalation data tell you exactly where agentic reasoning would pay. That is far more reliable than guessing up front.
+
+## How do you decide for a specific process?
+
+Work through these in order. The first "yes" is your answer.
+
+1. **Can you write the complete flowchart, including exceptions?** → Automation.
+2. **Is the volume under a few hundred cases a month?** → Neither, probably. Fix the process or leave it manual; the build cost won't repay. See [AI automation ROI](/blog/ai-automation-roi) for the arithmetic.
+3. **Must identical inputs always produce identical outputs?** → Automation. Do not introduce non-determinism into an audited process.
+4. **Would a wrong action cost you materially, with no human check?** → Automation, or agentic in draft-only mode where a person approves.
+5. **Does the person doing it today say "it depends" about the sequence?** → Agentic, for that portion.
+6. **Otherwise** → Automation. It's the cheaper hypothesis, and you'll learn where the agent belongs by running it.
+
+## What does choosing wrong actually cost?
+
+**Agentic where automation would do:** you pay several times the build cost, get variable running costs, introduce non-determinism into something that didn't need it, and make debugging harder — for flexibility the process never exercises. The system usually works. It's just poor value, and that's a slow, hard-to-notice failure.
+
+**Automation where agentic was needed:** the system handles the clean majority and escalates everything interesting. Your team still needs the same specialists, because the hard cases — the expensive ones — were never touched. The project reports a good deflection rate and delivers no headcount saving. This one looks like a success on the dashboard, which makes it worse.
+
+## The short version
+
+Automation executes your decisions. Agentic AI makes decisions. Automation is cheaper, more predictable and correct for most processes; agentic earns its cost specifically where the branching is the work.
+
+Start with the flowchart test, and combine the two rather than treating it as a binary. We're happy to tell you a process needs the cheaper option — see [AI automation](/services/ai-automation) and [agentic AI](/services/agentic-ai), or [describe the process to us](/contact) and we'll work through the decision tree above with you.

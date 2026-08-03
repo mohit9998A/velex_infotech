@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
-
 import { siteConfig } from "@/config/site";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Terms of Service | Velex Infotech",
+export const metadata = pageMetadata({
+  path: "/terms-of-service",
+  title: "Terms of Service",
   description: "The terms that govern your use of the Velex Infotech website and services.",
-  alternates: { canonical: `${siteConfig.url}/terms-of-service` },
-  robots: { index: true, follow: false },
-};
+  // See the note in privacy-policy: `follow: false` was suppressing internal
+  // link flow for no benefit.
+  robots: { index: true, follow: true },
+});
 
 export default function TermsOfServicePage() {
   return (

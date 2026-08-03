@@ -1,5 +1,6 @@
 import type { FaqItem } from "@/types";
 import faqsData from "@/content/faqs.json";
+import { faqSchema, jsonLd } from "@/lib/schema";
 import { SectionHeader } from "@/components/common/section-header";
 import {
   Accordion,
@@ -10,22 +11,12 @@ import {
 
 const faqs = faqsData as FaqItem[];
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({
-    "@type": "Question",
-    name: f.question,
-    acceptedAnswer: { "@type": "Answer", text: f.answer },
-  })),
-};
-
 export function FaqSection() {
   return (
     <section className="section-pad relative">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(faqSchema(faqs)) }}
       />
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <SectionHeader eyebrow="FAQ" title="Common questions" />

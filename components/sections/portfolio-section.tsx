@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
@@ -9,7 +9,15 @@ import portfolioData from "@/content/portfolio.json";
 import { SectionHeader } from "@/components/common/section-header";
 import { PortfolioCard } from "@/components/common/portfolio-card";
 
-const items = portfolioData as PortfolioItem[];
+/**
+ * Real client work only — same reasoning as the testimonials section.
+ * Four of the six entries in portfolio.json are flagged `placeholder: true`;
+ * presenting invented case studies as real work is a trust problem, and
+ * fabricated results are exactly what an E-E-A-T assessment penalises.
+ *
+ * Drop the `placeholder` flag on an entry to publish it.
+ */
+const items = (portfolioData as PortfolioItem[]).filter((i) => !i.placeholder);
 
 export function PortfolioSection() {
   const filters = useMemo(() => {
@@ -21,6 +29,14 @@ export function PortfolioSection() {
   const filtered = useMemo(
     () => (active === "All" ? items : items.filter((i) => i.category === active)),
     [active],
+  );
+
+  // Only the hovered card may hold a live embed, so at most one iframe is ever
+  // mounted no matter how many previewable projects are on screen.
+  const [liveId, setLiveId] = useState<string | null>(null);
+  const deactivate = useCallback(
+    (id: string) => setLiveId((current) => (current === id ? null : current)),
+    [],
   );
 
   return (
@@ -65,7 +81,13 @@ export function PortfolioSection() {
         >
           <AnimatePresence mode="popLayout">
             {filtered.map((item) => (
-              <PortfolioCard key={item.id} item={item} />
+              <PortfolioCard
+                key={item.id}
+                item={item}
+                isLive={liveId === item.id}
+                onActivate={() => setLiveId(item.id)}
+                onDeactivate={() => deactivate(item.id)}
+              />
             ))}
           </AnimatePresence>
         </motion.div>

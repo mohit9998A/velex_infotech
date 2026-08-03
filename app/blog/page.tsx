@@ -1,61 +1,108 @@
-import type { Metadata } from "next";
-import { Sparkles } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, Clock, Sparkles } from "lucide-react";
 
-import { siteConfig } from "@/config/site";
+import { blogPosts } from "@/content/blog";
+import { pageMetadata, absoluteUrl } from "@/lib/seo";
+import { breadcrumbSchema, jsonLd } from "@/lib/schema";
+import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { ConsultButtons } from "@/components/common/consult-buttons";
 
-export const metadata: Metadata = {
-  title: "Blog & Insights | Velex Infotech",
+export const metadata = pageMetadata({
+  path: "/blog",
+  title: "Blog & Insights",
   description:
-    "Insights on AI automation, agentic AI, voice agents, WhatsApp chatbots and building intelligent businesses — from the Velex Infotech team.",
-  alternates: { canonical: `${siteConfig.url}/blog` },
-};
+    "Practical writing on AI automation, agentic AI, voice agents and WhatsApp chatbots — what works, what it costs, and when not to bother.",
+});
 
-const upcoming = [
-  "What is Agentic AI? A Complete Guide for Indian Business Owners",
-  "AI Automation ROI: How to Measure Real Results",
-  "Voice AI Agents: How Businesses Replace Call Centers with AI",
-  "WhatsApp Business API + AI: The Complete Integration Guide",
-  "AI Automation vs Agentic AI: Which Does Your Business Need?",
-  "How to Choose an AI Agency in India: A 2025 Guide",
-];
+const dateFormatter = new Intl.DateTimeFormat("en-IN", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+
+const blogListSchema = {
+  "@type": "Blog",
+  "@id": absoluteUrl("/blog#blog"),
+  name: "Velex Infotech — The Intelligence Brief",
+  url: absoluteUrl("/blog"),
+  blogPost: blogPosts.map((p) => ({
+    "@type": "BlogPosting",
+    headline: p.title,
+    description: p.description,
+    url: absoluteUrl(`/blog/${p.slug}`),
+    datePublished: p.publishedAt,
+    author: { "@type": "Person", name: p.author },
+  })),
+};
 
 export default function BlogPage() {
   return (
     <section className="relative overflow-hidden pb-24 pt-36">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(blogListSchema, breadcrumbSchema([{ name: "Blog", path: "/blog" }])),
+        }}
+      />
+
       <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
       <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 rounded-full bg-purple-core/15 blur-[140px]" />
 
-      <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
-        <span className="badge-pill mx-auto w-fit">
-          <Sparkles className="size-3.5 text-gold" />
-          <span className="font-mono-label text-primary">Insights</span>
-        </span>
-        <h1 className="mt-6 font-display text-h1 text-balance text-primary">
-          The intelligence brief
-        </h1>
-        <p className="mx-auto mt-5 max-w-xl text-secondary md:text-lg">
-          Deep, practical writing on AI automation, agentic systems and building intelligent
-          businesses is on the way. Here&apos;s what we&apos;re publishing first.
-        </p>
+      <div className="relative mx-auto max-w-3xl px-4 sm:px-6">
+        <Breadcrumbs trail={[{ name: "Blog", path: "/blog" }]} />
 
-        <ul className="mx-auto mt-12 flex max-w-2xl flex-col gap-3 text-left">
-          {upcoming.map((title) => (
-            <li
-              key={title}
-              className="glass-card flex items-center justify-between gap-4 p-5"
-            >
-              <span className="text-primary">{title}</span>
-              <span className="shrink-0 font-mono-label text-muted">Soon</span>
+        <div className="text-center">
+          <span className="badge-pill mx-auto w-fit">
+            <Sparkles className="size-3.5 text-gold" />
+            <span className="font-mono-label text-primary">Insights</span>
+          </span>
+          <h1 className="mt-6 font-display text-h1 text-balance text-primary">
+            The intelligence brief
+          </h1>
+          <p className="mx-auto mt-5 max-w-xl text-secondary md:text-lg">
+            Practical writing on AI automation, agentic systems and building intelligent
+            businesses — including the parts vendors leave out.
+          </p>
+        </div>
+
+        <ul className="mt-14 flex flex-col gap-4">
+          {blogPosts.map((post) => (
+            <li key={post.slug}>
+              <Link
+                href={`/blog/${post.slug}`}
+                className="group glass-card flex flex-col p-6 transition-transform hover:-translate-y-0.5"
+              >
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono-label text-muted">
+                  <time dateTime={post.publishedAt}>
+                    {dateFormatter.format(new Date(post.publishedAt))}
+                  </time>
+                  <span aria-hidden="true">·</span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <Clock className="size-3.5" aria-hidden="true" />
+                    {post.readingMinutes} min read
+                  </span>
+                </div>
+                <h2 className="mt-3 font-display text-xl text-balance text-primary">
+                  {post.title}
+                </h2>
+                <p className="mt-2 text-pretty text-secondary">{post.description}</p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
+                  Read the guide
+                  <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </span>
+              </Link>
             </li>
           ))}
         </ul>
 
-        <p className="mt-10 text-secondary">
-          Want these in your inbox first? Get in touch and we&apos;ll keep you posted.
-        </p>
-        <div className="mt-6 flex justify-center">
-          <ConsultButtons primaryLabel="Talk to Us" />
+        <div className="mt-14 text-center">
+          <p className="text-secondary">
+            Have a process you&apos;re weighing up? We&apos;ll tell you honestly whether
+            it&apos;s worth automating.
+          </p>
+          <div className="mt-6 flex justify-center">
+            <ConsultButtons primaryLabel="Talk to Us" />
+          </div>
         </div>
       </div>
     </section>

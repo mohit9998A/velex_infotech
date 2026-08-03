@@ -10,7 +10,20 @@ import testimonialsData from "@/content/testimonials.json";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 import { SectionHeader } from "@/components/common/section-header";
 
-const testimonials = testimonialsData as Testimonial[];
+/**
+ * Only real, attributable testimonials render.
+ *
+ * Every entry in testimonials.json is currently flagged `placeholder: true`,
+ * and the section used to say so out loud on the homepage ("Placeholder
+ * testimonials shown for layout"). Publishing invented quotes from named people
+ * at named companies is a credibility problem on the page we're about to drive
+ * traffic to, and it paired with a fabricated aggregateRating in the contact
+ * page schema (since removed) that risked a Google manual action.
+ *
+ * To restore the section: add real entries to content/testimonials.json without
+ * the `placeholder` flag. Nothing else needs changing.
+ */
+const testimonials = (testimonialsData as Testimonial[]).filter((t) => !t.placeholder);
 
 export function TestimonialsSection() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center" });
@@ -39,6 +52,9 @@ export function TestimonialsSection() {
     }, 5000);
     return () => clearInterval(id);
   }, [emblaApi, reducedMotion]);
+
+  // After all hooks — `testimonials` is module-scoped so this is stable.
+  if (testimonials.length === 0) return null;
 
   return (
     <section className="section-pad relative overflow-hidden">
@@ -116,9 +132,6 @@ export function TestimonialsSection() {
           </button>
         </div>
 
-        <p className="mt-6 text-center text-xs text-muted">
-          Placeholder testimonials shown for layout — real client reviews to be added before launch.
-        </p>
       </div>
     </section>
   );

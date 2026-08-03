@@ -1,42 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
+import dynamic from "next/dynamic";
 import { ThemeProvider } from "next-themes";
-import Lenis from "lenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { usePrefersReducedMotion } from "@/hooks/use-media-query";
-
-function SmoothScroll() {
-  const reducedMotion = usePrefersReducedMotion();
-
-  useEffect(() => {
-    if (reducedMotion) return;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      touchMultiplier: 1.6,
-    });
-
-    lenis.on("scroll", ScrollTrigger.update);
-
-    const raf = (time: number) => lenis.raf(time * 1000);
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
-
-    return () => {
-      gsap.ticker.remove(raf);
-      lenis.destroy();
-    };
-  }, [reducedMotion]);
-
-  return null;
-}
+/**
+ * Loaded as its own chunk after the page is interactive. This keeps gsap,
+ * ScrollTrigger and lenis (~135 KiB combined) out of the shared bundle that
+ * every route pays for — see the note in smooth-scroll.tsx.
+ *
+ * `ssr: false` is correct here: the component renders null and only sets up
+ * browser-side scroll behaviour, so there is nothing to server-render.
+ */
+const SmoothScroll = dynamic(() => import("@/components/layout/smooth-scroll"), {
+  ssr: false,
+});
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

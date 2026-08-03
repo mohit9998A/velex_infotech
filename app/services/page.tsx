@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 import type { ServiceItem } from "@/types";
 import servicesData from "@/content/services.json";
-import { siteConfig } from "@/config/site";
+import { pageMetadata, absoluteUrl } from "@/lib/seo";
+import { breadcrumbSchema, jsonLd } from "@/lib/schema";
 import { getServiceIcon } from "@/lib/icons";
 import { Badge } from "@/components/ui/badge";
 import { SectionHeader } from "@/components/common/section-header";
@@ -13,16 +13,39 @@ import { CtaBanner } from "@/components/sections/cta-banner";
 
 const services = servicesData as ServiceItem[];
 
-export const metadata: Metadata = {
-  title: "AI & Digital Services | Velex Infotech India",
+export const metadata = pageMetadata({
+  path: "/services",
+  title: "AI & Digital Services in India",
   description:
-    "Explore our premium services: AI Automation, Agentic AI, Voice Agents, WhatsApp Chatbots, Web Development, App Development, and AI Integration.",
-  alternates: { canonical: `${siteConfig.url}/services` },
+    "AI Automation, Agentic AI, Voice Agents, WhatsApp Chatbots, Web Development, App Development and AI Integration — built for businesses across India.",
+});
+
+// Lists the 7 services as a crawlable collection rather than leaving Google to
+// infer the set from links alone.
+const serviceListSchema = {
+  "@type": "ItemList",
+  "@id": absoluteUrl("/services#list"),
+  name: "AI & Digital Services",
+  itemListElement: services.map((s, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: s.title,
+    url: absoluteUrl(`/services/${s.slug}`),
+  })),
 };
 
 export default function ServicesIndexPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(
+            serviceListSchema,
+            breadcrumbSchema([{ name: "Services", path: "/services" }]),
+          ),
+        }}
+      />
       <section className="relative overflow-hidden pb-12 pt-36">
         <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
         <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 rounded-full bg-purple-core/15 blur-[140px]" />

@@ -398,7 +398,91 @@ html.lenis body {
   .animate-scroll-left-slow,
   .animate-scroll-right,
   .animate-float,
-  .animate-bob {
+  .animate-bob,
+  .hero-word,
+  .hero-fade {
     animation: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   HERO ENTRANCE
+   Replaces the GSAP timeline that used to animate the H1 from opacity: 0.
+   GSAP could only start after hydration, which gated LCP on the whole client
+   bundle. CSS starts at first paint.
+
+   The headline animates TRANSFORM ONLY — deliberately no opacity. The parent
+   `.block.overflow-hidden` span clips it, so a partial translate still paints
+   real pixels on the first frame and the text is immediately LCP-eligible.
+   45% (not the old 120%) keeps roughly the top half of every glyph visible
+   from the start; 120% would put the text entirely outside the clip and just
+   move the original problem from JS into CSS.
+   --------------------------------------------------------------------------- */
+
+@keyframes hero-word-rise {
+  from {
+    transform: translateY(45%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-word {
+  animation: hero-word-rise 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+  will-change: transform;
+}
+
+/* Supporting elements are not LCP candidates, so fading them is safe. */
+.hero-fade {
+  animation: hero-fade-up 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(260ms + var(--i, 0) * 100ms);
+}
+
+/* ---------------------------------------------------------------------------
+   SCROLL REVEAL
+   Replaces framer-motion `whileInView` in SectionHeader, which was the only
+   reason that component was client-side — and therefore the reason
+   framer-motion shipped on every page.
+
+   Gated behind @supports so that browsers without scroll-driven animations
+   (currently Firefox and Safari) simply render the content normally. Without
+   the gate, an unsupported `animation-timeline` would fall back to the default
+   time timeline and, worse, `opacity: 0` in the from-state could leave content
+   permanently invisible if the animation never ran. Visible-by-default is the
+   only safe failure mode.
+   --------------------------------------------------------------------------- */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes reveal-up {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .reveal-on-scroll {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      /* Start as the element enters, finish once it is 40% up the viewport. */
+      animation-range: entry 0% cover 40%;
+    }
   }
 }

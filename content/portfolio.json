@@ -1,5 +1,41 @@
 [
   {
+    "id": "groundzero",
+    "title": "Ground Zero — Sports Venue Booking Platform",
+    "client": "Ground Zero",
+    "category": "Web Development",
+    "segment": "B2C",
+    "description": "A booking platform for sports venues — court discovery, availability, and online reservations wrapped in a bold, high-energy brand system.",
+    "result": "Venue discovery to confirmed booking, end to end.",
+    "href": "https://www.groundzero.in",
+    "external": true,
+    "accent": "from-success/25 to-purple-core/10",
+    "placeholder": false,
+    "preview": {
+      "mode": "live",
+      "poster": "/images/portfolio/groundzero.webp",
+      "settleMs": 11000
+    }
+  },
+  {
+    "id": "daur",
+    "title": "DAUR — Luxury Fashion Brand",
+    "client": "DAUR",
+    "category": "Web Development",
+    "segment": "B2C",
+    "description": "An editorial storefront for a luxury fashion label — full-bleed campaign imagery, restrained typography, and a considered browse-to-cart journey.",
+    "result": "Editorial storefront built to sell.",
+    "href": "https://daur-ten.vercel.app",
+    "external": true,
+    "accent": "from-purple-glow/20 to-purple-deep/10",
+    "placeholder": false,
+    "preview": {
+      "mode": "live",
+      "poster": "/images/portfolio/daur.webp",
+      "settleMs": 7000
+    }
+  },
+  {
     "id": "bonn",
     "title": "Bonn — Brand Web Experience",
     "client": "Bonn",
@@ -10,7 +46,11 @@
     "href": "https://www.bonn.in",
     "external": true,
     "accent": "from-purple-core/30 to-purple-deep/10",
-    "placeholder": false
+    "placeholder": false,
+    "preview": {
+      "mode": "image",
+      "poster": "/images/portfolio/bonn.webp"
+    }
   },
   {
     "id": "fabxpert",
@@ -23,7 +63,12 @@
     "href": "https://www.fabxpertmetal.ae",
     "external": true,
     "accent": "from-gold/25 to-purple-core/10",
-    "placeholder": false
+    "placeholder": false,
+    "preview": {
+      "mode": "live",
+      "poster": "/images/portfolio/fabxpert.webp",
+      "settleMs": 9000
+    }
   },
   {
     "id": "support-agent",

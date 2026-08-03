@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 
 import { fontVariables } from "@/lib/fonts";
 import { siteConfig } from "@/config/site";
+import { jsonLd, organizationSchema, websiteSchema } from "@/lib/schema";
 import { Providers } from "@/components/layout/providers";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -31,13 +31,16 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: siteConfig.founder }],
   creator: siteConfig.founder,
+  // Defaults only — each page overrides url/title/description via
+  // `pageMetadata()` in lib/seo.ts. No `images` key here: the og:image comes
+  // from the `opengraph-image` file convention, which takes priority over the
+  // metadata object and can't 404 the way the old /og-default.jpg reference did.
   openGraph: {
     title: "Velex Infotech — Intelligent AI Solutions for Modern Business",
     description:
       "Premium AI-powered digital services. AI Automation, Voice Agents, WhatsApp Bots, Luxury Web Development.",
     url: siteConfig.url,
     siteName: siteConfig.name,
-    images: [{ url: "/og-default.jpg", width: 1200, height: 630, alt: siteConfig.name }],
     locale: siteConfig.locale,
     type: "website",
   },
@@ -45,7 +48,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Velex Infotech | AI Automation & Web Development",
     description: "Premium AI solutions for Indian businesses.",
-    images: ["/og-default.jpg"],
   },
   icons: {
     icon: [
@@ -61,76 +63,37 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
-};
-
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: siteConfig.name,
-  alternateName: siteConfig.shortName,
-  description:
-    "Premium AI automation and digital services agency. Intelligent Solutions. Premium Results.",
-  url: siteConfig.url,
-  logo: `${siteConfig.url}/images/logo/velex-logo.svg`,
-  foundingDate: "2024",
-  founder: {
-    "@type": "Person",
-    name: siteConfig.founder,
-    jobTitle: "Founder & CEO",
-    telephone: siteConfig.phone,
-    email: siteConfig.email,
-  },
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Ludhiana",
-    addressRegion: "Punjab",
-    addressCountry: "IN",
-  },
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: siteConfig.phone,
-    contactType: "customer service",
-    availableLanguage: ["English", "Hindi", "Punjabi"],
-    areaServed: "IN",
-  },
-  sameAs: [siteConfig.social.instagram, siteConfig.social.linkedin],
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    name: "AI & Digital Services",
-    itemListElement: [
-      "AI Automation",
-      "Agentic AI Development",
-      "Voice AI Agent",
-      "WhatsApp AI Chatbot",
-      "Website Development",
-      "App Development",
-      "AI Integration",
-    ].map((name) => ({
-      "@type": "Offer",
-      itemOffered: { "@type": "Service", name },
-    })),
-  },
+  // TODO(velex): paste the tokens from Google Search Console and Bing Webmaster
+  // Tools, then uncomment. Until then the site must be verified by DNS or file
+  // upload instead. See the plan's "Manual follow-ups" section.
+  // verification: {
+  //   google: "REPLACE_WITH_GOOGLE_SITE_VERIFICATION_TOKEN",
+  //   other: { "msvalidate.01": "REPLACE_WITH_BING_TOKEN" },
+  // },
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${fontVariables} dark`} suppressHydrationWarning>
+    <html lang="en-IN" className={`${fontVariables} dark`} suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        {/* Favicon links come from the `icons` metadata above — declaring them
+            here too emitted every tag twice. Only the Spline preconnect, which
+            metadata can't express, stays. */}
         <link rel="preconnect" href="https://prod.spline.design" />
+        {/* Site-wide structured data. Rendered as a plain script in the server
+            HTML — this previously used next/script with strategy
+            "afterInteractive", so it only existed after JS ran and crawlers
+            that don't execute scripts never saw it. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: jsonLd(organizationSchema(), websiteSchema()),
+          }}
+        />
       </head>
       <body className="min-h-dvh bg-void font-sans text-primary antialiased">
-        <Script
-          id="velex-organization-schema"
-          type="application/ld+json"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-        />
         <Providers>
           <ScrollProgress />
           <Navbar />

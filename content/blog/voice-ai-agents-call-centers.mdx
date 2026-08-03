@@ -1,0 +1,87 @@
+A voice AI agent answers your phone, understands what the caller wants, does something about it, and speaks back — in a conversation, not a menu tree. The technology crossed the threshold from demo to deployable recently enough that most of what's written about it is either marketing or three years out of date.
+
+This is what it looks like when you actually put one on a live number.
+
+## What is a voice AI agent?
+
+A voice AI agent is a system that handles a phone conversation end to end: it transcribes what the caller says, decides what to do, takes action in your systems, and replies in synthesised speech — without a script tree and without a person on the line.
+
+It is not an IVR. An IVR makes the caller navigate your org chart by pressing digits. A voice agent lets the caller say "I need to change my delivery address" and then changes the delivery address.
+
+Three components run in a loop: speech-to-text, a reasoning layer with access to your tools, and text-to-speech. The quality of the experience is decided almost entirely by how fast that loop closes.
+
+## Why does latency matter more than anything else?
+
+Because humans notice silence on a phone call at a threshold measured in a few hundred milliseconds, and they notice it far more harshly than they notice slightly imperfect wording.
+
+In normal conversation, the gap between speakers is very short. Push past roughly a second of dead air and the caller starts talking over the agent, assumes the line dropped, or says "hello?" — and once that happens the conversation degrades badly.
+
+That budget has to cover the whole round trip: audio to text, the model's reasoning, any database or API lookup, and text back to audio. Every tool call the agent makes spends latency it doesn't have.
+
+The practical consequences shape the whole design:
+
+- **Keep the tool calls on the critical path minimal.** Pre-fetch what you can from the caller's number before they finish their first sentence.
+- **Stream everything.** Begin speaking before the full response is generated; begin transcribing before the caller stops.
+- **Fill honestly.** A brief "let me pull that up" while a slow lookup runs is better than silence — but if you use it on every turn, callers notice that too.
+
+## Can voice AI handle Hindi, English, and the mix?
+
+Handling each language separately is largely solved. The genuinely hard part in India is that a single sentence often contains both, and callers switch mid-conversation without warning.
+
+What works in practice:
+
+- **Choose models evaluated on code-switched speech**, not just on clean single-language benchmarks. Benchmark numbers on monolingual datasets tell you very little about real Indian phone traffic.
+- **Test on real recordings from your own line**, across the accents and regions you actually serve. Vendor demos are recorded in quiet rooms by people with predictable accents; your callers are on a scooter.
+- **Let the agent match the caller's language** rather than forcing a choice up front. Asking someone to pick a language before they've said what they want is an IVR habit.
+- **Expect proper nouns to be the weak point.** Names, addresses and order numbers are where transcription fails hardest. Confirm them by reading back, and prefer digits confirmed one at a time over a name spelled phonetically.
+
+Phone audio is also narrowband and often noisy, which is materially harder than the clean microphone audio most demos use. Always evaluate over a real call, never over a laptop mic.
+
+## What should a voice agent never do?
+
+Set these boundaries before you build, not after an incident:
+
+- **Never take payment card details.** The compliance burden is severe and the failure mode is catastrophic. Hand off to a secure channel.
+- **Never refuse to escalate.** "Talk to a human" must always work, on the first request, without an argument. An agent that fights the caller is worse than no agent.
+- **Never guess on identity.** If verification fails, escalate. Do not proceed on a probable match.
+- **Never continue when confused.** Two failed attempts to understand the same thing is the signal to hand over, not to try a third time.
+- **Never impersonate a person.** Beyond the ethics, callers work it out and resent it. State plainly that it's an automated assistant.
+
+## Which calls should a voice agent take?
+
+The good candidates share a shape: high volume, bounded intent, and a clear success condition.
+
+- **Order and delivery status.** Caller has a reference or a phone number; the answer is a lookup.
+- **Appointment booking, confirmation and rescheduling.** Highly structured, and the failure mode is mild.
+- **Qualification and routing.** Establishing what the caller needs and passing them, with context attached, to the right team.
+- **Outbound confirmations and reminders**, with the ability to actually handle the reply rather than just playing a recording.
+- **Out-of-hours cover.** The comparison here isn't a human agent, it's a voicemail nobody checks — a much easier bar to clear.
+
+The poor candidates: complaints and anything emotionally charged, complex troubleshooting with long branching diagnosis, high-value sales conversations, and anything with legal or medical consequence.
+
+## How does it fit with your existing call centre?
+
+The framing of "replacing" a call centre is mostly marketing. What actually happens is that the volume mix changes.
+
+Voice agents absorb the repetitive, bounded calls — which is usually a large share of inbound volume and a small share of its difficulty. What remains is a higher concentration of complex, emotional and high-value conversations.
+
+That has consequences worth planning for:
+
+- **Your team's average handle time will rise**, because the easy calls are gone. This is expected, not a regression, but if nobody warned the operations manager it will look like one.
+- **Escalations arrive mid-problem.** The handover must carry the transcript and what's been tried, or the caller repeats themselves and the whole experience is worse than not having the agent.
+- **Agent skill requirements go up**, not down. The remaining work is harder.
+
+## How do you deploy one without embarrassing yourself?
+
+1. **Start outbound or out-of-hours.** Lower stakes than your main inbound line while you learn.
+2. **Shadow first.** Run the agent on recorded or parallel calls and grade its decisions before it speaks to anyone.
+3. **Cap the scope hard.** One or two intents, done reliably, beats ten done adequately.
+4. **Listen to recordings weekly.** Not dashboards — actual audio. The failure modes are audible and are never the ones you predicted.
+5. **Instrument escalation reasons.** This is your roadmap.
+6. **Publish a fallback number** and make sure it's answered.
+
+## The short version
+
+Voice AI agents work today for bounded, high-volume calls, and the engineering that decides success is latency management, honest escalation, and real testing on real phone audio in the languages your callers actually speak.
+
+They don't replace a call centre; they change what's left in it. If you want to know whether your call mix suits one, [voice AI agents](/services/voice-agent) covers what we build, and [we're happy to listen to a sample of your calls](/contact) and tell you what's automatable.

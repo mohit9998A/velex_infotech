@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
 import { Gem, Target, ShieldCheck, Rocket, MapPin } from "lucide-react";
 
 import type { StatItem } from "@/types";
 import statsData from "@/content/stats.json";
 import { siteConfig } from "@/config/site";
+import { pageMetadata } from "@/lib/seo";
+import { breadcrumbSchema, jsonLd } from "@/lib/schema";
 import { SectionHeader } from "@/components/common/section-header";
 import { StatCard } from "@/components/common/stat-card";
 import { ConsultButtons } from "@/components/common/consult-buttons";
@@ -11,12 +12,14 @@ import { CtaBanner } from "@/components/sections/cta-banner";
 
 const stats = statsData as StatItem[];
 
-export const metadata: Metadata = {
-  title: "About Velex Infotech | AI Agency in Ludhiana, Punjab",
+// Title omits the brand — the root layout's `%s | Velex Infotech` template
+// appends it. Including it here produced "... | Velex Infotech | Velex Infotech".
+export const metadata = pageMetadata({
+  path: "/about",
+  title: "About Us — AI Agency in Ludhiana, Punjab",
   description:
-    "Velex Infotech is a premium AI automation and digital services agency founded by Mohit Dutta in Ludhiana, Punjab. We engineer intelligence for ambitious businesses across India.",
-  alternates: { canonical: `${siteConfig.url}/about` },
-};
+    "Velex Infotech is an AI automation and digital services agency founded by Mohit Dutta in Ludhiana, Punjab. We engineer intelligence for ambitious businesses across India.",
+});
 
 const values = [
   { icon: Gem, title: "Crystalline quality", description: "Every build is faceted with precision. We ship work we're proud to sign." },
@@ -28,6 +31,12 @@ const values = [
 export default function AboutPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(breadcrumbSchema([{ name: "About", path: "/about" }])),
+        }}
+      />
       {/* Hero */}
       <section className="relative overflow-hidden pb-12 pt-36">
         <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />

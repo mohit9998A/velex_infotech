@@ -75,6 +75,28 @@ export interface IntegrationItem {
   logo?: string;
 }
 
+/**
+ * Preview treatment for a portfolio cover. Items without this render the
+ * legacy gradient cover built from `accent`.
+ */
+export interface PortfolioPreview {
+  /** "live" = poster plus a hover-activated iframe; "image" = poster only. */
+  mode: "live" | "image";
+  /** Committed screenshot under public/, e.g. /images/portfolio/bonn.webp */
+  poster: string;
+  /** URL to frame. Falls back to the item's `href`. */
+  url?: string;
+  /** Logical desktop width the iframe renders at before being scaled down. */
+  frameWidth?: number;
+  /**
+   * How long to hold the poster after the frame loads, in ms. These sites run
+   * intro animations well past their load event, so swapping on load alone
+   * shows a blank or half-built page. Measured per site; see the header note
+   * in portfolio-preview.tsx.
+   */
+  settleMs?: number;
+}
+
 export interface PortfolioItem {
   id: string;
   title: string;
@@ -87,6 +109,30 @@ export interface PortfolioItem {
   external: boolean;
   accent: string; // tailwind gradient classes for the cover
   placeholder?: boolean;
+  preview?: PortfolioPreview;
+}
+
+/**
+ * Front-matter for a blog post. The prose lives in the matching
+ * `content/blog/<slug>.mdx`; this is everything the index, metadata, sitemap
+ * and BlogPosting schema need without parsing the MDX.
+ */
+export interface BlogPost {
+  slug: string;
+  title: string;
+  /** Meta description and index-card summary. Keep near 155 characters. */
+  description: string;
+  /** ISO date (YYYY-MM-DD). Feeds `datePublished`. */
+  publishedAt: string;
+  /** ISO date. Feeds `dateModified`; falls back to `publishedAt`. */
+  updatedAt?: string;
+  author: string;
+  /** Primary keyword this post targets — documents intent for future edits. */
+  targetKeyword: string;
+  /** Rough read time in minutes, shown on the card. */
+  readingMinutes: number;
+  /** Service slugs this post links to, used to render "related services". */
+  relatedServices: string[];
 }
 
 export interface NavLink {

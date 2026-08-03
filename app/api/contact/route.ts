@@ -11,7 +11,11 @@ import { leadFormSchema } from "@/lib/validations/lead";
  */
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Constructed per-request, not at module scope. The Resend constructor throws
+// when the key is absent, and module-scope evaluation happens during `next
+// build` page-data collection — so a missing RESEND_API_KEY failed the whole
+// build before the `if (!process.env.RESEND_API_KEY)` guard below could run.
+// Builds must not depend on runtime secrets being present.
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -40,6 +44,8 @@ export async function POST(request: Request) {
     // to avoid breaking the frontend during setup if the API key is missing.
     return NextResponse.json({ ok: true, note: "No API key configured" });
   }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
     const { data, error } = await resend.emails.send({

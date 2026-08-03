@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MapPin, Phone, Mail, Globe } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
+import { siteDomain } from "@/lib/seo";
 import { navGroups } from "@/config/navigation";
 import { Logo } from "@/components/common/logo";
 import { NewsletterForm } from "@/components/forms/newsletter-form";
@@ -82,7 +83,7 @@ export function Footer() {
           <ContactItem icon={MapPin} text={siteConfig.location} />
           <ContactItem icon={Phone} text={siteConfig.phoneDisplay} href={`tel:${siteConfig.phone}`} />
           <ContactItem icon={Mail} text={siteConfig.email} href={`mailto:${siteConfig.email}`} />
-          <ContactItem icon={Globe} text="velexinfotech.ai" href={siteConfig.url} />
+          <ContactItem icon={Globe} text={siteDomain} href={siteConfig.url} />
         </div>
 
         {/* Bottom bar */}

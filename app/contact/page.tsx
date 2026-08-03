@@ -1,44 +1,16 @@
-import type { Metadata } from "next";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
+import { pageMetadata } from "@/lib/seo";
+import { breadcrumbSchema, jsonLd, localBusinessSchema } from "@/lib/schema";
 import { LeadForm } from "@/components/forms/lead-form";
 
-export const metadata: Metadata = {
-  title: "Contact Velex Infotech | Free AI Consultation | Ludhiana, Punjab",
+export const metadata = pageMetadata({
+  path: "/contact",
+  title: "Contact Us — Free AI Consultation in Ludhiana, Punjab",
   description:
-    "Get a free consultation with Velex Infotech. Call +91 89689 35766, email velexinfotech@gmail.com, or WhatsApp. Located in Ludhiana, Punjab, India.",
-  alternates: { canonical: `${siteConfig.url}/contact` },
-};
-
-const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "@id": `${siteConfig.url}/#business`,
-  name: siteConfig.name,
-  image: `${siteConfig.url}/og-default.jpg`,
-  priceRange: "₹₹₹",
-  telephone: siteConfig.phone,
-  email: siteConfig.email,
-  url: siteConfig.url,
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Ludhiana",
-    addressRegion: "Punjab",
-    postalCode: "141001",
-    addressCountry: "IN",
-  },
-  geo: { "@type": "GeoCoordinates", latitude: 30.9009, longitude: 75.8573 },
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "09:00",
-      closes: "19:00",
-    },
-  ],
-  aggregateRating: { "@type": "AggregateRating", ratingValue: "5.0", ratingCount: "47" },
-};
+    "Get a free consultation with Velex Infotech. Call +91 89689 35766, email us, or message on WhatsApp. Based in Ludhiana, Punjab, serving clients across India.",
+});
 
 const contactItems = [
   { icon: Phone, label: "Call us", value: siteConfig.phoneDisplay, href: `tel:${siteConfig.phone}` },
@@ -52,7 +24,12 @@ export default function ContactPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(
+            localBusinessSchema(),
+            breadcrumbSchema([{ name: "Contact", path: "/contact" }]),
+          ),
+        }}
       />
 
       <section className="relative overflow-hidden pb-20 pt-36">
