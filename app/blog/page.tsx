@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { ArrowUpRight, Clock, Sparkles } from "lucide-react";
 
 import { blogPosts } from "@/content/blog";
@@ -11,7 +11,7 @@ export const metadata = pageMetadata({
   path: "/blog",
   title: "Blog & Insights",
   description:
-    "Practical writing on AI automation, agentic AI, voice agents and WhatsApp chatbots — what works, what it costs, and when not to bother.",
+    "Practical writing on AI automation, agentic AI, voice agents and WhatsApp chatbots â€” what works, what it costs, and when not to bother.",
 });
 
 const dateFormatter = new Intl.DateTimeFormat("en-IN", {
@@ -23,7 +23,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-IN", {
 const blogListSchema = {
   "@type": "Blog",
   "@id": absoluteUrl("/blog#blog"),
-  name: "Velex Infotech — The Intelligence Brief",
+  name: "Velex Infotech â€” The Intelligence Brief",
   url: absoluteUrl("/blog"),
   blogPost: blogPosts.map((p) => ({
     "@type": "BlogPosting",
@@ -46,7 +46,7 @@ export default function BlogPage() {
       />
 
       <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
-      <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 rounded-full bg-purple-core/15 blur-[140px]" />
+      <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 glow-blob" />
 
       <div className="relative mx-auto max-w-3xl px-4 sm:px-6">
         <Breadcrumbs trail={[{ name: "Blog", path: "/blog" }]} />
@@ -61,7 +61,7 @@ export default function BlogPage() {
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-secondary md:text-lg">
             Practical writing on AI automation, agentic systems and building intelligent
-            businesses — including the parts vendors leave out.
+            businesses â€” including the parts vendors leave out.
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export default function BlogPage() {
                   <time dateTime={post.publishedAt}>
                     {dateFormatter.format(new Date(post.publishedAt))}
                   </time>
-                  <span aria-hidden="true">·</span>
+                  <span aria-hidden="true">Â·</span>
                   <span className="inline-flex items-center gap-1.5">
                     <Clock className="size-3.5" aria-hidden="true" />
                     {post.readingMinutes} min read

@@ -43,7 +43,7 @@ export const blogPosts: BlogPost[] = [
     author: "Mohit Dutta",
     targetKeyword: "ai voice agent",
     readingMinutes: 9,
-    relatedServices: ["voice-agent", "ai-automation"],
+    relatedServices: ["ai-receptionist", "ai-automation"],
   },
   {
     slug: "whatsapp-business-api-ai-integration",
@@ -93,6 +93,42 @@ export const postLoaders: Record<
   "ai-automation-vs-agentic-ai": () => import("./ai-automation-vs-agentic-ai.mdx"),
   "how-to-choose-ai-agency-india": () => import("./how-to-choose-ai-agency-india.mdx"),
 };
+
+/**
+ * Build-time invariant.
+ *
+ * `postLoaders` is hand-maintained alongside `blogPosts`, and the failure mode
+ * when they disagree is silent and expensive: a post missing from the loader
+ * map still appears in `generateStaticParams` and still gets a `<url>` entry in
+ * app/sitemap.ts, but the page itself calls `notFound()`. You end up
+ * advertising a URL to Google that 404s — precisely the thing a site with an
+ * indexing problem cannot afford.
+ *
+ * This runs during `next build` page-data collection, turning a shipped 404
+ * into a failed build.
+ */
+{
+  const slugs = blogPosts.map((p) => p.slug);
+  const duplicates = slugs.filter((s, i) => slugs.indexOf(s) !== i);
+  if (duplicates.length > 0) {
+    throw new Error(`content/blog: duplicate slug(s): ${duplicates.join(", ")}`);
+  }
+
+  const missingLoader = slugs.filter((s) => !(s in postLoaders));
+  if (missingLoader.length > 0) {
+    throw new Error(
+      `content/blog: these posts have no entry in postLoaders and would 404 ` +
+        `while still appearing in the sitemap: ${missingLoader.join(", ")}`,
+    );
+  }
+
+  const orphanLoader = Object.keys(postLoaders).filter((s) => !slugs.includes(s));
+  if (orphanLoader.length > 0) {
+    throw new Error(
+      `content/blog: postLoaders has entries with no matching post: ${orphanLoader.join(", ")}`,
+    );
+  }
+}
 
 export function getPost(slug: string): BlogPost | undefined {
   return blogPosts.find((p) => p.slug === slug);

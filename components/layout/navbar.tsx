@@ -42,7 +42,12 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-[100] transition-all duration-300",
+        // Explicit property list, not `transition-all`. `all` included
+        // `backdrop-filter`, so adding `.glassmorphism` animated the blur from
+        // 0 to 20px over 300ms — 18 frames of full-width backdrop re-blur on a
+        // fixed element, on the scroll frame. The blur now appears at once;
+        // padding still animates, so the shrink-on-scroll is unchanged.
+        "fixed inset-x-0 top-0 z-[100] transition-[background-color,box-shadow,padding] duration-300",
         scrolled ? "glassmorphism py-2" : "bg-transparent py-4",
       )}
     >

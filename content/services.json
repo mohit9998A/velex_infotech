@@ -8,13 +8,13 @@
     "badge": "Most Popular",
     "gradient": "from-purple-core/25 to-purple-deep/10",
     "highlights": [
-      "Up to 80% less manual work",
-      "ROI within 8 weeks",
-      "Connects 50+ tools"
+      "Live in 2–5 weeks",
+      "Works with your tools",
+      "Measured against a baseline"
     ],
     "href": "/services/ai-automation",
     "segment": "B2B",
-    "overview": "Velex Infotech designs end-to-end AI automation that reduces manual processes by up to 80%. We map your highest-friction workflows, then deploy LLM-driven automations and RPA that move data, make decisions, and complete tasks across the tools you already use — so your team spends its time on work that actually needs a human.",
+    "overview": "AI automation connects the tools you already pay for so that a lead, an invoice or a support ticket moves through your business without anyone re-typing it. Velex Infotech maps your highest-friction workflows, then deploys LLM-driven automations that move data, make routine decisions and complete tasks across your existing stack. A typical first engagement is three to six workflows, live in two to five weeks.",
     "benefits": [
       {
         "title": "Eliminate busywork",
@@ -25,12 +25,12 @@
         "description": "We integrate your CRM, helpdesk, spreadsheets and internal apps into one intelligent flow."
       },
       {
-        "title": "Measurable ROI",
-        "description": "We define success metrics up front and most clients see measurable ROI within 8 weeks."
+        "title": "Measured, not assumed",
+        "description": "We baseline what a task costs you today, then scope against that number and track it after launch."
       },
       {
-        "title": "Always-on reliability",
-        "description": "Automations run 24/7 with monitoring, error handling and human-in-the-loop checkpoints."
+        "title": "Reliable by design",
+        "description": "Automations run with monitoring, error handling and human-in-the-loop checkpoints."
       }
     ],
     "useCases": [
@@ -39,13 +39,13 @@
       "Document processing and data extraction",
       "Internal approvals and task routing"
     ],
-    "metaTitle": "AI Automation Services India | Streamline Business with AI",
-    "metaDescription": "End-to-end AI workflow automation for Indian businesses. Reduce manual work by 80%, cut costs by 60%. Custom AI automation by Velex Infotech, Ludhiana.",
+    "metaTitle": "AI Automation Services for Growing Businesses",
+    "metaDescription": "AI workflow automation that connects the tools you already use. Three to six workflows live in two to five weeks. Serving the US, UK, Canada and India.",
     "image": "/images/services/ai-automation.png"
   },
   {
     "slug": "agentic-ai",
-    "title": "Agentic AI",
+    "title": "AI Agent Development",
     "icon": "BrainCircuit",
     "tagline": "AI that thinks, plans & acts",
     "description": "Autonomous multi-step AI agents that reason, make decisions, and execute complex operations independently — without constant human intervention.",
@@ -54,11 +54,11 @@
     "highlights": [
       "Autonomous decisioning",
       "Multi-step task execution",
-      "99.9% uptime SLA"
+      "Audit logs and guardrails"
     ],
     "href": "/services/agentic-ai",
     "segment": "B2B",
-    "overview": "Agentic AI refers to artificial intelligence systems that can autonomously plan, reason, and execute multi-step tasks without human intervention. Velex Infotech's agentic AI solutions enable businesses to deploy AI that independently handles complex workflows — including data gathering, decision-making, API interactions, and task completion — with guardrails and oversight you control.",
+    "overview": "An AI agent differs from a chatbot in one decisive way: it can act. Where a chatbot replies, an agent calls your CRM, updates the record and books the appointment. Velex Infotech builds agentic AI systems that autonomously plan, reason and execute multi-step tasks — gathering data, making decisions, calling APIs and completing work — inside guardrails and approval limits you control. We also build with agentic AI's simpler sibling, AI automation, when a fixed workflow is the better answer.",
     "benefits": [
       {
         "title": "Autonomous execution",
@@ -73,8 +73,8 @@
         "description": "Approvals, limits and audit logs keep autonomy safe and accountable."
       },
       {
-        "title": "Enterprise reliability",
-        "description": "Built for 99.9% uptime with monitoring and graceful failure handling."
+        "title": "Built to be watched",
+        "description": "Every action is logged and traceable, with monitoring and graceful failure handling."
       }
     ],
     "useCases": [
@@ -83,37 +83,37 @@
       "Back-office operations that span multiple systems",
       "Sales and outreach agents with CRM actions"
     ],
-    "metaTitle": "Agentic AI Development India | Autonomous AI Agents",
-    "metaDescription": "Build autonomous AI agents that think, plan, and execute tasks independently. Enterprise agentic AI systems developed in Ludhiana, Punjab, India.",
+    "metaTitle": "AI Agent Development Services | Agentic AI",
+    "metaDescription": "Custom AI agents that plan, decide and act across your systems — not just answer questions. Agentic AI development for the US, UK, Canada and India.",
     "image": "/images/services/agentic-ai.png"
   },
   {
-    "slug": "voice-agent",
-    "title": "Voice Agent",
+    "slug": "ai-receptionist",
+    "title": "AI Receptionist",
     "icon": "AudioLines",
-    "tagline": "Your AI call center",
-    "description": "Custom voice AI agents for customer support, sales, and operations. Natural conversations in Hindi and English, available 24/7.",
+    "tagline": "Every call answered, day or night",
+    "description": "AI phone answering that books appointments, qualifies leads and handles enquiries in natural speech — 24/7, in English and Hindi.",
     "gradient": "from-gold/20 to-purple-core/10",
     "highlights": [
-      "Hindi + English",
-      "24/7 availability",
-      "Replaces call centers"
+      "Answers 24/7",
+      "Books into your calendar",
+      "English + Hindi"
     ],
-    "href": "/services/voice-agent",
+    "href": "/services/ai-receptionist",
     "segment": "Both",
-    "overview": "Velex Infotech builds custom voice AI agents that answer calls, qualify leads, book appointments and resolve queries — speaking naturally in Hindi and English, around the clock. Replace missed calls and overloaded call centers with an AI phone assistant that scales instantly and never sleeps.",
+    "overview": "An AI receptionist is a voice agent that answers every inbound call, understands the caller in natural speech, and completes the task — booking, routing, or answering a question — without a human picking up. Unlike an IVR menu, it does not ask callers to press a number: it listens, responds conversationally, and escalates to a person only when the request needs judgement it does not have. Velex Infotech builds custom AI phone answering services and voice agents for clinics, law firms, property managers, restaurants and service businesses.",
     "benefits": [
       {
         "title": "Never miss a call",
-        "description": "Every inbound call is answered instantly, day or night."
+        "description": "Every inbound call is answered instantly, including out-of-hours and peak-volume overflow that would otherwise go to voicemail."
       },
       {
-        "title": "Bilingual & natural",
-        "description": "Fluent Hindi and English conversations that feel human."
+        "title": "Bilingual and natural",
+        "description": "Fluent English and Hindi conversation, with sub-second response latency so callers do not talk over it."
       },
       {
         "title": "Books real outcomes",
-        "description": "Agents schedule appointments, capture leads and route urgent cases."
+        "description": "Writes appointments to your calendar, captures leads into your CRM, and routes urgent cases to a human with full context."
       },
       {
         "title": "Scales on demand",
@@ -122,12 +122,12 @@
     ],
     "useCases": [
       "24/7 inbound call answering and FAQ handling",
-      "Appointment booking and reminders",
+      "Appointment booking and reminders for clinics and salons",
       "Lead qualification and callback scheduling",
-      "Order status and after-sales support"
+      "After-hours intake for law firms and property managers"
     ],
-    "metaTitle": "Voice AI Agent Development | AI Phone Assistant India",
-    "metaDescription": "Custom voice AI agents for customer support, sales, and operations. 24/7 AI phone assistant in Hindi and English. Built by Velex Infotech.",
+    "metaTitle": "AI Receptionist & AI Phone Answering Service",
+    "metaDescription": "A custom AI receptionist that answers every call, books appointments and qualifies leads in natural speech. Built for clinics, law firms and service businesses.",
     "image": "/images/services/voice-agent.png"
   },
   {
@@ -140,15 +140,15 @@
     "highlights": [
       "Official Business API",
       "Auto lead capture",
-      "Handles 80% of queries"
+      "Sells inside the chat"
     ],
     "href": "/services/whatsapp-bot",
     "segment": "Both",
-    "overview": "Velex Infotech builds intelligent WhatsApp AI chatbots on the official WhatsApp Business API for lead generation, customer support, and conversational commerce. Meet your customers where they already are — answering questions, capturing leads and closing orders inside the chat, 24/7.",
+    "overview": "A WhatsApp AI chatbot answers customers where they already are, on the channel they already check. Velex Infotech builds intelligent chatbots on the official WhatsApp Business API for lead generation, customer support and conversational commerce — qualifying enquiries, answering routine questions and taking orders inside the chat. We handle the Business API setup, the number verification and Meta's conversation-pricing model, which is where most quotes quietly omit a large part of the real running cost.",
     "benefits": [
       {
         "title": "On the official API",
-        "description": "Built on the verified WhatsApp Business API — compliant and reliable."
+        "description": "Built on the verified WhatsApp Business API — compliant, and not at risk of a ban."
       },
       {
         "title": "Capture every lead",
@@ -156,7 +156,7 @@
       },
       {
         "title": "Resolve instantly",
-        "description": "Handles up to 80% of routine queries without a human."
+        "description": "Routine questions are answered without a human, with clean escalation when they are not."
       },
       {
         "title": "Sell in chat",
@@ -169,96 +169,9 @@
       "Order placement and tracking",
       "Appointment and booking flows"
     ],
-    "metaTitle": "WhatsApp AI Chatbot Development India | Business Bot",
-    "metaDescription": "Build intelligent WhatsApp AI chatbots for lead generation, customer support, and e-commerce. WhatsApp Business API integration by Velex Infotech.",
+    "metaTitle": "WhatsApp AI Chatbot Development Services",
+    "metaDescription": "WhatsApp AI chatbots on the official Business API for lead generation, support and commerce — including setup, verification and conversation pricing.",
     "image": "/images/services/whatsapp-bot.png"
-  },
-  {
-    "slug": "web-development",
-    "title": "Website Development",
-    "icon": "Globe",
-    "tagline": "Luxury, performance-first web",
-    "description": "Premium, 3D motion-driven websites engineered for speed and conversion. Next.js, React, and luxury UI/UX that commands attention.",
-    "badge": "B2C",
-    "gradient": "from-purple-core/25 to-purple-glow/10",
-    "highlights": [
-      "90+ Lighthouse score",
-      "3D & motion design",
-      "Built to convert"
-    ],
-    "href": "/services/web-development",
-    "segment": "Both",
-    "overview": "Velex Infotech builds premium, 3D motion-driven websites for forward-thinking businesses using Next.js and React. Every build is engineered for speed (90+ Lighthouse), accessibility and conversion — with luxury UI/UX and brand content, design and video production available end-to-end.",
-    "benefits": [
-      {
-        "title": "Performance-first",
-        "description": "90+ Lighthouse scores, fast loads and Core Web Vitals built in."
-      },
-      {
-        "title": "Luxury motion design",
-        "description": "3D, GSAP and Framer Motion experiences that command attention."
-      },
-      {
-        "title": "Built to convert",
-        "description": "Clear structure, strong CTAs and SEO foundations from day one."
-      },
-      {
-        "title": "End-to-end content",
-        "description": "Copy, graphic design and video editing handled under one roof."
-      }
-    ],
-    "useCases": [
-      "Luxury brand and agency websites",
-      "High-converting landing pages",
-      "Content creation and brand graphics",
-      "Cinematic video editing for campaigns"
-    ],
-    "metaTitle": "Luxury Website Development India | Premium Web Design",
-    "metaDescription": "Premium, 3D motion-driven websites for forward-thinking businesses. Next.js, React, luxury UI/UX by Velex Infotech, Ludhiana, Punjab.",
-    "image": "/images/services/web-development.png"
-  },
-  {
-    "slug": "app-development",
-    "title": "App Development",
-    "icon": "Smartphone",
-    "tagline": "AI-native mobile & web apps",
-    "description": "Mobile and web applications with AI built into the core. From MVP to scale, engineered for reliability and a premium feel.",
-    "gradient": "from-purple-deep/25 to-purple-core/10",
-    "highlights": [
-      "iOS, Android & Web",
-      "AI-native features",
-      "MVP to scale"
-    ],
-    "href": "/services/app-development",
-    "segment": "Both",
-    "overview": "Velex Infotech develops AI-native mobile and web applications — from first MVP to production scale. We build for iOS, Android and the web with reliable architecture, a premium feel, and intelligence baked into the core experience rather than bolted on.",
-    "benefits": [
-      {
-        "title": "AI at the core",
-        "description": "Intelligent features designed into the product, not added as an afterthought."
-      },
-      {
-        "title": "Cross-platform",
-        "description": "One cohesive experience across iOS, Android and web."
-      },
-      {
-        "title": "MVP to scale",
-        "description": "Ship fast, then grow on architecture built to handle it."
-      },
-      {
-        "title": "Premium quality",
-        "description": "Polished UX, performance and reliability your users feel."
-      }
-    ],
-    "useCases": [
-      "AI-powered consumer and B2B apps",
-      "Internal tools and dashboards",
-      "Marketplace and commerce apps",
-      "Rapid MVP validation builds"
-    ],
-    "metaTitle": "App Development Company India | AI-Native Mobile & Web Apps",
-    "metaDescription": "Custom mobile and web app development with AI-native features. From MVP to scale, built for iOS, Android and web by Velex Infotech, Ludhiana.",
-    "image": "/images/services/app-development.png"
   },
   {
     "slug": "ai-integration",
@@ -274,7 +187,7 @@
     ],
     "href": "/services/ai-integration",
     "segment": "B2B",
-    "overview": "Velex Infotech embeds AI into the systems you already rely on — CRMs, helpdesks, internal apps and data platforms. We integrate models, agents and automations securely into your existing stack, so you gain AI capability without a costly rip-and-replace.",
+    "overview": "AI integration means adding intelligence to the systems you already rely on rather than replacing them. Velex Infotech embeds models, agents and automations into your CRM, helpdesk, internal apps and data platforms — securely, incrementally, and without a rip-and-replace migration. This is usually the lowest-risk way to start, because it does not require your team to change how they work on day one.",
     "benefits": [
       {
         "title": "No rip-and-replace",
@@ -299,8 +212,183 @@
       "Model and API integration into current workflows",
       "Gradual, low-risk AI rollouts"
     ],
-    "metaTitle": "AI Integration Services India | Embed AI Into Your Stack",
-    "metaDescription": "Integrate AI models, agents and automations into your existing business stack — securely and without rip-and-replace. By Velex Infotech, Ludhiana.",
+    "metaTitle": "AI Integration Services | Embed AI In Your Stack",
+    "metaDescription": "Integrate AI models, agents and automations into the CRM, helpdesk and internal apps you already use — securely and without rip-and-replace.",
     "image": "/images/services/ai-integration.png"
+  },
+  {
+    "slug": "software-development",
+    "title": "Software Development",
+    "icon": "Code2",
+    "tagline": "Custom systems, built properly",
+    "description": "Custom software for the problems off-the-shelf tools don't solve — internal systems, ERP extensions, API platforms and legacy modernisation.",
+    "gradient": "from-purple-deep/25 to-purple-glow/10",
+    "highlights": [
+      "Custom internal systems",
+      "API & integration platforms",
+      "Legacy modernisation"
+    ],
+    "href": "/services/software-development",
+    "segment": "B2B",
+    "overview": "Custom software development is for the systems your business runs on that no off-the-shelf product fits: internal operations tools, ERP and CRM extensions, integration and API platforms, and modernising software that has outlived its stack. Velex Infotech builds and maintains these as a dedicated engineering team, from discovery through to production and support. Building a marketing site? See Website Development. Shipping a mobile app? See App Development. This page is for the custom systems that fit neither.",
+    "benefits": [
+      {
+        "title": "Built around your process",
+        "description": "Software shaped to how your business actually works, rather than a process bent to fit a product."
+      },
+      {
+        "title": "Integrates with what you run",
+        "description": "ERP, accounting, logistics and CRM systems connected through APIs rather than manual re-entry."
+      },
+      {
+        "title": "Modernise without stopping",
+        "description": "Legacy systems migrated incrementally, so the business keeps running through the change."
+      },
+      {
+        "title": "A team, not a handoff",
+        "description": "Our own salaried engineers, with overlap hours into your working day and no subcontracting."
+      }
+    ],
+    "useCases": [
+      "Internal operations and workflow systems",
+      "ERP and CRM extensions and custom modules",
+      "API platforms and third-party integrations",
+      "Legacy application modernisation",
+      "Production tracking and traceability for manufacturers"
+    ],
+    "metaTitle": "Custom Software Development Services",
+    "metaDescription": "Custom software for the systems off-the-shelf tools don't fit — internal platforms, ERP extensions, API integrations and legacy modernisation.",
+    "image": "/images/services/software-development.png"
+  },
+  {
+    "slug": "web-development",
+    "title": "Website Development",
+    "icon": "Globe",
+    "tagline": "Luxury, performance-first web",
+    "description": "Premium, 3D motion-driven websites engineered for speed and conversion. Next.js, React, and luxury UI/UX that commands attention.",
+    "badge": "B2C",
+    "gradient": "from-purple-core/25 to-purple-glow/10",
+    "highlights": [
+      "90+ Lighthouse score",
+      "3D & motion design",
+      "Built to convert"
+    ],
+    "href": "/services/web-development",
+    "segment": "Both",
+    "overview": "Velex Infotech builds premium, 3D motion-driven websites for forward-thinking businesses using Next.js and React. Every build is engineered for speed, accessibility and conversion — targeting 90+ Lighthouse scores, with luxury UI/UX and brand content, design and video production available end-to-end.",
+    "benefits": [
+      {
+        "title": "Performance-first",
+        "description": "90+ Lighthouse scores, fast loads and Core Web Vitals built in."
+      },
+      {
+        "title": "Luxury motion design",
+        "description": "3D, GSAP and Framer Motion experiences that command attention."
+      },
+      {
+        "title": "Built to convert",
+        "description": "Clear structure, strong CTAs and SEO foundations from day one."
+      },
+      {
+        "title": "End-to-end content",
+        "description": "Copy, graphic design and video editing handled under one roof."
+      }
+    ],
+    "useCases": [
+      "Luxury brand and agency websites",
+      "High-converting landing pages",
+      "Content creation and brand graphics",
+      "Cinematic video editing for campaigns"
+    ],
+    "metaTitle": "Website Development Services | Next.js & React",
+    "metaDescription": "Premium, performance-first websites in Next.js and React — 90+ Lighthouse, motion design and SEO foundations built in from day one.",
+    "image": "/images/services/web-development.png"
+  },
+  {
+    "slug": "app-development",
+    "title": "App Development",
+    "icon": "Smartphone",
+    "tagline": "AI-native mobile & web apps",
+    "description": "Mobile and web applications with AI built into the core. From MVP to scale, engineered for reliability and a premium feel.",
+    "gradient": "from-purple-deep/25 to-purple-core/10",
+    "highlights": [
+      "iOS, Android & Web",
+      "AI-native features",
+      "MVP to scale"
+    ],
+    "href": "/services/app-development",
+    "segment": "Both",
+    "overview": "Velex Infotech develops AI-native mobile and web applications — from first MVP to production scale. We build for iOS, Android and the web with reliable architecture, a premium feel, and intelligence baked into the core experience rather than bolted on. Most MVPs reach a testable build in six to twelve weeks, depending on integration count.",
+    "benefits": [
+      {
+        "title": "AI at the core",
+        "description": "Intelligent features designed into the product, not added as an afterthought."
+      },
+      {
+        "title": "Cross-platform",
+        "description": "One cohesive experience across iOS, Android and web."
+      },
+      {
+        "title": "MVP to scale",
+        "description": "Ship fast, then grow on architecture built to handle it."
+      },
+      {
+        "title": "Premium quality",
+        "description": "Polished UX, performance and reliability your users feel."
+      }
+    ],
+    "useCases": [
+      "AI-powered consumer and B2B apps",
+      "Internal tools and dashboards",
+      "Marketplace and commerce apps",
+      "Rapid MVP validation builds"
+    ],
+    "metaTitle": "App Development for Startups & Scale-ups",
+    "metaDescription": "AI-native mobile and web app development for iOS, Android and web. From MVP to production scale, with a testable build in six to twelve weeks.",
+    "image": "/images/services/app-development.png"
+  },
+  {
+    "slug": "data-analytics",
+    "title": "Data Analytics",
+    "icon": "BarChart3",
+    "tagline": "Decisions your data already supports",
+    "description": "Dashboards, pipelines and business intelligence that turn the data you already collect into the six numbers that actually drive decisions.",
+    "gradient": "from-gold/20 to-purple-glow/10",
+    "highlights": [
+      "Dashboards & BI",
+      "Pipelines & warehousing",
+      "The data layer AI needs"
+    ],
+    "href": "/services/data-analytics",
+    "segment": "B2B",
+    "overview": "Data analytics turns the numbers you already collect into decisions you can act on. Velex Infotech builds the whole chain — instrumentation, pipelines, a warehouse where it makes sense, and the dashboards your team actually opens. For most businesses the expensive part is not the software; it is deciding which six numbers matter. That is where we start. This is also the groundwork for useful AI: an agent is only as good as the data it can reach, so analytics and AI integration are usually built together.",
+    "benefits": [
+      {
+        "title": "Start with the decisions",
+        "description": "We work backwards from the decisions you need to make, rather than building every chart your tools can produce."
+      },
+      {
+        "title": "One source of truth",
+        "description": "Pipelines that pull from your CRM, billing, ads and operations into one consistent, reconciled view."
+      },
+      {
+        "title": "Tools you already own",
+        "description": "Power BI, Looker Studio or Metabase — we recommend based on your stack and budget, not on a reseller margin."
+      },
+      {
+        "title": "The layer AI runs on",
+        "description": "Clean, well-modelled data is what makes an AI agent useful rather than confidently wrong."
+      }
+    ],
+    "useCases": [
+      "Executive and operations dashboards",
+      "Sales, marketing and revenue reporting",
+      "Data pipelines and warehouse setup",
+      "Power BI and Looker Studio implementation",
+      "Analytics instrumentation for products and websites"
+    ],
+    "metaTitle": "Data Analytics Services & BI Consulting",
+    "metaDescription": "Dashboards, data pipelines and business intelligence for small and mid-size businesses. Power BI, Looker Studio and Metabase, built around your decisions.",
+    "image": "/images/services/data-analytics.png"
   }
 ]

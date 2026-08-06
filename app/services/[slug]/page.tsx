@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -37,7 +37,7 @@ export async function generateMetadata({
   if (!service) return {};
   return pageMetadata({
     path: `/services/${service.slug}`,
-    // metaTitle no longer carries the brand — the root layout template appends
+    // metaTitle no longer carries the brand â€” the root layout template appends
     // it, and having both produced "... | Velex Infotech | Velex Infotech".
     title: service.metaTitle ?? service.title,
     description: service.metaDescription ?? service.description,
@@ -83,7 +83,7 @@ export default async function ServicePage({
       {/* Hero */}
       <section className="relative overflow-hidden pb-16 pt-36">
         <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
-        <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 rounded-full bg-purple-core/15 blur-[140px]" />
+        <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 glow-blob" />
         <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
           <div className="text-left">
             <Breadcrumbs
@@ -122,11 +122,13 @@ export default async function ServicePage({
                   the fold) and `fetchPriority="high"` raises its queue
                   priority. Note: the `priority` prop is deprecated in Next 16
                   in favour of `preload`, and the docs recommend these two over
-                  `preload` in most cases — they are mutually exclusive with it. */}
+                  `preload` in most cases â€” they are mutually exclusive with it. */}
               <Image
                 src={serviceImages[service.slug]}
-                alt={`${service.title} — illustration of the service in use`}
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 896px"
+                alt={`${service.title} â€” illustration of the service in use`}
+                // 864px, not 896px: the container is `max-w-4xl` (896) minus `p-4` on
+      // each side at sm+. That is a whole srcset step of wasted bytes.
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 864px"
                 placeholder="blur"
                 loading="eager"
                 fetchPriority="high"
@@ -230,7 +232,7 @@ export default async function ServicePage({
         </div>
       </section>
 
-      {/* Related reading — distributes link equity between the blog and the
+      {/* Related reading â€” distributes link equity between the blog and the
           money pages in both directions. */}
       {relatedReading.length > 0 && (
         <section className="relative pb-20">

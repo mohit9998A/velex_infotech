@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 
 import { siteConfig } from "@/config/site";
+import { marketsShortLine } from "@/lib/seo";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
@@ -101,7 +102,7 @@ export function renderOgImage({
           }}
         >
           <div style={{ display: "flex" }}>{new URL(siteConfig.url).host}</div>
-          <div style={{ display: "flex" }}>{siteConfig.location}</div>
+          <div style={{ display: "flex" }}>{marketsShortLine}</div>
         </div>
       </div>
     ),

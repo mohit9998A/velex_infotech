@@ -1,6 +1,7 @@
 import { OG_CONTENT_TYPE, OG_SIZE, renderOgImage } from "@/lib/og-template";
 
-export const alt = "Velex Infotech — AI Automation & Agentic AI Company in India";
+export const alt =
+  "Velex Infotech — AI agent development and automation company";
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
@@ -14,6 +15,6 @@ export const contentType = OG_CONTENT_TYPE;
 export default function Image() {
   return renderOgImage({
     eyebrow: "Velex Infotech",
-    title: "AI Automation & Agentic AI for Indian Business",
+    title: "AI Agents & Automation That Run Your Business",
   });
 }

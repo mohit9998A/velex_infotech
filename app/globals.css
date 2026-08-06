@@ -112,7 +112,12 @@ body {
   color: var(--vx-text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  /* No `text-rendering: optimizeLegibility`. It forces the shaper off its fast
+     path and enables optional ligatures plus full GSUB/GPOS lookups for EVERY
+     text run on the page — including the hero H1, i.e. the LCP element. Geist
+     is a modern variable font whose default `auto` behaviour already applies
+     kerning and standard ligatures, so the rendered result is materially the
+     same for a first-paint cost we do not need to pay. */
   overflow-x: hidden;
 }
 
@@ -154,8 +159,31 @@ html.lenis body {
   text-transform: uppercase;
 }
 
+/* Hero H1 only. The binding constraint is the COLUMN, not the viewport: the
+   hero text column is pinned at a constant 46.2rem (`max-w-[46.2rem]` in
+   hero-section.tsx) on every viewport above ~49rem, and the cap is set by the
+   LONGEST of the explicit headline lines in hero-section.tsx.
+
+   That used to be "That Run Your Business." at 11.23em in Geist Bold at -0.03em
+   tracking, which pinned the cap at 46.2 / 11.23 = 4.11rem. The headline is now
+   broken into three lines, so the longest is "We Build AI Agents" at ~8.7em and
+   the no-wrap ceiling rises to 46.2 / 8.7 = 5.3rem. The 4.356rem cap below sits
+   ~18% under that, which is the headroom the metric-adjusted fallback face needs
+   during the font swap. Do not spend it all chasing the 5.3rem ceiling.
+
+   The column and the cap move TOGETHER. Scaling one without the other is what
+   makes the headline wrap. (Cap history: 3.6rem -> 3.96rem -> 4.356rem, each a
+   10% step; the column moved 42rem -> 46.2rem on the first of those and has
+   stayed there since, because the shorter lines absorbed the rest.)
+
+   Every term is rem, so a user-raised default font size scales the column and
+   the headline together and the no-wrap ratio holds. The vw term only does work
+   below ~758px, where the column genuinely tracks the viewport.
+
+   If the headline copy changes, retune:
+       cap = column max-width (rem) / longest line width (em) */
 .text-hero {
-  font-size: clamp(3rem, 8vw, 7rem);
+  font-size: clamp(3.63rem, 9.2vw, 4.356rem);
 }
 .text-h1 {
   font-size: clamp(2.5rem, 5vw, 5rem);
@@ -192,7 +220,14 @@ html.lenis body {
    GLASSMORPHISM
    ============================================ */
 
+/* The hover glow is a pseudo-element whose OPACITY transitions, not a
+   `box-shadow` that interpolates its blur radius.
+   Interpolating a shadow repaints the element's full paint bounds on every
+   frame, and those bounds include the blur radius — so a large card produced a
+   large dirty rect, 24 times, per hover. Opacity on an already-painted layer
+   is composited. Visually near-identical. */
 .glass-card {
+  position: relative;
   background: var(--vx-glass);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -200,13 +235,26 @@ html.lenis body {
   border-radius: 16px;
   transition:
     border-color 0.4s ease,
-    box-shadow 0.4s ease,
     transform 0.4s ease;
+}
+
+.glass-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: var(--vx-glow-sm);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .glass-card:hover {
   border-color: var(--vx-border-bright);
-  box-shadow: var(--vx-glow-sm);
+}
+
+.glass-card:hover::after {
+  opacity: 1;
 }
 
 .glass-gold {
@@ -226,15 +274,29 @@ html.lenis body {
    BUTTONS / PILLS / GLOWS
    ============================================ */
 
+/* Same treatment as `.glass-card`: the resting glow is a real box-shadow, but
+   the hover escalation (20px -> 60px blur) rides a pseudo-element's opacity
+   rather than interpolating the radius. A 60px blur on a button is a large
+   dirty rect to repaint on every frame of a 350ms transition. */
 .btn-glow {
   position: relative;
   box-shadow: var(--vx-glow-sm);
-  transition:
-    box-shadow 0.35s ease,
-    transform 0.2s ease;
+  transition: transform 0.2s ease;
 }
-.btn-glow:hover {
+
+.btn-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   box-shadow: var(--vx-glow-md);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.btn-glow:hover::after {
+  opacity: 1;
 }
 
 .badge-pill {
@@ -264,6 +326,34 @@ html.lenis body {
   );
 }
 
+/* ---------------------------------------------------------------------------
+   GLOW BLOB
+   The ambient purple orb behind every page hero.
+
+   This was `rounded-full bg-purple-core/15 blur-[140px]` on a 36-40rem box.
+   A Gaussian blur of a solid circle IS a radial gradient — but the browser
+   does not know that, so it allocated a layer, rasterised the circle, and ran
+   a real filter pass over a region Chrome expands by roughly 3x sigma (a 140px
+   blur on a 576px element => ~1400px square of GPU filter work). On the hero
+   that lands on the FIRST FRAME, i.e. the one that decides LCP, and the same
+   pattern appears on eight more page heroes.
+
+   As a gradient it is a single paint with no filter, no extra layer and no
+   readback. Sized via --glow-size so call sites keep their existing box.
+
+   The stops approximate a Gaussian falloff; it is not pixel-identical to the
+   blur, so check both themes if you change them.
+   --------------------------------------------------------------------------- */
+.glow-blob {
+  background: radial-gradient(
+    circle closest-side,
+    rgba(107, 33, 255, 0.22) 0%,
+    rgba(107, 33, 255, 0.13) 38%,
+    rgba(107, 33, 255, 0.05) 62%,
+    transparent 100%
+  );
+}
+
 .noise-overlay {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
   opacity: 0.025;
@@ -274,12 +364,18 @@ html.lenis body {
    ANIMATIONS
    ============================================ */
 
+/* Marquee loop.
+   `-50%` alone is WRONG for any gapped track. A flex row with 2N children and
+   gap `g` is `2N*w + (2N-1)g` wide, so -50% lands at `N*w + (N - 0.5)g` — half
+   a gap short of the true period, `N*w + N*g`. The seam therefore drifts by
+   g/2 every cycle, which is what made both marquees visibly jump.
+   Each track sets --marquee-gap to its own gap value. */
 @keyframes scroll-left {
   from {
     transform: translateX(0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translateX(calc(-50% - var(--marquee-gap, 0px) / 2));
   }
 }
 .animate-scroll-left {
@@ -291,7 +387,7 @@ html.lenis body {
 
 @keyframes scroll-right {
   from {
-    transform: translateX(-50%);
+    transform: translateX(calc(-50% - var(--marquee-gap, 0px) / 2));
   }
   to {
     transform: translateX(0);
@@ -299,6 +395,26 @@ html.lenis body {
 }
 .animate-scroll-right {
   animation: scroll-right 50s linear infinite;
+}
+
+/* ---------------------------------------------------------------------------
+   DEFER PAINT
+   Skips layout, paint AND animation ticking for sections that are off screen.
+   The integrations marquee in particular runs two infinite transforms that
+   otherwise never stop, on or off screen, for the life of the page.
+
+   `contain-intrinsic-size` is a real measurement, not a guess: a wrong value
+   makes the scrollbar jump as the section scrolls into view. Re-measure if a
+   section's content changes materially.
+
+   Safe for SEO: content stays in the DOM and in the accessibility tree, and
+   Googlebot renders with a very tall viewport. Never apply above the fold, and
+   never to .process-section — ScrollTrigger reads track.scrollWidth, which
+   containment breaks.
+   --------------------------------------------------------------------------- */
+.defer-paint {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 640px;
 }
 
 @keyframes float-y {
@@ -399,7 +515,9 @@ html.lenis body {
   .animate-scroll-right,
   .animate-float,
   .animate-bob,
+  .animate-pulse-glow,
   .hero-word,
+  .hero-lede,
   .hero-fade {
     animation: none !important;
   }
@@ -439,16 +557,134 @@ html.lenis body {
   }
 }
 
+/* The lede paragraph is a plausible LCP candidate on BOTH breakpoints — it is
+   roughly the same painted area as an H1 line, and on narrow viewports it can
+   be larger. So it gets the same treatment as the headline: transform only,
+   never opacity.
+
+   It previously carried `.hero-fade`, which is `opacity: 0` with
+   `animation-fill-mode: both` and a 360ms delay. Chrome does not accept a
+   fully transparent element as an LCP candidate, so if this paragraph was the
+   largest element, LCP was floor-gated at FCP + 360ms — silently undoing part
+   of the headline fix directly below.
+
+   Deliberately NOT solved with `opacity: 0.01`. That would report an LCP for
+   something the user cannot see. */
+@keyframes hero-lede-rise {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: none;
+  }
+}
+
 .hero-word {
   animation: hero-word-rise 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: calc(var(--i, 0) * 80ms);
-  will-change: transform;
+  /* No `will-change`. It was set here and never removed, so both spans stayed
+     permanently promoted to their own compositor layers for a 600ms animation.
+     Beyond the retained layers, promoting TEXT forces separate rasterisation,
+     which degrades subpixel antialiasing and costs a texture upload on
+     memory-constrained Android. A transform-only animation is composited
+     automatically; the hint bought nothing. */
 }
 
-/* Supporting elements are not LCP candidates, so fading them is safe. */
+.hero-lede {
+  animation: hero-lede-rise 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ---------------------------------------------------------------------------
+   SCROLL PROGRESS BAR
+   Replaces framer-motion's useScroll + useSpring. That hook pair lived in the
+   root layout, so it put the entire animation library in the shared chunk of
+   every route for a 2px bar.
+
+   `scaleX(0)` is the base state, so a browser without scroll-driven animations
+   shows no bar rather than a permanently full one. Losing a decorative bar is
+   an acceptable failure; that is why this gate can be laxer than the one on
+   `.reveal-on-scroll`, where the same failure would hide real content.
+
+   Lenis already eases the scroll position itself, so the spring damping this
+   drops is largely redundant.
+   --------------------------------------------------------------------------- */
+.scroll-progress {
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* ---------------------------------------------------------------------------
+   PROCESS SECTION — layout branch
+   The vertical stack is the BASE layout: it is what phones and reduced-motion
+   users keep, and therefore what the server should render. The pinned
+   horizontal track is the enhancement, applied only under exactly the
+   conditions where the GSAP scrub exists to drive it.
+
+   `min-width: 768px` is the exact complement of `useIsMobile`'s
+   `max-width: 767px`, so the CSS and the effect in process-section.tsx agree
+   by construction rather than by coincidence.
+
+   `prefers-reduced-motion` has to be part of the query, not just the effect:
+   the horizontal layout is `overflow: hidden` and depends entirely on
+   ScrollTrigger to move the track. A desktop reduced-motion user who got this
+   layout without the driver would find the last two cards unreachable.
+   --------------------------------------------------------------------------- */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .process-section {
+    height: 100dvh;
+    padding-block: 0;
+    overflow: hidden;
+  }
+
+  .process-header {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    z-index: 10;
+    max-width: 80rem;
+    padding-top: 4rem;
+  }
+
+  .process-track {
+    height: 100%;
+    max-width: none;
+    margin-top: 0;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    padding-left: max(1rem, calc((100vw - 80rem) / 2 + 1.5rem));
+    padding-right: 40vw;
+    /* Kept here, unlike on `.hero-word`: this element genuinely transforms
+       continuously while pinned, and only while the section is on screen. */
+    will-change: transform;
+  }
+
+  .process-track > * {
+    width: 34rem;
+    flex-shrink: 0;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @keyframes scroll-progress-grow {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .scroll-progress {
+    animation: scroll-progress-grow linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+/* Supporting elements — badge, button row, stats. None can win the area
+   contest against the headline or the lede, so fading them is safe. Base delay
+   trimmed 260ms -> 180ms so the staggered cadence still reads now that the
+   lede starts at t=0 rather than 360ms. */
 .hero-fade {
   animation: hero-fade-up 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: calc(260ms + var(--i, 0) * 100ms);
+  animation-delay: calc(180ms + var(--i, 0) * 100ms);
 }
 
 /* ---------------------------------------------------------------------------

@@ -1,14 +1,24 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ArrowUpRight, Check } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { ServiceItem } from "@/types";
 import { getServiceIcon } from "@/lib/icons";
 import { useLeadModal } from "@/lib/store/lead-modal";
+import { prefetchLeadForm } from "@/components/forms/lead-form-modal";
 import { Badge } from "@/components/ui/badge";
 
+/**
+ * Still a client component — `openModal` genuinely needs one — but no longer a
+ * framer-motion one. `whileInView` is `.reveal-on-scroll` (the CSS class that
+ * already replaced this exact pattern in SectionHeader) and `whileHover={{y:-6}}`
+ * is `hover:-translate-y-1.5`, which is the same 6px.
+ *
+ * Note the reveal now reverses on scroll-up, where framer's `viewport.once`
+ * did not. There is no CSS-only "once" — and since every SectionHeader on the
+ * site already behaves this way, matching it is the more consistent choice.
+ */
 export function ServiceCard({
   service,
   className,
@@ -20,16 +30,13 @@ export function ServiceCard({
   const openModal = useLeadModal((s) => s.openModal);
 
   return (
-    <motion.button
+    <button
       type="button"
       onClick={() => openModal(service.title)}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ y: -6 }}
+      onPointerEnter={prefetchLeadForm}
+      onFocus={prefetchLeadForm}
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-2xl border border-vx-border bg-surface/60 p-6 text-left backdrop-blur-sm transition-colors hover:border-vx-border-bright",
+        "reveal-on-scroll group relative flex flex-col overflow-hidden rounded-2xl border border-vx-border bg-surface/60 p-6 text-left backdrop-blur-sm transition-[colors,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-vx-border-bright hover:-translate-y-1.5",
         className,
       )}
     >
@@ -74,6 +81,6 @@ export function ServiceCard({
         Learn more
         <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </span>
-    </motion.button>
+    </button>
   );
 }

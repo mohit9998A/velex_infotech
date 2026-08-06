@@ -1,7 +1,8 @@
 import type { ServiceItem } from "@/types";
 import servicesData from "@/content/services.json";
-import { siteConfig } from "@/config/site";
-import { absoluteUrl } from "@/lib/seo";
+import type { OfficeConfig } from "@/config/site";
+import { headquarters, offices, siteConfig } from "@/config/site";
+import { absoluteUrl, areaServedCountries } from "@/lib/seo";
 
 const services = servicesData as ServiceItem[];
 
@@ -21,10 +22,30 @@ const services = servicesData as ServiceItem[];
 
 const ORG_ID = absoluteUrl("/#organization");
 const WEBSITE_ID = absoluteUrl("/#website");
-const BUSINESS_ID = absoluteUrl("/#business");
+const PERSON_ID = absoluteUrl("/about#mohit-dutta");
 
 /** Reference to the Organization node rather than repeating it inline. */
 const orgRef = { "@id": ORG_ID };
+/** Reference to the founder's Person node. Full node lives on /about only. */
+const personRef = { "@id": PERSON_ID };
+
+/** Only profiles that resolve. See the comment on siteConfig.social. */
+const socialProfiles = Object.values(siteConfig.social);
+
+function officeSchemaId(office: OfficeConfig) {
+  return absoluteUrl(office.schemaId ?? `/#business-${office.id}`);
+}
+
+function postalAddress(office: OfficeConfig) {
+  return {
+    "@type": "PostalAddress",
+    streetAddress: office.streetAddress,
+    addressLocality: office.city,
+    addressRegion: office.region,
+    postalCode: office.postalCode,
+    addressCountry: office.countryCode,
+  };
+}
 
 export function organizationSchema() {
   return {
@@ -32,8 +53,7 @@ export function organizationSchema() {
     "@id": ORG_ID,
     name: siteConfig.name,
     alternateName: siteConfig.shortName,
-    description:
-      "Premium AI automation and digital services agency. Intelligent Solutions. Premium Results.",
+    description: siteConfig.description,
     url: siteConfig.url,
     logo: {
       "@type": "ImageObject",
@@ -42,34 +62,48 @@ export function organizationSchema() {
       height: 128,
     },
     foundingDate: "2024",
-    founder: {
-      "@type": "Person",
-      name: siteConfig.founder,
-      jobTitle: "Founder & CEO",
-    },
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Ludhiana",
-      addressLocality: "Ludhiana",
-      addressRegion: "Punjab",
-      postalCode: "141001",
-      addressCountry: "IN",
-    },
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: siteConfig.phone,
-      email: siteConfig.email,
-      contactType: "customer service",
-      availableLanguage: ["English", "Hindi", "Punjabi"],
-      areaServed: "IN",
-    },
-    // All four profiles — the previous version listed only two.
-    sameAs: [
-      siteConfig.social.instagram,
-      siteConfig.social.linkedin,
-      siteConfig.social.twitter,
-      siteConfig.social.youtube,
+    // Reference, not an inline Person — the full node is emitted once, on
+    // /about, where the visible founder card backs it up.
+    founder: { "@type": "Person", "@id": PERSON_ID, name: siteConfig.founder },
+    // One registered address (the HQ). Additional presence goes in `location`
+    // below, which is the correct property for multiple places.
+    address: postalAddress(headquarters),
+    location: offices
+      .filter((o) => o.hasAddress)
+      .map((o) => ({ "@id": officeSchemaId(o) })),
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: siteConfig.phone,
+        email: siteConfig.email,
+        contactType: "sales",
+        // BCP-47 codes rather than language names — both are legal, codes are
+        // unambiguous to parsers.
+        availableLanguage: ["en", "hi", "pa"],
+        areaServed: ["US", "GB", "CA", "IN"],
+      },
     ],
+    /**
+     * A direct entity→topic edge. Cheap, and one of the few schema additions
+     * that measurably helps an LLM answer "what does this company do?" without
+     * having to infer it from marketing prose.
+     */
+    knowsAbout: [
+      "AI agents",
+      "agentic AI",
+      "AI automation",
+      "AI receptionists",
+      "conversational AI",
+      "WhatsApp Business API",
+      "AI integration",
+      "data analytics",
+      "business intelligence",
+      "custom software development",
+      "web development",
+      "mobile app development",
+    ],
+    areaServed: areaServedCountries,
+    sameAs: socialProfiles,
     // Derived from content/services.json rather than a parallel hardcoded list,
     // so adding a service can't leave the catalog stale.
     hasOfferCatalog: {
@@ -80,6 +114,7 @@ export function organizationSchema() {
         itemOffered: {
           "@type": "Service",
           name: s.title,
+          description: s.description,
           url: absoluteUrl(`/services/${s.slug}`),
         },
       })),
@@ -95,40 +130,82 @@ export function websiteSchema() {
     name: siteConfig.name,
     description: siteConfig.description,
     publisher: orgRef,
-    inLanguage: "en-IN",
+    inLanguage: siteConfig.htmlLang,
   };
 }
 
 /**
- * The physical Ludhiana office. Shared by /contact and /locations/ludhiana via
- * a common `@id` so the two pages describe one business, not two.
+ * The founder. Emitted in full on /about only; everywhere else references
+ * PERSON_ID. The `#mohit-dutta` fragment resolves to the visible founder card
+ * on that page — an @id fragment pointing at nothing is a smell reviewers look
+ * for.
+ *
+ * TODO(velex): add the founder's personal LinkedIn to `sameAs`. Author
+ * authority is the E-E-A-T signal this site is currently missing entirely.
+ */
+export function personSchema() {
+  return {
+    "@type": "Person",
+    "@id": PERSON_ID,
+    name: siteConfig.founder,
+    jobTitle: "Founder & CEO",
+    worksFor: orgRef,
+    url: absoluteUrl("/about"),
+    knowsAbout: [
+      "AI agents",
+      "AI automation",
+      "conversational AI",
+      "custom software development",
+    ],
+  };
+}
+
+/**
+ * A physical office. One node per staffed address, each with its own `@id`.
+ *
+ * Only call this for an office with `hasAddress: true`. Emitting a
+ * LocalBusiness for a distributed team — or worse, for a country with no
+ * address at all — is a fabricated-NAP problem: it gets Google Business
+ * Profiles suspended and it is trivially falsifiable.
+ *
+ * `areaServed` here is the office's physical catchment, deliberately NOT the
+ * four markets. The company serves four countries; this building serves a
+ * region. Getting that backwards is the most common multi-location schema
+ * error.
  *
  * No `aggregateRating` — publishing a rating without verifiable on-page reviews
  * violates Google's structured data policy and risks a manual action.
- * Reinstate it only when `content/testimonials.json` holds real reviews.
+ * Reinstate it only when `content/testimonials.json` holds real reviews AND
+ * they are displayed on the page carrying the markup.
  */
-export function localBusinessSchema() {
+export function localBusinessSchema(officeId: string = headquarters.id) {
+  const office = offices.find((o) => o.id === officeId);
+  if (!office) throw new Error(`localBusinessSchema: unknown office "${officeId}"`);
+  if (!office.hasAddress) {
+    throw new Error(
+      `localBusinessSchema: office "${officeId}" has no address. Distributed ` +
+        `teams must not emit a LocalBusiness node — use webPageSchema instead.`,
+    );
+  }
+
   return {
     "@type": "ProfessionalService",
-    "@id": BUSINESS_ID,
-    name: siteConfig.name,
+    "@id": officeSchemaId(office),
+    name: `${siteConfig.name} — ${office.city}`,
     description: siteConfig.description,
-    url: siteConfig.url,
+    url: absoluteUrl(office.path),
     parentOrganization: orgRef,
     image: absoluteUrl("/images/logo/velex-logo.svg"),
-    priceRange: "₹₹₹",
     telephone: siteConfig.phone,
     email: siteConfig.email,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Ludhiana",
-      addressLocality: "Ludhiana",
-      addressRegion: "Punjab",
-      postalCode: "141001",
-      addressCountry: "IN",
-    },
-    geo: { "@type": "GeoCoordinates", latitude: 30.9009, longitude: 75.8573 },
-    areaServed: { "@type": "Country", name: "India" },
+    address: postalAddress(office),
+    ...(office.geo
+      ? { geo: { "@type": "GeoCoordinates", ...office.geo } }
+      : {}),
+    areaServed: [
+      { "@type": "AdministrativeArea", name: office.region },
+      { "@type": "City", name: office.city },
+    ],
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
@@ -137,6 +214,27 @@ export function localBusinessSchema() {
         closes: "19:00",
       },
     ],
+  };
+}
+
+/**
+ * A generic page node. This is what market pages (a country we serve but have
+ * no office in) use instead of LocalBusiness.
+ */
+export function webPageSchema(input: {
+  path: string;
+  title: string;
+  description: string;
+}) {
+  return {
+    "@type": "WebPage",
+    "@id": `${absoluteUrl(input.path)}#webpage`,
+    url: absoluteUrl(input.path),
+    name: input.title,
+    description: input.description,
+    isPartOf: { "@id": WEBSITE_ID },
+    about: orgRef,
+    inLanguage: siteConfig.htmlLang,
   };
 }
 
@@ -153,15 +251,28 @@ export function serviceSchema(input: {
     description: input.description,
     url: absoluteUrl(`/services/${input.slug}`),
     provider: orgRef,
-    areaServed: { "@type": "Country", name: "India" },
-    offers: {
-      "@type": "Offer",
-      availability: "https://schema.org/InStock",
-      priceCurrency: "INR",
-    },
+    // Literally answers "do they serve the US?" for an extractor.
+    areaServed: areaServedCountries,
+    audience: { "@type": "BusinessAudience" },
+    // No `offers` block. An Offer with priceCurrency INR, no price and
+    // availability "InStock" is product vocabulary applied to consulting — it
+    // says nothing, and it says it in the wrong currency to three of the four
+    // markets. Use priceSpecification with a real minPrice when prices are
+    // published.
   };
 }
 
+/**
+ * Q&A pairs.
+ *
+ * Note: since August 2023 Google shows FAQ rich results only for authoritative
+ * government and health sites, so this will not produce a SERP accordion. It
+ * stays because it is a clean machine-readable Q→A mapping that AI answer
+ * engines consume, and because it costs nothing.
+ *
+ * The policy still applies: never emit this for Q&As that aren't visible on
+ * the page.
+ */
 export function faqSchema(faqs: { question: string; answer: string }[]) {
   return {
     "@type": "FAQPage",
@@ -169,6 +280,23 @@ export function faqSchema(faqs: { question: string; answer: string }[]) {
       "@type": "Question",
       name: f.question,
       acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+}
+
+/** A list of links, e.g. the services index or a locations hub. */
+export function itemListSchema(input: {
+  id: string;
+  items: { name: string; path: string }[];
+}) {
+  return {
+    "@type": "ItemList",
+    "@id": absoluteUrl(input.id),
+    itemListElement: input.items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      url: absoluteUrl(item.path),
     })),
   };
 }
@@ -208,9 +336,12 @@ export function blogPostingSchema(post: {
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     datePublished: post.publishedAt,
     dateModified: post.updatedAt ?? post.publishedAt,
-    author: { "@type": "Person", name: post.author },
+    // @id ref plus name: the reference lets the graph resolve to the full
+    // Person node on /about, the name keeps it self-describing for parsers
+    // that don't cross-reference.
+    author: { "@type": "Person", "@id": PERSON_ID, name: post.author },
     publisher: orgRef,
-    inLanguage: "en-IN",
+    inLanguage: siteConfig.htmlLang,
   };
 }
 
@@ -230,3 +361,5 @@ export function jsonLd(...nodes: object[]) {
     "@graph": nodes,
   }).replace(/</g, "\\u003c");
 }
+
+export { personRef };

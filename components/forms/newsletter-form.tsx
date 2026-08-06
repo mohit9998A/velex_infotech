@@ -3,29 +3,49 @@
 import { useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
 
+import { siteConfig } from "@/config/site";
 import { Input } from "@/components/ui/input";
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/**
+ * This form previously performed no network call at all: it validated the
+ * address client-side, discarded it, and rendered "You're on the list. Talk
+ * soon." Every signup since launch was silently dropped while the user was
+ * told the opposite.
+ *
+ * Until there is a real subscribe endpoint, it hands off to the user's mail
+ * client — which actually delivers, and which the success copy can honestly
+ * describe.
+ *
+ * TODO(velex): replace with a POST to /api/newsletter once a list exists.
+ * Keep the failure mode honest when you do.
+ */
 export function NewsletterForm() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "done" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
 
   const submit = () => {
     if (!emailRe.test(email)) {
       setStatus("error");
       return;
     }
-    // Phase 1: no backend wired — acknowledge locally.
-    // TODO: POST to /api/newsletter once Supabase/Resend are configured.
-    setStatus("done");
+    const subject = encodeURIComponent("Subscribe to the intelligence brief");
+    const body = encodeURIComponent(
+      `Please add ${email} to the Velex Infotech mailing list.`,
+    );
+    window.location.href = `mailto:${siteConfig.email}?subject=${subject}&body=${body}`;
+    setStatus("sent");
     setEmail("");
   };
 
-  if (status === "done") {
+  if (status === "sent") {
     return (
-      <p className="flex items-center gap-2 text-sm text-success">
-        <Check className="size-4" /> You&apos;re on the list. Talk soon.
+      <p className="flex items-start gap-2 text-sm text-success">
+        <Check className="mt-0.5 size-4 shrink-0" />
+        <span>
+          Your email app should be open — send the message and we&apos;ll add you.
+        </span>
       </p>
     );
   }

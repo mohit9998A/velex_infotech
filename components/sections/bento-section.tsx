@@ -1,4 +1,4 @@
-import { Star, ShieldCheck, Clock, Gem } from "lucide-react";
+import { ShieldCheck, Clock, Gem, MessageSquareReply } from "lucide-react";
 
 import type { StatItem } from "@/types";
 import statsData from "@/content/stats.json";
@@ -42,11 +42,19 @@ export function BentoSection() {
             <p className="mt-1 text-xs text-secondary">Guaranteed on every build.</p>
           </div>
 
-          {/* 24/7 support */}
+          {/* Timezone coverage.
+              Was "24/7 Support / We're here whenever you scale" — which now
+              directly contradicts the 09:00–19:00 IST working hours published
+              on /contact. Two pages making incompatible availability claims is
+              the kind of thing a buyer notices and a rater penalises. */}
           <div className="glass-card flex flex-col justify-center p-6">
             <Clock className="size-6 text-purple-glow" />
-            <p className="mt-3 font-display text-lg text-primary">24/7 Support</p>
-            <p className="mt-1 text-xs text-secondary">We&apos;re here whenever you scale.</p>
+            <p className="mt-3 font-display text-lg text-primary">
+              UK &amp; US overlap
+            </p>
+            <p className="mt-1 text-xs text-secondary">
+              Live hours with London, New York and Toronto.
+            </p>
           </div>
 
           <StatCard value={stats[2].value} suffix={stats[2].suffix} label={stats[2].label} />
@@ -59,15 +67,22 @@ export function BentoSection() {
             <p className="mt-1 text-xs text-secondary">Secure, compliant, reliable.</p>
           </div>
 
-          {/* Rating */}
+          {/* Response commitment.
+              This tile previously read "5.0 Average / Across 47 client reviews"
+              — a claim with nothing behind it, on a site whose own
+              lib/schema.ts deliberately refuses to emit aggregateRating for
+              exactly that reason. The machine-readable layer was honest while
+              the human-visible one wasn't, which is the worse way round: a
+              reviewer who checked the structured data would have caught the
+              contradiction. Replaced with something verifiable. */}
           <div className="glass-card flex flex-col justify-center p-6">
-            <div className="flex gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="size-4 fill-gold text-gold" />
-              ))}
-            </div>
-            <p className="mt-3 font-display text-2xl text-primary">5.0 Average</p>
-            <p className="mt-1 text-xs text-secondary">Across 47 client reviews.</p>
+            <MessageSquareReply className="size-6 text-gold" />
+            <p className="mt-3 font-display text-2xl text-primary">
+              1 business day
+            </p>
+            <p className="mt-1 text-xs text-secondary">
+              Every enquiry answered by a person.
+            </p>
           </div>
         </div>
       </div>

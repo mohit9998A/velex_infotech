@@ -1,5 +1,5 @@
 import { siteConfig } from "@/config/site";
-import { pageMetadata } from "@/lib/seo";
+import { officesLine, pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   path: "/terms-of-service",
@@ -46,7 +46,7 @@ export default function TermsOfServicePage() {
               <a className="text-purple-glow hover:text-primary" href={`mailto:${siteConfig.email}`}>
                 {siteConfig.email}
               </a>{" "}
-              or {siteConfig.phoneDisplay}, {siteConfig.location}.
+              or {siteConfig.phoneDisplay}, {officesLine}.
             </p>
           </div>
         </div>

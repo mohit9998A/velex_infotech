@@ -1,10 +1,10 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 import type { ServiceItem } from "@/types";
 import servicesData from "@/content/services.json";
-import { pageMetadata, absoluteUrl } from "@/lib/seo";
-import { breadcrumbSchema, jsonLd } from "@/lib/schema";
+import { marketsShortLine, pageMetadata } from "@/lib/seo";
+import { breadcrumbSchema, itemListSchema, jsonLd } from "@/lib/schema";
 import { getServiceIcon } from "@/lib/icons";
 import { Badge } from "@/components/ui/badge";
 import { SectionHeader } from "@/components/common/section-header";
@@ -15,24 +15,19 @@ const services = servicesData as ServiceItem[];
 
 export const metadata = pageMetadata({
   path: "/services",
-  title: "AI & Digital Services in India",
-  description:
-    "AI Automation, Agentic AI, Voice Agents, WhatsApp Chatbots, Web Development, App Development and AI Integration — built for businesses across India.",
+  title: "AI, Data & Software Services",
+  description: `AI agents, automation, AI receptionists, WhatsApp chatbots, AI integration, data analytics, custom software, websites and apps â€” for businesses in the ${marketsShortLine}.`,
 });
 
-// Lists the 7 services as a crawlable collection rather than leaving Google to
+// Lists every service as a crawlable collection rather than leaving Google to
 // infer the set from links alone.
-const serviceListSchema = {
-  "@type": "ItemList",
-  "@id": absoluteUrl("/services#list"),
-  name: "AI & Digital Services",
-  itemListElement: services.map((s, i) => ({
-    "@type": "ListItem",
-    position: i + 1,
+const serviceListSchema = itemListSchema({
+  id: "/services#list",
+  items: services.map((s) => ({
     name: s.title,
-    url: absoluteUrl(`/services/${s.slug}`),
+    path: `/services/${s.slug}`,
   })),
-};
+});
 
 export default function ServicesIndexPage() {
   return (
@@ -48,15 +43,16 @@ export default function ServicesIndexPage() {
       />
       <section className="relative overflow-hidden pb-12 pt-36">
         <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
-        <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 rounded-full bg-purple-core/15 blur-[140px]" />
+        <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 glow-blob" />
         <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
           <span className="font-mono-label text-purple-glow">Our Services</span>
           <h1 className="mt-4 font-display text-h1 text-balance text-primary">
-            Premium AI &amp; digital services
+            AI, data &amp; software services
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-secondary md:text-lg">
-            Seven core capabilities, engineered to give ambitious businesses an unfair advantage —
-            from autonomous AI to luxury web experiences.
+            {services.length} capabilities, from autonomous AI agents to the data
+            layer that makes them useful â€” built for businesses in the{" "}
+            {marketsShortLine}.
           </p>
           <div className="mt-9 flex justify-center">
             <ConsultButtons />
