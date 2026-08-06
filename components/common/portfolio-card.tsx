@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ArrowUpRight, Lock } from "lucide-react";
 
 import type { PortfolioItem } from "@/types";
@@ -21,13 +20,10 @@ export function PortfolioCard({
   const isLink = Boolean(item.external && item.href);
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.96 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.96 }}
-      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-    >
+    // Enter animation via tw-animate-css (already a dependency, already used
+    // by ui/dialog.tsx) rather than a framer-motion wrapper. The parent grid
+    // carries `key={active}`, so this replays on every filter change.
+    <div className="animate-in fade-in zoom-in-95 duration-300">
       {/*
         An <article>, not an <a>: the live preview is an iframe, which cannot
         legally nest inside a link. The "Visit live site" anchor below stretches
@@ -69,6 +65,6 @@ export function PortfolioCard({
           )}
         </div>
       </article>
-    </motion.div>
+    </div>
   );
 }

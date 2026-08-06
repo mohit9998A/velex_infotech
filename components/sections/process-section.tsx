@@ -1,9 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef } from "react";
 import { Check } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -14,6 +11,26 @@ import { SectionHeader } from "@/components/common/section-header";
 
 const steps = processData as ProcessStep[];
 
+/**
+ * ONE markup tree. The layout branch lives in CSS.
+ *
+ * This used to return two structurally different `<section>`s depending on
+ * `useHorizontal` — but `useIsMobile()` and `usePrefersReducedMotion()` both
+ * return `false` until an effect runs, so the server and the first client
+ * render always chose the horizontal one. Every mobile visitor was served a
+ * full-viewport `h-dvh` horizontal-scroll section, then had it unmounted and
+ * replaced by a vertical stack: two layouts of four cards, a full remount, and
+ * a section that changes height from 100dvh to whatever the stack measures.
+ *
+ * The condition is now a single media query in globals.css
+ * (`.process-section`), and `useHorizontal` gates only the GSAP effect. The
+ * query is the exact complement of `useIsMobile`'s `max-width: 767px`, so CSS
+ * and JS cannot disagree.
+ *
+ * It also has to include `prefers-reduced-motion`: without it a desktop
+ * reduced-motion user gets the `overflow: hidden` horizontal strip with no
+ * scroll driver attached, leaving the last two cards permanently unreachable.
+ */
 export function ProcessSection() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -21,68 +38,75 @@ export function ProcessSection() {
   const reducedMotion = usePrefersReducedMotion();
   const useHorizontal = !isMobile && !reducedMotion;
 
-  useGSAP(
-    () => {
-      if (!useHorizontal) return;
+  useEffect(() => {
+    if (!useHorizontal) return;
+
+    let ctx: { revert: () => void } | undefined;
+    let cancelled = false;
+
+    // Dynamic import, mirroring components/layout/smooth-scroll.tsx. gsap and
+    // ScrollTrigger were static imports here, which put ~118 KiB into the
+    // homepage's initial bundle — including for mobile and reduced-motion
+    // visitors, where the effect returns immediately and never touches the
+    // library. On `/` this is a cache hit against the chunk smooth-scroll
+    // already requests; the win is that it is no longer in the initial parse.
+    //
+    // `useGSAP` from @gsap/react is dropped along with it: it is a hook, so it
+    // cannot itself be dynamically imported. `gsap.context()` provides the same
+    // scoped cleanup.
+    (async () => {
+      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+      ]);
+      if (cancelled) return;
+
       gsap.registerPlugin(ScrollTrigger);
-      const track = trackRef.current;
-      const wrapper = wrapperRef.current;
-      if (!track || !wrapper) return;
 
-      const distance = track.scrollWidth - window.innerWidth;
-      if (distance <= 0) return;
+      ctx = gsap.context(() => {
+        const track = trackRef.current;
+        const wrapper = wrapperRef.current;
+        if (!track || !wrapper) return;
 
-      gsap.to(track, {
-        x: -distance,
-        ease: "none",
-        scrollTrigger: {
-          trigger: wrapper,
-          start: "top top",
-          end: () => `+=${distance}`,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-    },
-    { scope: wrapperRef, dependencies: [useHorizontal] },
-  );
+        const distance = track.scrollWidth - window.innerWidth;
+        if (distance <= 0) return;
 
-  const header = (
-    <SectionHeader
-      eyebrow="How We Work"
-      title="From idea to intelligence"
-      subtitle="A precise, four-step path that turns ambition into deployed, compounding results."
-    />
-  );
+        gsap.to(track, {
+          x: -distance,
+          ease: "none",
+          scrollTrigger: {
+            trigger: wrapper,
+            start: "top top",
+            end: () => `+=${distance}`,
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+      }, wrapperRef);
+    })();
 
-  if (!useHorizontal) {
-    // Mobile / reduced-motion: vertical stack
-    return (
-      <section className="section-pad relative">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          {header}
-          <div className="mt-12 flex flex-col gap-5">
-            {steps.map((step) => (
-              <StepCard key={step.id} step={step} />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
+    return () => {
+      cancelled = true;
+      ctx?.revert();
+    };
+  }, [useHorizontal]);
 
   return (
-    <section ref={wrapperRef} className="relative h-dvh overflow-hidden">
-      <div className="absolute inset-x-0 top-0 z-10 pt-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">{header}</div>
+    <section ref={wrapperRef} className="process-section section-pad relative">
+      <div className="process-header mx-auto max-w-3xl px-4 sm:px-6">
+        <SectionHeader
+          eyebrow="How We Work"
+          title="From idea to intelligence"
+          subtitle="A precise, four-step path that turns ambition into deployed, compounding results."
+        />
       </div>
       <div
         ref={trackRef}
-        className="flex h-full items-center gap-8 pl-[max(1rem,calc((100vw-80rem)/2+1.5rem))] pr-[40vw] will-change-transform"
+        className="process-track mx-auto mt-12 flex max-w-3xl flex-col gap-5 px-4 sm:px-6"
       >
         {steps.map((step) => (
-          <StepCard key={step.id} step={step} className="w-[78vw] shrink-0 sm:w-[34rem]" />
+          <StepCard key={step.id} step={step} />
         ))}
       </div>
     </section>

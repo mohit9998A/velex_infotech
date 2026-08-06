@@ -58,7 +58,7 @@ export function TestimonialsSection() {
 
   return (
     <section className="section-pad relative overflow-hidden">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 size-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-core/10 blur-[140px]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 size-[40rem] -translate-x-1/2 -translate-y-1/2 glow-blob" />
       <div className="relative mx-auto max-w-5xl px-4 sm:px-6">
         <SectionHeader eyebrow="Testimonials" title="What our clients say" />
 

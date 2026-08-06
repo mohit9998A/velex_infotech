@@ -1,27 +1,28 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
-import { useLeadModal } from "@/lib/store/lead-modal";
+import { ConsultButtons } from "@/components/common/consult-buttons";
 import { Button } from "@/components/ui/button";
 
+/**
+ * A SERVER component.
+ *
+ * It was `"use client"` for a framer-motion `whileInView` fade and one
+ * `openModal()` call — and it is imported by six pages (`/`, `/about`,
+ * `/services`, `/services/[slug]`, `/blog/[slug]`, `/locations/ludhiana`), so
+ * that was six client boundaries and a copy of the animation library's entry
+ * point for a fade-up that CSS already does elsewhere on the same page.
+ *
+ * The fade is now `.reveal-on-scroll` (the same class `SectionHeader` uses),
+ * and the modal trigger is delegated to the `ConsultButtons` client leaf.
+ */
 export function CtaBanner() {
-  const openModal = useLeadModal((s) => s.openModal);
-
   return (
-    <section className="relative overflow-hidden py-28">
+    <section className="defer-paint relative overflow-hidden py-28">
       <div className="pointer-events-none absolute inset-0 radial-glow" />
       <div className="pointer-events-none absolute inset-0 noise-overlay" />
 
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="relative mx-auto max-w-3xl px-4 text-center sm:px-6"
-      >
+      <div className="reveal-on-scroll relative mx-auto max-w-3xl px-4 text-center sm:px-6">
         <span className="font-mono-label text-purple-glow">Ready when you are</span>
         <h2 className="mt-4 font-display text-h1 text-balance text-primary">
           Ready to transform <span className="text-gradient">your business?</span>
@@ -31,17 +32,18 @@ export function CtaBanner() {
           mediocrity. Book a free consultation and see what Velex can build for you.
         </p>
 
-        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button size="lg" className="btn-glow" onClick={() => openModal()}>
-            Schedule a Free Consultation
-          </Button>
-          <Button size="lg" variant="crystal" asChild>
-            <a href={siteConfig.whatsapp} target="_blank" rel="noopener noreferrer">
-              <MessageCircle className="size-4" /> WhatsApp Us Now
-            </a>
-          </Button>
-        </div>
-      </motion.div>
+        <ConsultButtons
+          className="mt-10 items-center justify-center"
+          primaryLabel="Schedule a Free Consultation"
+          secondary={
+            <Button size="lg" variant="crystal" asChild>
+              <a href={siteConfig.whatsapp} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="size-4" /> WhatsApp Us Now
+              </a>
+            </Button>
+          }
+        />
+      </div>
     </section>
   );
 }

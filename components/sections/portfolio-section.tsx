@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import type { PortfolioItem } from "@/types";
@@ -62,35 +61,42 @@ export function PortfolioSection() {
                   : "border-vx-border text-secondary hover:text-primary",
               )}
             >
-              {active === f && (
-                <motion.span
-                  layoutId="portfolio-filter-pill"
-                  className="absolute inset-0 -z-10 rounded-full bg-purple-core/15"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
+              {/* Per-button pill cross-fading on opacity, rather than a
+                  framer-motion shared-element `layoutId`. A spring-driven
+                  shared element measures both buttons on every click; this is
+                  a composited opacity change with no measurement and no
+                  library. The pill fades between filters instead of sliding. */}
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "absolute inset-0 -z-10 rounded-full bg-purple-core/15 transition-opacity duration-300",
+                  active === f ? "opacity-100" : "opacity-0",
+                )}
+              />
               {f}
             </button>
           ))}
         </div>
 
-        {/* Grid */}
-        <motion.div
-          layout
+        {/* Grid.
+            `key={active}` remounts the cards on filter change so their CSS
+            enter animation replays — which is what `AnimatePresence` was doing,
+            minus the layout measurement. Exit animations are gone; with four
+            items re-rendering instantly it is imperceptible. */}
+        <div
+          key={active}
           className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
         >
-          <AnimatePresence mode="popLayout">
-            {filtered.map((item) => (
-              <PortfolioCard
-                key={item.id}
-                item={item}
-                isLive={liveId === item.id}
-                onActivate={() => setLiveId(item.id)}
-                onDeactivate={() => deactivate(item.id)}
-              />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+          {filtered.map((item) => (
+            <PortfolioCard
+              key={item.id}
+              item={item}
+              isLive={liveId === item.id}
+              onActivate={() => setLiveId(item.id)}
+              onDeactivate={() => deactivate(item.id)}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

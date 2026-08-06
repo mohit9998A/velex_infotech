@@ -13,7 +13,10 @@ const faqs = faqsData as FaqItem[];
 
 export function FaqSection() {
   return (
-    <section className="section-pad relative">
+    // `.defer-paint` only — this section stays fully server-rendered. The FAQ
+    // JSON-LD below and the rendered accordion must travel together
+    // (AGENTS.md rule 2), so it must never be dynamic-imported or ssr:false'd.
+    <section className="defer-paint section-pad relative">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd(faqSchema(faqs)) }}
