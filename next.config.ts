@@ -40,6 +40,16 @@ const nextConfig: NextConfig = {
         destination: "https://velexinfotech.com/:path*",
         permanent: true,
       },
+      // "Voice agent" is a phrase almost nobody searches — the demand is under
+      // "AI receptionist" and "AI phone answering service" (see Plan.md §1.3).
+      // The slug was renamed to match. Keep this redirect permanently: the old
+      // URL is in the previous sitemap, in llms.txt, and in any link that
+      // already exists.
+      {
+        source: "/services/voice-agent",
+        destination: "/services/ai-receptionist",
+        permanent: true,
+      },
     ];
   },
   async headers() {
@@ -61,6 +71,27 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withMDX = createMDX({});
+/**
+ * MDX v3 ships no GFM. Without remark-gfm the pipe-table in
+ * content/blog/ai-automation-roi.mdx rendered as literal `| Metric | ... |`
+ * text, and the table/th/td mappings in mdx-components.tsx were dead code.
+ * Comparison tables are the highest-citation content format there is, so this
+ * is load-bearing for the content plan, not a nicety.
+ *
+ * rehype-slug gives `##` headings real `id`s, which is what makes deep links
+ * into a section work — mdx-components.tsx already sets `scroll-mt-28` on h2
+ * in anticipation of anchors that did not previously exist.
+ */
+const withMDX = createMDX({
+  options: {
+    // Plugin NAMES, not imported functions. This project builds with
+    // Turbopack, and loader options are serialised across the JS/Rust
+    // boundary — passing the imported plugin fails the build outright with
+    // "does not have serializable options". See the Turbopack section of
+    // node_modules/next/dist/docs/01-app/02-guides/mdx.md.
+    remarkPlugins: ["remark-gfm"],
+    rehypePlugins: ["rehype-slug"],
+  },
+});
 
 export default withMDX(nextConfig);

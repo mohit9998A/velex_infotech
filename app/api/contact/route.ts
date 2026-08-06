@@ -1,21 +1,37 @@
 import { NextResponse } from "next/server";
-
-import { leadFormSchema } from "@/lib/validations/lead";
-
-/**
- * Lead capture endpoint (Phase 1 stub).
- *
- * Re-validates the payload server-side with the SAME Zod schema used on the
- * client, then logs the lead. Wiring to Supabase + Resend + WhatsApp API is a
- * later phase — see plan §7. No secrets are required for this stub.
- */
 import { Resend } from "resend";
 
-// Constructed per-request, not at module scope. The Resend constructor throws
-// when the key is absent, and module-scope evaluation happens during `next
-// build` page-data collection — so a missing RESEND_API_KEY failed the whole
-// build before the `if (!process.env.RESEND_API_KEY)` guard below could run.
-// Builds must not depend on runtime secrets being present.
+import { siteConfig } from "@/config/site";
+import { formatBudget, leadFormSchema } from "@/lib/validations/lead";
+
+/**
+ * Lead capture endpoint.
+ *
+ * Re-validates the payload server-side with the SAME Zod schema used on the
+ * client, then emails it.
+ *
+ * The Resend client is constructed per-request, not at module scope. Its
+ * constructor throws when the key is absent, and module-scope evaluation
+ * happens during `next build` page-data collection — so a missing
+ * RESEND_API_KEY failed the whole build before the guard below could run.
+ * Builds must not depend on runtime secrets being present.
+ */
+
+/**
+ * Lead values land inside an HTML email. `company`, `source` and `message`
+ * accept arbitrary text up to 2000 characters, so without escaping this is
+ * HTML injection into an inbox — at best a mangled email, at worst a
+ * convincing phishing link rendered as legitimate content in your own mail
+ * client.
+ */
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -35,32 +51,59 @@ export async function POST(request: Request) {
 
   const lead = parsed.data;
 
-  // Log the lead for debugging purposes
-  console.info("[velex:lead]", lead);
+  // Honeypot: a real user never sees this field, so anything in it is a bot.
+  // Return 200 so the bot believes it succeeded and doesn't retry, but send
+  // nothing.
+  if (lead.website) {
+    return NextResponse.json({ ok: true });
+  }
 
   if (!process.env.RESEND_API_KEY) {
-    console.warn("RESEND_API_KEY is not configured. Email was not sent.");
-    // In production, we might want to return an error, but for now we'll pretend it worked
-    // to avoid breaking the frontend during setup if the API key is missing.
-    return NextResponse.json({ ok: true, note: "No API key configured" });
+    // Previously this returned { ok: true }, so the client saw res.ok and
+    // showed "Request received — we'll respond within 24 hours." The lead
+    // evaporated and the user was told the opposite. Fail loudly in
+    // production so the form falls back to WhatsApp/email; stay permissive in
+    // development so local work isn't blocked, but make the state visible.
+    if (process.env.NODE_ENV === "production") {
+      console.error("[velex:lead] RESEND_API_KEY missing — lead NOT delivered");
+      return NextResponse.json(
+        { ok: false, error: "Mail transport unavailable" },
+        { status: 503 },
+      );
+    }
+    console.warn("[velex:lead] RESEND_API_KEY missing — email skipped (dev)");
+    return NextResponse.json({ ok: true, delivered: false });
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
+  const row = (label: string, value: string) =>
+    `<p><strong>${label}:</strong> ${escapeHtml(value)}</p>`;
+
   try {
     const { data, error } = await resend.emails.send({
-      from: "Velex Infotech <onboarding@resend.dev>",
-      to: ["mohitdutta0407@gmail.com"],
+      // TODO(velex): switch to `leads@velexinfotech.com` once SPF + DKIM are
+      // set up for the domain. `onboarding@resend.dev` is Resend's sandbox
+      // sender and can only deliver to the account owner's own address, which
+      // makes the recipient below load-bearing — any change to it fails
+      // silently. Git history shows the verified domain worked before
+      // (4b63f58) and was reverted for expediency (67d1aba).
+      from: `${siteConfig.name} <onboarding@resend.dev>`,
+      to: [siteConfig.leadInbox],
+      replyTo: lead.email,
       subject: `New Lead: ${lead.name} (${lead.service})`,
       html: `
         <h2>New Consultation Request</h2>
-        <p><strong>Name:</strong> ${lead.name}</p>
-        <p><strong>Email:</strong> ${lead.email}</p>
-        <p><strong>Phone:</strong> ${lead.phone}</p>
-        <p><strong>Service of Interest:</strong> ${lead.service}</p>
-        <p><strong>Budget:</strong> ${lead.budget}</p>
-        <p><strong>Company:</strong> ${lead.company || "Not provided"}</p>
-        <p><strong>Source:</strong> ${lead.source || "Not provided"}</p>
+        ${row("Name", lead.name)}
+        ${row("Email", lead.email)}
+        ${row("Phone", lead.phone)}
+        ${row("Service of Interest", lead.service)}
+        ${row("Budget", formatBudget(lead.budget, lead.currency))}
+        ${row("Company", lead.company || "Not provided")}
+        ${row("Source", lead.source || "Not provided")}
+        <hr />
+        <p><strong>Message:</strong></p>
+        <p>${escapeHtml(lead.message || "Not provided").replace(/\n/g, "<br />")}</p>
         <hr />
         <p><small>Received at: ${new Date().toISOString()}</small></p>
       `,
@@ -71,6 +114,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, error: "Failed to send email" }, { status: 500 });
     }
 
+    // Deliberately no console.info of the lead object. It carries name, email
+    // and phone, and platform logs are a third-party sink — you cannot publish
+    // a GDPR posture on one page while writing visitor phone numbers to it.
     return NextResponse.json({ ok: true, data });
   } catch (error) {
     console.error("[velex:email-error]", error);

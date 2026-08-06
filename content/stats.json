@@ -1,6 +1,6 @@
 [
-  { "value": 200, "suffix": "+", "label": "Projects Delivered" },
-  { "value": 50, "suffix": "+", "label": "Enterprise Clients" },
-  { "value": 78, "suffix": "%", "label": "Avg. Work Automated" },
-  { "value": 8, "suffix": " wks", "label": "Time to ROI" }
+  { "value": 40, "suffix": "+", "label": "Projects Delivered" },
+  { "value": 20, "suffix": "+", "label": "Clients Served" },
+  { "value": 4, "suffix": "", "label": "Markets Served" },
+  { "value": 1, "suffix": " day", "label": "Reply Time" }
 ]

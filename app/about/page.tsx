@@ -1,10 +1,10 @@
-import { Gem, Target, ShieldCheck, Rocket, MapPin } from "lucide-react";
+﻿import { Gem, Target, ShieldCheck, Rocket, MapPin } from "lucide-react";
 
 import type { StatItem } from "@/types";
 import statsData from "@/content/stats.json";
 import { siteConfig } from "@/config/site";
-import { pageMetadata } from "@/lib/seo";
-import { breadcrumbSchema, jsonLd } from "@/lib/schema";
+import { marketsShortLine, officesLine, pageMetadata } from "@/lib/seo";
+import { breadcrumbSchema, jsonLd, personSchema } from "@/lib/schema";
 import { SectionHeader } from "@/components/common/section-header";
 import { StatCard } from "@/components/common/stat-card";
 import { ConsultButtons } from "@/components/common/consult-buttons";
@@ -12,19 +12,18 @@ import { CtaBanner } from "@/components/sections/cta-banner";
 
 const stats = statsData as StatItem[];
 
-// Title omits the brand — the root layout's `%s | Velex Infotech` template
+// Title omits the brand â€” the root layout's `%s | Velex Infotech` template
 // appends it. Including it here produced "... | Velex Infotech | Velex Infotech".
 export const metadata = pageMetadata({
   path: "/about",
-  title: "About Us — AI Agency in Ludhiana, Punjab",
-  description:
-    "Velex Infotech is an AI automation and digital services agency founded by Mohit Dutta in Ludhiana, Punjab. We engineer intelligence for ambitious businesses across India.",
+  title: "About Velex Infotech â€” AI Engineering from India",
+  description: `Velex Infotech builds AI agents, automation and custom software for businesses in the ${marketsShortLine}. Founded by Mohit Dutta, with engineering hubs in ${officesLine}.`,
 });
 
 const values = [
   { icon: Gem, title: "Crystalline quality", description: "Every build is faceted with precision. We ship work we're proud to sign." },
   { icon: Target, title: "Outcome-obsessed", description: "We define measurable success up front and engineer toward it relentlessly." },
-  { icon: ShieldCheck, title: "Enterprise trust", description: "Secure, compliant and reliable — the standard our clients depend on." },
+  { icon: ShieldCheck, title: "Enterprise trust", description: "Secure, compliant and reliable â€” the standard our clients depend on." },
   { icon: Rocket, title: "Built to scale", description: "From MVP to production, we architect for the growth that follows." },
 ];
 
@@ -34,22 +33,29 @@ export default function AboutPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: jsonLd(breadcrumbSchema([{ name: "About", path: "/about" }])),
+          // The full Person node is emitted here and only here â€” every other
+          // reference (Organization.founder, BlogPosting.author) points at its
+          // @id. The `#mohit-dutta` fragment resolves to the founder card below.
+          __html: jsonLd(
+            personSchema(),
+            breadcrumbSchema([{ name: "About", path: "/about" }]),
+          ),
         }}
       />
       {/* Hero */}
       <section className="relative overflow-hidden pb-12 pt-36">
         <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
-        <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 rounded-full bg-purple-core/15 blur-[140px]" />
+        <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 glow-blob" />
         <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
           <span className="font-mono-label text-purple-glow">About Us</span>
           <h1 className="mt-4 font-display text-h1 text-balance text-primary">
             We engineer <span className="text-gradient">intelligence</span>.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-secondary md:text-lg">
-            {siteConfig.name} is a premium AI automation and digital services agency. We help ambitious
-            businesses across India deploy AI that delivers real, measurable results — with luxury-grade
-            execution at every step.
+            {siteConfig.name} builds AI agents, automation and custom software for
+            businesses in the {marketsShortLine}. We are headquartered in India,
+            with engineering in {officesLine} â€” which is how we deliver
+            senior-level work at a rate onshore teams struggle to match.
           </p>
         </div>
       </section>
@@ -72,35 +78,64 @@ export default function AboutPage() {
             <SectionHeader align="left" eyebrow="Our Story" title="Founded to make AI useful" />
             <div className="mt-6 flex flex-col gap-4 text-secondary">
               <p>
-                Velex Infotech was founded by <strong className="text-primary">Mohit Dutta</strong>, a
-                technology entrepreneur based in Ludhiana, Punjab, who specializes in AI automation and
-                enterprise AI solutions for Indian businesses.
+                Velex Infotech was founded by{" "}
+                <strong className="text-primary">Mohit Dutta</strong>, a technology
+                entrepreneur who specialises in AI automation and applied AI
+                systems for growing businesses.
               </p>
               <p>
-                We started with a simple belief: most companies don&apos;t need more software — they need
-                intelligence woven into the way they already work. So we build AI automation, agentic
-                systems, voice agents, WhatsApp bots and luxury web experiences that move the numbers
+                We started with a simple belief: most companies don&apos;t need more
+                software â€” they need intelligence woven into the way they already
+                work. So we build AI agents, automation, voice assistants,
+                WhatsApp bots, analytics and custom software that move the numbers
                 that matter.
               </p>
               <p>
-                Today we serve B2B and B2C clients across India, combining technical depth with a premium,
-                detail-obsessed standard of delivery.
+                India is our home and our engineering base. Our HQ is in Ludhiana,
+                with a second engineering team in Noida â€” and our clients are in
+                the United States, United Kingdom, Canada and India.
               </p>
             </div>
+
+            {/* What an offshore buyer actually needs to know before enquiring.
+                None of this was answered anywhere on the site before. */}
+            <dl className="mt-8 flex flex-col gap-4 border-t border-vx-border pt-6">
+              {[
+                {
+                  q: "Who does the work?",
+                  a: "Our own salaried engineers in Ludhiana and Noida. We don't subcontract your project to a third party.",
+                },
+                {
+                  q: "How do we overlap with your timezone?",
+                  a: "We work 09:00â€“19:00 IST. That is full overlap with UK hours, a four-hour live window with US Eastern, and a two-hour window with US Pacific â€” with an async handover every morning.",
+                },
+                {
+                  q: "Where does your data live?",
+                  a: "In the region you choose. We deploy to your cloud account where you have one, and we'll sign a DPA before any production data moves.",
+                },
+              ].map((item) => (
+                <div key={item.q} className="flex flex-col gap-1">
+                  <dt className="text-primary">{item.q}</dt>
+                  <dd className="text-sm text-secondary">{item.a}</dd>
+                </div>
+              ))}
+            </dl>
+
             <p className="mt-6 inline-flex items-center gap-2 text-sm text-secondary">
-              <MapPin className="size-4 text-purple-glow" /> {siteConfig.location}
+              <MapPin className="size-4 text-purple-glow" /> {officesLine}
             </p>
           </div>
 
-          {/* Founder card */}
-          <div className="glass-card flex flex-col items-start p-8">
+          {/* Founder card. The id backs the Person node's @id fragment above â€”
+              an @id pointing at nothing on the page is a smell. */}
+          <div id="mohit-dutta" className="glass-card flex flex-col items-start p-8">
             <span className="flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-core to-purple-deep font-display text-2xl font-bold text-white">
               MD
             </span>
             <h3 className="mt-5 font-display text-2xl text-primary">Mohit Dutta</h3>
             <p className="text-sm text-purple-glow">Founder &amp; CEO</p>
             <p className="mt-4 text-secondary">
-              &ldquo;We don&apos;t just build software. We engineer intelligence — and back it with proof.&rdquo;
+              &ldquo;We don&apos;t just build software. We engineer intelligence â€” and back it with proof.&rdquo;
             </p>
           </div>
         </div>

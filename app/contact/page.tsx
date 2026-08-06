@@ -1,22 +1,41 @@
-import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+﻿import { Phone, Mail, MapPin, MessageCircle, Clock } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
-import { pageMetadata } from "@/lib/seo";
-import { breadcrumbSchema, jsonLd, localBusinessSchema } from "@/lib/schema";
+import { marketsShortLine, officesLine, pageMetadata } from "@/lib/seo";
+import {
+  breadcrumbSchema,
+  jsonLd,
+  localBusinessSchema,
+  webPageSchema,
+} from "@/lib/schema";
 import { LeadForm } from "@/components/forms/lead-form";
+
+const title = "Contact Us â€” Free AI Consultation";
+const description = `Talk to Velex Infotech about AI agents, automation or custom software. We work with teams across the ${marketsShortLine} and reply within one business day.`;
 
 export const metadata = pageMetadata({
   path: "/contact",
-  title: "Contact Us — Free AI Consultation in Ludhiana, Punjab",
-  description:
-    "Get a free consultation with Velex Infotech. Call +91 89689 35766, email us, or message on WhatsApp. Based in Ludhiana, Punjab, serving clients across India.",
+  title,
+  description,
 });
 
 const contactItems = [
   { icon: Phone, label: "Call us", value: siteConfig.phoneDisplay, href: `tel:${siteConfig.phone}` },
   { icon: Mail, label: "Email us", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
   { icon: MessageCircle, label: "WhatsApp", value: "Chat instantly", href: siteConfig.whatsapp },
-  { icon: MapPin, label: "Visit", value: siteConfig.location, href: undefined },
+  { icon: MapPin, label: "Engineering hubs", value: officesLine, href: undefined },
+];
+
+/**
+ * Timezone overlap is the single most-asked question by offshore buyers, and
+ * before this it was unanswered anywhere on the site. Concrete hours, not
+ * "we're flexible".
+ */
+const coverage = [
+  { market: "United Kingdom", overlap: "Full overlap â€” 09:00â€“17:00 GMT sits inside our day" },
+  { market: "US East Coast", overlap: "09:00â€“13:00 ET live, same-day replies after" },
+  { market: "US West Coast", overlap: "09:00â€“11:00 PT live, plus async handover each morning" },
+  { market: "Canada (ET/PT)", overlap: "Same windows as the equivalent US timezone" },
 ];
 
 export default function ContactPage() {
@@ -26,7 +45,8 @@ export default function ContactPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: jsonLd(
-            localBusinessSchema(),
+            webPageSchema({ path: "/contact", title, description }),
+            localBusinessSchema("ludhiana"),
             breadcrumbSchema([{ name: "Contact", path: "/contact" }]),
           ),
         }}
@@ -34,7 +54,7 @@ export default function ContactPage() {
 
       <section className="relative overflow-hidden pb-20 pt-36">
         <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
-        <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 rounded-full bg-purple-core/15 blur-[140px]" />
+        <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 glow-blob" />
 
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mx-auto max-w-2xl text-center">
@@ -43,8 +63,9 @@ export default function ContactPage() {
               Let&apos;s build something
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-secondary md:text-lg">
-              Tell us what you&apos;re building and we&apos;ll get back within 24 hours. Prefer to talk now?
-              Call or message us on WhatsApp.
+              Tell us what you&apos;re building and we&apos;ll get back within one
+              business day. We work with teams across the {marketsShortLine}.
+              Prefer to talk now? Call or message us on WhatsApp.
             </p>
           </div>
 
@@ -77,6 +98,26 @@ export default function ContactPage() {
                   <div key={c.label}>{body}</div>
                 );
               })}
+
+              <div className="glass-card p-5">
+                <span className="flex items-center gap-2.5">
+                  <Clock className="size-4 shrink-0 text-purple-glow" />
+                  <span className="font-mono-label text-muted">
+                    Working hours &amp; overlap
+                  </span>
+                </span>
+                <p className="mt-3 text-sm text-secondary">
+                  Our team works 09:00â€“19:00 IST, Monday to Friday.
+                </p>
+                <dl className="mt-4 flex flex-col gap-3">
+                  {coverage.map((c) => (
+                    <div key={c.market} className="flex flex-col gap-0.5">
+                      <dt className="text-sm text-primary">{c.market}</dt>
+                      <dd className="text-sm text-secondary">{c.overlap}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
             </div>
 
             {/* Lead form */}
