@@ -10,6 +10,12 @@ const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
   turbopack: { root: projectRoot },
+  // Nodemailer (app/api/contact) is CommonJS and resolves its transports with
+  // dynamic require() at call time. Bundling it rewrites those requires into
+  // something Turbopack cannot satisfy, and the failure surfaces at runtime on
+  // the one route where failure costs a lead. It is not on Next's built-in
+  // auto-externalized list, so it has to be named here.
+  serverExternalPackages: ["nodemailer"],
   // Blog posts are .mdx files imported by app/blog/[slug]/page.tsx.
   pageExtensions: ["ts", "tsx", "js", "jsx", "mdx"],
   images: {

@@ -15,12 +15,12 @@ export function Logo({ className, showWordmark = true, href = "/" }: LogoProps) 
     <Link
       href={href}
       aria-label={`${siteConfig.name} home`}
-      className={cn("group inline-flex items-center gap-2.5", className)}
+      className={cn("group inline-flex items-center gap-3", className)}
     >
       <span className="relative inline-flex">
         <svg
-          width="28"
-          height="28"
+          width="34"
+          height="34"
           viewBox="0 0 32 32"
           fill="none"
           aria-hidden="true"
@@ -44,7 +44,7 @@ export function Logo({ className, showWordmark = true, href = "/" }: LogoProps) 
         </svg>
       </span>
       {showWordmark && (
-        <span className="font-display text-lg font-bold tracking-tight text-primary">
+        <span className="font-display text-[1.35rem]/[2.1rem] font-bold tracking-tight text-primary">
           VELEX
           <span className="text-purple-glow">.</span>
         </span>

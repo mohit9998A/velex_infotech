@@ -49,10 +49,13 @@ export function Navbar() {
         // fixed element, on the scroll frame. The blur now appears at once;
         // padding still animates, so the shrink-on-scroll is unchanged.
         "fixed inset-x-0 top-0 z-[100] transition-[background-color,box-shadow,padding] duration-300",
-        scrolled ? "glassmorphism py-2" : "bg-transparent py-4",
+        scrolled ? "glassmorphism py-[0.6rem]" : "bg-transparent py-[1.2rem]",
       )}
     >
-      <div className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 sm:px-6">
+      {/* Bar geometry is one 20%-up scale of the original 48px row / 8px / 16px
+          padding pair: 96px tall at rest, 76.8px scrolled. `hero-section.tsx`
+          pads for the resting height — the two values move together. */}
+      <div className="mx-auto flex h-[3.6rem] max-w-7xl items-center justify-between px-4 sm:px-6">
         <Logo />
 
         {/* Desktop nav */}
@@ -110,12 +113,12 @@ export function Navbar() {
         </NavigationMenu>
 
         {/* Actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <ThemeToggle className="hidden sm:inline-flex" />
+        <div className="flex items-center gap-[0.6rem] sm:gap-[0.9rem]">
+          <ThemeToggle className="hidden size-[2.7rem] sm:inline-flex [&_svg]:size-[1.2rem]" />
           <Button
             variant="crystal"
             size="sm"
-            className="hidden md:inline-flex"
+            className="hidden h-[2.7rem] px-[1.2rem] text-[0.9rem] md:inline-flex"
             asChild
           >
             <a href={siteConfig.whatsapp} target="_blank" rel="noopener noreferrer">
@@ -124,7 +127,7 @@ export function Navbar() {
           </Button>
           <Button
             size="sm"
-            className="btn-glow hidden sm:inline-flex"
+            className="btn-glow hidden h-[2.7rem] px-[1.2rem] text-[0.9rem] sm:inline-flex"
             onClick={() => openModal()}
           >
             Get Started
@@ -135,9 +138,9 @@ export function Navbar() {
             <SheetTrigger asChild>
               <button
                 aria-label="Open menu"
-                className="inline-flex size-9 items-center justify-center rounded-full border border-vx-border text-primary lg:hidden"
+                className="inline-flex size-[2.7rem] items-center justify-center rounded-full border border-vx-border text-primary lg:hidden"
               >
-                <Menu className="size-5" />
+                <Menu className="size-6" />
               </button>
             </SheetTrigger>
             <SheetContent side="right">

@@ -59,11 +59,12 @@ export function HeroSection() {
     // The navbar offset lives here as PADDING, not as a margin on the text
     // column. `min-h-dvh` includes padding under border-box, so the flex content
     // box becomes `dvh - pt - pb` and `items-center` centres within the region
-    // the fixed 80px header actually leaves. The old `pt-24` on the child pushed
+    // the fixed 96px header actually leaves. The old `pt-24` on the child pushed
     // the block 48px below true centre and cost the stats row the fold.
     // Absolutely-positioned children resolve against the padding box, so the
     // Spline canvas, the gradients and the ScrollIndicator do not move.
-    <section className="relative flex min-h-dvh w-full items-center overflow-hidden pt-[clamp(5rem,9svh,7rem)] pb-[clamp(3rem,8svh,5.5rem)]">
+    // The clamp floor tracks the resting header height in `navbar.tsx`.
+    <section className="relative flex min-h-dvh w-full items-center overflow-hidden pt-[clamp(6rem,9svh,7rem)] pb-[clamp(3rem,8svh,5.5rem)]">
       {/* 3D Spline background */}
       <InteractiveRobotSpline
         scene={SPLINE_SCENE}
