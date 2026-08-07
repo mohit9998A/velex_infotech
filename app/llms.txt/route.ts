@@ -1,10 +1,12 @@
-import type { ServiceItem } from "@/types";
+import type { IndustryItem, ServiceItem } from "@/types";
 import servicesData from "@/content/services.json";
+import industriesData from "@/content/industries.json";
 import { blogPosts } from "@/content/blog";
-import { offices, siteConfig } from "@/config/site";
+import { markets, offices, siteConfig } from "@/config/site";
 import { absoluteUrl, marketsLine, marketsShortLine, officesLine } from "@/lib/seo";
 
 const services = servicesData as ServiceItem[];
+const industries = industriesData as IndustryItem[];
 
 // Nothing here reads request state, so prerender it at build time rather than
 // invoking a function per crawl.
@@ -48,6 +50,14 @@ ${services
   )
   .join("\n")}
 
+## Industries
+
+${industries
+  .map(
+    (i) => `- [${i.title}](${absoluteUrl(`/industries/${i.slug}`)}): ${i.metaDescription}`,
+  )
+  .join("\n")}
+
 ## Guides
 
 ${blogPosts
@@ -64,12 +74,16 @@ ${offices
   )
   .join("\n")}
 
-Markets served: ${marketsLine}.
+Markets served: ${marketsLine}. These are markets, not offices — Velex Infotech has no premises outside India, and the pages below say so.
+
+${markets.map((m) => `- [${m.countryName}](${absoluteUrl(m.path)}): Delivery, contracting and invoicing in ${m.currency} for clients in ${m.countryName}.`).join("\n")}
 
 ## Other pages
 
 - [About](${absoluteUrl("/about")})
 - [All services](${absoluteUrl("/services")})
+- [All industries](${absoluteUrl("/industries")})
+- [Locations](${absoluteUrl("/locations")})
 - [Blog](${absoluteUrl("/blog")})
 - [Contact](${absoluteUrl("/contact")})
 `;

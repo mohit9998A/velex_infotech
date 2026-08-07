@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { siteConfig } from "@/config/site";
-import { absoluteUrl } from "@/lib/seo";
+import { absoluteUrl, siteDomain } from "@/lib/seo";
 
 /**
  * AI/LLM crawlers, allowed explicitly.
@@ -33,6 +32,9 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: aiCrawlers, allow: "/", disallow },
     ],
     sitemap: absoluteUrl("/sitemap.xml"),
-    host: siteConfig.url,
+    // Bare hostname, not siteConfig.url. `Host:` is a Yandex-only directive
+    // whose spec takes a hostname — "https://velexinfotech.com" was malformed
+    // for the one crawler that reads it, and ignored by everyone else.
+    host: siteDomain,
   };
 }

@@ -9,6 +9,8 @@
  *     preselect silently does nothing)
  *   - a blog post with no MDX file, or an MDX file with no registry entry
  *   - a service with no hero image mapping (cosmetic, so a warning not an error)
+ *   - double-encoded UTF-8, which corrupts <title> tags and JSON-LD in a way
+ *     that looks fine in the editor that caused it
  *
  * app/sitemap.ts referenced an `npm run verify:sitemap` that never existed.
  * This is that safety net, made real.
@@ -17,7 +19,7 @@
  * a TypeScript toolchain or a build step, so `npm run verify:content` works on
  * a clean checkout.
  */
-import { readFileSync, existsSync, readdirSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -90,9 +92,77 @@ for (const s of services) {
   for (const field of ["title", "tagline", "description", "overview", "metaTitle", "metaDescription"]) {
     if (!s[field]) errors.push(`services.json: "${s.slug}" is missing "${field}"`);
   }
+  // Feeds sitemap lastModified. Without it the entry would read `undefined`.
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(s.updatedAt ?? "")) {
+    errors.push(
+      `services.json: "${s.slug}" needs an "updatedAt" ISO date (YYYY-MM-DD) — ` +
+        `app/sitemap.ts reads it for lastModified`,
+    );
+  }
+  // FAQ markup and the rendered accordion travel together (AGENTS.md rule 2),
+  // so an empty array is a mistake worth catching rather than a no-op.
+  if (s.faqs && s.faqs.length < 3) {
+    warnings.push(
+      `services.json: "${s.slug}" has only ${s.faqs.length} FAQ(s) — aim for 5 per service page`,
+    );
+  }
   if (s.metaDescription && s.metaDescription.length > 165) {
     warnings.push(
       `services.json: "${s.slug}" metaDescription is ${s.metaDescription.length} chars (will truncate ~155-165)`,
+    );
+  }
+}
+
+// -------------------------------------------------------------- industries
+const industries = JSON.parse(read("content/industries.json"));
+
+for (const i of industries) {
+  if (!mappedIcons.has(i.icon)) {
+    errors.push(
+      `industries.json: "${i.slug}" uses icon "${i.icon}", which is not in serviceIconMap`,
+    );
+  }
+  if (!existsSync(join(root, "app/industries", i.slug, "page.tsx"))) {
+    errors.push(
+      `industries.json: "${i.slug}" has no app/industries/${i.slug}/page.tsx — it would ` +
+        `404 while staying in the sitemap`,
+    );
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(i.updatedAt ?? "")) {
+    errors.push(`industries.json: "${i.slug}" needs an "updatedAt" ISO date (YYYY-MM-DD)`);
+  }
+  for (const ref of i.relatedServices ?? []) {
+    if (!seenSlugs.has(ref)) {
+      errors.push(`industries.json: "${i.slug}" references unknown service "${ref}"`);
+    }
+  }
+  if (!navSource.includes("/industries")) {
+    warnings.push("config/navigation.ts: /industries is not linked from the nav");
+  }
+}
+
+// ----------------------------------------------------------------- sitemap
+/**
+ * Every hardcoded static route must resolve to a real page file.
+ *
+ * The sitemap previously advertised /pricing and /portfolio, both of which
+ * 404'd. Submitting 404s wastes crawl budget and undermines trust in the rest
+ * of the file — and on a site with one indexed page, crawl trust is the whole
+ * problem. Service, industry and blog URLs derive from content and are checked
+ * above, so only the hand-maintained list needs this.
+ */
+const sitemapSource = read("app/sitemap.ts");
+const staticBlock = sitemapSource.match(/lastModified: string;\s*\}\[\] = \[([\s\S]*?)\n\];/)?.[1];
+if (!staticBlock) {
+  errors.push("app/sitemap.ts: could not parse staticRoutes");
+}
+for (const m of (staticBlock ?? "").matchAll(/path:\s*"([^"]*)"/g)) {
+  const route = m[1];
+  const file = route === "" ? "app/page.tsx" : `app${route}/page.tsx`;
+  if (!existsSync(join(root, file))) {
+    errors.push(
+      `app/sitemap.ts: staticRoutes lists "${route || "/"}" but ${file} does not exist — ` +
+        `the sitemap would advertise a 404`,
     );
   }
 }
@@ -133,6 +203,96 @@ for (const match of blogSource.matchAll(/relatedServices:\s*\[([^\]]*)\]/g)) {
   }
 }
 
+// -------------------------------------------------------------- encoding
+/**
+ * Catches double-encoded UTF-8 (mojibake) and stray BOMs.
+ *
+ * Eight files once rendered every em dash as three garbled characters, which
+ * reached the live <title> of /about and /contact and corrupted the FAQPage and
+ * Blog JSON-LD nodes. The cause was an editor that read UTF-8 as cp1252 and
+ * saved it back as UTF-8; every one of those files also carried a BOM, which is
+ * the fingerprint of that editor.
+ *
+ * This comment deliberately contains no example of the corruption: the check
+ * below scans this file too, and an example would trip it.
+ *
+ * Detection is exact rather than a blocklist of known-bad strings: map each
+ * character back to the cp1252 byte it would have come from, and flag any run
+ * that decodes as a *valid* UTF-8 scalar. Genuine accented text ("château")
+ * never forms one, because 't' is not a UTF-8 continuation byte.
+ */
+const CP1252_HIGH = {
+  0x20ac: 0x80, 0x201a: 0x82, 0x0192: 0x83, 0x201e: 0x84, 0x2026: 0x85,
+  0x2020: 0x86, 0x2021: 0x87, 0x02c6: 0x88, 0x2030: 0x89, 0x0160: 0x8a,
+  0x2039: 0x8b, 0x0152: 0x8c, 0x017d: 0x8e, 0x2018: 0x91, 0x2019: 0x92,
+  0x201c: 0x93, 0x201d: 0x94, 0x2022: 0x95, 0x2013: 0x96, 0x2014: 0x97,
+  0x02dc: 0x98, 0x2122: 0x99, 0x0161: 0x9a, 0x203a: 0x9b, 0x0153: 0x9c,
+  0x017e: 0x9e, 0x0178: 0x9f,
+};
+const cp1252Byte = (cp) =>
+  CP1252_HIGH[cp] ?? (cp <= 0xff && !(cp >= 0x80 && cp <= 0x9f) ? cp : undefined);
+const leadLen = (b) =>
+  b >= 0xc2 && b <= 0xdf ? 2 : b >= 0xe0 && b <= 0xef ? 3 : b >= 0xf0 && b <= 0xf4 ? 4 : 0;
+const utf8 = new TextDecoder("utf-8", { fatal: true });
+
+function findMojibake(text) {
+  const chars = [...text];
+  for (let i = 0; i < chars.length; i++) {
+    const lead = cp1252Byte(chars[i].codePointAt(0));
+    const len = lead === undefined ? 0 : leadLen(lead);
+    if (len === 0 || i + len > chars.length) continue;
+
+    const bytes = [lead];
+    for (let k = 1; k < len; k++) {
+      const b = cp1252Byte(chars[i + k].codePointAt(0));
+      if (b === undefined || b < 0x80 || b > 0xbf) break;
+      bytes.push(b);
+    }
+    if (bytes.length !== len) continue;
+
+    try {
+      const decoded = utf8.decode(new Uint8Array(bytes));
+      return { garbled: chars.slice(i, i + len).join(""), intended: decoded };
+    } catch {
+      // Not valid UTF-8, so not mojibake — real accented text lands here.
+    }
+  }
+  return null;
+}
+
+const SOURCE_DIRS = ["app", "components", "config", "content", "hooks", "lib", "scripts", "types"];
+const SOURCE_EXT = /\.(tsx?|jsx?|mjs|mdx|json|css)$/;
+
+function* sourceFiles(dir) {
+  for (const entry of readdirSync(join(root, dir))) {
+    if (entry === "node_modules" || entry.startsWith(".")) continue;
+    const rel = `${dir}/${entry}`;
+    if (statSync(join(root, rel)).isDirectory()) yield* sourceFiles(rel);
+    else if (SOURCE_EXT.test(entry)) yield rel;
+  }
+}
+
+let encodingChecked = 0;
+for (const dir of SOURCE_DIRS) {
+  for (const file of sourceFiles(dir)) {
+    encodingChecked++;
+    const raw = readFileSync(join(root, file));
+    if (raw[0] === 0xef && raw[1] === 0xbb && raw[2] === 0xbf) {
+      errors.push(
+        `${file}: starts with a UTF-8 BOM — strip it. Every file that shipped ` +
+          `mojibake also carried one`,
+      );
+    }
+    const hit = findMojibake(raw.toString("utf8"));
+    if (hit) {
+      errors.push(
+        `${file}: double-encoded UTF-8 — contains "${hit.garbled}" where ` +
+          `"${hit.intended}" was intended. Re-save the file as UTF-8`,
+      );
+    }
+  }
+}
+
 // ------------------------------------------------------------------ report
 for (const w of warnings) console.warn(`  warn  ${w}`);
 for (const e of errors) console.error(` ERROR  ${e}`);
@@ -142,5 +302,7 @@ if (errors.length > 0) {
   process.exit(1);
 }
 console.log(
-  `verify:content passed — ${services.length} services, ${postSlugs.length} posts, ${warnings.length} warning(s).`,
+  `verify:content passed — ${services.length} services, ${industries.length} industries, ` +
+    `${postSlugs.length} posts, ${encodingChecked} files encoding-checked, ` +
+    `${warnings.length} warning(s).`,
 );
