@@ -631,8 +631,18 @@ html.lenis body {
    --------------------------------------------------------------------------- */
 @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
   .process-section {
-    height: 100dvh;
     padding-block: 0;
+  }
+
+  /* The viewport height and the clip live here rather than on .process-section
+     because this is the element ScrollTrigger fixes to the viewport. The
+     <section> has to stay an ordinary block that React alone owns — see the
+     note at the top of components/sections/process-section.tsx.
+
+     `relative` comes from the class list in that file, and makes this the
+     containing block for the absolutely-positioned .process-header below. */
+  .process-pin {
+    height: 100dvh;
     overflow: hidden;
   }
 

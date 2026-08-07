@@ -30,9 +30,34 @@ const steps = processData as ProcessStep[];
  * It also has to include `prefers-reduced-motion`: without it a desktop
  * reduced-motion user gets the `overflow: hidden` horizontal strip with no
  * scroll driver attached, leaving the last two cards permanently unreachable.
+ *
+ * The spacer div is what keeps React and the DOM in agreement — do not remove it.
+ *
+ * ScrollTrigger's `pin` works by wrapping the pinned element in a spacer that
+ * holds its place in the layout, and by default it *creates that spacer itself
+ * and re-parents the pinned element into it* — at construction, not on scroll
+ * (ScrollTrigger.js `_swapPinIn`). When `pin: true` pinned this component's
+ * `<section>`, the live DOM became `<main> → div.pin-spacer → <section>` while
+ * React still recorded the section's parent as `<main>`. Navigating away then
+ * threw `NotFoundError: Failed to execute 'removeChild' on 'Node'`, because
+ * React only calls `removeChild` on the topmost host node of a deleted subtree
+ * and that node was no longer a child of `<main>`. The `ctx.revert()` below
+ * could not save it: passive effect cleanups do not run during React's deletion
+ * commit, so the removal threw first.
+ *
+ * Passing our own `spacerRef` as `pinSpacer`, with the pinned element already
+ * its child, makes ScrollTrigger's `if (pin.parentNode !== spacer)` guard false,
+ * so it performs no structural DOM mutation at all — and teardown takes the
+ * `spacerIsNative` path, which only restores inline styles. React's tree and the
+ * real DOM stay identical for the whole lifetime of the component.
  */
 export function ProcessSection() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLElement>(null);
+  // Handed to ScrollTrigger as `pinSpacer` so it never creates its own.
+  const spacerRef = useRef<HTMLDivElement>(null);
+  // The element actually pinned. Never the <section>: that is the node React
+  // removes on navigation, and it must keep the parent React thinks it has.
+  const pinRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const reducedMotion = usePrefersReducedMotion();
@@ -65,8 +90,9 @@ export function ProcessSection() {
 
       ctx = gsap.context(() => {
         const track = trackRef.current;
-        const wrapper = wrapperRef.current;
-        if (!track || !wrapper) return;
+        const pin = pinRef.current;
+        const spacer = spacerRef.current;
+        if (!track || !pin || !spacer) return;
 
         const distance = track.scrollWidth - window.innerWidth;
         if (distance <= 0) return;
@@ -75,10 +101,14 @@ export function ProcessSection() {
           x: -distance,
           ease: "none",
           scrollTrigger: {
-            trigger: wrapper,
+            trigger: pin,
+            // `pin` is the inner div, never the <section>, and `pinSpacer` is a
+            // node React rendered. Together these mean ScrollTrigger changes no
+            // parentage — see the note above the component.
+            pin,
+            pinSpacer: spacer,
             start: "top top",
             end: () => `+=${distance}`,
-            pin: true,
             scrub: 1,
             invalidateOnRefresh: true,
           },
@@ -94,20 +124,26 @@ export function ProcessSection() {
 
   return (
     <section ref={wrapperRef} className="process-section section-pad relative">
-      <div className="process-header mx-auto max-w-3xl px-4 sm:px-6">
-        <SectionHeader
-          eyebrow="How We Work"
-          title="From idea to intelligence"
-          subtitle="A precise, four-step path that turns ambition into deployed, compounding results."
-        />
-      </div>
-      <div
-        ref={trackRef}
-        className="process-track mx-auto mt-12 flex max-w-3xl flex-col gap-5 px-4 sm:px-6"
-      >
-        {steps.map((step) => (
-          <StepCard key={step.id} step={step} />
-        ))}
+      {/* Unstyled on purpose: on desktop ScrollTrigger writes this element's box
+          metrics inline, and below 768px it is a transparent pass-through. */}
+      <div ref={spacerRef}>
+        <div ref={pinRef} className="process-pin relative">
+          <div className="process-header mx-auto max-w-3xl px-4 sm:px-6">
+            <SectionHeader
+              eyebrow="How We Work"
+              title="From idea to intelligence"
+              subtitle="A precise, four-step path that turns ambition into deployed, compounding results."
+            />
+          </div>
+          <div
+            ref={trackRef}
+            className="process-track mx-auto mt-12 flex max-w-3xl flex-col gap-5 px-4 sm:px-6"
+          >
+            {steps.map((step) => (
+              <StepCard key={step.id} step={step} />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
