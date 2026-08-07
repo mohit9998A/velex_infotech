@@ -43,6 +43,23 @@
   --vx-glow-lg: 0 0 120px rgba(107, 33, 255, 0.5);
   --vx-glow-gold: 0 0 40px rgba(228, 199, 107, 0.3);
 
+  /* Purple that stays legible as TEXT on the current surface.
+     --vx-purple-glow is 4.9:1 on --vx-elevated but only 3.9:1 on white, so it
+     fails AA for anything under 18.66px bold in the light theme. Keep
+     --vx-purple-glow for icons, rings and fills (3:1 non-text bar); use this
+     for purple body copy and small labels. */
+  --vx-purple-ink: #a855f7;
+
+  /* Selectable surfaces — service cards, budget pills, stat tiles. Distinct
+     from --vx-elevated because these sit ON an elevated surface (the lead
+     modal) and need to separate from it without a second border. */
+  --vx-card: rgba(255, 255, 255, 0.03);
+  --vx-card-hover: rgba(107, 33, 255, 0.08);
+
+  /* Lead modal drop shadow. Heavier than --vx-glow-* because it reads as depth
+     against the page behind it rather than as brand glow. */
+  --vx-modal-shadow: 0 40px 120px rgba(88, 60, 255, 0.35);
+
   --background: var(--vx-void);
   --foreground: var(--vx-text-primary);
 }
@@ -61,6 +78,11 @@ html.light {
   --vx-text-muted: #8b88a3;
   --vx-nav-bg: rgba(255, 255, 255, 0.85);
   --vx-nav-shadow: 0 8px 30px rgba(22, 15, 46, 0.08);
+  --vx-purple-ink: #5b16d6; /* 8.2:1 on #ffffff */
+  /* On white, a white-alpha card is invisible — it needs its own tint. */
+  --vx-card: #fafaff;
+  --vx-card-hover: rgba(107, 33, 255, 0.05);
+  --vx-modal-shadow: 0 40px 120px rgba(88, 60, 255, 0.12);
   --background: var(--vx-void);
   --foreground: var(--vx-text-primary);
 }
@@ -70,10 +92,13 @@ html.light {
   --color-void: var(--vx-void);
   --color-surface: var(--vx-surface);
   --color-elevated: var(--vx-elevated);
+  --color-card: var(--vx-card);
+  --color-card-hover: var(--vx-card-hover);
 
   --color-purple-deep: var(--vx-purple-deep);
   --color-purple-core: var(--vx-purple-core);
   --color-purple-glow: var(--vx-purple-glow);
+  --color-purple-ink: var(--vx-purple-ink);
   --color-gold: var(--vx-gold);
 
   --color-vx-border: var(--vx-border);
@@ -201,6 +226,22 @@ html.lenis body {
     var(--vx-purple-glow) 0%,
     var(--vx-purple-core) 45%,
     var(--vx-gold) 110%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Purple-only. `.text-gradient` above puts its gold stop at 110%, which is off
+   the end of a long heading but lands INSIDE the last word of a short one — the
+   lead modal's two-word "AI Advantage" faded to beige halfway through
+   "Advantage". Use this wherever the gradient runs over only a word or two. */
+.text-gradient-purple {
+  background: linear-gradient(
+    110deg,
+    var(--vx-purple-glow) 0%,
+    var(--vx-purple-core) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -498,6 +539,105 @@ html.lenis body {
 }
 
 /* ============================================
+   LEAD MODAL
+   Selectable cards/pills, the CTA gradient, and the modal's own shadow.
+   ============================================ */
+
+/* Every border colour below is set HERE rather than with a Tailwind
+   `border-*` utility, and that is not a style preference.
+   `* { border-color: var(--vx-border) }` near the top of this file is
+   UNLAYERED, and an unlayered declaration beats every rule inside a cascade
+   layer regardless of specificity — Tailwind v4 emits its utilities into
+   `@layer utilities`. So `has-[:checked]:border-purple-glow` on a card would
+   silently paint the default purple-20% border and nothing else. (Same reason
+   lead-form-dialog.tsx draws its divider with a bare `border-t`.)
+   Backgrounds, rings and shadows are unaffected and stay as utilities. */
+
+.option-card,
+.option-pill {
+  border: 1px solid var(--vx-border);
+  background: var(--vx-card);
+  transition:
+    border-color 250ms ease,
+    background-color 250ms ease,
+    box-shadow 250ms ease,
+    transform 250ms ease;
+}
+
+.option-card:hover,
+.option-pill:hover {
+  border-color: var(--vx-border-bright);
+  background: var(--vx-card-hover);
+  transform: translateY(-2px);
+}
+
+/* `:has()` rather than a `peer-checked` sibling selector, so the markup is
+   free to put the visually-hidden radio anywhere inside the label. */
+.option-card:has(:checked) {
+  border-color: var(--vx-purple-glow);
+  background: var(--vx-card-hover);
+  box-shadow: var(--vx-glow-sm);
+}
+
+.option-pill:has(:checked) {
+  border-color: var(--vx-purple-core);
+  background: var(--vx-purple-core);
+  color: #fff;
+  box-shadow: var(--vx-glow-sm);
+}
+
+/* The radio is sr-only, so it cannot draw its own focus ring — the label has
+   to. Without this the card grid is unusable by keyboard. */
+.option-card:has(:focus-visible),
+.option-pill:has(:focus-visible) {
+  outline: 2px solid var(--vx-purple-glow);
+  outline-offset: 2px;
+}
+
+/* Wraps the dial-code select and the tel input so the pair reads as one
+   control and lights up together. */
+.field-group {
+  border: 1px solid var(--vx-border);
+  transition:
+    border-color 250ms ease,
+    box-shadow 250ms ease;
+}
+
+.field-group:focus-within {
+  border-color: var(--vx-purple-glow);
+  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.3);
+}
+
+/* Hover lift for non-selectable tiles (stats, trust cards). */
+.lift-card {
+  border: 1px solid var(--vx-border);
+  transition:
+    border-color 250ms ease,
+    box-shadow 250ms ease,
+    transform 250ms ease;
+}
+
+.lift-card:hover {
+  border-color: var(--vx-border-bright);
+  box-shadow: var(--vx-glow-sm);
+  transform: translateY(-2px);
+}
+
+/* Painted as a background-IMAGE so it composes with the `primary` button
+   variant's background-color instead of needing a whole new cva variant. */
+.btn-gradient {
+  background-image: linear-gradient(
+    135deg,
+    var(--vx-purple-core) 0%,
+    var(--vx-purple-glow) 100%
+  );
+}
+
+.lead-modal {
+  box-shadow: var(--vx-modal-shadow);
+}
+
+/* ============================================
    REDUCED MOTION
    ============================================ */
 
@@ -520,6 +660,14 @@ html.lenis body {
   .hero-lede,
   .hero-fade {
     animation: none !important;
+  }
+  /* The rule above only stops named ANIMATIONS. A hover `transform` is a state
+     change, so the 0.01ms transition-duration just makes it snap — the element
+     still moves. These have to be cancelled outright. */
+  .option-card:hover,
+  .option-pill:hover,
+  .lift-card:hover {
+    transform: none !important;
   }
 }
 

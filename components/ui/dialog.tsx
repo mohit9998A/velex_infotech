@@ -26,18 +26,46 @@ const DialogOverlay = React.forwardRef<
 ));
 DialogOverlay.displayName = "DialogOverlay";
 
+/**
+ * Layout overrides for a full-bleed panel dialog.
+ *
+ * A `size` prop rather than className overrides at the call site: the default
+ * below carries eight layout decisions (`grid`, `gap-4`, `p-6`, `max-w-lg`,
+ * `max-h-[92vh]`, `overflow-y-auto`, `rounded-2xl`, the width calc) and every
+ * one of them has to be undone together for a two-column layout that scrolls
+ * per column. twMerge resolves each conflict, but spreading that list across
+ * call sites means the next person only undoes six of the eight.
+ *
+ * `dvh` not `vh` — on mobile Safari `vh` is the *largest* viewport height, so
+ * the bottom of a 92vh modal sits under the browser chrome. That is where the
+ * submit button is.
+ *
+ * `lg:h-[90dvh]` is a DEFINITE height, and it is load-bearing rather than
+ * cosmetic. `max-height` alone leaves the height indefinite, so a grid inside
+ * still sizes its rows to content, the row grows past the modal, and
+ * `overflow-hidden` here clips it — the columns never scroll and everything
+ * below the fold becomes unreachable. Below `lg` the layout is a single
+ * scroller, so `max-h` is correct there and the modal shrinks to its content.
+ */
+const dialogSizes = {
+  default: "",
+  wide: "block w-[calc(100vw-1.5rem)] max-w-[1280px] gap-0 rounded-[28px] p-0 max-h-[90dvh] overflow-hidden lg:h-[90dvh]",
+} as const;
+
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
     hideClose?: boolean;
+    size?: keyof typeof dialogSizes;
   }
->(({ className, children, hideClose, ...props }, ref) => (
+>(({ className, children, hideClose, size = "default", ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
         "fixed left-1/2 top-1/2 z-[130] grid w-[calc(100vw-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-2xl border border-vx-border-bright bg-elevated/95 p-6 shadow-[0_0_80px_rgba(107,33,255,0.25)] backdrop-blur-xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 max-h-[92vh] overflow-y-auto",
+        dialogSizes[size],
         className,
       )}
       {...props}

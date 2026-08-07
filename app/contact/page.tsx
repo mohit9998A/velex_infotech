@@ -129,7 +129,13 @@ export default function ContactPage() {
             <div className="glass-card p-6 sm:p-8">
               <h2 className="font-display text-2xl text-primary">Get your free consultation</h2>
               <p className="mt-1 text-sm text-secondary">
-                No spam, ever. We respond within 24 hours.
+                {/* "One business day", not "24 hours" — this page states
+                    09:00-19:00 IST Mon-Fri a few lines above, so a Friday
+                    evening enquiry cannot be answered inside 24 hours. Every
+                    other surface (the success screen, content/faqs.json, the
+                    bento grid, content/stats.json) already says one business
+                    day; these were the last two that did not. */}
+                No spam, ever. We reply within one business day.
               </p>
               <div className="mt-6">
                 <LeadForm />
