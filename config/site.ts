@@ -19,16 +19,28 @@ export const siteConfig = {
    */
   email: "team@velexinfotech.com",
   /**
-   * Where lead-form submissions are delivered. Deliberately NOT `email`: the
-   * Resend sender is still the sandbox `onboarding@resend.dev`, which can only
-   * deliver to the account owner's own verified address. Point this at the
-   * domain before that changes and every enquiry fails — see the comment in
-   * app/api/contact/route.ts.
+   * Where lead-form submissions are delivered.
    *
-   * TODO(velex): move to leads@velexinfotech.com in the same change that
-   * switches `from:` to the domain, once SPF+DKIM are verified in Resend.
+   * Now the same address as `email` above, which is the point of the SMTP
+   * migration. Under the previous Resend setup this had to be the address the
+   * Resend account was registered under, because the sandbox sender
+   * `onboarding@resend.dev` refuses to deliver anywhere else — and when
+   * fc01991 rewrote the hard-coded recipient into this field and changed the
+   * value in the same edit, every lead was rejected with a 403 and lost until
+   * someone noticed. Sending through the company's own mailbox removes that
+   * constraint entirely: the recipient is now unconstrained and this is free
+   * to be the published address.
+   *
+   * Still a separate field from `email` rather than an alias of it, because
+   * the two answer different questions — `email` is what the site publishes to
+   * visitors, this is where machine-generated mail lands. Pointing lead
+   * delivery at a dedicated `leads@` mailbox later should not silently change
+   * six mailto: links.
+   *
+   * Overridable at runtime with LEAD_INBOX. Verify against the live mail
+   * server with `npm run verify:smtp`.
    */
-  leadInbox: "velexinfotech@gmail.com",
+  leadInbox: "team@velexinfotech.com",
   phoneDisplay: "+91 89689 35766",
   phone: "+918968935766",
   whatsapp: "https://wa.me/918968935766",

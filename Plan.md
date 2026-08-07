@@ -850,8 +850,8 @@ HARO → Connectively → shut down 9 Dec 2024. **But it came back:**
 |---|---|
 | **Google Search Console property + verification token** | **All indexing diagnosis.** Nothing else is knowable until this exists. |
 | Bing Webmaster Tools property + token | IndexNow, Copilot/ChatGPT visibility |
-| Resend domain verification (SPF/DKIM DNS) | Reliable lead delivery |
-| Decide `hello@` / `leads@velexinfotech.com` | Replacing the Gmail address |
+| Confirm SPF/DKIM for `velexinfotech.com` in hPanel | Lead mail landing in the inbox rather than spam |
+| Vercel Firewall rate-limit rule on `/api/contact` | Protects the shared mailbox quota; the in-code limiter is per-instance only |
 | **Real Ludhiana street address + postcode** | Correct `PostalAddress` — currently `streetAddress: "Ludhiana"`, which is a city, not a street |
 | **Real project / client counts** | Replacing the unsourced 200+/50+ figures |
 | Which clients may be named; which testimonials are real | Trust bar, testimonials |
