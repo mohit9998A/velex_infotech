@@ -18,6 +18,54 @@ import { formatBudget, leadFormSchema } from "@/lib/validations/lead";
  */
 
 /**
+ * Sender and recipient, both overridable at runtime.
+ *
+ * Env indirection is used HERE and nowhere else in this codebase for a
+ * specific reason: these two strings are the difference between a lead
+ * arriving and a lead being destroyed, and getting them wrong is invisible
+ * until someone reads the platform logs. Making them settable in the Vercel
+ * dashboard means verifying the domain in Resend is a DNS change plus two env
+ * vars, rather than a code edit by whoever is available.
+ *
+ * The defaults are the pair that is known to work today.
+ */
+const SANDBOX_FROM = `${siteConfig.name} <onboarding@resend.dev>`;
+
+/**
+ * The last-resort pair. `onboarding@resend.dev` needs no domain verification
+ * and `siteConfig.leadInbox` is the Resend account owner, so this combination
+ * works on a brand-new account with nothing configured. It is what the retry
+ * below falls back to when the primary send fails.
+ */
+const KNOWN_GOOD = { from: SANDBOX_FROM, to: siteConfig.leadInbox };
+
+const PRIMARY = {
+  from: process.env.LEAD_FROM_EMAIL || SANDBOX_FROM,
+  to: process.env.LEAD_INBOX || siteConfig.leadInbox,
+};
+
+/** True when the primary pair is already the fallback — nothing to retry. */
+const PRIMARY_IS_KNOWN_GOOD =
+  PRIMARY.from === KNOWN_GOOD.from && PRIMARY.to === KNOWN_GOOD.to;
+
+/**
+ * Resend's ErrorResponse is a plain object, and `console.error(prefix, obj)`
+ * on Vercel can render it as `[object Object]` — which is how a 403 saying
+ * exactly what is wrong turns into an unreadable log line and a bug that
+ * survives for weeks. Flatten it to a single string instead.
+ */
+function describeError(error: unknown): string {
+  if (error && typeof error === "object") {
+    const e = error as { name?: string; message?: string; statusCode?: number | null };
+    if (e.message) {
+      return `${e.name ?? "error"} (${e.statusCode ?? "no status"}): ${e.message}`;
+    }
+  }
+  if (error instanceof Error) return `${error.name}: ${error.message}`;
+  return String(error);
+}
+
+/**
  * Lead values land inside an HTML email. `company`, `source` and `message`
  * accept arbitrary text up to 2000 characters, so without escaping this is
  * HTML injection into an inbox — at best a mangled email, at worst a
@@ -80,19 +128,7 @@ export async function POST(request: Request) {
   const row = (label: string, value: string) =>
     `<p><strong>${label}:</strong> ${escapeHtml(value)}</p>`;
 
-  try {
-    const { data, error } = await resend.emails.send({
-      // TODO(velex): switch to `leads@velexinfotech.com` once SPF + DKIM are
-      // set up for the domain. `onboarding@resend.dev` is Resend's sandbox
-      // sender and can only deliver to the account owner's own address, which
-      // makes the recipient below load-bearing — any change to it fails
-      // silently. Git history shows the verified domain worked before
-      // (4b63f58) and was reverted for expediency (67d1aba).
-      from: `${siteConfig.name} <onboarding@resend.dev>`,
-      to: [siteConfig.leadInbox],
-      replyTo: lead.email,
-      subject: `New Lead: ${lead.name} (${lead.service})`,
-      html: `
+  const html = `
         <h2>New Consultation Request</h2>
         ${row("Name", lead.name)}
         ${row("Email", lead.email)}
@@ -106,20 +142,56 @@ export async function POST(request: Request) {
         <p>${escapeHtml(lead.message || "Not provided").replace(/\n/g, "<br />")}</p>
         <hr />
         <p><small>Received at: ${new Date().toISOString()}</small></p>
-      `,
+      `;
+
+  const send = (route: { from: string; to: string }) =>
+    resend.emails.send({
+      from: route.from,
+      to: [route.to],
+      replyTo: lead.email,
+      subject: `New Lead: ${lead.name} (${lead.service})`,
+      html,
     });
 
-    if (error) {
-      console.error("[velex:email-error]", error);
+  try {
+    const { data, error } = await send(PRIMARY);
+
+    if (!error) {
+      // Deliberately no console.info of the lead object. It carries name, email
+      // and phone, and platform logs are a third-party sink — you cannot publish
+      // a GDPR posture on one page while writing visitor phone numbers to it.
+      return NextResponse.json({ ok: true, data });
+    }
+
+    console.error(
+      `[velex:email-error] primary send failed (${PRIMARY.from} -> ${PRIMARY.to}): ` +
+        describeError(error),
+    );
+
+    // A misconfigured sender or recipient must not cost a real enquiry. Retry
+    // once on the pair that needs no domain verification. This is why the
+    // recipient is not read from env alone: an env var typo would otherwise
+    // silently destroy every lead until someone noticed.
+    if (PRIMARY_IS_KNOWN_GOOD) {
       return NextResponse.json({ ok: false, error: "Failed to send email" }, { status: 500 });
     }
 
-    // Deliberately no console.info of the lead object. It carries name, email
-    // and phone, and platform logs are a third-party sink — you cannot publish
-    // a GDPR posture on one page while writing visitor phone numbers to it.
-    return NextResponse.json({ ok: true, data });
+    const retry = await send(KNOWN_GOOD);
+    if (retry.error) {
+      console.error(
+        `[velex:email-error] fallback send ALSO failed (${KNOWN_GOOD.from} -> ` +
+          `${KNOWN_GOOD.to}): ${describeError(retry.error)}`,
+      );
+      return NextResponse.json({ ok: false, error: "Failed to send email" }, { status: 500 });
+    }
+
+    console.warn(
+      "[velex:lead] primary route rejected; lead delivered via fallback inbox. " +
+        "Fix LEAD_FROM_EMAIL / LEAD_INBOX — run `npm run verify:resend`.",
+    );
+    return NextResponse.json({ ok: true, data: retry.data, viaFallback: true });
   } catch (error) {
-    console.error("[velex:email-error]", error);
+    console.error(`[velex:email-error] transport threw: ${describeError(error)}`);
     return NextResponse.json({ ok: false, error: "Internal Server Error" }, { status: 500 });
   }
 }

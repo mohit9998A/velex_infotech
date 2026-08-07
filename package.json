@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "verify:content": "node scripts/verify-content.mjs",
+    "verify:resend": "node scripts/verify-resend.mjs",
     "posters": "node scripts/capture-portfolio-posters.mjs"
   },
   "dependencies": {

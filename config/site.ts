@@ -19,16 +19,29 @@ export const siteConfig = {
    */
   email: "team@velexinfotech.com",
   /**
-   * Where lead-form submissions are delivered. Deliberately NOT `email`: the
-   * Resend sender is still the sandbox `onboarding@resend.dev`, which can only
-   * deliver to the account owner's own verified address. Point this at the
-   * domain before that changes and every enquiry fails — see the comment in
-   * app/api/contact/route.ts.
+   * Where lead-form submissions are delivered.
+   *
+   * This must be the address the RESEND ACCOUNT ITSELF is registered under —
+   * not the published contact address, and not any address that merely
+   * forwards here. While `from:` is Resend's sandbox sender
+   * (`onboarding@resend.dev`), Resend refuses delivery to anyone except the
+   * account owner and returns a 403 `validation_error`. The route then 500s
+   * and the visitor is told to use WhatsApp instead.
+   *
+   * That is not hypothetical: fc01991 rewrote the hard-coded recipient into
+   * this field and changed the value to velexinfotech@gmail.com at the same
+   * time. Every lead between that commit and this one was rejected by Resend
+   * and lost. 67d1aba is the commit that establishes the owner address.
+   *
+   * Overridable at runtime with LEAD_INBOX so the address can be corrected
+   * without a code change — see app/api/contact/route.ts. Verify the value
+   * against the live account with `npm run verify:resend`.
    *
    * TODO(velex): move to leads@velexinfotech.com in the same change that
    * switches `from:` to the domain, once SPF+DKIM are verified in Resend.
+   * Until then this field is load-bearing and must not be "tidied".
    */
-  leadInbox: "velexinfotech@gmail.com",
+  leadInbox: "mohitdutta0407@gmail.com",
   phoneDisplay: "+91 89689 35766",
   phone: "+918968935766",
   whatsapp: "https://wa.me/918968935766",
