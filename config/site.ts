@@ -21,27 +21,26 @@ export const siteConfig = {
   /**
    * Where lead-form submissions are delivered.
    *
-   * This must be the address the RESEND ACCOUNT ITSELF is registered under —
-   * not the published contact address, and not any address that merely
-   * forwards here. While `from:` is Resend's sandbox sender
-   * (`onboarding@resend.dev`), Resend refuses delivery to anyone except the
-   * account owner and returns a 403 `validation_error`. The route then 500s
-   * and the visitor is told to use WhatsApp instead.
+   * Now the same address as `email` above, which is the point of the SMTP
+   * migration. Under the previous Resend setup this had to be the address the
+   * Resend account was registered under, because the sandbox sender
+   * `onboarding@resend.dev` refuses to deliver anywhere else — and when
+   * fc01991 rewrote the hard-coded recipient into this field and changed the
+   * value in the same edit, every lead was rejected with a 403 and lost until
+   * someone noticed. Sending through the company's own mailbox removes that
+   * constraint entirely: the recipient is now unconstrained and this is free
+   * to be the published address.
    *
-   * That is not hypothetical: fc01991 rewrote the hard-coded recipient into
-   * this field and changed the value to velexinfotech@gmail.com at the same
-   * time. Every lead between that commit and this one was rejected by Resend
-   * and lost. 67d1aba is the commit that establishes the owner address.
+   * Still a separate field from `email` rather than an alias of it, because
+   * the two answer different questions — `email` is what the site publishes to
+   * visitors, this is where machine-generated mail lands. Pointing lead
+   * delivery at a dedicated `leads@` mailbox later should not silently change
+   * six mailto: links.
    *
-   * Overridable at runtime with LEAD_INBOX so the address can be corrected
-   * without a code change — see app/api/contact/route.ts. Verify the value
-   * against the live account with `npm run verify:resend`.
-   *
-   * TODO(velex): move to leads@velexinfotech.com in the same change that
-   * switches `from:` to the domain, once SPF+DKIM are verified in Resend.
-   * Until then this field is load-bearing and must not be "tidied".
+   * Overridable at runtime with LEAD_INBOX. Verify against the live mail
+   * server with `npm run verify:smtp`.
    */
-  leadInbox: "mohitdutta0407@gmail.com",
+  leadInbox: "team@velexinfotech.com",
   phoneDisplay: "+91 89689 35766",
   phone: "+918968935766",
   whatsapp: "https://wa.me/918968935766",
