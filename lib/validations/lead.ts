@@ -59,6 +59,16 @@ export function formatBudget(bandId: string, currency: Currency): string {
   return `${currency} ${band[currency]}`;
 }
 
+/**
+ * Shared with the form so the character counter and the `maxLength` attribute
+ * cannot drift from the rule that actually rejects the submission. A counter
+ * reading "0 / 500" over a field that accepts 2000 is worse than no counter.
+ */
+export const MESSAGE_MAX_LENGTH = 2000;
+
+/** Caps the JOINED phone string — dial code, separator and national number. */
+export const PHONE_MAX_LENGTH = 24;
+
 export const leadFormSchema = z.object({
   name: z
     .string()
@@ -82,7 +92,7 @@ export const leadFormSchema = z.object({
   phone: z
     .string()
     .trim()
-    .max(24, "Phone number is too long.")
+    .max(PHONE_MAX_LENGTH, "Phone number is too long.")
     .regex(/^[+(\d][\d\s().-]*$/, "Please enter a valid phone number.")
     .refine((v) => v.replace(/\D/g, "").length >= 10, {
       message: "Phone number is too short (minimum 10 digits).",
@@ -99,7 +109,12 @@ export const leadFormSchema = z.object({
   // react-hook-form. The form always supplies this, so required is both
   // simpler and stricter.
   currency: z.enum(CURRENCIES),
-  message: z.string().trim().max(2000, "Message is too long (maximum 2000 characters).").optional().or(z.literal("")),
+  message: z
+    .string()
+    .trim()
+    .max(MESSAGE_MAX_LENGTH, `Message is too long (maximum ${MESSAGE_MAX_LENGTH} characters).`)
+    .optional()
+    .or(z.literal("")),
   source: z.string().optional(),
   // Honeypot. Real users never see this field, so anything in it is a bot.
   // Named innocuously because scrapers skip fields called "honeypot".
