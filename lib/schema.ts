@@ -238,21 +238,33 @@ export function webPageSchema(input: {
   };
 }
 
+/**
+ * A Service node.
+ *
+ * `path` exists because industry pages (/industries/healthcare) describe a
+ * service too, but must not claim the `@id` of a /services page — two nodes
+ * sharing one identity is worse than a changed id. Defaults to the service
+ * page for the given slug, which is the common case.
+ */
 export function serviceSchema(input: {
   slug: string;
   title: string;
   description: string;
+  path?: string;
+  /** Overrides the four default countries, e.g. a market-scoped page. */
+  areaServed?: object[];
 }) {
+  const path = input.path ?? `/services/${input.slug}`;
   return {
     "@type": "Service",
-    "@id": absoluteUrl(`/services/${input.slug}#service`),
+    "@id": absoluteUrl(`${path}#service`),
     name: input.title,
     serviceType: input.title,
     description: input.description,
-    url: absoluteUrl(`/services/${input.slug}`),
+    url: absoluteUrl(path),
     provider: orgRef,
     // Literally answers "do they serve the US?" for an extractor.
-    areaServed: areaServedCountries,
+    areaServed: input.areaServed ?? areaServedCountries,
     audience: { "@type": "BusinessAudience" },
     // No `offers` block. An Offer with priceCurrency INR, no price and
     // availability "InStock" is product vocabulary applied to consulting — it

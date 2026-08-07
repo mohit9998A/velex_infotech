@@ -43,6 +43,11 @@ export const navGroups: NavGroup[] = [
         href: "/services/ai-integration",
         description: "Embed AI into your existing business stack.",
       },
+      {
+        label: "AI Consulting",
+        href: "/services/ai-consulting",
+        description: "Where AI pays back, and where it does not.",
+      },
     ],
   },
   {
@@ -73,10 +78,21 @@ export const navGroups: NavGroup[] = [
   {
     label: "Company",
     links: [
+      {
+        // The services hub was in neither the navbar nor the footer nor the
+        // homepage — its only inbound links came from /industries and the
+        // service detail pages, making it the weakest-linked commercial page
+        // on the domain. It sits in Company rather than in a fourth group
+        // because footer.tsx's grid has room for exactly three link columns.
+        label: "All Services",
+        href: "/services",
+        description: "Every capability in one place.",
+      },
       { label: "About Us", href: "/about" },
+      { label: "Industries", href: "/industries" },
       { label: "Portfolio", href: "/#portfolio" },
       { label: "Blog", href: "/blog" },
-      { label: "Ludhiana", href: "/locations/ludhiana" },
+      { label: "Locations", href: "/locations" },
       { label: "Contact", href: "/contact" },
     ],
   },

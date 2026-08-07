@@ -126,6 +126,7 @@ function ContactItem({
       {text}
     </span>
   );
+
   return href ? (
     <a href={href} className="transition-colors hover:text-primary [&_span]:hover:text-primary">
       {content}

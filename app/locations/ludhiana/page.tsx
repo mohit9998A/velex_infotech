@@ -1,27 +1,17 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { ArrowUpRight, Check, Clock, Mail, MapPin, Phone } from "lucide-react";
 
 import type { ServiceItem } from "@/types";
 import servicesData from "@/content/services.json";
 import { siteConfig } from "@/config/site";
 import { pageMetadata } from "@/lib/seo";
-import {
-  breadcrumbSchema,
-  faqSchema,
-  jsonLd,
-  localBusinessSchema,
-} from "@/lib/schema";
+import { breadcrumbSchema, jsonLd, localBusinessSchema } from "@/lib/schema";
 import { getServiceIcon } from "@/lib/icons";
 import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { SectionHeader } from "@/components/common/section-header";
 import { ConsultButtons } from "@/components/common/consult-buttons";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { FaqSection } from "@/components/sections/faq-section";
 
 const services = servicesData as ServiceItem[];
 
@@ -34,7 +24,7 @@ export const metadata = pageMetadata({
 
 /**
  * Deliberately a single, hand-written location page for the city we actually
- * operate in â€” not a `[city]` template.
+ * operate in — not a `[city]` template.
  *
  * A dynamic location route is how near-duplicate "doorway" pages get generated
  * for cities a business has no presence in, which Google penalises. If a second
@@ -51,22 +41,22 @@ const localFaqs = [
   {
     question: "Do you work with Ludhiana's manufacturing and export businesses?",
     answer:
-      "Yes â€” that is much of the local economy and much of our local work. Hosiery and textile units, bicycle and auto-component manufacturers, and agricultural machinery businesses share a common set of problems we automate: order and enquiry handling over WhatsApp, quotation generation across variable pricing, dispatch and delivery updates, and reconciling paperwork between production, accounts and export documentation.",
+      "Yes — that is much of the local economy and much of our local work. Hosiery and textile units, bicycle and auto-component manufacturers, and agricultural machinery businesses share a common set of problems we automate: order and enquiry handling over WhatsApp, quotation generation across variable pricing, dispatch and delivery updates, and reconciling paperwork between production, accounts and export documentation.",
   },
   {
     question: "Can you build systems that work in Punjabi and Hindi?",
     answer:
-      "Yes. Our voice agents and WhatsApp chatbots handle English, Hindi and Punjabi, including sentences that mix them â€” which is how most customers and staff in Ludhiana actually communicate. We test on real recordings and real message logs from your business, not on clean samples.",
+      "Yes. Our voice agents and WhatsApp chatbots handle English, Hindi and Punjabi, including sentences that mix them — which is how most customers and staff in Ludhiana actually communicate. We test on real recordings and real message logs from your business, not on clean samples.",
   },
   {
     question: "Do we need to be a large company to work with you?",
     answer:
-      "No, but volume matters more than company size. Automation pays for itself when a process runs often enough â€” a family-run unit handling hundreds of WhatsApp enquiries a month is a better candidate than a larger firm with a process that runs twice a week. We will tell you honestly if the numbers do not justify a build.",
+      "No, but volume matters more than company size. Automation pays for itself when a process runs often enough — a family-run unit handling hundreds of WhatsApp enquiries a month is a better candidate than a larger firm with a process that runs twice a week. We will tell you honestly if the numbers do not justify a build.",
   },
   {
     question: "Do you only work with clients in Ludhiana?",
     answer:
-      "No. Ludhiana is where we are based and where we can meet face to face. We deliver work for clients across India and internationally, and the delivery process is the same either way â€” the difference is only how often we can be in the room.",
+      "No. Ludhiana is where we are based and where we can meet face to face. We deliver work for clients across India and internationally, and the delivery process is the same either way — the difference is only how often we can be in the room.",
   },
 ];
 
@@ -93,6 +83,13 @@ export default function LudhianaPage() {
   const featured = services.filter((s) =>
     ["ai-automation", "whatsapp-bot", "ai-receptionist", "software-development"].includes(s.slug),
   );
+  // Home > Locations > India > Ludhiana. The same trail feeds the visible
+  // breadcrumb and breadcrumbSchema, so the two can never disagree.
+  const trail = [
+    { name: "Locations", path: "/locations" },
+    { name: "India", path: "/locations/india" },
+    { name: "Ludhiana", path: "/locations/ludhiana" },
+  ];
 
   return (
     <>
@@ -101,10 +98,10 @@ export default function LudhianaPage() {
         dangerouslySetInnerHTML={{
           __html: jsonLd(
             localBusinessSchema("ludhiana"),
-            faqSchema(localFaqs),
-            // No /locations hub exists yet, so the trail is Home > Ludhiana.
-            // Add the hub crumb here when the hub is built (Plan.md Phase 3).
-            breadcrumbSchema([{ name: "Ludhiana", path: "/locations/ludhiana" }]),
+            // faqSchema is deliberately NOT here: <FaqSection> below emits the
+            // FAQPage node for the same array it renders, so adding it here too
+            // would publish the entity twice (AGENTS.md rule 5).
+            breadcrumbSchema(trail),
           ),
         }}
       />
@@ -115,7 +112,7 @@ export default function LudhianaPage() {
         <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 glow-blob" />
 
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
-          <Breadcrumbs trail={[{ name: "Ludhiana", path: "/locations/ludhiana" }]} />
+          <Breadcrumbs trail={trail} />
 
           <span className="badge-pill w-fit">
             <MapPin className="size-3.5 text-gold" />
@@ -128,14 +125,14 @@ export default function LudhianaPage() {
           <p className="mt-5 max-w-2xl text-pretty text-secondary md:text-lg">
             Velex Infotech is based in Ludhiana. We build AI automation, voice agents,
             WhatsApp chatbots and custom software for the manufacturers, exporters and
-            service businesses that run this city â€” and for clients across India from here.
+            service businesses that run this city — and for clients across India from here.
           </p>
 
           <div className="mt-9">
             <ConsultButtons />
           </div>
 
-          {/* Real contact detail â€” this is a location page for an office that exists */}
+          {/* Real contact detail — this is a location page for an office that exists */}
           <div className="mt-12 grid gap-4 sm:grid-cols-3">
             <div className="glass-card flex items-start gap-3 p-5">
               <MapPin className="mt-0.5 size-5 shrink-0 text-purple-glow" />
@@ -158,7 +155,7 @@ export default function LudhianaPage() {
               <Clock className="mt-0.5 size-5 shrink-0 text-purple-glow" />
               <span className="flex flex-col">
                 <span className="font-mono-label text-muted">Hours</span>
-                <span className="text-primary">Monâ€“Fri, 9amâ€“7pm</span>
+                <span className="text-primary">Mon–Fri, 9am–7pm</span>
               </span>
             </div>
           </div>
@@ -193,7 +190,7 @@ export default function LudhianaPage() {
           <ul className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
               "We can sit in your office and watch the process before quoting on it",
-              "Punjabi, Hindi and English handled as they are actually spoken â€” mixed",
+              "Punjabi, Hindi and English handled as they are actually spoken — mixed",
               "Same working hours, same holidays, no overnight handover delays",
               "Face-to-face handover and training when a system goes live",
             ].map((point) => (
@@ -238,24 +235,13 @@ export default function LudhianaPage() {
         </div>
       </section>
 
-      {/* Local FAQ */}
-      <section className="section-pad relative">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <SectionHeader eyebrow="FAQ" title="Working with us in Ludhiana" />
-          <Accordion type="single" collapsible className="mt-12 flex flex-col gap-3">
-            {localFaqs.map((faq) => (
-              <AccordionItem
-                key={faq.question}
-                value={faq.question}
-                className="rounded-xl border border-vx-border bg-surface/50 px-6 transition-colors data-[state=open]:border-vx-border-bright"
-              >
-                <AccordionTrigger>{faq.question}</AccordionTrigger>
-                <AccordionContent>{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+      {/* Local FAQ. Renders the accordion and emits the FAQPage node from the
+          same array — see the note in the @graph above. */}
+      <FaqSection faqs={localFaqs} title="Working with us in Ludhiana" />
 
-          <p className="mt-10 text-center text-secondary">
+      <section className="relative pb-8">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <p className="text-center text-secondary">
             Prefer email?{" "}
             <a
               href={`mailto:${siteConfig.email}`}

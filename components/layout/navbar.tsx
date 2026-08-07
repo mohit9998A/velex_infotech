@@ -19,6 +19,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import {
   Sheet,
@@ -57,6 +58,26 @@ export function Navbar() {
         {/* Desktop nav */}
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList>
+            {/*
+              The one header link that survives server rendering.
+              NavigationMenuLink renders Primitive.a directly, with no Presence
+              gate — unlike NavigationMenuContent below, whose 16 links are
+              unmounted until a hover and so are invisible to a crawler, which
+              does not hover. `forceMount` is not the fix: once the Viewport
+              mounts, Radix renders every panel through
+              `Presence present={forceMount || isActive}`, so all three would
+              show at once inside a container sized from only the active one,
+              with no data-state to hide them by. The dropdown links stay
+              crawlable via the footer, which renders the same navGroups.
+            */}
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href="/services" className={navigationMenuTriggerStyle()}>
+                  Services
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
             {navGroups.map((group) => (
               <NavigationMenuItem key={group.label}>
                 <NavigationMenuTrigger>{group.label}</NavigationMenuTrigger>
@@ -122,7 +143,15 @@ export function Navbar() {
             <SheetContent side="right">
               <SheetTitle className="sr-only">Navigation menu</SheetTitle>
               <Logo />
-              <Accordion type="single" collapsible className="mt-2 flex-1 overflow-y-auto">
+              <SheetClose asChild>
+                <Link
+                  href="/services"
+                  className="mt-2 block border-b border-vx-border py-4 text-sm font-medium text-primary"
+                >
+                  All Services
+                </Link>
+              </SheetClose>
+              <Accordion type="single" collapsible className="flex-1 overflow-y-auto">
                 {navGroups.map((group) => (
                   <AccordionItem
                     key={group.label}

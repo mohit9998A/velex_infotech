@@ -12,7 +12,10 @@ export function ServicesSection() {
         <SectionHeader
           eyebrow="What We Build"
           title="Premium AI services for the bold"
-          subtitle="Seven core capabilities, engineered to give ambitious businesses an unfair advantage."
+          // Derived, not literalled: this read "Seven core capabilities" while
+          // services.json held ten. A number a visitor can falsify by counting
+          // the cards directly beneath it.
+          subtitle={`${services.length} core capabilities, engineered to give ambitious businesses an unfair advantage.`}
         />
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
