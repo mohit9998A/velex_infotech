@@ -10,17 +10,23 @@ export const siteConfig = {
   description:
     "AI agents, AI automation, voice and WhatsApp assistants, and custom software for businesses in the United States, United Kingdom, Canada and India. Engineered from Ludhiana and Noida.",
   founder: "Mohit Dutta",
-  /** Published contact address — shown on the site. */
-  email: "velexinfotech@gmail.com",
   /**
-   * Where lead-form submissions are delivered. Kept separate from `email`
-   * because the two genuinely differ in purpose, but both must be real: the
-   * API route previously hardcoded a third address, so the site told visitors
-   * one thing and routed their enquiry somewhere else.
+   * The single published contact address, on the verified domain. Everything
+   * visitor-facing reads this one field — schema, /contact, both legal pages,
+   * llms.txt, the footer, /locations/ludhiana and the newsletter mailto — so
+   * there is exactly one address to keep true. The site previously led with
+   * this in the footer while every other surface still published a gmail.
+   */
+  email: "team@velexinfotech.com",
+  /**
+   * Where lead-form submissions are delivered. Deliberately NOT `email`: the
+   * Resend sender is still the sandbox `onboarding@resend.dev`, which can only
+   * deliver to the account owner's own verified address. Point this at the
+   * domain before that changes and every enquiry fails — see the comment in
+   * app/api/contact/route.ts.
    *
-   * TODO(velex): move both to the verified domain (hello@ / leads@) once
-   * SPF+DKIM are set up — a free Gmail address on a site courting US/UK
-   * enterprise buyers contradicts every other claim on the page.
+   * TODO(velex): move to leads@velexinfotech.com in the same change that
+   * switches `from:` to the domain, once SPF+DKIM are verified in Resend.
    */
   leadInbox: "velexinfotech@gmail.com",
   phoneDisplay: "+91 89689 35766",
@@ -53,6 +59,24 @@ export const siteConfig = {
     google: "",
     bing: "",
   },
+  /**
+   * GA4 measurement ID. Public by definition — it ships in the page source of
+   * every site that uses it — so it lives here with the rest of the site
+   * identity rather than in an env var that silently vanishes on a new deploy.
+   *
+   * Rendered via <GoogleAnalytics> from @next/third-parties in app/layout.tsx,
+   * not the raw gtag snippet. The component emits the same two tags, but routes
+   * them through next/script so they load `afterInteractive` and survive client
+   * navigation without re-executing.
+   *
+   * Note: neither the component nor the raw snippet fires a page_view on an App
+   * Router client-side navigation. That is GA4's job — Admin > Data Streams >
+   * Enhanced measurement > "Page changes based on browser history events" must
+   * stay enabled, or every visitor reads N pages and counts as one.
+   *
+   * Empty string renders nothing at all (see app/layout.tsx).
+   */
+  gaMeasurementId: "G-DW9TRM6Z6Q",
   /**
    * Only profiles that actually resolve.
    *

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { fontVariables } from "@/lib/fonts";
 import { siteConfig } from "@/config/site";
@@ -119,7 +120,16 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-dvh bg-void font-sans text-primary antialiased">
+      {/* `suppressHydrationWarning` is NOT inherited from <html> — React reads it
+          per element — so <body> needs its own. Extensions write attributes here
+          before React hydrates (Bitdefender's `bis_register` and
+          `__processed_<uuid>__` are the ones seen in practice), and every one of
+          them produced a mismatch warning that buried real ones. This suppresses
+          attribute noise on <body> only; children still report normally. */}
+      <body
+        className="min-h-dvh bg-void font-sans text-primary antialiased"
+        suppressHydrationWarning
+      >
         <Providers>
           <ScrollProgress />
           <Navbar />
@@ -129,6 +139,13 @@ export default function RootLayout({
           <LeadFormModal />
         </Providers>
       </body>
+      {/* Sibling of <body>, per the Next 16 guide — the component renders two
+          next/script tags, which React hoists. Guarded so a missing ID renders
+          nothing rather than `gtag('config', '')`, which would silently collect
+          into no property at all. */}
+      {siteConfig.gaMeasurementId ? (
+        <GoogleAnalytics gaId={siteConfig.gaMeasurementId} />
+      ) : null}
     </html>
   );
 }
