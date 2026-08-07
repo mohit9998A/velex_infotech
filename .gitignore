@@ -36,6 +36,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local agent session state — the permission allowlist holds absolute paths
+# from a dead session on one machine. Force-add a curated settings.json if a
+# shared one is ever wanted.
+.claude/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
