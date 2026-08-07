@@ -65,10 +65,32 @@ export function HeroSection() {
     // Spline canvas, the gradients and the ScrollIndicator do not move.
     // The clamp floor tracks the resting header height in `navbar.tsx`.
     <section className="relative flex min-h-dvh w-full items-center overflow-hidden pt-[clamp(6rem,9svh,7rem)] pb-[clamp(3rem,8svh,5.5rem)]">
-      {/* 3D Spline background */}
+      {/* 3D Spline background, pushed right so the scene clears the text
+          column — text left, robot right.
+
+          The robot's position *inside* the scene is authored remotely (see
+          SPLINE_SCENE) and is not reachable from React: there is no ref, no
+          x/y state, no CSS var. The canvas box is the only lever, so the shift
+          has to live here.
+
+          Safe for cursor tracking. The runtime normalises the pointer against
+          `canvas.getBoundingClientRect()`, which includes this transform, so
+          the mapping self-corrects and the head still points at the cursor. Its
+          listeners are on `window`, not the canvas — they have to be, because
+          the z-[5] gradients below carry no `pointer-events-none` and would
+          swallow canvas-bound ones — so vacating the left 30% costs nothing.
+
+          `md:` mirrors the load gate in interactive-3d-robot.tsx
+          (`min-width: 768px and pointer: fine`). Below it the scene is never
+          fetched and StaticCrystal IS the hero visual, so it must stay centred;
+          a 30vw shift would push it half off a phone screen.
+
+          Transform-only: ResizeObserver reads contentRect/clientWidth, neither
+          of which a translate touches, so the drawing buffer and the GPU cost
+          are unchanged. The overhang is clipped by `overflow-hidden` above. */}
       <InteractiveRobotSpline
         scene={SPLINE_SCENE}
-        className="absolute inset-0 z-0 h-full w-full"
+        className="absolute inset-0 z-0 h-full w-full md:translate-x-[30%]"
       />
 
       {/* Readability + ambient gradients.
