@@ -1,0 +1,82 @@
+The difference between building an app and building a SaaS product is not the interface — it is everything behind it that customers never see and that decides whether the business is operable. Teams that treat SaaS as "a web app with logins" discover the gap around month nine, usually when the second enterprise customer asks a question the architecture cannot answer.
+
+This covers what actually distinguishes SaaS development, and how to choose a partner for it.
+
+## What does a SaaS development company do differently?
+
+A SaaS development company builds the parts that make software sellable as a subscription: multi-tenancy, billing and subscription lifecycle, per-customer configuration, onboarding, and the operational tooling to support many customers at once.
+
+The functional product — the thing your customers think they are buying — is often the smaller half. A team can build a working application in a few months and then spend as long again on tenant isolation, plan enforcement, usage metering, dunning, trial handling, admin tooling and the ability to answer "why is this one customer seeing that?" without reading the database directly.
+
+That second half is not optional and it is not a phase two. It is the difference between a product and a demo, and retrofitting it is substantially more expensive than building it in, because tenancy in particular touches every query in the system.
+
+## What is multi-tenancy, and why does it decide the architecture?
+
+Multi-tenancy is how one running system serves many customers while keeping their data separate. It is the earliest architectural decision, the hardest to change later, and the one most often deferred.
+
+Three models are common, and the choice has consequences well beyond engineering:
+
+- **Shared database with a tenant column.** Cheapest to run and fastest to build, but every query must filter correctly, and one missing filter is a cross-tenant data leak.
+- **Database per tenant.** Strong isolation and simpler compliance answers, but migrations and operational overhead scale with customer count.
+- **Hybrid.** Shared by default, dedicated for customers who require it. Most successful B2B products end up here, and starting with it in mind is cheaper than arriving at it.
+
+The reason this decision belongs at the start is that enterprise buyers ask about it. "Where is our data, and who else's data is next to it?" is a standard security-review question, and the answer determines whether you can sell to regulated customers at all. Choosing shared-database tenancy is a legitimate decision; discovering that you chose it during a security review is not.
+
+## What do teams underestimate when building SaaS?
+
+Billing. Subscriptions sound simple and are not: proration, upgrades and downgrades mid-cycle, failed payments, trials, discounts, refunds, tax by jurisdiction and plan changes that alter entitlements all interact.
+
+Use an established billing provider rather than building it, and even then expect the integration to be meaningful work — the provider handles payment mechanics, but your system still has to enforce what each plan permits, react to webhook events that arrive out of order, and behave sensibly when a payment fails on a customer who is mid-workflow.
+
+The second underestimate is admin tooling. Every SaaS business eventually needs to impersonate a user to debug, adjust a customer's plan manually, and see why an integration failed for one tenant. Teams build this reactively under pressure, usually as unaudited database access, which becomes a security problem exactly when the company starts caring about security posture.
+
+The third is onboarding. The gap between signup and first value determines conversion more than the feature set, and it is the part most often left until after launch.
+
+## How is SaaS different from custom software?
+
+Custom software serves one organisation and can encode its specific process. SaaS serves many, so every customer-specific requirement must become configuration rather than code, or the product becomes unmaintainable.
+
+That single constraint drives most of the differences. A custom system can hard-code a workflow because there is one customer. A SaaS product that hard-codes the third customer's workflow has started down a path where every deployment differs and no release is safe.
+
+The discipline this requires is mostly commercial rather than technical: the ability to say no, or to translate a specific request into a general capability. Teams that come from consultancy backgrounds find this genuinely hard, because the consultancy instinct — accommodate the client — is the instinct that destroys a product.
+
+Velex Infotech builds both, and we treat them as different engagements with different questions. If you are unsure which you are building, the test is how many organisations will run it: one means [custom software development](/services/software-development), many means SaaS.
+
+## How do you choose a SaaS development partner?
+
+Ask how they would handle tenancy, billing edge cases and per-customer configuration — before discussing features. A partner who moves straight to screens has built apps rather than products.
+
+Two further questions are revealing. First, ask what they would refuse to build. A partner who has run a SaaS product knows which accommodations poison a roadmap, and will name them. Second, ask how the system handles a customer who wants something the product does not do — the answer should involve configuration boundaries and a roadmap, not "we'd add it for them."
+
+On ownership, the standard rules apply and matter more here: you should own the code, the infrastructure configuration and the customer data, and you should be able to leave. A SaaS product hosted in a vendor's account is not a business asset you fully control.
+
+## When should you not build SaaS?
+
+When one customer is funding it. Software paid for by a single organisation is custom software with aspirations, and building it as a multi-tenant product adds cost that nobody has yet agreed to pay for.
+
+The honest version of that situation is to build the custom system well, keep the architecture clean, and revisit productisation when a second and third customer exist with genuinely similar needs. Teams often invert this — building for imagined future customers while the paying one waits — and end up with a product that fits nobody precisely.
+
+The other case is where the market already has a well-established product that does the job. Competing with an incumbent requires a real reason customers would switch, and "ours is more modern" has rarely been one.
+
+## Frequently asked questions
+
+**How long does it take to build a SaaS MVP?**
+Longer than an equivalent single-tenant app, because tenancy, billing and onboarding are not optional. Integration count and how much per-customer configuration you need drive the schedule more than feature count does.
+
+**Should we build billing ourselves?**
+No. Use an established provider for payment mechanics, and budget real time for the integration — enforcing entitlements and handling out-of-order webhooks is your system's job regardless of provider.
+
+**Which tenancy model should we choose?**
+Shared with a tenant column is usually right to start, provided isolation is enforced centrally rather than per query, and provided you have thought about how a dedicated-database customer would be accommodated later.
+
+**Do we need SOC 2 to sell SaaS?**
+Not to start, but enterprise buyers will ask, and the architectural decisions that make certification feasible are the ones made early. Building as if you will need it is cheaper than retrofitting.
+
+**Can we start as custom software and productise later?**
+Yes, and it is often the sensible path — provided the first build keeps business logic separable from one customer's assumptions. That discipline is what makes the later transition possible.
+
+## The short version
+
+SaaS is distinguished by tenancy, billing and per-customer configuration rather than by its interface, and those parts are expensive to retrofit — particularly tenancy, which touches every query. Do not build SaaS when one customer is funding it, and choose a partner who asks about isolation before asking about screens.
+
+If you are weighing a productised build against a single-customer system, see [custom software development](/services/software-development) or [describe who will be running it](/contact). For the adjacent decision on mobile and web apps, [how to choose a custom software development company](/blog/choosing-custom-software-development-company) covers the vendor-selection questions that apply to both.

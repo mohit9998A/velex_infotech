@@ -1,0 +1,14 @@
+[
+  {
+    "slug": "healthcare",
+    "title": "Healthcare Software Development",
+    "shortName": "Healthcare",
+    "icon": "HeartPulse",
+    "tagline": "Clinical systems, built to be audited",
+    "description": "Custom healthcare software for clinics, diagnostics labs and digital health products — built around the compliance posture you actually have, not the one a brochure claims.",
+    "metaTitle": "Custom Healthcare Software Development Services",
+    "metaDescription": "Custom healthcare software development for clinics, labs and digital health products. Built to HIPAA and DPDP technical safeguards, with an honest account of what we are not certified for.",
+    "updatedAt": "2026-08-07",
+    "relatedServices": ["software-development", "ai-receptionist", "ai-integration", "data-analytics"]
+  }
+]

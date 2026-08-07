@@ -1,0 +1,82 @@
+Hiring AI developers has an awkward property: the businesses that most need them are usually the least equipped to interview them. If nobody internally can tell a strong AI engineer from a confident one, the hiring process is filtering on presentation rather than skill — and AI attracts more confident presentation than most specialisms.
+
+This is a guide to picking the right hiring model, and to interviewing when you cannot assess the work directly.
+
+## Should you hire AI developers in-house, use an agency, or hire freelancers?
+
+Hire in-house when AI is a permanent part of your product and there is enough work to keep someone busy for years. Use an agency when you need a working system before you can justify a hire. Use freelancers for bounded, well-specified pieces of work.
+
+The mistake is treating this as a cost comparison. The models fail differently, and the failure modes matter more than the rates.
+
+An in-house hire fails when the work runs out — a strong engineer with six months of interesting work and eighteen months of maintenance will leave, and you will have paid recruitment costs to train someone for a competitor. An agency fails when the scope keeps moving, because you are paying coordination overhead on top of build. A freelancer fails when the work is not well specified, because there is no one else to resolve ambiguity and no institutional memory when they finish.
+
+Match the model to the shape of the work, not to the hourly rate.
+
+## When is an in-house AI hire the right call?
+
+When you can name eighteen months of AI work that needs doing, and when someone internally can evaluate the output. Without the second condition, you are hiring someone you cannot manage.
+
+The second condition is the one that gets skipped. A business hiring its first AI engineer usually has nobody who can review the work, which means the engineer is unsupervised in a domain where confidently wrong output is the characteristic risk. That is survivable if the engineer is strong and dangerous if they are not, and you have no way to tell which for six months.
+
+The usual fixes are a technical advisor who reviews on a retainer, or starting with an agency build and hiring afterwards — by which point you have a working system that serves as the standard for evaluating candidates. Both are cheaper than the alternative.
+
+## What should you actually test in an interview?
+
+Test judgement about when *not* to use AI, and ability to explain a failure mode. Both are hard to fake and both correlate with production outcomes far better than familiarity with any particular framework.
+
+Concretely, three questions do most of the work:
+
+- **"Describe a project where the right answer was not to use a model."** Strong candidates have several examples and reach for them readily. Weak ones treat the question as a trick.
+- **"How would you know this system was quietly getting worse?"** This tests whether they think about evaluation and monitoring, which is where the difference between a demo and a production system lives.
+- **"What would you do if the model is right 92% of the time and the business needs 99%?"** The good answers involve narrowing scope, adding human review, or declining — not "fine-tune it."
+
+Notice that none of these require you to evaluate code. That is deliberate: if you cannot assess the technical work, test the reasoning that precedes it, which is more predictive anyway.
+
+## What does hiring dedicated developers actually mean?
+
+"Dedicated developers" usually means a staff-augmentation model: engineers assigned to you full time, managed by you, billed monthly through a vendor. It sits between hiring and an agency build.
+
+It suits businesses with the capacity to manage engineers but not to recruit them — you supply direction and review, the vendor supplies people and handles employment. The advantage over a project contract is flexibility; the disadvantage is that you have taken on the management burden without the retention levers an employer has.
+
+The question worth asking any dedicated-developer vendor is what happens when an assigned engineer leaves. The honest answer involves a handover period and a ramp-up cost you will absorb. Vendors who imply seamless substitution are describing something that does not happen, because context does not transfer with a job title.
+
+## Where does the work actually go wrong?
+
+It goes wrong at data access and evaluation, not at model selection. Teams spend their deliberation on which model to use, and their overruns on discovering the data is not reachable and nobody defined what "working" means.
+
+Model choice is close to a commodity decision and reversible in an afternoon. Data access is neither. If the system an agent must read from has no API, or holds inconsistent identifiers, or is updated by a nightly batch that is sometimes late, those constraints shape everything downstream and are invisible until someone looks.
+
+Evaluation is the other one. A team that cannot state how they will measure whether the system is working will ship something that demos well and degrades quietly. Ask any candidate or vendor how they would build the evaluation set before the feature, and see whether the question is familiar.
+
+Velex Infotech builds AI agents and automation for businesses across the US, UK, Canada and India, and the engagements that go smoothly are consistently the ones where the client knew what their data looked like before we started — not the ones with the clearest feature list.
+
+## How do you decide between hiring and outsourcing right now?
+
+Ask whether you can specify the work. If yes, outsourcing is efficient. If the requirement is still being discovered, you need someone inside the business, because discovery through a contract boundary is slow and expensive.
+
+The secondary question is durability. Work that will need continuous change for years belongs in-house eventually, even if it starts outside. Work that produces a system needing occasional maintenance does not justify a permanent hire, and hiring for it creates the retention problem described above.
+
+A pattern that works well: engage externally to build the first system and establish what good looks like, then hire against that standard once the work is proven and the volume is known. It costs more per hour at the start and less in total, because it removes the risk of hiring for a job that turns out not to exist.
+
+## Frequently asked questions
+
+**How much do AI developers cost?**
+Rates vary enormously by region and seniority, and the number that matters is total cost including recruitment, management and idle time — not the hourly rate. A cheaper engineer you cannot evaluate is not cheaper.
+
+**Can we train existing developers in AI?**
+Often yes, and it is underrated. A strong engineer who knows your systems learns the AI-specific parts faster than an AI specialist learns your business, particularly for integration-heavy work.
+
+**Do we need a machine learning engineer or a software engineer?**
+For most business AI work, a strong software engineer who understands model APIs and evaluation. Training models from scratch is a different specialism and a much rarer requirement than job adverts suggest.
+
+**How many AI developers do we need?**
+Usually fewer than expected. Most business AI projects are integration projects with a model in them, so the constraint is systems access rather than headcount.
+
+**Should we hire offshore?**
+It works well for specified work with genuine hours overlap and badly for exploratory work. The same rule applies as with any outsourcing: specification quality determines whether the saving is real.
+
+## The short version
+
+Match the hiring model to the shape of the work — in-house for permanent evolving work, agency for getting to a first system, freelance for bounded tasks — and do not hire someone you have no way to evaluate. Interview for judgement about when not to use AI, because that is hard to fake and predicts production outcomes.
+
+If you would rather have a working system before committing to a hire, see [AI agent development](/services/agentic-ai) or [describe what you are trying to build](/contact). For the prior question of whether the process justifies AI at all, [AI consulting services explained](/blog/ai-consulting-services-explained) covers how that assessment should work.

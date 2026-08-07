@@ -1,0 +1,82 @@
+Most AI customer service deployments fail in the same place: not at launch, but six weeks later, when the volume of "let me transfer you to a human" reaches the point where customers start pressing zero immediately. The technology worked. The scoping did not.
+
+This guide covers what AI genuinely handles well in customer service, where it reliably breaks, and how to decide which of your conversations belong to it.
+
+## What is AI customer service?
+
+AI customer service uses language models to handle customer conversations end to end — answering questions, looking up order status, booking appointments and resolving routine requests across chat, voice, email and messaging, without a person picking up.
+
+The distinction from the previous generation matters commercially. An old-style chatbot matched keywords to canned replies and failed the moment a customer phrased something unexpectedly. A modern AI agent can read your knowledge base, call your order system, and complete the task rather than describing it. That difference is why the category is being re-bought by companies who tried chatbots in 2019 and concluded they did not work.
+
+What has not changed is that the hard part is integration and escalation design, not conversation quality. Conversation quality is largely solved. Knowing when to stop is not.
+
+## What does AI handle well in customer service?
+
+AI handles high-volume, low-ambiguity requests where the answer exists in a system it can reach. Order status, appointment booking and rescheduling, opening hours, returns eligibility, delivery timelines and password resets are the reliable wins.
+
+The common property is that a correct answer is retrievable rather than judged. If a competent new hire could answer the question by looking it up in one place, an AI agent can answer it too — and will do so at 2am, in parallel, without a queue.
+
+- **Status lookups.** Where is my order, when is my appointment, has my claim been received.
+- **Transactional changes.** Rescheduling, cancelling, updating an address, adding a note to a case.
+- **Eligibility questions.** Whether a return, a refund or a booking is permitted under a policy that is written down.
+- **Triage and routing.** Capturing the details a human will need, so the handover starts with context instead of a name.
+- **After-hours coverage.** The window where the alternative is voicemail, which is where most of the measurable return lives.
+
+Triage deserves particular attention because it is the least glamorous and most reliably valuable. Even where AI cannot resolve a case, capturing the customer's issue, account and urgency before a human touches it removes the most tedious part of the conversation for both sides.
+
+## Where does AI customer service break?
+
+It breaks on judgement, emotion and liability. Complaints, disputed charges, clinical or legal questions, anything involving a distressed customer, and any decision that materially affects someone should route to a human immediately.
+
+The failure mode is worth being precise about, because it is not usually that the AI gives a wrong answer. It is that the AI gives a *technically correct* answer to a customer who needed something else — an apology, a judgement call, or an exception to the policy it just quoted accurately. A customer who has been let down and receives a correct policy citation is more angry than before, not less.
+
+The second failure mode is the escalation loop: an AI that cannot resolve the request and cannot cleanly hand off, so the customer repeats themselves to three interfaces. That is worse than no automation at all, because it burns the customer's patience before a human ever arrives.
+
+Both are scoping problems. Both are fixable before launch and expensive to fix after.
+
+## How much does AI customer service cost?
+
+Cost has three components that vendors present inconsistently: the build or subscription, the per-conversation or per-minute usage charge, and the integration work to reach your systems. Comparing quotes on the first alone is how budgets get set wrong.
+
+Usage pricing is where the surprises live. Voice is typically billed per minute, chat per conversation or per message, and messaging channels like WhatsApp carry the platform's own per-conversation fee on top of whatever your vendor charges. A pilot at low volume tells you almost nothing about the bill at full volume, because the fixed component that dominated the pilot becomes a rounding error.
+
+The comparison that actually matters is against your current cost of *not* answering. For most businesses the honest baseline is the number of inbound contacts that currently go unanswered or unreturned, multiplied by what a converted enquiry is worth. That number is usually knowable from your own phone and helpdesk logs, and it is a far better basis for a decision than a vendor's ROI calculator.
+
+## Should customers be told they are talking to AI?
+
+Yes, and the disclosure costs you less than the discovery. Customers who are told upfront adjust their expectations and phrase requests more clearly; customers who work it out mid-conversation feel deceived and escalate.
+
+There is also a growing regulatory dimension. The EU AI Act imposes transparency obligations on systems interacting with people, and several US states have introduced disclosure rules for automated communications. Building disclosure in from the start is cheaper than retrofitting it, and it removes a category of complaint entirely.
+
+The practical version is a single sentence at the start of the conversation, and a clear, always-available route to a person. Not a hidden one that requires saying "agent" four times.
+
+## How do you measure whether it is working?
+
+Measure containment rate, escalation quality and customer effort — not deflection alone. Deflection counts conversations that did not reach a human, which includes every customer who gave up.
+
+Containment rate with a resolution qualifier is the honest metric: what proportion of conversations were completed to the customer's satisfaction without a human. Pair it with the rate at which escalated conversations arrive with full context, because that is where AI earns value even on the cases it cannot close. And watch repeat-contact rate within 48 hours, which catches the failure that every other metric hides — a conversation the AI closed and the customer had to start again.
+
+Establish these before launch, against a baseline. Velex Infotech builds AI receptionists and WhatsApp support agents for businesses across the US, UK, Canada and India, and the engagements that go well are the ones where the client could state their current missed-contact rate on day one.
+
+## Frequently asked questions
+
+**Can AI replace my support team?**
+Not usually, and aiming for that is how deployments fail. The realistic outcome is that AI absorbs high-volume routine contacts and arrives at your team with context attached, so the same headcount handles the cases that need judgement.
+
+**What happens when the AI does not understand?**
+It should escalate immediately with the conversation history attached, not guess or loop. Define the escalation categories explicitly during scoping — complaints, money, safety — rather than relying on the model to recognise its own limits.
+
+**Does AI customer service work on WhatsApp?**
+Yes, through the official WhatsApp Business API, and Meta's per-conversation pricing applies on top of your vendor's fee. Free-window service replies are the cheap part; template messages outside the 24-hour window are billed.
+
+**How long does it take to deploy?**
+Integration decides the timeline. Connecting to a modern helpdesk with an API is quick; reaching an order system with no API is the part that sets the date.
+
+**Will it handle multiple languages?**
+Modern models handle major languages well, but coverage should be tested with real recordings and real phrasing before launch rather than assumed. Accent and code-switching are where voice deployments most often disappoint.
+
+## The short version
+
+AI handles retrievable answers and routine transactions reliably, and fails on judgement, emotion and liability — so the scoping decision is which of your conversations fall into which category, made before you buy rather than after. Measure against your current missed-contact rate, disclose that it is AI, and design the escalation path first.
+
+If phone is where your volume sits, see [AI receptionist](/services/ai-receptionist); if your customers message rather than call, [WhatsApp AI chatbot](/services/whatsapp-bot) covers that channel. Not sure which conversations are worth automating? [Describe your contact volume](/contact) and we will work through the split with you — see also [AI automation vs agentic AI](/blog/ai-automation-vs-agentic-ai) for the underlying build decision.

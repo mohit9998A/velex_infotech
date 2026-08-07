@@ -8,6 +8,8 @@ import {
   Plug,
   BarChart3,
   Code2,
+  Compass,
+  HeartPulse,
   type LucideIcon,
 } from "lucide-react";
 
@@ -29,6 +31,8 @@ export const serviceIconMap: Record<string, LucideIcon> = {
   Plug,
   BarChart3,
   Code2,
+  Compass,
+  HeartPulse,
 };
 
 export function getServiceIcon(name: string): LucideIcon {

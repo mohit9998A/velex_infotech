@@ -1,0 +1,80 @@
+The agency-versus-in-house question is usually framed as a cost comparison and is almost never actually about cost. It is about who carries the risk of being wrong, how fast you need to find out, and whether the work will still exist in two years.
+
+Here is a framework that produces a defensible answer rather than a preference.
+
+## Should you use an AI agency or build an in-house team?
+
+Use an agency when you need a working system before you can justify permanent headcount. Build in-house when AI is a durable part of what you sell and there is enough work to keep good people occupied for years.
+
+Framing it around durability rather than cost resolves most cases immediately. If you can name two years of AI work, hiring wins eventually — an internal team accumulates knowledge about your business that no external partner matches, and that compounds. If you cannot, hiring creates a problem: you will have recruited a specialist into a role that runs out of interesting work, and they will leave having been trained at your expense.
+
+The trap is that the second situation looks like the first at the point of decision, because early enthusiasm makes future work feel inevitable. It is worth writing the two-year list down and seeing whether it survives being read a week later.
+
+## What does each option actually cost?
+
+An agency costs more per hour and less in total for a first system. An in-house team costs less per hour and more in total until utilisation is high, because recruitment, management, tooling and idle time are real and rarely counted.
+
+The comparison people make is a day rate against a salary, which omits most of the in-house cost. A fair comparison includes recruitment cost and time-to-hire, the salary loading your jurisdiction applies, management time from someone senior, and the periods when the AI work is blocked on something else and the engineer is idle but paid.
+
+It should also include the cost of hiring badly, weighted by the probability of doing so — which is high if nobody internally can evaluate AI work. That is not a rounding error; a mis-hire in a specialism you cannot assess can consume six months before anyone is confident enough to act.
+
+Against that, an agency's real cost includes coordination overhead, and the fact that context leaves when the engagement ends unless you deliberately capture it.
+
+## What does an agency genuinely do better?
+
+Speed to a first working system, and pattern recognition across many builds. An agency that has shipped similar systems knows which parts fail, which is knowledge you would otherwise buy with your own failures.
+
+The pattern recognition matters more than it sounds. Most AI project failures are not novel — they cluster around data access, evaluation, and scoping something to be autonomous that should have kept a human in the loop. A team that has seen those before will flag them in week one. A first-time internal team will find them in month four.
+
+The second advantage is that an agency can be wrong cheaply. If the first process turns out not to justify automation, an engagement ends. A hire does not, and the sunk cost of a salary tends to keep bad projects alive longer than they should be.
+
+## What does an in-house team genuinely do better?
+
+Everything that depends on knowing your business. Which exceptions matter, which stakeholder will object, what the data actually means as opposed to what the column is called — that knowledge is expensive to transfer and is where most AI systems succeed or fail.
+
+Internal teams also iterate faster once a system is live, because the feedback loop has no contract boundary in it. For a system that will change continuously — one embedded in your product rather than supporting an operation — that difference compounds quickly and eventually dominates.
+
+The other underrated advantage is availability for small things. Many of the highest-return AI improvements are half-day tasks that nobody would raise a change request for. Those get done by an internal team and do not get done by an agency, simply because the transaction cost exceeds the value.
+
+## Is there a sequence that works better than choosing?
+
+Yes, and it is the answer for most mid-sized businesses: engage externally to build the first system and establish what good looks like, then hire against that standard once the work is proven.
+
+This works because it addresses the evaluation problem directly. The hardest part of a first AI hire is that you cannot assess candidates in a domain you do not know. Having a working system built to a known standard converts that into a tractable interview — you can ask candidates to critique something real, and you can tell whether the critique is any good.
+
+It also sequences the risk correctly. You find out whether the process justifies AI before committing to a permanent salary, which is the expensive commitment. Velex Infotech builds systems for clients who go on to hire, and we regard handover documentation as part of the deliverable rather than an upsell, because a client who hires successfully afterwards was a client we served properly.
+
+- **Phase 1:** external build of one system with a measured baseline.
+- **Phase 2:** operate it and count how much change it actually needs.
+- **Phase 3:** hire if the answer is "continuous," retain external support if it is "occasional."
+
+## How do you avoid the worst outcome in either model?
+
+The worst outcome is the same in both: a system nobody owns. With an agency it happens when the engagement ends without handover; in-house it happens when the person who built it leaves.
+
+The defences are identical and unglamorous. Documentation that explains why decisions were made rather than what the code does. Infrastructure defined in code rather than configured by hand. An evaluation set that lets a successor tell whether the system still works. Credentials and accounts held by the business rather than an individual or a vendor.
+
+If you get those four right, both models are recoverable. If you do not, both models produce a system that quietly degrades until someone rebuilds it, which is the most expensive outcome available and the most common.
+
+## Frequently asked questions
+
+**How big does a company need to be for an in-house AI team?**
+Size matters less than the durability of the work. A small company with a genuine AI product should hire; a large one automating a handful of processes often should not.
+
+**Can we use an agency and hire at the same time?**
+Yes, and it works well — the agency builds while the hire ramps up on your systems. The requirement is that handover is planned rather than assumed.
+
+**What if the agency becomes a dependency?**
+That is a contracting problem, not an inevitability. Own the code and infrastructure, hold your own credentials, and require documentation as a deliverable rather than a favour.
+
+**Is a freelancer a middle option?**
+For bounded, well-specified work, yes. For anything exploratory it carries the risks of both models — no institutional memory and no team to resolve ambiguity.
+
+**How do we evaluate an AI agency?**
+Ask what they have advised a client not to build, and how they measure whether a live system is degrading. Both answers are hard to fake and predict outcomes better than a portfolio.
+
+## The short version
+
+Decide on durability, not day rate: hire when you can name two years of work and evaluate the output, engage an agency when you need to find out whether the work is worth doing at all. For most mid-sized businesses the right answer is a sequence rather than a choice — build externally, measure, then hire against a known standard.
+
+If you are at the "find out whether this is worth doing" stage, see [AI consulting](/services/ai-consulting), or [describe the process](/contact) and we will tell you which model fits. For interviewing once you get to hiring, [hire AI developers](/blog/hire-ai-developers) covers what to test when you cannot assess the code yourself.

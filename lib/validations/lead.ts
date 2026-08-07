@@ -11,6 +11,7 @@ import { z } from "zod";
 export const SERVICE_OPTIONS = [
   "AI Automation",
   "AI Agent Development",
+  "AI Consulting",
   "AI Receptionist",
   "WhatsApp AI Chatbot",
   "AI Integration",

@@ -1,0 +1,78 @@
+Every healthcare software quote you receive will be wrong in the same direction: too low. Not because vendors are dishonest, but because the expensive parts of a clinical system are invisible during a sales call — they live in the integration surface, the audit requirements and the identity reconciliation nobody demos.
+
+This guide explains what actually drives the cost of custom healthcare software, so you can read a quote critically instead of comparing two numbers that were calculated differently.
+
+## What is custom healthcare software development?
+
+Custom healthcare software development builds clinical and operational systems for a specific practice, lab or health product when no off-the-shelf platform fits the workflow. It covers patient intake, scheduling, diagnostics operations, EMR integration and patient-facing apps.
+
+The distinction that matters is between configuration and construction. Most practices start by configuring an existing practice management system, and most should. Custom development earns its cost at the point where you are paying staff to work around the software — re-keying results between two systems, maintaining a spreadsheet the platform cannot produce, or turning away a service line because the system cannot model it. Until that point, configuration is cheaper and lower risk. After it, the workaround is a recurring salary cost that a build eventually undercuts.
+
+## What actually drives the cost of healthcare software?
+
+Four things drive cost, in this order: how many external systems you must integrate with, what those systems expose, how much of the data is protected health information, and whether the software makes or merely records clinical decisions.
+
+Integration dominates because it is the part with the least give. A product reading from one modern EMR over a FHIR API is a fundamentally different build from one writing to three legacy systems over HL7 v2 feeds. The second is not twice the work; it is the work plus reconciliation logic for every case where the systems disagree about who a patient is.
+
+Regulatory surface is the second driver, and it compounds. Every field carrying protected health information pulls in access control, audit logging and retention rules for the screens and reports that touch it. That is why "just add a small dashboard" is rarely small.
+
+- **Integration count and protocol.** FHIR is cheaper than HL7 v2, which is cheaper than a nightly database export.
+- **Patient identity reconciliation.** Two systems with different identifiers for the same person is the single most underestimated line item.
+- **Audit and access control depth.** Append-only logging of reads, not just writes, is a materially different build.
+- **Clinical decision involvement.** Software that suggests carries validation obligations that software which records does not.
+- **Number of user roles.** Each role is a distinct permission matrix that has to be tested, not a dropdown value.
+
+Cost, in other words, is a function of the environment you are building into rather than the number of screens you asked for.
+
+## Why do healthcare software projects run over budget?
+
+They run over because discovery happened against the specification rather than against the live systems. The overrun appears at integration, when the EMR turns out to expose less than its documentation implies.
+
+The pattern is consistent enough to plan around. A vendor scopes from a requirements document, quotes confidently, then discovers in week five that the lab system has no write API, or that the EMR's FHIR endpoint is read-only for the resource you need, or that patient identifiers were merged inconsistently in a migration six years ago. None of that is visible in a requirements document. All of it changes the estimate.
+
+The defence is unglamorous: insist that any vendor confirms what your systems actually expose before quoting a fixed price. A vendor unwilling to do a paid discovery phase against your real environment is a vendor whose fixed price contains a contingency you cannot see, or an overrun you will argue about later.
+
+## Is custom healthcare software HIPAA compliant?
+
+No software is HIPAA compliant on its own. HIPAA compliance is a property of an organisation and how it operates a system, not a certificate a product can hold — which is why any vendor advertising "HIPAA certified software" is describing a paid audit rather than a legal status.
+
+What a vendor can legitimately claim is that the software implements HIPAA's technical safeguards: access control, audit controls, integrity controls, authentication and transmission security. Those are concrete and checkable. A vendor handling protected health information on your behalf should also sign a Business Associate Agreement, which is a real legal instrument with real liability attached.
+
+The question worth asking a prospective vendor is not "are you HIPAA compliant?" — everyone says yes. It is "will you sign a BAA, and what attestations do you actually hold?" Velex Infotech builds to HIPAA's technical safeguards and signs BAAs where we handle protected health information, and we hold no HITRUST or SOC 2 attestation today. Getting a straight answer to that question early is worth more than a confident one.
+
+## What about Indian and UK data protection rules?
+
+For a practice operating only in India, the DPDP Act 2023 replaces HIPAA as the governing framework, and consent and purpose limitation become the operative requirements. For UK health products, UK GDPR applies, with additional scrutiny on any automated decision that significantly affects a person.
+
+The technical safeguards overlap substantially across all three regimes — encryption, access control, audit logging and retention limits appear in each. What differs is the legal basis for processing and what you must be able to demonstrate to a regulator. That difference shows up in documentation and consent flows rather than in the database schema, which is why building to the strictest applicable standard and documenting the rest is usually cheaper than building three variants.
+
+## Should you build or buy healthcare software?
+
+Buy when your workflow is standard and a platform fits with configuration alone. Build when the workflow is the thing that differentiates your practice, or when licensing costs scale with a number that is growing faster than your revenue.
+
+The honest test is to count the workarounds. If your team maintains parallel spreadsheets, re-enters data between systems, or produces a report by hand every month, those are quantifiable salary costs that a build is competing against. If they do not, the platform is working and a custom build is an expensive way to change the interface.
+
+There is also a middle path that gets overlooked: keeping the platform of record and building only the layer that is genuinely yours — an intake flow, an operations dashboard, an integration that moves results where they need to go. That is usually where the return is highest, because it targets the workaround without replacing the system everyone already knows.
+
+## Frequently asked questions
+
+**How long does custom healthcare software take to build?**
+Timelines are set by integration, not feature count. What your EMR and lab systems expose decides the schedule more than anything on your wish list, which is why a discovery phase against the live environment should precede any date you rely on.
+
+**Can we integrate with our existing EMR?**
+Usually, and the deciding factor is what it exposes. Modern systems offer FHIR APIs, older ones offer HL7 v2 feeds, and some offer only a database export — confirm which you have before anyone quotes.
+
+**Do we need a Business Associate Agreement?**
+If a vendor creates, receives, maintains or transmits protected health information on your behalf, yes. A vendor who hesitates on this question is telling you something useful.
+
+**Can AI be used with patient data?**
+Only with explicit decisions about where inference runs and what is retained. The default configuration of most AI tooling sends data to a public endpoint, which is rarely acceptable for PHI and is almost never the setting anyone checks.
+
+**Is offshore development appropriate for healthcare?**
+It can be, provided the compliance posture is stated honestly and contractually. The risk is not location; it is a vendor who claims certifications they do not hold, and that risk exists in every country.
+
+## The short version
+
+Cost is driven by your integration surface and regulatory exposure, not by screen count — so any quote produced without inspecting your live systems is a guess wearing a number. Ask what a vendor actually holds rather than what they claim, insist on discovery against the real environment, and count your existing workarounds before deciding to build at all.
+
+If you want that assessment done properly, see [custom healthcare software development](/industries/healthcare) or [tell us what systems you run](/contact) and we will tell you which parts are worth building. For the wider build-versus-buy question across industries, [custom software development](/services/software-development) covers the same decision without the clinical constraints.

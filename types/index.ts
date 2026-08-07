@@ -5,6 +5,18 @@ export interface ServiceBenefit {
   description: string;
 }
 
+/**
+ * One Q&A pair on a service page.
+ *
+ * The same array feeds `faqSchema()` and the rendered accordion — they must
+ * never diverge, because FAQPage markup describing content a visitor cannot see
+ * is exactly what Google treats as structured-data spam.
+ */
+export interface ServiceFaq {
+  question: string;
+  answer: string;
+}
+
 export interface ServiceItem {
   slug: string;
   title: string;
@@ -23,6 +35,40 @@ export interface ServiceItem {
   metaTitle?: string;
   metaDescription?: string;
   image?: string;
+  /**
+   * ISO date (YYYY-MM-DD) this service's copy last genuinely changed. Feeds
+   * `lastModified` in app/sitemap.ts, which previously hardcoded one date for
+   * every service. Bump it only on a real content change — a sitemap that
+   * claims every page changed on every deploy gets its lastmod ignored.
+   */
+  updatedAt: string;
+  /** Rendered as an accordion and emitted as FAQPage. Both, or neither. */
+  faqs?: ServiceFaq[];
+}
+
+/**
+ * A vertical we have a real, differentiated answer for.
+ *
+ * Deliberately a short list with one hand-written page each, for the same
+ * reason there is no `app/locations/[slug]` route: a data-driven industry
+ * template is how a site ends up with twenty near-identical vertical pages
+ * that Google classifies as doorway content. This file exists so the hub,
+ * sitemap and llms.txt derive from one source — not so pages can be generated.
+ */
+export interface IndustryItem {
+  slug: string;
+  title: string;
+  /** Breadcrumb and card label, e.g. "Healthcare". */
+  shortName: string;
+  icon: string;
+  tagline: string;
+  description: string;
+  metaTitle: string;
+  metaDescription: string;
+  /** ISO date (YYYY-MM-DD). Feeds sitemap lastModified. */
+  updatedAt: string;
+  /** Service slugs cross-linked from the page. */
+  relatedServices: string[];
 }
 
 export interface PricingTier {

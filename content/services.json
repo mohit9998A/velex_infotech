@@ -41,7 +41,30 @@
     ],
     "metaTitle": "AI Automation Services for Growing Businesses",
     "metaDescription": "AI workflow automation that connects the tools you already use. Three to six workflows live in two to five weeks. Serving the US, UK, Canada and India.",
-    "image": "/images/services/ai-automation.png"
+    "image": "/images/services/ai-automation.png",
+    "updatedAt": "2026-08-07",
+    "faqs": [
+      {
+        "question": "What is AI automation for a small business?",
+        "answer": "AI automation connects the tools you already pay for so a lead, invoice or support ticket moves through your business without anyone re-typing it. It replaces the copying between systems, not the people doing judgement work."
+      },
+      {
+        "question": "How much does AI automation cost?",
+        "answer": "Cost is driven by three things: how many workflows you automate, how many systems each one touches, and whether any of those systems lack a usable API. A scoping call prices a specific workflow list; we do not quote a flat rate before seeing the processes."
+      },
+      {
+        "question": "How long does AI automation take to set up?",
+        "answer": "A typical first engagement is three to six workflows, live in two to five weeks. Discovery and mapping take the first week; the rest is build, testing against your real data, and a supervised run before anything moves unattended."
+      },
+      {
+        "question": "What is the difference between AI automation and RPA?",
+        "answer": "RPA follows the screen; AI automation follows the intent. An RPA bot breaks when a vendor redesigns a form, because it was clicking fixed coordinates, while an LLM-driven automation reads the form and keeps working."
+      },
+      {
+        "question": "What should a business automate first?",
+        "answer": "Start with the process that has the highest volume and the clearest cost of being slow — usually inbound lead handling or invoice processing. High-volume, low-judgement work pays back fastest and gives you a measurable baseline to argue from."
+      }
+    ]
   },
   {
     "slug": "agentic-ai",
@@ -85,7 +108,30 @@
     ],
     "metaTitle": "AI Agent Development Services | Agentic AI",
     "metaDescription": "Custom AI agents that plan, decide and act across your systems — not just answer questions. Agentic AI development for the US, UK, Canada and India.",
-    "image": "/images/services/agentic-ai.png"
+    "image": "/images/services/agentic-ai.png",
+    "updatedAt": "2026-08-07",
+    "faqs": [
+      {
+        "question": "What is the difference between an AI agent and a chatbot?",
+        "answer": "A chatbot answers; an AI agent acts. Where a chatbot tells a customer to book an appointment, an agent calls your CRM, updates the record and books it — then logs what it did."
+      },
+      {
+        "question": "How much does it cost to build an AI agent?",
+        "answer": "The cost drivers are the number of systems the agent must act inside, whether it decides autonomously or only recommends, and how much human approval sits in the loop. Agents that write to production systems cost more because they need audit logging and rollback."
+      },
+      {
+        "question": "How do you stop an AI agent doing something wrong?",
+        "answer": "Guardrails and approval limits you control. We scope what each agent may read, what it may write, and the value or risk threshold above which it must stop and ask a human — and every action it takes is logged."
+      },
+      {
+        "question": "Do I need agentic AI, or would automation be cheaper?",
+        "answer": "If you can draw the process as a flowchart and the flowchart is complete, you want automation, which is cheaper and easier to debug. Agentic AI earns its cost when the path genuinely varies case by case."
+      },
+      {
+        "question": "Should I hire AI developers in-house or use an agency?",
+        "answer": "In-house makes sense once AI is a permanent part of your product and you have enough work to keep a team busy. Before that, an agency avoids hiring for a skill set you cannot yet interview for reliably."
+      }
+    ]
   },
   {
     "slug": "ai-receptionist",
@@ -128,7 +174,30 @@
     ],
     "metaTitle": "AI Receptionist & AI Phone Answering Service",
     "metaDescription": "A custom AI receptionist that answers every call, books appointments and qualifies leads in natural speech. Built for clinics, law firms and service businesses.",
-    "image": "/images/services/voice-agent.png"
+    "image": "/images/services/voice-agent.png",
+    "updatedAt": "2026-08-07",
+    "faqs": [
+      {
+        "question": "What is an AI receptionist?",
+        "answer": "An AI receptionist is a voice agent that answers inbound calls, understands natural speech, and completes the task — booking, routing or answering — without a human picking up. Unlike an IVR menu, it never asks the caller to press a number."
+      },
+      {
+        "question": "How is an AI receptionist different from a virtual receptionist?",
+        "answer": "A virtual receptionist is a person answering remotely; an AI receptionist is software. The AI answers every call at once and never queues, but hands off to a human for anything needing judgement it does not have."
+      },
+      {
+        "question": "Can an AI receptionist book into my calendar?",
+        "answer": "Yes. The agent writes directly to your booking system, so the slot is held during the call rather than logged for someone to enter later. Which systems we can write to depends on whether yours exposes an API."
+      },
+      {
+        "question": "What happens when the AI cannot answer a caller?",
+        "answer": "It escalates. We define the categories that always route to a person — complaints, clinical questions, anything involving money or a dispute — and the agent transfers or takes a callback rather than guessing."
+      },
+      {
+        "question": "Does an AI receptionist work in Hindi and English?",
+        "answer": "Yes. Our voice agents handle English and Hindi, and can switch mid-call when a caller does. Language coverage is set per deployment, so a UK or US line can run English-only."
+      }
+    ]
   },
   {
     "slug": "whatsapp-bot",
@@ -171,7 +240,30 @@
     ],
     "metaTitle": "WhatsApp AI Chatbot Development Services",
     "metaDescription": "WhatsApp AI chatbots on the official Business API for lead generation, support and commerce — including setup, verification and conversation pricing.",
-    "image": "/images/services/whatsapp-bot.png"
+    "image": "/images/services/whatsapp-bot.png",
+    "updatedAt": "2026-08-07",
+    "faqs": [
+      {
+        "question": "Do I need the WhatsApp Business API for a chatbot?",
+        "answer": "Yes, for anything automated. The free WhatsApp Business app has no API and cannot run a bot. We handle the official Business API setup, number verification and Meta's approval process as part of the build."
+      },
+      {
+        "question": "What does a WhatsApp chatbot actually cost to run?",
+        "answer": "Two separate costs: the build, and Meta's per-conversation fee, which is charged by conversation category and country. The running fee is where most quotes quietly omit a large part of the real cost, so we scope it explicitly."
+      },
+      {
+        "question": "What is the WhatsApp 24-hour window?",
+        "answer": "When a customer messages you, you can reply freely for 24 hours. After that, you may only send pre-approved template messages, and those are billed. Service conversations inside the window are the cheap part."
+      },
+      {
+        "question": "Is a free AI chatbot good enough for my business?",
+        "answer": "A free chatbot is fine for answering FAQs on a low-traffic site. It stops being enough when you need it to read your live inventory, write to your CRM, or take an order — that requires integration a free tier does not offer."
+      },
+      {
+        "question": "Can a WhatsApp chatbot take orders and payments?",
+        "answer": "It can take orders inside the chat and hand off to a payment link or gateway. Full in-chat payment availability depends on your country and your payment provider, so we confirm what is possible for your market during scoping."
+      }
+    ]
   },
   {
     "slug": "ai-integration",
@@ -214,7 +306,96 @@
     ],
     "metaTitle": "AI Integration Services | Embed AI In Your Stack",
     "metaDescription": "Integrate AI models, agents and automations into the CRM, helpdesk and internal apps you already use — securely and without rip-and-replace.",
-    "image": "/images/services/ai-integration.png"
+    "image": "/images/services/ai-integration.png",
+    "updatedAt": "2026-08-07",
+    "faqs": [
+      {
+        "question": "What is AI integration?",
+        "answer": "AI integration means adding intelligence to systems you already rely on rather than replacing them. Models, agents and automations are embedded into your CRM, helpdesk or internal apps incrementally, with no rip-and-replace migration."
+      },
+      {
+        "question": "Do we have to replace our existing software?",
+        "answer": "No. That is the point of integration over replacement. Your team keeps working the way they do on day one, and the intelligence appears inside the tools they already open."
+      },
+      {
+        "question": "Is our data safe if we add AI to our systems?",
+        "answer": "It depends on choices made at design time: what the model can read, where inference runs, and what is retained. We scope those explicitly per integration rather than defaulting to sending your data to a public endpoint."
+      },
+      {
+        "question": "What is RAG, and do we need it?",
+        "answer": "RAG lets a model answer from your documents instead of guessing from training data. You need it when staff or customers ask questions whose answers live in your own policies, manuals or records rather than on the public internet."
+      },
+      {
+        "question": "Where should a company start with AI?",
+        "answer": "Integration is usually the lowest-risk start, because it does not require changing how anyone works. Pick one workflow where a wrong answer is cheap to correct, measure it against a baseline, then expand from evidence."
+      }
+    ]
+  },
+  {
+    "slug": "ai-consulting",
+    "title": "AI Consulting",
+    "icon": "Compass",
+    "tagline": "Where AI pays back, and where it doesn't",
+    "description": "Independent assessment of where AI is worth building in your business, what it will take, and which processes to leave alone. Delivered as a costed roadmap, not a slide deck.",
+    "gradient": "from-purple-core/25 to-purple-deep/10",
+    "highlights": [
+      "Costed roadmap, not a deck",
+      "Vendor-neutral",
+      "We will tell you not to build"
+    ],
+    "href": "/services/ai-consulting",
+    "segment": "B2B",
+    "overview": "AI consulting decides what to build before anyone writes code. Velex Infotech audits your processes, data and existing systems, then returns a ranked list of AI opportunities with the effort, the dependencies and the failure modes attached to each. The output is a roadmap you can act on or take to another vendor — we are not trying to pre-sell a build. Most engagements find that two or three processes justify AI and the rest do not, which is a useful answer to get before committing a budget.",
+    "benefits": [
+      {
+        "title": "Ranked by payback, not novelty",
+        "description": "Opportunities are scored on volume, cost of the current process and how tolerant it is of a wrong answer — so the list starts with what pays back, not what demos well."
+      },
+      {
+        "title": "Honest about what not to do",
+        "description": "Most processes do not justify AI. Saying so early is cheaper than discovering it after a build, and it is the part a vendor selling only builds has no incentive to tell you."
+      },
+      {
+        "title": "Data readiness assessed first",
+        "description": "An agent is only as good as the data it can reach. We check whether the data exists, is accessible and is clean enough before scoping anything that depends on it."
+      },
+      {
+        "title": "A roadmap you own",
+        "description": "You get the process map, the opportunity ranking and the technical constraints in writing. If you take it to a different build partner, it still works."
+      }
+    ],
+    "useCases": [
+      "AI readiness and opportunity assessment",
+      "Digital transformation roadmaps for operations-heavy businesses",
+      "Build-versus-buy decisions on AI tooling",
+      "Data readiness review ahead of an AI programme",
+      "Second opinion on an AI proposal from another vendor"
+    ],
+    "metaTitle": "AI Consulting Services | Roadmaps, Not Slide Decks",
+    "metaDescription": "Independent AI consulting: which processes justify AI, which do not, and what each would take. A costed roadmap you own — US, UK, Canada and India.",
+    "updatedAt": "2026-08-07",
+    "faqs": [
+      {
+        "question": "What do AI consulting services actually deliver?",
+        "answer": "A process map, a ranked list of AI opportunities, and the effort and dependencies attached to each. The deliverable is a roadmap you can act on or hand to another vendor, not a strategy deck describing what AI is."
+      },
+      {
+        "question": "How is AI consulting different from AI development?",
+        "answer": "Consulting decides what to build; development builds it. Doing them in that order is what stops a business spending a build budget on the process that happened to get suggested first in a meeting."
+      },
+      {
+        "question": "Will you tell us not to build something?",
+        "answer": "Yes, and most engagements do. Typically two or three processes justify AI and the rest do not. A vendor whose only product is a build has no incentive to reach that conclusion, which is the reason to separate the two."
+      },
+      {
+        "question": "What is digital transformation consulting?",
+        "answer": "It is the same exercise at a wider scope: reviewing how work moves through the business, then deciding which parts change and in what order. AI is one option in that review rather than the assumed answer."
+      },
+      {
+        "question": "Do we need our data in order before we start?",
+        "answer": "No — assessing that is part of the work. We check whether the data an opportunity depends on exists, is reachable and is clean enough, because data readiness is the most common reason AI projects stall after approval."
+      }
+    ]
   },
   {
     "slug": "software-development",
@@ -230,7 +411,7 @@
     ],
     "href": "/services/software-development",
     "segment": "B2B",
-    "overview": "Custom software development is for the systems your business runs on that no off-the-shelf product fits: internal operations tools, ERP and CRM extensions, integration and API platforms, and modernising software that has outlived its stack. Velex Infotech builds and maintains these as a dedicated engineering team, from discovery through to production and support. Building a marketing site? See Website Development. Shipping a mobile app? See App Development. This page is for the custom systems that fit neither.",
+    "overview": "Custom software development builds the systems your business runs on when no off-the-shelf product fits: internal operations tools, ERP and CRM extensions, integration and API platforms, and modernising software that has outlived its stack. Velex Infotech works as a dedicated custom software development company rather than a staffing agency — the same engineers take a system from discovery through production and support, so nobody hands your context to a stranger halfway through. Building a marketing site? See Website Development. Shipping a mobile app? See App Development. This page is for the custom systems that fit neither.",
     "benefits": [
       {
         "title": "Built around your process",
@@ -254,11 +435,35 @@
       "ERP and CRM extensions and custom modules",
       "API platforms and third-party integrations",
       "Legacy application modernisation",
+      "SaaS products, including multi-tenancy and billing",
       "Production tracking and traceability for manufacturers"
     ],
-    "metaTitle": "Custom Software Development Services",
-    "metaDescription": "Custom software for the systems off-the-shelf tools don't fit — internal platforms, ERP extensions, API integrations and legacy modernisation.",
-    "image": "/images/services/software-development.png"
+    "metaTitle": "Custom Software Development Company & Services",
+    "metaDescription": "Custom software development services: internal systems, ERP extensions, API platforms and legacy modernisation, for the US, UK, Canada and India.",
+    "image": "/images/services/software-development.png",
+    "updatedAt": "2026-08-07",
+    "faqs": [
+      {
+        "question": "What is custom software development?",
+        "answer": "Custom software development builds the systems your business runs on when no off-the-shelf product fits — internal operations tools, ERP and CRM extensions, integration platforms, and modernising software that has outlived its stack."
+      },
+      {
+        "question": "How do I choose a custom software development company?",
+        "answer": "Ask three things: who specifically will write the code, what happens to the code and infrastructure if you leave, and how change requests are priced. Vague answers to any of those predict the problems you will have later."
+      },
+      {
+        "question": "Should we build custom software or buy off the shelf?",
+        "answer": "Buy when the process is standard and the product fits without heavy configuration. Build when the process is your competitive advantage, or when per-seat licensing overtakes a fixed build cost as you grow."
+      },
+      {
+        "question": "Is offshore software development actually cheaper?",
+        "answer": "The hourly rate gap is large, but total cost narrows once you count specification, review and management overhead. Offshore works when the scope is well defined and there is real timezone overlap for daily decisions."
+      },
+      {
+        "question": "Do you build SaaS products?",
+        "answer": "Yes. SaaS work sits between custom software and app development: multi-tenancy, billing, and per-customer configuration are the parts that differ from an internal system, and they are the parts worth getting right early."
+      }
+    ]
   },
   {
     "slug": "web-development",
@@ -302,7 +507,30 @@
     ],
     "metaTitle": "Website Development Services | Next.js & React",
     "metaDescription": "Premium, performance-first websites in Next.js and React — 90+ Lighthouse, motion design and SEO foundations built in from day one.",
-    "image": "/images/services/web-development.png"
+    "image": "/images/services/web-development.png",
+    "updatedAt": "2026-08-07",
+    "faqs": [
+      {
+        "question": "What does a website development company actually deliver?",
+        "answer": "Design, build, content structure and launch — plus the performance and accessibility work that decides whether the site ranks. We build on Next.js and React and target 90+ Lighthouse scores rather than treating speed as a later fix."
+      },
+      {
+        "question": "What is the difference between web design and web development?",
+        "answer": "Design decides what the site looks like and how it flows; development builds it so it loads fast, works on every device and is crawlable. A site that is only designed tends to score badly on both speed and search."
+      },
+      {
+        "question": "How long does a website take to build?",
+        "answer": "It depends far more on content readiness than on engineering. Sites stall waiting for copy, photography and approvals, so we agree the content list at kickoff rather than discovering it is missing at build time."
+      },
+      {
+        "question": "Will the site be fast enough to rank?",
+        "answer": "Core Web Vitals are a ranking signal, so we treat them as a build requirement rather than an optimisation pass. That means image budgets, deferred third-party scripts and server-rendered content from the first commit."
+      },
+      {
+        "question": "Can you also produce the content and video?",
+        "answer": "Yes. Brand content, design and cinematic video production are available end-to-end, which matters because content readiness is the usual bottleneck on a launch date."
+      }
+    ]
   },
   {
     "slug": "app-development",
@@ -345,7 +573,30 @@
     ],
     "metaTitle": "App Development for Startups & Scale-ups",
     "metaDescription": "AI-native mobile and web app development for iOS, Android and web. From MVP to production scale, with a testable build in six to twelve weeks.",
-    "image": "/images/services/app-development.png"
+    "image": "/images/services/app-development.png",
+    "updatedAt": "2026-08-07",
+    "faqs": [
+      {
+        "question": "How long does it take to build an app?",
+        "answer": "Most MVPs reach a testable build in six to twelve weeks, depending on integration count. Apps that talk to existing back-office systems take longer than standalone ones, because the integration surface is where the surprises live."
+      },
+      {
+        "question": "What drives the cost of app development?",
+        "answer": "Integration count first, then platform count, then anything requiring review by Apple or Google. A single-platform app with two integrations is a fundamentally different build from a cross-platform app with ten."
+      },
+      {
+        "question": "Should we build for iOS, Android or both?",
+        "answer": "Build for where your users already are, not both by default. Launching on one platform halves the surface you must test and support while you are still learning what the product should be."
+      },
+      {
+        "question": "Can we hire dedicated app developers rather than a fixed project?",
+        "answer": "Yes. A dedicated team model suits products that will keep evolving after launch, where a fixed scope would be re-negotiated every month anyway."
+      },
+      {
+        "question": "What happens after the MVP launches?",
+        "answer": "The MVP tells you which assumptions were wrong. We plan for a rebuild of at least one core flow after real usage data arrives, rather than treating launch as the finish line."
+      }
+    ]
   },
   {
     "slug": "data-analytics",
@@ -389,6 +640,29 @@
     ],
     "metaTitle": "Data Analytics Services & BI Consulting",
     "metaDescription": "Dashboards, data pipelines and business intelligence for small and mid-size businesses. Power BI, Looker Studio and Metabase, built around your decisions.",
-    "image": "/images/services/data-analytics.png"
+    "image": "/images/services/data-analytics.png",
+    "updatedAt": "2026-08-07",
+    "faqs": [
+      {
+        "question": "What do data analytics services actually involve?",
+        "answer": "Instrumentation, pipelines, a warehouse where it makes sense, and the dashboards your team actually opens. The expensive part is rarely the software — it is deciding which six numbers matter to your business."
+      },
+      {
+        "question": "Does a small business need a data warehouse?",
+        "answer": "Usually not at first. If your data lives in two or three systems and fits in a spreadsheet, a warehouse adds cost and maintenance without adding an answer. It earns its place when joins across systems start failing."
+      },
+      {
+        "question": "Power BI or Looker Studio — which should we use?",
+        "answer": "Looker Studio wins on cost and speed to a first dashboard. Power BI wins if you already pay for Microsoft 365 and need row-level security or heavier modelling. The right answer usually follows the licences you already hold."
+      },
+      {
+        "question": "How is analytics related to AI?",
+        "answer": "An agent is only as good as the data it can reach. Analytics work is the groundwork for useful AI, which is why we usually build the data layer and the AI integration together rather than in sequence."
+      },
+      {
+        "question": "What should we measure first?",
+        "answer": "The numbers that change a decision. If nobody would act differently based on a metric, it belongs in a report nobody opens — start instead with the two or three figures that would trigger a real change in what you do next."
+      }
+    ]
   }
 ]
