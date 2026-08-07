@@ -23,6 +23,8 @@ const buttonVariants = cva(
         sm: "h-9 px-4 text-xs",
         default: "h-11 px-6",
         lg: "h-14 px-8 text-base",
+        /** Primary conversion CTAs only — currently just the lead form submit. */
+        xl: "h-16 px-8 text-base",
         icon: "h-11 w-11 p-0",
       },
     },

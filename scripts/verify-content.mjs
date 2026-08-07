@@ -54,6 +54,30 @@ const serviceOptions = new Set(
   [...(serviceOptionsBody ?? "").matchAll(/"([^"]+)"/g)].map((m) => m[1]),
 );
 
+// The lead form's service cards are keyed by TITLE, not by slug, because
+// SERVICE_OPTIONS is all they have. Same silent-fallback failure as the slug
+// map above, one layer over.
+const titleIconMapBody = iconSource.match(
+  /serviceTitleIconMap:\s*Record<string,\s*LucideIcon>\s*=\s*\{([\s\S]*?)\}/,
+)?.[1];
+if (!titleIconMapBody) {
+  errors.push("lib/icons.ts: could not parse serviceTitleIconMap");
+}
+const mappedServiceTitles = new Set(
+  [...(titleIconMapBody ?? "").matchAll(/(?:"([^"]+)"|([A-Za-z]\w*))\s*:/g)].map(
+    (m) => m[1] ?? m[2],
+  ),
+);
+for (const title of serviceOptions) {
+  if (!mappedServiceTitles.has(title)) {
+    errors.push(
+      `lib/icons.ts: SERVICE_OPTIONS entry "${title}" is missing from ` +
+        `serviceTitleIconMap — the lead form's service card would silently ` +
+        `fall back to the Workflow icon`,
+    );
+  }
+}
+
 const imagesSource = read("lib/service-images.ts");
 const mappedImages = new Set(
   [...imagesSource.matchAll(/"([a-z0-9-]+)":\s*[a-zA-Z]/g)].map((m) => m[1]),

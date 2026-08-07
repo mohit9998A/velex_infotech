@@ -6,17 +6,20 @@ import { siteConfig } from "@/config/site";
 interface LogoProps {
   className?: string;
   showWordmark?: boolean;
-  href?: string;
+  /**
+   * `null` renders the lockup as plain markup rather than a link — for use
+   * inside the lead-form dialog, where a click would navigate the visitor off
+   * the page half-way through filling the form in.
+   */
+  href?: string | null;
 }
 
 /** Velex crystal mark + wordmark. Pure SVG — no external asset needed. */
 export function Logo({ className, showWordmark = true, href = "/" }: LogoProps) {
-  return (
-    <Link
-      href={href}
-      aria-label={`${siteConfig.name} home`}
-      className={cn("group inline-flex items-center gap-3", className)}
-    >
+  const classes = cn("group inline-flex items-center gap-3", className);
+
+  const lockup = (
+    <>
       <span className="relative inline-flex">
         <svg
           width="34"
@@ -49,6 +52,17 @@ export function Logo({ className, showWordmark = true, href = "/" }: LogoProps) 
           <span className="text-purple-glow">.</span>
         </span>
       )}
+    </>
+  );
+
+  // No `aria-label` on this branch — it names a destination, and there is none.
+  if (href === null) {
+    return <span className={classes}>{lockup}</span>;
+  }
+
+  return (
+    <Link href={href} aria-label={`${siteConfig.name} home`} className={classes}>
+      {lockup}
     </Link>
   );
 }

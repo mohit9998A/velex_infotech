@@ -1,22 +1,6 @@
 import type { CSSProperties } from "react";
 
-/**
- * Only clients we can actually name.
- *
- * This list previously carried eight names, six of which were invented — and
- * four of those ("TechCorp India", "Bloom Retail", "Northline Logistics",
- * "Aether Studios") were the same companies used as the employers of the fake
- * testimonial authors in content/testimonials.json. Anyone who checked would
- * have found the pattern in about thirty seconds, on the exact page we're
- * trying to build authority with.
- *
- * Bonn and FabXpert Metal are real — both appear in content/portfolio.json with
- * live, linked sites.
- *
- * To add a name here you need written permission from the client. Naming a
- * client without consent is a legal exposure independent of any SEO concern.
- */
-const clients = ["Bonn", "FabXpert Metal", "Ground Zero", "DAUR"];
+import { permittedClients as clients } from "@/lib/clients";
 
 export function TrustBar() {
   return (
