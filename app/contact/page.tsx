@@ -1,4 +1,4 @@
-﻿import { Phone, Mail, MapPin, MessageCircle, Clock } from "lucide-react";
+import { Phone, Mail, MapPin, MessageCircle, Clock } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { marketsShortLine, officesLine, pageMetadata } from "@/lib/seo";
@@ -8,9 +8,10 @@ import {
   localBusinessSchema,
   webPageSchema,
 } from "@/lib/schema";
+import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { LeadForm } from "@/components/forms/lead-form";
 
-const title = "Contact Us â€” Free AI Consultation";
+const title = "Contact Us — Free AI Consultation";
 const description = `Talk to Velex Infotech about AI agents, automation or custom software. We work with teams across the ${marketsShortLine} and reply within one business day.`;
 
 export const metadata = pageMetadata({
@@ -32,13 +33,16 @@ const contactItems = [
  * "we're flexible".
  */
 const coverage = [
-  { market: "United Kingdom", overlap: "Full overlap â€” 09:00â€“17:00 GMT sits inside our day" },
-  { market: "US East Coast", overlap: "09:00â€“13:00 ET live, same-day replies after" },
-  { market: "US West Coast", overlap: "09:00â€“11:00 PT live, plus async handover each morning" },
+  { market: "United Kingdom", overlap: "Full overlap — 09:00–17:00 GMT sits inside our day" },
+  { market: "US East Coast", overlap: "09:00–13:00 ET live, same-day replies after" },
+  { market: "US West Coast", overlap: "09:00–11:00 PT live, plus async handover each morning" },
   { market: "Canada (ET/PT)", overlap: "Same windows as the equivalent US timezone" },
 ];
 
 export default function ContactPage() {
+  // One value feeds both the visible trail and the schema, so they cannot drift.
+  const trail = [{ name: "Contact", path: "/contact" }];
+
   return (
     <>
       <script
@@ -47,7 +51,7 @@ export default function ContactPage() {
           __html: jsonLd(
             webPageSchema({ path: "/contact", title, description }),
             localBusinessSchema("ludhiana"),
-            breadcrumbSchema([{ name: "Contact", path: "/contact" }]),
+            breadcrumbSchema(trail),
           ),
         }}
       />
@@ -57,7 +61,8 @@ export default function ContactPage() {
         <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 glow-blob" />
 
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="mx-auto max-w-2xl text-center">
+          <Breadcrumbs trail={trail} />
+          <div className="mx-auto mt-6 max-w-2xl text-center">
             <span className="font-mono-label text-purple-glow">Contact</span>
             <h1 className="mt-4 font-display text-h1 text-balance text-primary">
               Let&apos;s build something
@@ -107,7 +112,7 @@ export default function ContactPage() {
                   </span>
                 </span>
                 <p className="mt-3 text-sm text-secondary">
-                  Our team works 09:00â€“19:00 IST, Monday to Friday.
+                  Our team works 09:00–19:00 IST, Monday to Friday.
                 </p>
                 <dl className="mt-4 flex flex-col gap-3">
                   {coverage.map((c) => (

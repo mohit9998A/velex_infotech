@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight, Clock } from "lucide-react";
@@ -103,11 +103,11 @@ export default async function BlogPostPage({
                   {post.author}
                 </Link>
               </span>
-              <span aria-hidden="true">Â·</span>
+              <span aria-hidden="true">·</span>
               <time dateTime={post.publishedAt}>
                 {dateFormatter.format(new Date(post.publishedAt))}
               </time>
-              <span aria-hidden="true">Â·</span>
+              <span aria-hidden="true">·</span>
               <span className="inline-flex items-center gap-1.5">
                 <Clock className="size-3.5" aria-hidden="true" />
                 {post.readingMinutes} min read

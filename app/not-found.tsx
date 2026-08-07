@@ -1,4 +1,5 @@
-﻿import Link from "next/link";
+import type { Metadata } from "next";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 import type { ServiceItem } from "@/types";
@@ -11,13 +12,32 @@ const services = (servicesData as ServiceItem[]).slice(0, 6);
  * Branded 404.
  *
  * There was no not-found.tsx at all, so an unknown URL rendered Next's default
- * monochrome page: off-brand, no navigation, a dead end. And it gets hit â€” both
+ * monochrome page: off-brand, no navigation, a dead end. And it gets hit — both
  * dynamic routes set `dynamicParams = false`, so every bad service or blog slug
  * lands here. This renders inside the root layout, so navbar and footer come
  * free.
- *
- * No `robots` metadata needed: a 404 is not indexed.
  */
+
+/**
+ * Next injects its own `<meta name="robots" content="noindex">` for a 404, so
+ * this page was never going to be indexed — but exporting no metadata at all
+ * was not harmless. Metadata inheritance is shallow and per-key, so this page
+ * inherited `alternates.canonical` and the permissive `robots` block from
+ * app/layout.tsx, and the built HTML shipped a self-contradicting pair of
+ * robots tags plus `<link rel="canonical" href="https://velexinfotech.com">`.
+ * Since both dynamic routes set `dynamicParams = false`, that canonical was
+ * telling Google every bad service and blog slug *was* the homepage.
+ *
+ * `canonical: null` suppresses the tag outright (resolveCanonicalUrl returns
+ * null for a falsy value); `robots` replaces the parent object wholesale,
+ * discarding its googleBot block along with it.
+ */
+export const metadata: Metadata = {
+  title: "Page not found",
+  robots: { index: false, follow: false },
+  alternates: { canonical: null },
+};
+
 export default function NotFound() {
   return (
     <section className="relative overflow-hidden pb-20 pt-36">

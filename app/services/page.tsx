@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 import type { ServiceItem } from "@/types";
@@ -7,6 +7,7 @@ import { marketsShortLine, pageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, itemListSchema, jsonLd } from "@/lib/schema";
 import { getServiceIcon } from "@/lib/icons";
 import { Badge } from "@/components/ui/badge";
+import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { SectionHeader } from "@/components/common/section-header";
 import { ConsultButtons } from "@/components/common/consult-buttons";
 import { CtaBanner } from "@/components/sections/cta-banner";
@@ -16,7 +17,7 @@ const services = servicesData as ServiceItem[];
 export const metadata = pageMetadata({
   path: "/services",
   title: "AI, Data & Software Services",
-  description: `AI agents, automation, AI receptionists, WhatsApp chatbots, AI integration, data analytics, custom software, websites and apps â€” for businesses in the ${marketsShortLine}.`,
+  description: `AI agents, automation, AI receptionists, WhatsApp chatbots, AI integration, data analytics, custom software, websites and apps — for businesses in the ${marketsShortLine}.`,
 });
 
 // Lists every service as a crawlable collection rather than leaving Google to
@@ -30,32 +31,38 @@ const serviceListSchema = itemListSchema({
 });
 
 export default function ServicesIndexPage() {
+  // One value feeds both the visible trail and the schema. This page emitted
+  // BreadcrumbList with no rendered trail to match it — markup describing
+  // content that wasn't on the page, which is exactly what breadcrumbs.tsx
+  // warns against.
+  const trail = [{ name: "Services", path: "/services" }];
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: jsonLd(
-            serviceListSchema,
-            breadcrumbSchema([{ name: "Services", path: "/services" }]),
-          ),
+          __html: jsonLd(serviceListSchema, breadcrumbSchema(trail)),
         }}
       />
       <section className="relative overflow-hidden pb-12 pt-36">
         <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
         <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 glow-blob" />
-        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <span className="font-mono-label text-purple-glow">Our Services</span>
-          <h1 className="mt-4 font-display text-h1 text-balance text-primary">
-            AI, data &amp; software services
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-secondary md:text-lg">
-            {services.length} capabilities, from autonomous AI agents to the data
-            layer that makes them useful â€” built for businesses in the{" "}
-            {marketsShortLine}.
-          </p>
-          <div className="mt-9 flex justify-center">
-            <ConsultButtons />
+        <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
+          <Breadcrumbs trail={trail} />
+          <div className="mt-6 text-center">
+            <span className="font-mono-label text-purple-glow">Our Services</span>
+            <h1 className="mt-4 font-display text-h1 text-balance text-primary">
+              AI, data &amp; software services
+            </h1>
+            <p className="mx-auto mt-5 max-w-2xl text-secondary md:text-lg">
+              {services.length} capabilities, from autonomous AI agents to the
+              data layer that makes them useful — built for businesses in the{" "}
+              {marketsShortLine}.
+            </p>
+            <div className="mt-9 flex justify-center">
+              <ConsultButtons />
+            </div>
           </div>
         </div>
       </section>

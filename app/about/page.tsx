@@ -1,10 +1,11 @@
-﻿import { Gem, Target, ShieldCheck, Rocket, MapPin } from "lucide-react";
+import { Gem, Target, ShieldCheck, Rocket, MapPin } from "lucide-react";
 
 import type { StatItem } from "@/types";
 import statsData from "@/content/stats.json";
 import { siteConfig } from "@/config/site";
 import { marketsShortLine, officesLine, pageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, jsonLd, personSchema } from "@/lib/schema";
+import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { SectionHeader } from "@/components/common/section-header";
 import { StatCard } from "@/components/common/stat-card";
 import { ConsultButtons } from "@/components/common/consult-buttons";
@@ -12,51 +13,54 @@ import { CtaBanner } from "@/components/sections/cta-banner";
 
 const stats = statsData as StatItem[];
 
-// Title omits the brand â€” the root layout's `%s | Velex Infotech` template
+// Title omits the brand — the root layout's `%s | Velex Infotech` template
 // appends it. Including it here produced "... | Velex Infotech | Velex Infotech".
 export const metadata = pageMetadata({
   path: "/about",
-  title: "About Velex Infotech â€” AI Engineering from India",
+  title: "About Velex Infotech — AI Engineering from India",
   description: `Velex Infotech builds AI agents, automation and custom software for businesses in the ${marketsShortLine}. Founded by Mohit Dutta, with engineering hubs in ${officesLine}.`,
 });
 
 const values = [
   { icon: Gem, title: "Crystalline quality", description: "Every build is faceted with precision. We ship work we're proud to sign." },
   { icon: Target, title: "Outcome-obsessed", description: "We define measurable success up front and engineer toward it relentlessly." },
-  { icon: ShieldCheck, title: "Enterprise trust", description: "Secure, compliant and reliable â€” the standard our clients depend on." },
+  { icon: ShieldCheck, title: "Enterprise trust", description: "Secure, compliant and reliable — the standard our clients depend on." },
   { icon: Rocket, title: "Built to scale", description: "From MVP to production, we architect for the growth that follows." },
 ];
 
 export default function AboutPage() {
+  // One value feeds both the visible trail and the schema, so they cannot drift.
+  const trail = [{ name: "About", path: "/about" }];
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          // The full Person node is emitted here and only here â€” every other
+          // The full Person node is emitted here and only here — every other
           // reference (Organization.founder, BlogPosting.author) points at its
           // @id. The `#mohit-dutta` fragment resolves to the founder card below.
-          __html: jsonLd(
-            personSchema(),
-            breadcrumbSchema([{ name: "About", path: "/about" }]),
-          ),
+          __html: jsonLd(personSchema(), breadcrumbSchema(trail)),
         }}
       />
       {/* Hero */}
       <section className="relative overflow-hidden pb-12 pt-36">
         <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
         <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 glow-blob" />
-        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <span className="font-mono-label text-purple-glow">About Us</span>
-          <h1 className="mt-4 font-display text-h1 text-balance text-primary">
-            We engineer <span className="text-gradient">intelligence</span>.
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-secondary md:text-lg">
-            {siteConfig.name} builds AI agents, automation and custom software for
-            businesses in the {marketsShortLine}. We are headquartered in India,
-            with engineering in {officesLine} â€” which is how we deliver
-            senior-level work at a rate onshore teams struggle to match.
-          </p>
+        <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
+          <Breadcrumbs trail={trail} />
+          <div className="mt-6 text-center">
+            <span className="font-mono-label text-purple-glow">About Us</span>
+            <h1 className="mt-4 font-display text-h1 text-balance text-primary">
+              We engineer <span className="text-gradient">intelligence</span>.
+            </h1>
+            <p className="mx-auto mt-5 max-w-2xl text-secondary md:text-lg">
+              {siteConfig.name} builds AI agents, automation and custom software
+              for businesses in the {marketsShortLine}. We are headquartered in
+              India, with engineering in {officesLine} — which is how we deliver
+              senior-level work at a rate onshore teams struggle to match.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -85,14 +89,14 @@ export default function AboutPage() {
               </p>
               <p>
                 We started with a simple belief: most companies don&apos;t need more
-                software â€” they need intelligence woven into the way they already
+                software — they need intelligence woven into the way they already
                 work. So we build AI agents, automation, voice assistants,
                 WhatsApp bots, analytics and custom software that move the numbers
                 that matter.
               </p>
               <p>
                 India is our home and our engineering base. Our HQ is in Ludhiana,
-                with a second engineering team in Noida â€” and our clients are in
+                with a second engineering team in Noida — and our clients are in
                 the United States, United Kingdom, Canada and India.
               </p>
             </div>
@@ -107,7 +111,7 @@ export default function AboutPage() {
                 },
                 {
                   q: "How do we overlap with your timezone?",
-                  a: "We work 09:00â€“19:00 IST. That is full overlap with UK hours, a four-hour live window with US Eastern, and a two-hour window with US Pacific â€” with an async handover every morning.",
+                  a: "We work 09:00–19:00 IST. That is full overlap with UK hours, a four-hour live window with US Eastern, and a two-hour window with US Pacific — with an async handover every morning.",
                 },
                 {
                   q: "Where does your data live?",
@@ -126,7 +130,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* Founder card. The id backs the Person node's @id fragment above â€”
+          {/* Founder card. The id backs the Person node's @id fragment above —
               an @id pointing at nothing on the page is a smell. */}
           <div id="mohit-dutta" className="glass-card flex flex-col items-start p-8">
             <span className="flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-core to-purple-deep font-display text-2xl font-bold text-white">
@@ -135,7 +139,7 @@ export default function AboutPage() {
             <h3 className="mt-5 font-display text-2xl text-primary">Mohit Dutta</h3>
             <p className="text-sm text-purple-glow">Founder &amp; CEO</p>
             <p className="mt-4 text-secondary">
-              &ldquo;We don&apos;t just build software. We engineer intelligence â€” and back it with proof.&rdquo;
+              &ldquo;We don&apos;t just build software. We engineer intelligence — and back it with proof.&rdquo;
             </p>
           </div>
         </div>

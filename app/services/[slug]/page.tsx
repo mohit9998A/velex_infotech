@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -17,6 +17,7 @@ import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { SectionHeader } from "@/components/common/section-header";
 import { ConsultButtons } from "@/components/common/consult-buttons";
 import { CtaBanner } from "@/components/sections/cta-banner";
+import { FaqSection } from "@/components/sections/faq-section";
 
 const services = servicesData as ServiceItem[];
 const steps = processData as ProcessStep[];
@@ -37,7 +38,7 @@ export async function generateMetadata({
   if (!service) return {};
   return pageMetadata({
     path: `/services/${service.slug}`,
-    // metaTitle no longer carries the brand â€” the root layout template appends
+    // metaTitle no longer carries the brand — the root layout template appends
     // it, and having both produced "... | Velex Infotech | Velex Infotech".
     title: service.metaTitle ?? service.title,
     description: service.metaDescription ?? service.description,
@@ -122,10 +123,10 @@ export default async function ServicePage({
                   the fold) and `fetchPriority="high"` raises its queue
                   priority. Note: the `priority` prop is deprecated in Next 16
                   in favour of `preload`, and the docs recommend these two over
-                  `preload` in most cases â€” they are mutually exclusive with it. */}
+                  `preload` in most cases — they are mutually exclusive with it. */}
               <Image
                 src={serviceImages[service.slug]}
-                alt={`${service.title} â€” illustration of the service in use`}
+                alt={`${service.title} — illustration of the service in use`}
                 // 864px, not 896px: the container is `max-w-4xl` (896) minus `p-4` on
       // each side at sm+. That is a whole srcset step of wasted bytes.
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 864px"
@@ -195,6 +196,16 @@ export default async function ServicePage({
         </div>
       </section>
 
+      {/* Service FAQ. Sits with the primary content, ahead of the navigation
+          blocks below it. FaqSection emits its own FAQPage node, which is why
+          faqSchema() is deliberately absent from this page's @graph above. */}
+      {service.faqs && service.faqs.length > 0 && (
+        <FaqSection
+          faqs={service.faqs}
+          title={`${service.title} — common questions`}
+        />
+      )}
+
       {/* Related services */}
       <section className="relative pb-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -232,7 +243,7 @@ export default async function ServicePage({
         </div>
       </section>
 
-      {/* Related reading â€” distributes link equity between the blog and the
+      {/* Related reading — distributes link equity between the blog and the
           money pages in both directions. */}
       {relatedReading.length > 0 && (
         <section className="relative pb-20">
