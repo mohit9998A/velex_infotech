@@ -18,6 +18,40 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## Environment
+
+The lead form at `/api/contact` mails submissions through the company's own
+SMTP mailbox. Set these in `.env.local` for development and in the Vercel
+dashboard for production. Only the first two are required — everything else has
+a working default.
+
+| Variable | Required | Default | Notes |
+|---|---|---|---|
+| `SMTP_USER` | **yes** | — | `team@velexinfotech.com` |
+| `SMTP_PASSWORD` | **yes** | — | The **mailbox** password, not the hPanel one. Mark Sensitive in Vercel. |
+| `SMTP_HOST` | no | `smtp.hostinger.com` | |
+| `SMTP_PORT` | no | `465` | 465 (SSL) or 587 (TLS). `secure` is derived from this, never set separately. |
+| `LEAD_FROM_EMAIL` | no | `Velex Infotech <SMTP_USER>` | Its address **must** match `SMTP_USER` — most hosts reject anything else with 550/553. |
+| `LEAD_INBOX` | no | `siteConfig.leadInbox` | Where notifications land. |
+| `LEAD_AUTOREPLY` | no | off | Acknowledgement to the visitor. Leave off until an edge rate-limit rule is in place — see `lib/mail.ts`. |
+| `LEAD_MAIL_DISABLED` | no | off | **Kill switch.** Set to `1` to stop all outbound mail without a deploy. |
+| `LEAD_MAX_SENDS_PER_HOUR` | no | `20` | Per instance — see `lib/rate-limit.ts`. |
+| `LEAD_MAX_SENDS_PER_DAY` | no | `40` | Per instance. |
+| `SMTP_DEBUG` | no | off | Logs the SMTP conversation. Ignored in production. |
+
+Check the whole contract against the live mail server before trusting it:
+
+```bash
+npm run verify:smtp            # resolve config, handshake, report problems
+npm run verify:smtp -- --send  # also deliver a real test email
+```
+
+> A mailbox password containing `$` needs escaping as `\$` in `.env.local`
+> (Next expands `$VAR` in dotenv files) but **not** in the Vercel dashboard,
+> which stores it literally. Getting this backwards authenticates in one
+> environment and fails forever in the other. Regenerating the password as 24
+> alphanumeric characters avoids the problem entirely.
+
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More

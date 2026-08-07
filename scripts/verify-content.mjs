@@ -283,6 +283,21 @@ for (const dir of SOURCE_DIRS) {
           `mojibake also carried one`,
       );
     }
+    // A NUL in a source file is always an accident, and it is the one encoding
+    // fault that hides completely: the file still compiles, still lints, still
+    // passes the UTF-8 checks above, and the character is invisible in every
+    // editor. What it does do is make git classify the file as BINARY, so it
+    // silently stops being diffable and can never be code-reviewed again.
+    // lib/rate-limit.ts shipped one inside a string literal and that is exactly
+    // how it was found — by noticing `Bin` in a diffstat.
+    const nul = raw.indexOf(0);
+    if (nul !== -1) {
+      const line = raw.subarray(0, nul).toString("latin1").split("\n").length;
+      errors.push(
+        `${file}: contains a NUL byte at line ${line} — git will treat the file ` +
+          `as binary and stop diffing it. Delete the character`,
+      );
+    }
     const hit = findMojibake(raw.toString("utf8"));
     if (hit) {
       errors.push(
