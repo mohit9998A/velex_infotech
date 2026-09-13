@@ -34,7 +34,7 @@ export function BentoSection() {
   return (
     <section
       id="why-us"
-      className="relative w-full py-24 sm:py-32 bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-300 overflow-hidden"
+      className="relative w-full pt-8 sm:pt-14 pb-20 sm:pb-28 bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-300 overflow-hidden"
     >
       {/* Ambient background glow */}
       <div
@@ -53,17 +53,6 @@ export function BentoSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span
-              className="h-[1.5px] w-6 sm:w-10 rounded-full bg-[#0055FF] dark:bg-[#3B82F6]"
-              aria-hidden="true"
-            />
-            <span className="font-sans text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-[#0055FF] dark:text-[#3B82F6]">
-              OUR EDGE
-            </span>
-            <span
-              className="h-[1.5px] w-6 sm:w-10 rounded-full bg-[#0055FF] dark:bg-[#3B82F6]"
-              aria-hidden="true"
-            />
           </motion.div>
 
           {/* Headline */}
@@ -227,16 +216,12 @@ export function BentoSection() {
               <span className="font-mono text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
                 {stats[0].label}
               </span>
-              <Sparkles className="size-4 text-indigo-500 dark:text-indigo-400" />
+
             </div>
             <div>
               <span className="font-serif text-4xl sm:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
                 <CountUp value={stats[0].value} suffix={stats[0].suffix} />
               </span>
-              <p className="text-[11px] text-slate-500 dark:text-white/50 mt-1.5 flex items-center gap-1.5">
-                <span className="size-1.5 rounded-full bg-emerald-500" />
-                <span>Production deployments</span>
-              </p>
             </div>
           </motion.div>
 
@@ -252,16 +237,11 @@ export function BentoSection() {
               <span className="font-mono text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
                 {stats[1].label}
               </span>
-              <Globe2 className="size-4 text-purple-500 dark:text-purple-400" />
             </div>
             <div>
               <span className="font-serif text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
                 <CountUp value={stats[1].value} suffix={stats[1].suffix} />
               </span>
-              <p className="text-[11px] text-slate-500 dark:text-white/50 mt-1.5 flex items-center gap-1.5">
-                <span className="size-1.5 rounded-full bg-indigo-500" />
-                <span>US, UK, CA &amp; India</span>
-              </p>
             </div>
           </motion.div>
 
@@ -319,9 +299,7 @@ export function BentoSection() {
               <span className="font-mono text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
                 {stats[2].label}
               </span>
-              <span className="font-mono text-[10px] text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                ACTIVE
-              </span>
+
             </div>
             <div>
               <span className="font-serif text-4xl sm:text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
@@ -345,9 +323,7 @@ export function BentoSection() {
               <span className="font-mono text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
                 {stats[3].label}
               </span>
-              <span className="font-mono text-[10px] text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
-                FAST SLA
-              </span>
+
             </div>
             <div>
               <span className="font-serif text-4xl sm:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">

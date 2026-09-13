@@ -107,7 +107,7 @@ export function ServicesSection() {
   return (
     <section
       id="services"
-      className="relative w-full py-20 sm:py-28 bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-300"
+      className="relative w-full pt-20 sm:pt-28 pb-10 sm:pb-14 bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-300"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-8">
         {/* Header */}
@@ -164,7 +164,7 @@ export function ServicesSection() {
         </div>
 
         {/* Sticky Cards Stack (Cards overlap via sticky position, keeping previous titles visible) */}
-        <div className="relative flex flex-col gap-0 pb-[40vh] max-w-5xl mx-auto">
+        <div className="relative flex flex-col gap-0 max-w-5xl mx-auto">
           {services.map((service, index) => {
             const theme =
               CARD_THEMES[service.slug] ?? CARD_THEMES["ai-automation"];
@@ -179,7 +179,7 @@ export function ServicesSection() {
                 style={{
                   top: `calc(clamp(88px, 10vh, 112px) + ${index} * clamp(78px, 8.8vh, 90px))`,
                   zIndex: index + 1,
-                  marginBottom: "8vh",
+                  marginBottom: index === services.length - 1 ? "0px" : "6vh",
                 }}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
