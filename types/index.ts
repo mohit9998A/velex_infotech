@@ -156,6 +156,8 @@ export interface PortfolioItem {
   accent: string; // tailwind gradient classes for the cover
   placeholder?: boolean;
   preview?: PortfolioPreview;
+  highlights?: string[];
+  techStack?: string[];
 }
 
 /**

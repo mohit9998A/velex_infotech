@@ -73,9 +73,9 @@ export function Navbar() {
                         <NavigationMenuLink asChild>
                           <Link
                             href={link.href}
-                            className="group block rounded-xl px-4 py-3 transition-colors hover:bg-[#0055FF]/10 dark:hover:bg-[#3B82F6]/10"
+                            className="group block rounded-xl px-4 py-3 transition-colors hover:bg-[#7138FF]/10 dark:hover:bg-[#8B4DFF]/10"
                           >
-                            <span className="text-sm font-semibold text-primary transition-colors group-hover:text-[#0055FF] dark:group-hover:text-[#3B82F6]">
+                            <span className="text-sm font-semibold text-primary transition-colors group-hover:text-[#7138FF] dark:group-hover:text-[#8B4DFF]">
                               {link.label}
                             </span>
                             {link.description && (
@@ -110,7 +110,7 @@ export function Navbar() {
           <Button
             variant="blue"
             size="sm"
-            className="group hidden h-10 px-6 text-sm font-semibold rounded-full shadow-[0_4px_20px_rgba(0,85,255,0.35)] hover:shadow-[0_6px_28px_rgba(0,85,255,0.5)] sm:inline-flex"
+            className="group hidden h-10 px-6 text-sm font-semibold rounded-full shadow-[0_4px_20px_rgba(113,56,255,0.35)] hover:shadow-[0_6px_28px_rgba(113,56,255,0.5)] sm:inline-flex"
             onClick={() => openModal()}
           >
             Get Started
@@ -133,7 +133,7 @@ export function Navbar() {
               <SheetClose asChild>
                 <Link
                   href="/services"
-                  className="mt-4 block border-b border-black/10 dark:border-white/10 pb-4 text-base font-semibold text-primary hover:text-[#0055FF] dark:hover:text-[#3B82F6]"
+                  className="mt-4 block border-b border-black/10 dark:border-white/10 pb-4 text-base font-semibold text-primary hover:text-[#7138FF] dark:hover:text-[#8B4DFF]"
                 >
                   All Services
                 </Link>
@@ -145,7 +145,7 @@ export function Navbar() {
                     value={group.label}
                     className="border-b border-black/10 dark:border-white/10"
                   >
-                    <AccordionTrigger className="text-base font-semibold text-primary hover:no-underline hover:text-[#0055FF] dark:hover:text-[#3B82F6]">
+                    <AccordionTrigger className="text-base font-semibold text-primary hover:no-underline hover:text-[#7138FF] dark:hover:text-[#8B4DFF]">
                       {group.label}
                     </AccordionTrigger>
                     <AccordionContent>
@@ -154,7 +154,7 @@ export function Navbar() {
                           <SheetClose asChild key={link.label}>
                             <Link
                               href={link.href}
-                              className="rounded-lg px-3 py-2 text-sm text-secondary transition-colors hover:bg-[#0055FF]/10 dark:hover:bg-[#3B82F6]/10 hover:text-primary"
+                              className="rounded-lg px-3 py-2 text-sm text-secondary transition-colors hover:bg-[#7138FF]/10 dark:hover:bg-[#8B4DFF]/10 hover:text-primary"
                             >
                               {link.label}
                             </Link>
@@ -169,7 +169,7 @@ export function Navbar() {
                 <Button
                   variant="blue"
                   size="default"
-                  className="w-full h-11 text-base font-semibold shadow-[0_4px_20px_rgba(0,85,255,0.35)]"
+                  className="w-full h-11 text-base font-semibold shadow-[0_4px_20px_rgba(113,56,255,0.35)]"
                   onClick={() => {
                     setMobileOpen(false);
                     openModal();

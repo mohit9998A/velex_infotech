@@ -62,7 +62,7 @@ export function RotatingHeroText({
 
       {/* Render plain static text before mount so server HTML and first client frame match */}
       {!mounted ? (
-        <span className="italic font-serif text-[#0055FF] dark:text-[#3B82F6] whitespace-nowrap leading-normal">
+        <span className="italic font-serif text-[#7138FF] dark:text-[#8B4DFF] whitespace-nowrap leading-normal">
           {displayWords[0]}
         </span>
       ) : (
@@ -76,7 +76,7 @@ export function RotatingHeroText({
               duration: 0.55,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="inline-block italic font-serif text-[#0055FF] dark:text-[#3B82F6] whitespace-nowrap leading-normal"
+            className="inline-block italic font-serif text-[#7138FF] dark:text-[#8B4DFF] whitespace-nowrap leading-normal"
           >
             {currentWord}
           </motion.span>

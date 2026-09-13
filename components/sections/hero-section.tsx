@@ -90,7 +90,7 @@ export function HeroSection() {
             style={{ "--i": 1 } as CSSProperties}
             primaryLabel="Start a Conversation"
             primaryVariant="blue"
-            primaryClassName="h-12 px-7 sm:h-13 sm:px-8 text-sm sm:text-base font-semibold shadow-[0_4px_20px_rgba(0,85,255,0.35)] hover:shadow-[0_6px_28px_rgba(0,85,255,0.5)]"
+            primaryClassName="h-12 px-7 sm:h-13 sm:px-8 text-sm sm:text-base font-semibold shadow-[0_4px_20px_rgba(113,56,255,0.35)] hover:shadow-[0_6px_28px_rgba(113,56,255,0.5)]"
             primaryIcon={
               <ArrowRight className="size-4 ml-1.5 transition-transform group-hover:translate-x-0.5" />
             }
@@ -114,7 +114,7 @@ export function HeroSection() {
             {heroStats.map((s, idx) => (
               <div key={s.label} className="flex items-center">
                 <div className="flex flex-col pr-4 sm:pr-6 lg:pr-8">
-                  <dd className="order-1 font-sans font-bold text-2xl sm:text-3xl text-primary tracking-tight">
+                  <dd className="order-1 font-sans font-bold text-2xl sm:text-3xl text-[#7138FF] dark:text-[#8B4DFF] tracking-tight">
                     {s.value}
                   </dd>
                   <dt className="order-2 font-mono text-[10px] sm:text-[11px] font-medium tracking-[0.16em] uppercase text-secondary mt-1">

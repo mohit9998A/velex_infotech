@@ -9,30 +9,41 @@
    ============================================ */
 
 :root {
-  /* Brand */
-  --vx-purple-deep: #3b0fa0;
-  --vx-purple-core: #6b21ff;
-  --vx-purple-glow: #a855f7;
-  --vx-gold: #e4c76b;
+  /* Official Brand Color Palette */
+  --vx-deep-violet: #32108F;      /* Primary brand / dark backgrounds */
+  --vx-royal-purple: #5424D6;     /* Main logo color */
+  --vx-electric-purple: #7138FF;  /* Buttons, highlights, active states */
+  --vx-vivid-violet: #8B4DFF;     /* Gradients & glow */
+  --vx-soft-lavender: #B99CFF;    /* Secondary highlights */
+  --vx-light-lavender: #DED2FF;   /* Background accents */
+  --vx-crystal-white: #F8F7FF;    /* Light backgrounds / logo highlights */
+  --vx-midnight-navy: #0D0A24;    /* Text & dark UI */
+
+  /* Legacy & Semantic Mappings */
+  --vx-purple-deep: #32108F;
+  --vx-purple-core: #7138FF;
+  --vx-purple-glow: #8B4DFF;
+  --vx-gold: #B99CFF;
+  --vx-purple-ink: #8B4DFF;
 
   /* Backgrounds (dark, default) */
-  --vx-void: #04040a;
-  --vx-surface: #080813;
-  --vx-elevated: #0e0e1d;
-  --vx-glass: rgba(14, 14, 29, 0.7);
+  --vx-void: #04040A;
+  --vx-surface: #0A0818;
+  --vx-elevated: #100D24;
+  --vx-glass: rgba(4, 4, 10, 0.75);
 
   /* Borders */
-  --vx-border: rgba(107, 33, 255, 0.2);
-  --vx-border-bright: rgba(168, 85, 247, 0.5);
+  --vx-border: rgba(113, 56, 255, 0.22);
+  --vx-border-bright: rgba(139, 77, 255, 0.55);
 
   /* Scrolled navbar background (theme-aware) */
-  --vx-nav-bg: rgba(4, 4, 10, 0.8);
-  --vx-nav-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  --vx-nav-bg: rgba(4, 4, 10, 0.85);
+  --vx-nav-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
 
   /* Text */
-  --vx-text-primary: #f0eeff;
-  --vx-text-secondary: #9b9bb4;
-  --vx-text-muted: #5c5c7a;
+  --vx-text-primary: #F8F7FF;
+  --vx-text-secondary: #B99CFF;
+  --vx-text-muted: #8B4DFF;
 
   /* Status */
   --vx-success: #22d3a5;
@@ -40,57 +51,54 @@
   --vx-error: #ff4757;
 
   /* Effects */
-  --vx-glow-sm: 0 0 20px rgba(107, 33, 255, 0.3);
-  --vx-glow-md: 0 0 60px rgba(107, 33, 255, 0.4);
-  --vx-glow-lg: 0 0 120px rgba(107, 33, 255, 0.5);
-  --vx-glow-gold: 0 0 40px rgba(228, 199, 107, 0.3);
+  --vx-glow-sm: 0 0 20px rgba(113, 56, 255, 0.35);
+  --vx-glow-md: 0 0 60px rgba(139, 77, 255, 0.45);
+  --vx-glow-lg: 0 0 120px rgba(113, 56, 255, 0.55);
+  --vx-glow-gold: 0 0 40px rgba(185, 156, 255, 0.35);
 
-  /* Purple that stays legible as TEXT on the current surface.
-     --vx-purple-glow is 4.9:1 on --vx-elevated but only 3.9:1 on white, so it
-     fails AA for anything under 18.66px bold in the light theme. Keep
-     --vx-purple-glow for icons, rings and fills (3:1 non-text bar); use this
-     for purple body copy and small labels. */
-  --vx-purple-ink: #a855f7;
+  /* Selectable surfaces */
+  --vx-card: rgba(255, 255, 255, 0.04);
+  --vx-card-hover: rgba(113, 56, 255, 0.12);
 
-  /* Selectable surfaces — service cards, budget pills, stat tiles. Distinct
-     from --vx-elevated because these sit ON an elevated surface (the lead
-     modal) and need to separate from it without a second border. */
-  --vx-card: rgba(255, 255, 255, 0.03);
-  --vx-card-hover: rgba(107, 33, 255, 0.08);
-
-  /* Lead modal drop shadow. Heavier than --vx-glow-* because it reads as depth
-     against the page behind it rather than as brand glow. */
-  --vx-modal-shadow: 0 40px 120px rgba(88, 60, 255, 0.35);
+  /* Lead modal drop shadow */
+  --vx-modal-shadow: 0 40px 120px rgba(113, 56, 255, 0.4);
 
   --background: var(--vx-void);
   --foreground: var(--vx-text-primary);
 }
 
-/* Light theme — remaps surfaces & text so the toggle is genuine, not broken.
-   The brand remains purple/gold; only the canvas inverts. */
+/* Light theme */
 html.light {
-  --vx-void: #f6f5ff;
+  --vx-void: #F8F7FF;
   --vx-surface: #ffffff;
   --vx-elevated: #ffffff;
-  --vx-glass: rgba(255, 255, 255, 0.72);
-  --vx-border: rgba(107, 33, 255, 0.16);
-  --vx-border-bright: rgba(107, 33, 255, 0.4);
-  --vx-text-primary: #160f2e;
-  --vx-text-secondary: #4a4763;
-  --vx-text-muted: #8b88a3;
-  --vx-nav-bg: rgba(255, 255, 255, 0.85);
-  --vx-nav-shadow: 0 8px 30px rgba(22, 15, 46, 0.08);
-  --vx-purple-ink: #5b16d6; /* 8.2:1 on #ffffff */
-  /* On white, a white-alpha card is invisible — it needs its own tint. */
-  --vx-card: #fafaff;
-  --vx-card-hover: rgba(107, 33, 255, 0.05);
-  --vx-modal-shadow: 0 40px 120px rgba(88, 60, 255, 0.12);
+  --vx-glass: rgba(248, 247, 255, 0.85);
+  --vx-border: rgba(113, 56, 255, 0.16);
+  --vx-border-bright: rgba(113, 56, 255, 0.4);
+  --vx-text-primary: #0D0A24;
+  --vx-text-secondary: #32108F;
+  --vx-text-muted: #5424D6;
+  --vx-nav-bg: rgba(248, 247, 255, 0.88);
+  --vx-nav-shadow: 0 8px 30px rgba(13, 10, 36, 0.08);
+  --vx-purple-ink: #5424D6;
+  --vx-card: #F8F7FF;
+  --vx-card-hover: rgba(113, 56, 255, 0.08);
+  --vx-modal-shadow: 0 40px 120px rgba(113, 56, 255, 0.15);
   --background: var(--vx-void);
   --foreground: var(--vx-text-primary);
 }
 
-/* Map tokens into Tailwind's theme so utilities like bg-void, text-primary, border-vx work */
+/* Map tokens into Tailwind's theme */
 @theme inline {
+  --color-deep-violet: #32108F;
+  --color-royal-purple: #5424D6;
+  --color-electric-purple: #7138FF;
+  --color-vivid-violet: #8B4DFF;
+  --color-soft-lavender: #B99CFF;
+  --color-light-lavender: #DED2FF;
+  --color-crystal-white: #F8F7FF;
+  --color-midnight-navy: #0D0A24;
+
   --color-void: var(--vx-void);
   --color-surface: var(--vx-surface);
   --color-elevated: var(--vx-elevated);

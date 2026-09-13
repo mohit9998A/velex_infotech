@@ -120,17 +120,6 @@ export function ServicesSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span
-              className="h-[1.5px] w-6 sm:w-10 rounded-full bg-[#0055FF] dark:bg-[#3B82F6]"
-              aria-hidden="true"
-            />
-            <span className="font-sans text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-[#0055FF] dark:text-[#3B82F6]">
-              WHAT WE BUILD
-            </span>
-            <span
-              className="h-[1.5px] w-6 sm:w-10 rounded-full bg-[#0055FF] dark:bg-[#3B82F6]"
-              aria-hidden="true"
-            />
           </motion.div>
 
           {/* Headline */}
@@ -144,7 +133,7 @@ export function ServicesSection() {
             <span>Intelligent systems. </span>
             <span>
               Built to move{" "}
-              <span className="italic bg-gradient-to-r from-[#0055FF] via-[#7C3AED] to-[#D946EF] bg-clip-text text-transparent inline-block pr-1">
+              <span className="italic text-[#7138FF] dark:text-[#8B4DFF] inline-block pr-1">
                 business forward.
               </span>
             </span>

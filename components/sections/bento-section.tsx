@@ -15,6 +15,7 @@ import { motion } from "motion/react";
 import type { StatItem } from "@/types";
 import statsData from "@/content/stats.json";
 import { CountUp } from "@/components/common/stat-card";
+import { Logo } from "@/components/common/logo";
 import { useLeadModal } from "@/lib/store/lead-modal";
 import { prefetchLeadForm } from "@/components/forms/lead-form-modal";
 
@@ -64,7 +65,7 @@ export function BentoSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             Why{" "}
-            <span className="italic bg-gradient-to-r from-[#0055FF] via-[#7C3AED] to-[#D946EF] bg-clip-text text-transparent">
+            <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               Velex Infotech
             </span>
           </motion.h2>
@@ -114,43 +115,8 @@ export function BentoSection() {
                 OUR PHILOSOPHY
               </span>
 
-              {/* VELEX Lockup */}
-              <div className="flex items-center gap-2">
-                <span className="relative inline-flex items-center justify-center">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    aria-hidden="true"
-                    className="drop-shadow-[0_0_12px_rgba(168,85,247,0.9)]"
-                  >
-                    <defs>
-                      <linearGradient id="phil-crystal" x1="0" y1="0" x2="32" y2="32">
-                        <stop offset="0%" stopColor="#C084FC" />
-                        <stop offset="50%" stopColor="#8B5CF6" />
-                        <stop offset="100%" stopColor="#6366F1" />
-                      </linearGradient>
-                    </defs>
-                    <path
-                      d="M16 2 L27 11 L16 30 L5 11 Z"
-                      fill="url(#phil-crystal)"
-                      stroke="#FFFFFF"
-                      strokeOpacity="0.4"
-                      strokeWidth="0.75"
-                    />
-                    <path
-                      d="M5 11 H27 M16 2 V30 M11 11 L16 30 L21 11"
-                      stroke="#04040A"
-                      strokeOpacity="0.35"
-                      strokeWidth="0.6"
-                    />
-                  </svg>
-                </span>
-                <span className="font-sans text-base sm:text-lg font-bold tracking-tight text-white">
-                  VELEX<span className="text-purple-400">.</span>
-                </span>
-              </div>
+              {/* VELEX Logo mark only */}
+              <Logo href={null} showWordmark={false} />
             </div>
 
             {/* Quote body */}
@@ -162,7 +128,7 @@ export function BentoSection() {
                 <br />
                 We engineer
                 <br />
-                <span className="italic text-purple-300 drop-shadow-[0_0_24px_rgba(168,85,247,0.6)]">
+                <span className="italic text-[#8B4DFF] drop-shadow-[0_0_24px_rgba(139,77,255,0.6)]">
                   intelligence.
                 </span>
                 &rdquo;
@@ -219,7 +185,7 @@ export function BentoSection() {
 
             </div>
             <div>
-              <span className="font-serif text-4xl sm:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+              <span className="font-serif text-4xl sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
                 <CountUp value={stats[0].value} suffix={stats[0].suffix} />
               </span>
             </div>
@@ -239,7 +205,7 @@ export function BentoSection() {
               </span>
             </div>
             <div>
-              <span className="font-serif text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+              <span className="font-serif text-4xl sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
                 <CountUp value={stats[1].value} suffix={stats[1].suffix} />
               </span>
             </div>
@@ -302,7 +268,7 @@ export function BentoSection() {
 
             </div>
             <div>
-              <span className="font-serif text-4xl sm:text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              <span className="font-serif text-4xl sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
                 <CountUp value={stats[2].value} suffix={stats[2].suffix} />
               </span>
               <p className="text-[11px] text-slate-500 dark:text-white/50 mt-1.5">
@@ -326,7 +292,7 @@ export function BentoSection() {
 
             </div>
             <div>
-              <span className="font-serif text-4xl sm:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
+              <span className="font-serif text-4xl sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
                 <CountUp value={stats[3].value} suffix={stats[3].suffix} />
               </span>
               <p className="text-[11px] text-slate-500 dark:text-white/50 mt-1.5">

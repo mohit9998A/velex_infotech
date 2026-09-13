@@ -104,7 +104,7 @@ export function ProcessSection() {
       {/* Dynamic ambient background glow following active card */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/4 w-[32rem] h-[22rem] rounded-full bg-gradient-to-r from-blue-500/15 via-purple-500/20 to-pink-500/15 blur-3xl transition-all duration-700 ease-out opacity-70 dark:opacity-35 -translate-x-1/2"
+        className="pointer-events-none absolute top-1/4 w-[32rem] h-[22rem] rounded-full bg-gradient-to-r from-[#5424D6]/20 via-[#7138FF]/25 to-[#8B4DFF]/20 blur-3xl transition-all duration-700 ease-out opacity-70 dark:opacity-35 -translate-x-1/2"
         style={{
           left: `${12.5 + currentStep * 25}%`,
         }}
@@ -116,51 +116,41 @@ export function ProcessSection() {
         className="pointer-events-none absolute inset-0 opacity-40 dark:opacity-20"
         style={{
           backgroundImage:
-            "radial-gradient(ellipse at 50% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 60%)",
+            "radial-gradient(ellipse at 50% 0%, rgba(113, 56, 255, 0.1) 0%, transparent 60%)",
         }}
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 w-full flex flex-col justify-between">
         {/* Header */}
-        <div className="relative text-center max-w-3xl mx-auto pb-4 sm:pb-6">
+        <div className="relative text-center max-w-3xl mx-auto pb-6 sm:pb-10">
           {/* Eyebrow */}
           <motion.div
-            className="inline-flex items-center justify-center gap-2.5 mb-1.5 sm:mb-2"
+            className="inline-flex items-center justify-center gap-2.5 mb-2 sm:mb-3"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
           >
-            <span
-              className="h-[1.5px] w-5 sm:w-8 rounded-full bg-[#0055FF] dark:bg-[#3B82F6]"
-              aria-hidden="true"
-            />
-            <span className="font-sans text-[10px] sm:text-[11px] font-semibold tracking-[0.22em] uppercase text-[#0055FF] dark:text-[#3B82F6]">
-              HOW WE WORK
-            </span>
-            <span
-              className="h-[1.5px] w-5 sm:w-8 rounded-full bg-[#0055FF] dark:bg-[#3B82F6]"
-              aria-hidden="true"
-            />
+      
           </motion.div>
 
           {/* Headline */}
           <motion.h2
-            className="font-serif text-2xl sm:text-3xl lg:text-[36px] font-medium tracking-tight leading-tight text-slate-900 dark:text-white"
+            className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.08 }}
           >
             From idea to{" "}
-            <span className="italic bg-gradient-to-r from-[#0055FF] via-[#7C3AED] to-[#D946EF] bg-clip-text text-transparent">
+            <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               intelligence
             </span>
           </motion.h2>
 
           {/* Subheading */}
           <motion.p
-            className="font-sans text-xs sm:text-sm leading-normal mt-1 sm:mt-1.5 max-w-xl mx-auto text-slate-600 dark:text-white/60"
+            className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-3 sm:mt-4 max-w-2xl mx-auto text-slate-600 dark:text-white/60"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -176,41 +166,42 @@ export function ProcessSection() {
           <div className="hidden lg:block absolute inset-0 pointer-events-none" aria-hidden="true">
             <svg
               className="w-full h-full"
-              viewBox="0 0 1200 160"
+              viewBox="0 0 1000 160"
               fill="none"
               preserveAspectRatio="none"
             >
               <defs>
-                <linearGradient id="journey-base-line" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.2" />
-                  <stop offset="50%" stopColor="#8B5CF6" stopOpacity="0.2" />
-                  <stop offset="100%" stopColor="#EC4899" stopOpacity="0.2" />
+                <linearGradient id="journey-wave-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#B99CFF" />
+                  <stop offset="35%" stopColor="#7138FF" />
+                  <stop offset="65%" stopColor="#5424D6" />
+                  <stop offset="100%" stopColor="#8B4DFF" />
                 </linearGradient>
-                <linearGradient id="journey-active-glow" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#2563EB" />
-                  <stop offset="50%" stopColor="#7C3AED" />
-                  <stop offset="100%" stopColor="#D946EF" />
-                </linearGradient>
+                <filter id="wave-glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="2.5" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
               </defs>
 
-              {/* Base timeline path */}
+              {/* Base timeline path: Dip between 1 & 2, Crest between 2 & 3, Dip between 3 & 4 */}
               <path
-                d="M 150 95 C 300 115, 300 75, 450 95 C 600 115, 600 75, 750 95 C 900 115, 900 75, 1050 95"
-                stroke="url(#journey-base-line)"
-                strokeWidth="1.5"
-                strokeDasharray="5 5"
+                d="M 125 130 C 200 152, 300 152, 375 130 C 450 70, 550 70, 625 130 C 700 152, 800 152, 875 130"
+                stroke="url(#journey-wave-gradient)"
+                strokeWidth="2"
+                strokeOpacity="0.4"
               />
 
-              {/* Illuminated timeline path up to current step */}
+              {/* Active illuminated timeline path */}
               <path
-                d="M 150 95 C 300 115, 300 75, 450 95 C 600 115, 600 75, 750 95 C 900 115, 900 75, 1050 95"
-                stroke="url(#journey-active-glow)"
+                d="M 125 130 C 200 152, 300 152, 375 130 C 450 70, 550 70, 625 130 C 700 152, 800 152, 875 130"
+                stroke="url(#journey-wave-gradient)"
                 strokeWidth="2.5"
                 strokeLinecap="round"
+                filter="url(#wave-glow)"
                 className="transition-all duration-700 ease-out"
                 style={{
-                  strokeDasharray: "1200",
-                  strokeDashoffset: `${1200 - ((currentStep + 1) / 4) * 1200}`,
+                  strokeDasharray: "1000",
+                  strokeDashoffset: `${1000 - (currentStep / 3) * 1000}`,
                 }}
               />
             </svg>
@@ -229,24 +220,11 @@ export function ProcessSection() {
                   onMouseLeave={() => setHoveredStep(null)}
                   className="relative flex flex-col items-center text-center cursor-pointer group"
                 >
-                  {/* Step Pill */}
-                  <span
-                    className={`mb-1 size-6 rounded-full font-mono text-[10px] font-bold flex items-center justify-center transition-all duration-300 ${
-                      isActive
-                        ? "bg-purple-600 text-white shadow-[0_0_12px_rgba(147,51,234,0.6)] scale-110"
-                        : isPast
-                        ? "bg-purple-500/20 text-purple-600 dark:text-purple-400 border border-purple-500/40"
-                        : "bg-slate-200/70 dark:bg-white/10 text-slate-500 dark:text-white/50 border border-slate-300/60 dark:border-white/10"
-                    }`}
-                  >
-                    {step.index}
-                  </span>
-
                   {/* 3D Isometric Visual Model + Integrated Calligraphy */}
                   <div
                     className={`relative mt-1 w-36 sm:w-44 lg:w-48 xl:w-52 h-24 sm:h-28 lg:h-32 flex items-center justify-center transition-all duration-500 ${
                       isActive
-                        ? "scale-105 filter drop-shadow-[0_8px_20px_rgba(147,51,234,0.25)]"
+                        ? "scale-105 filter drop-shadow-[0_8px_20px_rgba(113,56,255,0.3)]"
                         : "opacity-85 hover:opacity-100"
                     }`}
                   >
@@ -254,8 +232,8 @@ export function ProcessSection() {
                     <div
                       className={`absolute inset-x-2 bottom-1 h-5 blur-lg rounded-full pointer-events-none transition-all duration-500 ${
                         isActive
-                          ? "bg-purple-500/35 dark:bg-purple-500/45 scale-110"
-                          : "bg-purple-500/15 dark:bg-purple-500/20"
+                          ? "bg-[#7138FF]/35 dark:bg-[#7138FF]/45 scale-110"
+                          : "bg-[#7138FF]/15 dark:bg-[#7138FF]/20"
                       }`}
                     />
 
@@ -271,23 +249,7 @@ export function ProcessSection() {
                     </div>
                   </div>
 
-                  {/* Connecting Node on Desktop */}
-                  <div className="hidden lg:flex items-center justify-center mt-1.5 h-3">
-                    <div className="relative flex items-center justify-center">
-                      {isActive && (
-                        <span className="absolute size-3.5 rounded-full bg-purple-500/40 animate-ping" />
-                      )}
-                      <span
-                        className={`size-2 rounded-full transition-all duration-300 ${
-                          isActive
-                            ? "size-2.5 bg-purple-600 dark:bg-purple-400 ring-2 ring-purple-500/25"
-                            : isPast
-                            ? "bg-purple-500 dark:bg-purple-400"
-                            : "bg-slate-300 dark:bg-white/30"
-                        }`}
-                      />
-                    </div>
-                  </div>
+              
                 </div>
               );
             })}
@@ -299,7 +261,7 @@ export function ProcessSection() {
           {steps.map((step, idx) => {
             const meta = STEP_DETAILS[step.id] ?? STEP_DETAILS.discovery;
             const isActive = currentStep === idx;
-
+            
             return (
               <motion.div
                 key={step.id}
@@ -307,8 +269,8 @@ export function ProcessSection() {
                 onMouseLeave={() => setHoveredStep(null)}
                 className={`group relative p-4 sm:p-5 rounded-xl sm:rounded-2xl transition-all duration-500 flex flex-col justify-between cursor-pointer ${
                   isActive
-                    ? "-translate-y-1.5 bg-white dark:bg-white/[0.06] border-purple-400/80 dark:border-purple-400/50 shadow-[0_12px_32px_rgba(107,33,255,0.1)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_12px_32px_rgba(107,33,255,0.25)]"
-                    : "bg-white/70 dark:bg-white/[0.03] border-slate-200/80 dark:border-white/[0.08] shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:border-purple-300/60"
+                    ? "-translate-y-1.5 bg-white dark:bg-white/[0.06] border-[#7138FF]/80 dark:border-[#8B4DFF]/50 shadow-[0_12px_32px_rgba(113,56,255,0.15)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_12px_32px_rgba(113,56,255,0.3)]"
+                    : "bg-white/70 dark:bg-white/[0.03] border-slate-200/80 dark:border-white/[0.08] shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:border-[#7138FF]/60"
                 } backdrop-blur-md border`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -318,22 +280,22 @@ export function ProcessSection() {
                 <div>
                   <div className="flex items-center justify-between">
                     <span
-                      className={`font-mono text-[11px] font-bold transition-colors duration-300 ${
+                      className={`font-mono text-[11px] sm:text-xs font-bold transition-colors duration-300 ${
                         isActive
-                          ? "text-purple-600 dark:text-purple-400"
+                          ? "text-[#7138FF] dark:text-[#8B4DFF]"
                           : "text-slate-400 dark:text-white/40"
                       }`}
                     >
                       {step.index}
                     </span>
                     {isActive && (
-                      <Sparkles className="size-3 text-purple-600 dark:text-purple-400 animate-pulse" />
+                      <Sparkles className="size-3.5 text-[#7138FF] dark:text-[#8B4DFF] animate-pulse" />
                     )}
                   </div>
-                  <h3 className="mt-1 font-serif text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
+                  <h3 className="mt-1.5 font-serif text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
                     {step.title}
                   </h3>
-                  <p className="mt-1.5 font-sans text-xs text-slate-600 dark:text-white/70 leading-snug line-clamp-3">
+                  <p className="mt-1.5 font-sans text-xs sm:text-sm text-slate-600 dark:text-white/70 leading-relaxed line-clamp-3">
                     {step.description}
                   </p>
                 </div>
@@ -344,7 +306,7 @@ export function ProcessSection() {
                     return (
                       <li
                         key={item.label}
-                        className={`flex items-center gap-2 text-[11px] font-medium transition-colors duration-300 ${
+                        className={`flex items-center gap-2 text-xs font-medium transition-colors duration-300 ${
                           isActive
                             ? "text-slate-900 dark:text-white"
                             : "text-slate-600 dark:text-white/70"
@@ -353,8 +315,8 @@ export function ProcessSection() {
                         <div
                           className={`size-5 rounded-md border flex items-center justify-center shrink-0 transition-all duration-300 ${
                             isActive
-                              ? "bg-purple-600 text-white border-purple-600 dark:bg-purple-500 dark:border-purple-500 shadow-[0_0_8px_rgba(147,51,234,0.3)]"
-                              : "bg-purple-500/10 dark:bg-purple-500/15 border-purple-500/20 text-purple-600 dark:text-purple-400"
+                              ? "bg-[#7138FF] text-white border-[#7138FF] dark:bg-[#7138FF] dark:border-[#7138FF] shadow-[0_0_8px_rgba(113,56,255,0.35)]"
+                              : "bg-[#7138FF]/10 dark:bg-[#7138FF]/20 border-[#7138FF]/20 text-[#7138FF] dark:text-[#8B4DFF]"
                           }`}
                         >
                           <ItemIcon className="size-3" />
@@ -370,56 +332,45 @@ export function ProcessSection() {
         </div>
 
         {/* Bottom Timeline Indicator Bar */}
-        <div className="mt-6 sm:mt-8 pt-3 sm:pt-4 border-t border-slate-200/80 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-slate-500 dark:text-white/50">
-          <span className="font-mono text-[9px] sm:text-[10px] font-semibold tracking-[0.25em] uppercase text-slate-400 dark:text-white/40">
-            A SMARTER TOMORROW
-          </span>
+        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-slate-200/80 dark:border-white/10 flex flex-col gap-3 w-full">
+          {/* Main Horizontal Timeline Track spanning from Card 1 center (12.5%) to Card 4 center (87.5%) on desktop */}
+          <div className="w-full lg:px-[12.5%] flex flex-col gap-2">
+            {/* Continuous Line Track with End Dots */}
+            <div className="relative w-full flex items-center">
+              {/* Start Dot */}
+              <span className="size-2 rounded-full bg-[#B99CFF] dark:bg-[#8B4DFF] shadow-[0_0_8px_rgba(185,156,255,0.8)] shrink-0 z-10" />
 
-          {/* Central Pipeline Track */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 font-mono text-[9px] sm:text-[11px] tracking-[0.2em] uppercase text-slate-600 dark:text-white/60">
-            {TIMELINE_STAGES.map((stage, i) => {
-              const isHighlighted = i <= currentStep + 1;
-              return (
-                <div key={stage} className="flex items-center gap-2 sm:gap-3">
+              {/* Track Base + Active Progress Fill */}
+              <div className="relative flex-1 h-[1.5px] bg-slate-200/90 dark:bg-white/15 overflow-hidden mx-0.5">
+                <div
+                  className="h-full bg-gradient-to-r from-[#B99CFF] via-[#7138FF] to-[#5424D6] transition-all duration-700 ease-out"
+                  style={{ width: `${(currentStep / 3) * 100}%` }}
+                />
+              </div>
+
+              {/* End Dot */}
+              <span className="size-2 rounded-full bg-[#5424D6] dark:bg-[#7138FF] shadow-[0_0_8px_rgba(84,36,214,0.9)] shrink-0 z-10" />
+            </div>
+
+            {/* Stage Labels beneath the line */}
+            <div className="flex items-center justify-between font-mono text-[10px] sm:text-xs tracking-[0.2em] uppercase text-slate-500 dark:text-white/50">
+              {TIMELINE_STAGES.map((stage, i) => {
+                const isHighlighted = (i / (TIMELINE_STAGES.length - 1)) <= (currentStep / 3);
+                return (
                   <span
+                    key={stage}
                     className={`transition-colors duration-300 ${
                       isHighlighted
                         ? "font-semibold text-slate-900 dark:text-white"
                         : "text-slate-400 dark:text-white/40"
-                    } ${
-                      i === TIMELINE_STAGES.length - 1
-                        ? "bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent"
-                        : ""
                     }`}
                   >
                     {stage}
                   </span>
-                  {i < TIMELINE_STAGES.length - 1 && (
-                    <>
-                      <span
-                        className={`h-[1px] w-4 sm:w-6 transition-colors duration-300 ${
-                          i <= currentStep
-                            ? "bg-purple-500 dark:bg-purple-400"
-                            : "bg-slate-300 dark:bg-white/20"
-                        }`}
-                      />
-                      <span
-                        className={`size-1.5 rounded-full transition-colors duration-300 ${
-                          i <= currentStep
-                            ? "bg-purple-600 dark:bg-purple-400"
-                            : "bg-slate-300 dark:bg-white/20"
-                        }`}
-                      />
-                    </>
-                  )}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-
-          <span className="font-mono text-[9px] sm:text-[10px] font-semibold tracking-[0.25em] uppercase text-slate-400 dark:text-white/40">
-            BUILT FOR WHAT&apos;S NEXT
-          </span>
         </div>
       </div>
     </section>

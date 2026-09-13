@@ -11,6 +11,12 @@
     "external": true,
     "accent": "from-success/25 to-purple-core/10",
     "placeholder": false,
+    "highlights": [
+      "Real-time court availability & instant booking",
+      "Mobile-first PWA with high-speed asset loading",
+      "Integrated payment processing & instant confirmation"
+    ],
+    "techStack": ["Next.js", "TypeScript", "TailwindCSS", "Stripe API", "PWA"],
     "preview": {
       "mode": "live",
       "poster": "/images/portfolio/groundzero.webp",
@@ -29,6 +35,12 @@
     "external": true,
     "accent": "from-purple-glow/20 to-purple-deep/10",
     "placeholder": false,
+    "highlights": [
+      "Full-bleed campaign editorial gallery & lookbook",
+      "Sub-500ms page transitions with smooth motion",
+      "Seamless multi-currency cart & checkout flow"
+    ],
+    "techStack": ["Next.js", "TypeScript", "Framer Motion", "TailwindCSS", "Vercel"],
     "preview": {
       "mode": "live",
       "poster": "/images/portfolio/daur.webp",
@@ -47,6 +59,12 @@
     "external": true,
     "accent": "from-purple-core/30 to-purple-deep/10",
     "placeholder": false,
+    "highlights": [
+      "High-performance brand story & product showcase",
+      "Optimized asset pipeline with sub-second LCP",
+      "Direct lead conversion & regional enquiry capture"
+    ],
+    "techStack": ["Next.js", "TypeScript", "TailwindCSS", "Motion", "SEO Engine"],
     "preview": {
       "mode": "image",
       "poster": "/images/portfolio/bonn.webp"
@@ -64,6 +82,12 @@
     "external": true,
     "accent": "from-gold/25 to-purple-core/10",
     "placeholder": false,
+    "highlights": [
+      "B2B industrial metal-fabrication capability matrix",
+      "UAE regional optimization & multi-lingual RFQ funnel",
+      "Interactive product & service catalog with instant quote trigger"
+    ],
+    "techStack": ["Next.js", "TypeScript", "TailwindCSS", "Node.js", "B2B Funnel"],
     "preview": {
       "mode": "live",
       "poster": "/images/portfolio/fabxpert.webp",
@@ -81,7 +105,13 @@
     "href": null,
     "external": false,
     "accent": "from-purple-glow/25 to-purple-core/10",
-    "placeholder": true
+    "placeholder": true,
+    "highlights": [
+      "Multi-channel AI query classification & automated resolution",
+      "80% direct ticket resolution without human intervention",
+      "Real-time human-in-the-loop escalation guardrails"
+    ],
+    "techStack": ["Python", "LangChain", "OpenAI GPT-4o", "FastAPI", "Vector DB"]
   },
   {
     "id": "whatsapp-commerce",
@@ -94,7 +124,13 @@
     "href": null,
     "external": false,
     "accent": "from-success/20 to-purple-core/10",
-    "placeholder": true
+    "placeholder": true,
+    "highlights": [
+      "Conversational product discovery & natural language ordering",
+      "3x faster response time for inbound buyer leads",
+      "Automated WhatsApp API webhook sync with inventory"
+    ],
+    "techStack": ["WhatsApp API", "n8n", "Node.js", "Supabase", "OpenAI"]
   },
   {
     "id": "ops-automation",
@@ -107,7 +143,13 @@
     "href": null,
     "external": false,
     "accent": "from-purple-core/25 to-purple-glow/10",
-    "placeholder": true
+    "placeholder": true,
+    "highlights": [
+      "End-to-end automated ERP sync for inventory & invoicing",
+      "78% reduction in manual operations processing time",
+      "Real-time executive metrics dashboard"
+    ],
+    "techStack": ["Make.com", "n8n", "PostgreSQL", "Python", "REST API"]
   },
   {
     "id": "voice-receptionist",
@@ -120,6 +162,12 @@
     "href": null,
     "external": false,
     "accent": "from-gold/20 to-purple-deep/10",
-    "placeholder": true
+    "placeholder": true,
+    "highlights": [
+      "24/7 bilingual voice agent for appointment booking",
+      "Zero missed patient calls day or night",
+      "Instant SMS confirmation & calendar integration"
+    ],
+    "techStack": ["Twilio Voice API", "Whisper", "GPT-4o Realtime", "FastAPI"]
   }
 ]
