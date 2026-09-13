@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ============================================
    VELEX INFOTECH — DESIGN TOKENS
    Aesthetic: "Crystalline Intelligence"
@@ -118,6 +120,7 @@ html.light {
   --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-serif: var(--font-serif), "Playfair Display", Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 /* ============================================
@@ -175,6 +178,10 @@ html.lenis body {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.05;
+}
+
+.font-serif {
+  font-family: var(--font-serif);
 }
 
 .font-mono-label {

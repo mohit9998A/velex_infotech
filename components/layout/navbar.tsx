@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
@@ -43,36 +43,18 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        // Explicit property list, not `transition-all`. `all` included
-        // `backdrop-filter`, so adding `.glassmorphism` animated the blur from
-        // 0 to 20px over 300ms — 18 frames of full-width backdrop re-blur on a
-        // fixed element, on the scroll frame. The blur now appears at once;
-        // padding still animates, so the shrink-on-scroll is unchanged.
-        "fixed inset-x-0 top-0 z-[100] transition-[background-color,box-shadow,padding] duration-300",
-        scrolled ? "glassmorphism py-[0.6rem]" : "bg-transparent py-[1.2rem]",
+        "fixed inset-x-0 top-0 z-[100] transition-[background-color,border-color,box-shadow,padding] duration-300",
+        scrolled
+          ? "border-b border-black/10 dark:border-white/10 bg-white/80 dark:bg-void/80 backdrop-blur-md shadow-sm py-[0.65rem]"
+          : "bg-transparent py-[1.1rem]",
       )}
     >
-      {/* Bar geometry is one 20%-up scale of the original 48px row / 8px / 16px
-          padding pair: 96px tall at rest, 76.8px scrolled. `hero-section.tsx`
-          pads for the resting height — the two values move together. */}
       <div className="mx-auto flex h-[3.6rem] max-w-7xl items-center justify-between px-4 sm:px-6">
         <Logo />
 
         {/* Desktop nav */}
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList>
-            {/*
-              The one header link that survives server rendering.
-              NavigationMenuLink renders Primitive.a directly, with no Presence
-              gate — unlike NavigationMenuContent below, whose 16 links are
-              unmounted until a hover and so are invisible to a crawler, which
-              does not hover. `forceMount` is not the fix: once the Viewport
-              mounts, Radix renders every panel through
-              `Presence present={forceMount || isActive}`, so all three would
-              show at once inside a container sized from only the active one,
-              with no data-state to hide them by. The dropdown links stay
-              crawlable via the footer, which renders the same navGroups.
-            */}
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link href="/services" className={navigationMenuTriggerStyle()}>
@@ -85,19 +67,19 @@ export function Navbar() {
               <NavigationMenuItem key={group.label}>
                 <NavigationMenuTrigger>{group.label}</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[420px] gap-1 p-3">
+                  <ul className="grid w-[420px] gap-1 p-3 bg-white/95 dark:bg-void/95 backdrop-blur-xl border border-black/10 dark:border-white/15 rounded-2xl shadow-xl">
                     {group.links.map((link) => (
                       <li key={link.label}>
                         <NavigationMenuLink asChild>
                           <Link
                             href={link.href}
-                            className="block rounded-xl px-4 py-3 transition-colors hover:bg-purple-core/10"
+                            className="group block rounded-xl px-4 py-3 transition-colors hover:bg-[#0055FF]/10 dark:hover:bg-[#3B82F6]/10"
                           >
-                            <span className="text-sm font-medium text-primary">
+                            <span className="text-sm font-semibold text-primary transition-colors group-hover:text-[#0055FF] dark:group-hover:text-[#3B82F6]">
                               {link.label}
                             </span>
                             {link.description && (
-                              <span className="mt-0.5 block text-xs text-secondary">
+                              <span className="mt-0.5 block text-xs text-secondary leading-normal">
                                 {link.description}
                               </span>
                             )}
@@ -113,12 +95,12 @@ export function Navbar() {
         </NavigationMenu>
 
         {/* Actions */}
-        <div className="flex items-center gap-[0.6rem] sm:gap-[0.9rem]">
-          <ThemeToggle className="hidden size-[2.7rem] sm:inline-flex [&_svg]:size-[1.2rem]" />
+        <div className="flex items-center gap-3">
+          <ThemeToggle className="hidden size-10 rounded-full border border-black/10 dark:border-white/15 bg-black/[0.03] dark:bg-white/[0.04] text-primary hover:bg-black/[0.07] dark:hover:bg-white/[0.08] sm:inline-flex [&_svg]:size-4" />
           <Button
-            variant="crystal"
+            variant="outline"
             size="sm"
-            className="hidden h-[2.7rem] px-[1.2rem] text-[0.9rem] md:inline-flex"
+            className="hidden h-10 px-5 text-sm font-medium rounded-full border border-black/15 bg-black/[0.03] text-primary hover:bg-black/[0.07] hover:border-black/25 dark:border-white/15 dark:bg-white/[0.04] dark:hover:bg-white/[0.08] md:inline-flex"
             asChild
           >
             <a href={siteConfig.whatsapp} target="_blank" rel="noopener noreferrer">
@@ -126,11 +108,13 @@ export function Navbar() {
             </a>
           </Button>
           <Button
+            variant="blue"
             size="sm"
-            className="btn-glow hidden h-[2.7rem] px-[1.2rem] text-[0.9rem] sm:inline-flex"
+            className="group hidden h-10 px-6 text-sm font-semibold rounded-full shadow-[0_4px_20px_rgba(0,85,255,0.35)] hover:shadow-[0_6px_28px_rgba(0,85,255,0.5)] sm:inline-flex"
             onClick={() => openModal()}
           >
             Get Started
+            <ArrowRight className="size-4 ml-1.5 transition-transform group-hover:translate-x-0.5" />
           </Button>
 
           {/* Mobile menu */}
@@ -138,37 +122,39 @@ export function Navbar() {
             <SheetTrigger asChild>
               <button
                 aria-label="Open menu"
-                className="inline-flex size-[2.7rem] items-center justify-center rounded-full border border-vx-border text-primary lg:hidden"
+                className="inline-flex size-10 items-center justify-center rounded-full border border-black/15 dark:border-white/15 bg-black/[0.03] dark:bg-white/[0.04] text-primary lg:hidden"
               >
-                <Menu className="size-6" />
+                <Menu className="size-5" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right">
+            <SheetContent side="right" className="flex flex-col bg-white dark:bg-void border-l border-black/10 dark:border-white/10 p-6">
               <SheetTitle className="sr-only">Navigation menu</SheetTitle>
               <Logo />
               <SheetClose asChild>
                 <Link
                   href="/services"
-                  className="mt-2 block border-b border-vx-border py-4 text-sm font-medium text-primary"
+                  className="mt-4 block border-b border-black/10 dark:border-white/10 pb-4 text-base font-semibold text-primary hover:text-[#0055FF] dark:hover:text-[#3B82F6]"
                 >
                   All Services
                 </Link>
               </SheetClose>
-              <Accordion type="single" collapsible className="flex-1 overflow-y-auto">
+              <Accordion type="single" collapsible className="flex-1 overflow-y-auto my-2">
                 {navGroups.map((group) => (
                   <AccordionItem
                     key={group.label}
                     value={group.label}
-                    className="border-b border-vx-border"
+                    className="border-b border-black/10 dark:border-white/10"
                   >
-                    <AccordionTrigger>{group.label}</AccordionTrigger>
+                    <AccordionTrigger className="text-base font-semibold text-primary hover:no-underline hover:text-[#0055FF] dark:hover:text-[#3B82F6]">
+                      {group.label}
+                    </AccordionTrigger>
                     <AccordionContent>
-                      <div className="flex flex-col gap-1">
+                      <div className="flex flex-col gap-1.5 pt-1 pb-2">
                         {group.links.map((link) => (
                           <SheetClose asChild key={link.label}>
                             <Link
                               href={link.href}
-                              className="rounded-lg px-2 py-2 text-sm text-secondary transition-colors hover:bg-purple-core/10 hover:text-primary"
+                              className="rounded-lg px-3 py-2 text-sm text-secondary transition-colors hover:bg-[#0055FF]/10 dark:hover:bg-[#3B82F6]/10 hover:text-primary"
                             >
                               {link.label}
                             </Link>
@@ -179,17 +165,23 @@ export function Navbar() {
                   </AccordionItem>
                 ))}
               </Accordion>
-              <div className="flex flex-col gap-3 pt-2">
+              <div className="flex flex-col gap-3 pt-4 border-t border-black/10 dark:border-white/10">
                 <Button
-                  className="btn-glow w-full"
+                  variant="blue"
+                  size="default"
+                  className="w-full h-11 text-base font-semibold shadow-[0_4px_20px_rgba(0,85,255,0.35)]"
                   onClick={() => {
                     setMobileOpen(false);
                     openModal();
                   }}
                 >
                   Get Started
+                  <ArrowRight className="size-4 ml-1.5" />
                 </Button>
-                <ThemeToggle className="self-start" />
+                <div className="flex items-center justify-between pt-2">
+                  <span className="text-xs font-medium text-secondary">Switch Theme</span>
+                  <ThemeToggle />
+                </div>
               </div>
             </SheetContent>
           </Sheet>

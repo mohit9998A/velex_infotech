@@ -11,6 +11,8 @@ const buttonVariants = cva(
       variant: {
         primary:
           "bg-purple-core text-white shadow-[0_0_20px_rgba(107,33,255,0.3)] hover:shadow-[0_0_60px_rgba(107,33,255,0.5)] hover:-translate-y-0.5",
+        blue:
+          "bg-[#0055FF] text-white shadow-[0_4px_20px_rgba(0,85,255,0.35)] hover:bg-[#0047E0] hover:shadow-[0_6px_28px_rgba(0,85,255,0.5)] hover:-translate-y-0.5",
         gold: "bg-gold text-void shadow-[0_0_40px_rgba(228,199,107,0.3)] hover:shadow-[0_0_60px_rgba(228,199,107,0.45)] hover:-translate-y-0.5",
         outline:
           "border border-vx-border-bright bg-white/[0.02] text-primary backdrop-blur-sm hover:bg-purple-core/10 hover:border-purple-glow",
