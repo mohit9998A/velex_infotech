@@ -2,13 +2,27 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, ArrowRight } from "lucide-react";
+import {
+  Menu,
+  ArrowRight,
+  Check,
+  Building2,
+  FolderKanban,
+  LayoutGrid,
+  BookOpen,
+  MapPin,
+  Mail,
+  Sparkles,
+  MessagesSquare,
+  type LucideIcon,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 import { navGroups } from "@/config/navigation";
 import { useScrolled } from "@/hooks/use-scroll";
 import { useLeadModal } from "@/lib/store/lead-modal";
+import { getServiceIconByTitle } from "@/lib/icons";
 import { Logo } from "@/components/common/logo";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -34,6 +48,21 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+
+const extraNavIcons: Record<string, LucideIcon> = {
+  "WhatsApp Chatbot": MessagesSquare,
+  "All Services": LayoutGrid,
+  "About Us": Building2,
+  Industries: FolderKanban,
+  Portfolio: Sparkles,
+  Blog: BookOpen,
+  Locations: MapPin,
+  Contact: Mail,
+};
+
+function getNavIcon(label: string): LucideIcon {
+  return extraNavIcons[label] || getServiceIconByTitle(label);
+}
 
 export function Navbar() {
   const scrolled = useScrolled(80);
@@ -67,27 +96,63 @@ export function Navbar() {
               <NavigationMenuItem key={group.label}>
                 <NavigationMenuTrigger>{group.label}</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[420px] gap-1 p-3 bg-white/95 dark:bg-void/95 backdrop-blur-xl border border-black/10 dark:border-white/15 rounded-2xl shadow-xl">
-                    {group.links.map((link) => (
-                      <li key={link.label}>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href={link.href}
-                            className="group block rounded-xl px-4 py-3 transition-colors hover:bg-[#7138FF]/10 dark:hover:bg-[#8B4DFF]/10"
-                          >
-                            <span className="text-sm font-semibold text-primary transition-colors group-hover:text-[#7138FF] dark:group-hover:text-[#8B4DFF]">
-                              {link.label}
-                            </span>
-                            {link.description && (
-                              <span className="mt-0.5 block text-xs text-secondary leading-normal">
-                                {link.description}
-                              </span>
-                            )}
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="w-[460px] p-3.5 bg-white/95 dark:bg-[#070611]/95 backdrop-blur-2xl border border-slate-200/90 dark:border-white/12 rounded-3xl shadow-2xl shadow-purple-500/10">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between px-1">
+                        <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-white/40">
+                          {group.label} Capabilities
+                        </span>
+                      </div>
+
+                      <div
+                        className={cn(
+                          "grid gap-1",
+                          group.links.length > 3 ? "grid-cols-2" : "grid-cols-1",
+                        )}
+                      >
+                        {group.links.map((link) => {
+                          const Icon = getNavIcon(link.label);
+                          return (
+                            <NavigationMenuLink asChild key={link.label}>
+                              <Link
+                                href={link.href}
+                                className="group flex items-start gap-2.5 rounded-2xl p-2.5 transition-all duration-200 hover:bg-[#7138FF]/8 dark:hover:bg-[#8B4DFF]/12"
+                              >
+                                <div className="flex size-8.5 shrink-0 items-center justify-center rounded-xl border border-[#7138FF]/15 bg-[#7138FF]/5 text-[#7138FF] group-hover:bg-[#7138FF] group-hover:text-white dark:border-[#8B4DFF]/25 dark:bg-[#8B4DFF]/10 dark:text-[#8B4DFF] dark:group-hover:bg-[#8B4DFF] dark:group-hover:text-white transition-all mt-0.5">
+                                  <Icon className="size-4" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <span className="text-xs sm:text-sm font-sans font-semibold text-slate-900 dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#8B4DFF] transition-colors block truncate">
+                                    {link.label}
+                                  </span>
+                                  {link.description && (
+                                    <p className="mt-0.5 text-[11px] font-sans text-slate-500 dark:text-white/60 leading-snug line-clamp-1">
+                                      {link.description}
+                                    </p>
+                                  )}
+                                </div>
+                              </Link>
+                            </NavigationMenuLink>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Bottom Footer Bar */}
+                    <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-white/10 px-1 flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-slate-400 dark:text-white/40 flex items-center gap-1.5">
+                        
+                        Need a custom AI or software solution?
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => openModal()}
+                        className="text-[11px] font-sans font-semibold text-[#7138FF] dark:text-[#8B4DFF] hover:underline inline-flex items-center gap-1 cursor-pointer"
+                      >
+                        Book a call <ArrowRight className="size-3" />
+                      </button>
+                    </div>
+                  </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
             ))}

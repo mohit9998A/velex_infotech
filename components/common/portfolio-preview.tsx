@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { ArrowUpRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { PortfolioItem } from "@/types";
@@ -66,16 +67,13 @@ export function PortfolioPreview({
   const [scale, setScale] = useState(0);
   const [frameLoaded, setFrameLoaded] = useState(false);
   const [settled, setSettled] = useState(false);
-  // Both conditions, so neither a fast load nor a long timer alone reveals the
-  // embed before it has something worth showing.
-  const frameReady = frameLoaded && settled;
+  // Reveal embed as soon as iframe loads or settle timer finishes
+  const frameReady = frameLoaded || settled;
 
   const frameWidth = preview?.frameWidth ?? DEFAULT_FRAME_WIDTH;
   const frameUrl = preview?.url ?? item.href;
-  // Touch devices have no hover to activate with, and a live embed is exactly
-  // the kind of motion someone asking for reduced motion does not want.
   const canGoLive = Boolean(
-    preview?.mode === "live" && frameUrl && hasFinePointer && !reducedMotion,
+    preview?.mode === "live" && frameUrl && !reducedMotion,
   );
   const showFrame = canGoLive && isLive;
 
@@ -135,6 +133,15 @@ export function PortfolioPreview({
           preview ? "bg-elevated" : cn("bg-gradient-to-br", item.accent),
         )}
       >
+        {/* Hover Overlay Badge */}
+        {item.external && item.href && (
+          <div className="pointer-events-none absolute inset-0 bg-slate-950/30 backdrop-blur-[2px] opacity-0 group-hover/media:opacity-100 transition-all duration-300 flex items-center justify-center z-20">
+            <div className="inline-flex items-center gap-2 px-4.5 py-2.5 rounded-full bg-slate-950/90 text-white dark:bg-white dark:text-slate-950 border border-white/20 dark:border-slate-800 font-mono text-xs font-semibold shadow-2xl transition-transform duration-300 scale-90 group-hover/media:scale-100">
+              <span>Click to open project</span>
+              <ArrowUpRight className="size-4" />
+            </div>
+          </div>
+        )}
         {preview ? (
           <>
             <Image

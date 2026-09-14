@@ -57,7 +57,7 @@ export function ServiceCard({
       onPointerEnter={prefetchLeadForm}
       onFocus={prefetchLeadForm}
       className={cn(
-        "reveal-on-scroll group relative isolate flex flex-col justify-between overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-surface/50 p-6 backdrop-blur-md transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-[#0055FF]/40 dark:hover:border-[#3B82F6]/40 hover:shadow-xl hover:-translate-y-1.5 focus-within:border-[#0055FF]",
+        "reveal-on-scroll group relative isolate flex flex-col justify-between overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-surface/50 p-6 backdrop-blur-md transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-[#0055FF]/40 dark:hover:border-[#3B82F6]/40 hover:shadow-xl hover:-translate-y-1.5 focus-within:border-[#0055FF] w-full",
         className,
       )}
     >

@@ -60,47 +60,60 @@ export function PortfolioCard({
         onMouseLeave={onDeactivate}
       >
         {/* Main Media Canvas (8 Cols / Left Side) */}
-        <div className="lg:col-span-8 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/90 dark:border-white/10 bg-slate-950 text-white shadow-xl group/media relative transition-all duration-500 hover:border-purple-400/80 dark:hover:border-purple-500/50">
-          <PortfolioPreview item={item} isLive={isLive} />
-        </div>
+        {isLink ? (
+          <a
+            href={item.href!}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`Open ${item.title} in a new tab`}
+            className="group/media lg:col-span-8 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/90 dark:border-white/10 bg-slate-950 text-white shadow-xl relative transition-all duration-500 hover:border-purple-400/80 dark:hover:border-purple-500/50 block cursor-pointer"
+          >
+            <PortfolioPreview item={item} isLive={isLive} />
+          </a>
+        ) : (
+          <div className="group/media lg:col-span-8 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/90 dark:border-white/10 bg-slate-950 text-white shadow-xl relative transition-all duration-500 hover:border-purple-400/80 dark:hover:border-purple-500/50">
+            <PortfolioPreview item={item} isLive={isLive} />
+          </div>
+        )}
 
         {/* Outcome & Details Card (4 Cols / Right Side) */}
         <div className="lg:col-span-4 rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-white/[0.08] bg-white/90 dark:bg-white/[0.03] backdrop-blur-md p-6 sm:p-7 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-          <div className="space-y-4">
-            {/* Category & Segment Badges */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="px-3 py-1 rounded-full font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-purple-500/10 dark:bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/20">
+          <div className="space-y-5">
+            {/* Category & Segment Clean Meta */}
+            <div className="flex items-center gap-2 font-mono text-xs">
+              <span className="font-semibold text-purple-600 dark:text-purple-400 uppercase tracking-wider">
                 {item.category}
               </span>
-              <span className="px-3 py-1 rounded-full font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-white/60">
+              <span className="text-slate-300 dark:text-white/20">&bull;</span>
+              <span className="font-medium text-slate-500 dark:text-white/50 uppercase tracking-wider">
                 {item.segment}
               </span>
             </div>
 
             {/* Description */}
-            <p className="font-sans text-xs sm:text-sm text-slate-600 dark:text-white/70 leading-relaxed">
+            <p className="font-sans text-xs sm:text-sm text-slate-700 dark:text-white/80 leading-relaxed">
               {item.description}
             </p>
 
-            {/* Result Callout Quote */}
-            <div className="pt-3.5 border-t border-slate-200/80 dark:border-white/10">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-white/40 block mb-1">
-                KEY OUTCOME
+            {/* Key Outcome Quote with Left Accent Bar */}
+            <div className="border-l-2 border-purple-500 dark:border-purple-400 pl-3.5 py-0.5 space-y-1">
+              <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-white/40 block">
+                Key Outcome
               </span>
-              <p className="font-serif text-base sm:text-lg font-semibold text-slate-900 dark:text-white italic leading-snug">
+              <p className="font-serif text-base sm:text-lg font-medium text-slate-900 dark:text-white italic leading-snug">
                 &ldquo;{item.result}&rdquo;
               </p>
             </div>
 
             {/* Deliverable Highlights */}
             {item.highlights && item.highlights.length > 0 && (
-              <div className="pt-3.5 border-t border-slate-200/80 dark:border-white/10">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-white/40 block mb-2">
-                  CORE DELIVERABLES
+              <div className="pt-2 space-y-2">
+                <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-white/40 block">
+                  Core Deliverables
                 </span>
                 <ul className="space-y-1.5">
                   {item.highlights.map((highlight) => (
-                    <li key={highlight} className="flex items-start gap-2 text-xs text-slate-700 dark:text-white/80 leading-snug">
+                    <li key={highlight} className="flex items-start gap-2 text-xs text-slate-600 dark:text-white/70 leading-snug">
                       <CheckCircle2 className="size-3.5 text-purple-600 dark:text-purple-400 shrink-0 mt-0.5" />
                       <span>{highlight}</span>
                     </li>
@@ -109,31 +122,21 @@ export function PortfolioCard({
               </div>
             )}
 
-            {/* Tech Stack Badges */}
+            {/* Tech Stack - Clean Minimalist Text (No Pills) */}
             {item.techStack && item.techStack.length > 0 && (
-              <div className="pt-3.5 border-t border-slate-200/80 dark:border-white/10">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-white/40 block mb-2">
-                  TECH STACK
+              <div className="pt-2 space-y-1.5">
+                <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-white/40 block">
+                  Tech Stack
                 </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {item.techStack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2.5 py-0.5 rounded-md font-mono text-[10px] font-semibold bg-purple-500/10 dark:bg-white/5 text-purple-700 dark:text-purple-300 border border-purple-500/20 dark:border-white/10"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+                <p className="font-mono text-xs text-slate-600 dark:text-white/70 leading-relaxed">
+                  {item.techStack.join("  \u2022  ")}
+                </p>
               </div>
             )}
           </div>
 
           {/* Action Footer */}
           <div className="mt-6 pt-4 border-t border-slate-200/80 dark:border-white/10 flex items-center justify-between text-xs font-mono text-slate-500 dark:text-white/50">
-            <span className="inline-flex items-center gap-1.5 text-purple-600 dark:text-purple-400 font-semibold">
-              <Sparkles className="size-3 animate-pulse" /> PROD BUILD
-            </span>
             {isLink ? (
               <a
                 href={item.href!}

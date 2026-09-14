@@ -20,7 +20,7 @@
     "preview": {
       "mode": "live",
       "poster": "/images/portfolio/groundzero.webp",
-      "settleMs": 11000
+      "settleMs": 1000
     }
   },
   {
@@ -44,7 +44,7 @@
     "preview": {
       "mode": "live",
       "poster": "/images/portfolio/daur.webp",
-      "settleMs": 7000
+      "settleMs": 1000
     }
   },
   {
@@ -66,8 +66,9 @@
     ],
     "techStack": ["Next.js", "TypeScript", "TailwindCSS", "Motion", "SEO Engine"],
     "preview": {
-      "mode": "image",
-      "poster": "/images/portfolio/bonn.webp"
+      "mode": "live",
+      "poster": "/images/portfolio/bonn.webp",
+      "settleMs": 1000
     }
   },
   {
@@ -91,7 +92,7 @@
     "preview": {
       "mode": "live",
       "poster": "/images/portfolio/fabxpert.webp",
-      "settleMs": 9000
+      "settleMs": 1000
     }
   },
   {

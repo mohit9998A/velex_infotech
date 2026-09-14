@@ -212,7 +212,7 @@ export function PortfolioSection() {
                   >
                     <PortfolioCard
                       item={currentItem}
-                      isLive={liveId === currentItem.id}
+                      isLive={true}
                       onActivate={() => setLiveId(currentItem.id)}
                       onDeactivate={() => deactivate(currentItem.id)}
                     />

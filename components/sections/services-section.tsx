@@ -109,7 +109,7 @@ export function ServicesSection() {
       id="services"
       className="relative w-full pt-20 sm:pt-28 pb-10 sm:pb-14 bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-300"
     >
-      <div className="mx-auto max-w-6xl px-4 sm:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto pb-10 sm:pb-14">
           {/* Eyebrow */}
@@ -153,7 +153,7 @@ export function ServicesSection() {
         </div>
 
         {/* Sticky Cards Stack (Cards overlap via sticky position, keeping previous titles visible) */}
-        <div className="relative flex flex-col gap-0 max-w-5xl mx-auto">
+        <div className="relative flex flex-col gap-0 max-w-7xl mx-auto">
           {services.map((service, index) => {
             const theme =
               CARD_THEMES[service.slug] ?? CARD_THEMES["ai-automation"];
@@ -166,9 +166,9 @@ export function ServicesSection() {
                 id={`service-card-${index}`}
                 className="group sticky w-full rounded-[clamp(24px,3.5vw,40px)] overflow-hidden transition-all duration-300 border border-slate-200/90 shadow-[0_-12px_32px_rgba(0,0,0,0.06),0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:border-white/[0.08] dark:shadow-[0_-16px_40px_rgba(0,0,0,0.4),0_25px_60px_-15px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.12)]"
                 style={{
-                  top: `calc(clamp(88px, 10vh, 112px) + ${index} * clamp(78px, 8.8vh, 90px))`,
+                  top: "clamp(90px, 12vh, 112px)",
                   zIndex: index + 1,
-                  marginBottom: index === services.length - 1 ? "0px" : "6vh",
+                  marginBottom: index === services.length - 1 ? "0px" : "16vh",
                 }}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}

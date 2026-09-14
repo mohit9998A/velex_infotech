@@ -32,9 +32,8 @@ export function Logo({ className, showWordmark = true, href = "/" }: LogoProps) 
         />
       </span>
       {showWordmark && (
-        <span className="font-display text-[1.35rem]/[2.1rem] font-bold tracking-tight text-primary">
+        <span className="font-serif text-[1.4rem]/[2.1rem] font-bold tracking-tight text-primary">
           VELEX
-         
         </span>
       )}
     </>
