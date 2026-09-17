@@ -11,12 +11,20 @@ import { RotatingHeroText } from "@/components/ui/rotating-hero-text";
 const SPLINE_SCENE =
   "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
 
-const heroStats = [
-  { value: "4+", label: "YEARS" },
-  { value: "50+", label: "PROJECTS" },
-  { value: "30+", label: "CLIENTS" },
-  { value: "3", label: "GLOBAL HUBS" },
-];
+import statsData from "@/content/stats.json";
+
+interface StatItem {
+  value: number;
+  suffix: string;
+  label: string;
+}
+
+const stats = statsData as StatItem[];
+
+const heroStats = stats.slice(0, 3).map((s) => ({
+  value: `${s.value}${s.suffix}`,
+  label: s.label,
+}));
 
 export function HeroSection() {
   return (

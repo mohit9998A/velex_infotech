@@ -123,16 +123,6 @@ export function ProcessSection() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 w-full flex flex-col justify-between">
         {/* Header */}
         <div className="relative text-center max-w-3xl mx-auto pb-6 sm:pb-10">
-          {/* Eyebrow */}
-          <motion.div
-            className="inline-flex items-center justify-center gap-2.5 mb-2 sm:mb-3"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-          >
-      
-          </motion.div>
 
           {/* Headline */}
           <motion.h2

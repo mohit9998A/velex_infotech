@@ -53,8 +53,6 @@ export function FaqSection({
       <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
         {/* Header */}
         <div className="relative text-center max-w-3xl mx-auto pb-10 sm:pb-14">
-          {/* Eyebrow badge */}
-          
 
           {/* Title */}
           <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">

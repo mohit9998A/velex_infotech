@@ -46,15 +46,6 @@ export function BentoSection() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto pb-12 sm:pb-16">
-          {/* Eyebrow */}
-          <motion.div
-            className="inline-flex items-center justify-center gap-3 mb-3 sm:mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-          </motion.div>
 
           {/* Headline */}
           <motion.h2
