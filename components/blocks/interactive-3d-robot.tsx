@@ -90,7 +90,6 @@ export function InteractiveRobotSpline({
   useEffect(() => {
     // Every check below is a CLIENT fact, so all of them are read AFTER mount.
     // Reading any of them during render is what caused the original bug.
-    if (!window.matchMedia("(min-width: 768px) and (pointer: fine)").matches) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const conn = (
@@ -100,7 +99,7 @@ export function InteractiveRobotSpline({
     ).connection;
     if (conn?.saveData) return;
     if (conn?.effectiveType && /2g$/.test(conn.effectiveType)) return;
-    if ((navigator.hardwareConcurrency ?? 8) < 4) return;
+    if ((navigator.hardwareConcurrency ?? 8) < 2) return;
 
     // Deferred to idle so the fetch competes with nothing during the LCP
     // window. The timeout is the ceiling: on a busy main thread the scene still

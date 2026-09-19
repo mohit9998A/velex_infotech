@@ -34,7 +34,7 @@ interface StepMeta {
 const STEP_DETAILS: Record<string, StepMeta> = {
   discovery: {
     handwritten: "Understand Deeply",
-    image: "/images/process/step1.webp",
+    image: "https://res.cloudinary.com/d0grbozz/image/upload/v1789797249/step1.webp",
     items: [
       { label: "Workflow audit", icon: FileText },
       { label: "Opportunity map", icon: Lightbulb },
@@ -43,7 +43,7 @@ const STEP_DETAILS: Record<string, StepMeta> = {
   },
   strategy: {
     handwritten: "Design the Right Path",
-    image: "/images/process/step2.webp",
+    image: "https://res.cloudinary.com/d0grbozz/image/upload/v1789797249/step2.webp",
     items: [
       { label: "Solution blueprint", icon: Layers },
       { label: "Tech architecture", icon: Cpu },
@@ -52,7 +52,7 @@ const STEP_DETAILS: Record<string, StepMeta> = {
   },
   execution: {
     handwritten: "Build · Iterate · Improve",
-    image: "/images/process/step3.webp",
+    image: "https://res.cloudinary.com/d0grbozz/image/upload/v1789797251/step3.webp",
     items: [
       { label: "Weekly builds", icon: Code2 },
       { label: "QA & testing", icon: ShieldCheck },
@@ -61,7 +61,7 @@ const STEP_DETAILS: Record<string, StepMeta> = {
   },
   launch: {
     handwritten: "Launch & Scale",
-    image: "/images/process/step4.webp",
+    image: "https://res.cloudinary.com/d0grbozz/image/upload/v1789797251/step4.webp",
     items: [
       { label: "Production launch", icon: Rocket },
       { label: "Monitoring & optimisation", icon: Activity },
@@ -201,7 +201,6 @@ export function ProcessSection() {
             {steps.map((step, idx) => {
               const meta = STEP_DETAILS[step.id] ?? STEP_DETAILS.discovery;
               const isActive = currentStep === idx;
-              const isPast = currentStep > idx;
 
               return (
                 <div

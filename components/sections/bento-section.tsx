@@ -87,7 +87,7 @@ export function BentoSection() {
             {/* Cosmic Planet Background */}
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
               <Image
-                src="/images/cosmic-planet.png"
+                src="https://res.cloudinary.com/d0grbozz/image/upload/v1789797044/cosmic-planet.png"
                 alt="Velex Cosmos"
                 fill
                 priority
