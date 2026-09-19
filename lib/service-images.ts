@@ -1,12 +1,11 @@
 import type { StaticImageData } from "next/image";
 
-import agenticAi from "@/public/images/services/agentic-ai.webp";
-import aiAutomation from "@/public/images/services/ai-automation.webp";
-import aiIntegration from "@/public/images/services/ai-integration.webp";
-import appDevelopment from "@/public/images/services/app-development.webp";
-import voiceAgent from "@/public/images/services/voice-agent.webp";
-import webDevelopment from "@/public/images/services/web-development.webp";
-import whatsappBot from "@/public/images/services/whatsapp-bot.webp";
+import agenticAi from "@/public/images/services/agent.webp";
+import aiAutomation from "@/public/images/services/automation.webp";
+import appDevelopment from "@/public/images/services/software.webp";
+import voiceAgent from "@/public/images/services/receptionist.webp";
+import webDevelopment from "@/public/images/services/website.webp";
+import whatsappBot from "@/public/images/services/whatsapp.webp";
 
 /**
  * Static imports rather than the `image` path string in services.json.
@@ -39,6 +38,5 @@ export const serviceImages: Record<string, StaticImageData> = {
   "whatsapp-bot": whatsappBot,
   "web-development": webDevelopment,
   "app-development": appDevelopment,
-  "ai-integration": aiIntegration,
-  // TODO(velex): art for "software-development" and "data-analytics".
+  // TODO(velex): art for "ai-integration", "software-development" and "data-analytics".
 };
