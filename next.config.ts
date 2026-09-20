@@ -59,6 +59,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Client router cache configuration: cache visited static routes for 3 minutes
+  // and dynamic routes for 30 seconds to speed up client-side navigations.
+  experimental: {
+    staleTimes: {
+      dynamic: 30,
+      static: 180,
+    },
+  },
   async headers() {
     return [
       {
@@ -71,6 +79,35 @@ const nextConfig: NextConfig = {
           {
             key: "Strict-Transport-Security",
             value: "max-age=63072000; includeSubDomains; preload",
+          },
+        ],
+      },
+      // Static images and public assets
+      {
+        source: "/images/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/:path*.(svg|jpg|jpeg|png|webp|avif|ico|woff|woff2)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      // Never cache API routes
+      {
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store, max-age=0",
           },
         ],
       },

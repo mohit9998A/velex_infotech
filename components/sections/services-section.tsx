@@ -142,7 +142,7 @@ export function ServicesSection() {
       <div ref={scrollContainerRef} className="relative h-[420vh] sm:h-[480vh] w-full">
         
         {/* Sticky Viewport Container: Locks heading + showcase to screen below navbar */}
-        <div className="sticky top-14 sm:top-16 h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] w-full flex flex-col justify-between py-2 sm:py-4 overflow-hidden z-10">
+        <div className="sticky top-14 sm:top-16 h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] w-full flex flex-col justify-between py-6 sm:py-8 overflow-hidden z-10">
           
           {/* Dynamic Ambient Background Glow */}
           <div
@@ -159,7 +159,7 @@ export function ServicesSection() {
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 z-10 w-full flex flex-col justify-between h-full">
             
             {/* FIXED HEADING */}
-            <div className="text-center max-w-3xl mx-auto shrink-0 pt-0.5 sm:pt-1">
+            <div className="text-center max-w-3xl mx-auto shrink-0 pt-2 sm:pt-4">
               <motion.h2
                 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white"
                 initial={{ opacity: 0, y: 15 }}
@@ -206,15 +206,15 @@ export function ServicesSection() {
                         onMouseEnter={prefetchLeadForm}
                         className="group inline-flex items-center gap-2"
                       >
-                        <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#8B4DFF] transition-colors">
+                        <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#8B4DFF] transition-colors">
                           {activeService.title}
                         </h3>
-                        <ChevronRight className="size-6 text-[#7138FF] dark:text-[#8B4DFF] transition-transform group-hover:translate-x-1.5" />
+                        <ChevronRight className="size-7 sm:size-8 text-[#7138FF] dark:text-[#8B4DFF] transition-transform group-hover:translate-x-1.5" />
                       </Link>
                     </div>
 
                     {/* Tagline & Description */}
-                    <p className="font-sans text-xs sm:text-sm md:text-base text-slate-600 dark:text-white/80 leading-relaxed font-normal">
+                    <p className="font-sans text-[15px] sm:text-base md:text-lg text-slate-600 dark:text-white/80 leading-relaxed font-normal">
                       {activeService.description}
                     </p>
 
@@ -243,7 +243,7 @@ export function ServicesSection() {
                       <button
                         type="button"
                         onClick={() => openModal(activeService.title)}
-                        className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-sans text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 transition-all shadow-md dark:shadow-xl hover:scale-102 cursor-pointer"
+                        className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-sans text-sm font-semibold bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 transition-all shadow-md dark:shadow-xl hover:scale-102 cursor-pointer"
                       >
                         Start a project
                         <ArrowUpRight className="size-4" />
@@ -252,10 +252,10 @@ export function ServicesSection() {
                       <Link
                         href={activeService.href}
                         onMouseEnter={prefetchLeadForm}
-                        className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 hover:text-slate-950 dark:text-white/80 dark:hover:text-white underline underline-offset-4 decoration-slate-300 hover:decoration-slate-950 dark:decoration-white/30 dark:hover:decoration-white transition-colors"
+                        className="inline-flex items-center gap-1.5 text-[13px] sm:text-sm font-medium text-slate-700 hover:text-slate-950 dark:text-white/80 dark:hover:text-white underline underline-offset-4 decoration-slate-300 hover:decoration-slate-950 dark:decoration-white/30 dark:hover:decoration-white transition-colors"
                       >
                         Explore capability
-                        <ArrowRight className="size-3.5" />
+                        <ArrowRight className="size-4" />
                       </Link>
                     </div>
 

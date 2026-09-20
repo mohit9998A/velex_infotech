@@ -10,7 +10,7 @@ export function TrustBar() {
 
   return (
     <section className="border-y border-vx-border bg-surface/50 py-10">
-      <p className="mb-7 text-center font-mono-label text-muted">
+      <p className="mb-7 text-center font-mono-label text-[#7138FF] dark:text-[#8B4DFF]">
         Selected client work
       </p>
       <div className="group relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_12%,#000_88%,transparent)]">
@@ -22,7 +22,7 @@ export function TrustBar() {
             <span
               key={`${name}-${i}`}
               aria-hidden={i >= singlePass.length || undefined}
-              className="whitespace-nowrap font-display text-xl text-secondary/70 transition-colors hover:text-primary"
+              className="whitespace-nowrap font-display text-xl text-[#7138FF]/80 dark:text-[#8B4DFF]/80 transition-colors hover:text-[#7138FF] dark:hover:text-white"
             >
               {name}
             </span>

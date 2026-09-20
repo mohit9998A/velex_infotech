@@ -359,11 +359,15 @@ html.lenis body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.4rem 1rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 9999px;
-  border: 1px solid var(--vx-border-bright);
-  background: rgba(107, 33, 255, 0.08);
-  box-shadow: var(--vx-glow-sm);
+  border: 1px solid rgba(113, 56, 255, 0.2);
+  background: rgba(113, 56, 255, 0.06);
+}
+
+html.dark .badge-pill {
+  border-color: rgba(139, 77, 255, 0.25);
+  background: rgba(139, 77, 255, 0.1);
 }
 
 .glow-ring {
@@ -428,29 +432,40 @@ html.lenis body {
    Each track sets --marquee-gap to its own gap value. */
 @keyframes scroll-left {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translateX(calc(-50% - var(--marquee-gap, 0px) / 2));
+    transform: translate3d(calc(-50% - var(--marquee-gap, 0px) / 2), 0, 0);
   }
 }
 .animate-scroll-left {
   animation: scroll-left 40s linear infinite;
+  will-change: transform;
 }
 .animate-scroll-left-slow {
   animation: scroll-left 60s linear infinite;
+  will-change: transform;
 }
 
 @keyframes scroll-right {
   from {
-    transform: translateX(calc(-50% - var(--marquee-gap, 0px) / 2));
+    transform: translate3d(calc(-50% - var(--marquee-gap, 0px) / 2), 0, 0);
   }
   to {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 .animate-scroll-right {
   animation: scroll-right 50s linear infinite;
+  will-change: transform;
+}
+
+/* Hardware acceleration for ambient blur blobs to prevent scroll repaints */
+.glow-blob,
+[class*="blur-3xl"],
+[class*="blur-2xl"] {
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* ---------------------------------------------------------------------------
@@ -895,3 +910,27 @@ html.lenis body {
     }
   }
 }
+
+/* Accordion smooth expansion & collapse */
+@keyframes accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+

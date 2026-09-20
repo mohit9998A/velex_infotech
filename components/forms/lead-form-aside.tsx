@@ -63,12 +63,10 @@ export function LeadFormAside() {
       </div>
 
       <div className="flex flex-col gap-4">
-        {/* text-purple-ink, not text-purple-glow: #a855f7 is only 3.9:1 on
-            white, which fails AA for a label this size in the light theme. */}
-        <span className="badge-pill w-fit font-mono-label text-purple-ink">
-          <Sparkles className="size-3.5" aria-hidden="true" />
-          Free strategy call
-        </span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#7138FF]/[0.07] dark:bg-[#8B4DFF]/15 border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 text-[#7138FF] dark:text-[#B99CFF] font-sans text-xs font-semibold tracking-wide w-fit">
+          <Sparkles className="size-3.5 text-[#7138FF] dark:text-[#8B4DFF]" aria-hidden="true" />
+          Free Strategy Call
+        </div>
 
         <DialogTitle className="font-display text-3xl leading-[1.1] sm:text-4xl lg:text-[2.75rem]">
           Let&apos;s Build Your

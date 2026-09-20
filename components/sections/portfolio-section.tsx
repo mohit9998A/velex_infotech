@@ -145,41 +145,10 @@ export function PortfolioSection() {
           className="relative"
           style={{ height: filtered.length > 1 ? `${filtered.length * 60 + 20}vh` : "auto" }}
         >
-          <div className="sticky top-20 sm:top-24 flex flex-col gap-5 py-4">
-            {/* Minimal Scroll Progress Indicator */}
-            {filtered.length > 1 && (
-              <div className="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-3 font-mono text-xs">
-                <div className="flex items-center gap-2 text-slate-500 dark:text-white/50">
-                  <span className="text-purple-600 dark:text-purple-400 font-bold">
-                    0{activeIndex + 1}
-                  </span>
-                  <span>/</span>
-                  <span>0{filtered.length}</span>
-                  <span className="text-slate-300 dark:text-white/20">|</span>
-                  <span className="font-sans font-medium text-slate-900 dark:text-white">
-                    {currentItem.client}
-                  </span>
-                </div>
-
-                {/* Progress bar track */}
-                <div className="flex items-center gap-1.5">
-                  {filtered.map((item, idx) => (
-                    <div
-                      key={item.id}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        idx === activeIndex
-                          ? "w-8 bg-purple-600 dark:bg-purple-400"
-                          : "w-3 bg-slate-200 dark:bg-white/10"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-
+          <div className="sticky top-14 sm:top-24 flex flex-col gap-2 sm:gap-5 py-1 sm:py-4">
             {/* In-Place Animated Project Frame */}
             {currentItem && (
-              <div className="relative overflow-hidden min-h-[480px] flex items-center">
+              <div className="relative overflow-hidden min-h-[400px] sm:min-h-[480px] flex items-start sm:items-center">
                 <AnimatePresence mode="wait" custom={direction}>
                   <motion.div
                     key={currentItem.id}
@@ -215,6 +184,8 @@ export function PortfolioSection() {
                       isLive={true}
                       onActivate={() => setLiveId(currentItem.id)}
                       onDeactivate={() => deactivate(currentItem.id)}
+                      index={activeIndex}
+                      total={filtered.length}
                     />
                   </motion.div>
                 </AnimatePresence>

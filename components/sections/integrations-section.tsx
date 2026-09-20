@@ -22,7 +22,7 @@ function Tile({ item, ariaHidden }: { item: IntegrationItem; ariaHidden?: boolea
           height={20}
           loading="lazy"
           decoding="async"
-          className="size-5 object-contain shrink-0"
+          className="size-5 object-contain shrink-0 dark:brightness-0 dark:invert"
         />
       ) : (
         <span className="font-mono text-sm font-semibold text-purple-600 dark:text-purple-400 shrink-0">

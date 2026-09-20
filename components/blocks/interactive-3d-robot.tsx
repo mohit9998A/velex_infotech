@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
 import { cn } from "@/lib/utils";
@@ -84,8 +84,23 @@ export function InteractiveRobotSpline({
   scene,
   className,
 }: InteractiveRobotSplineProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [inView, setInView] = useState(true);
+
+  // Pause WebGL rendering when hero is scrolled out of viewport to eliminate GPU contention
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting);
+      },
+      { rootMargin: "300px 0px" },
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     // Every check below is a CLIENT fact, so all of them are read AFTER mount.
@@ -120,7 +135,7 @@ export function InteractiveRobotSpline({
   }, []);
 
   return (
-    <div className={cn("relative", className)}>
+    <div ref={containerRef} className={cn("relative", className)}>
       {/* Cross-fades out once the scene reports ready, rather than unmounting —
           so there is never a frame with neither visual present. */}
       <div
@@ -133,11 +148,21 @@ export function InteractiveRobotSpline({
       </div>
 
       {shouldLoad && (
-        <Spline
-          scene={scene}
-          onLoad={() => setLoaded(true)}
-          className="!h-full !w-full"
-        />
+        <div
+          className={cn(
+            "!h-full !w-full transition-opacity duration-300",
+            inView ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none",
+          )}
+          style={{
+            contentVisibility: inView ? "visible" : "hidden",
+          }}
+        >
+          <Spline
+            scene={scene}
+            onLoad={() => setLoaded(true)}
+            className="!h-full !w-full"
+          />
+        </div>
       )}
 
       {/* Masks the "Built with Spline" watermark — it is painted into the WebGL

@@ -40,14 +40,14 @@ export function HeroSection() {
       />
 
       {/* Mobile 3D Robot Image: renders on < md only, matching reference mockup */}
-      <div className="absolute right-[-12%] sm:right-[-4%] bottom-[75px] sm:bottom-[85px] w-[64%] sm:w-[52%] max-w-[320px] pointer-events-none select-none z-0 md:hidden">
+      <div className="absolute right-[-15%] sm:right-[-5%] bottom-[75px] sm:bottom-[85px] w-[85%] sm:w-[70%] max-w-[450px] pointer-events-none select-none z-0 md:hidden">
         <Image
           src={ROBOT_MOBILE_IMG}
           alt="Velex AI Partner Robot"
           width={600}
           height={630}
           priority
-          className="w-full h-auto object-contain drop-shadow-[0_15px_35px_rgba(113,56,255,0.15)]"
+          className="w-full h-auto object-contain drop-shadow-[0_15px_35px_rgba(113,56,255,0.15)] scale-110 origin-bottom-right"
         />
       </div>
 
@@ -80,22 +80,20 @@ export function HeroSection() {
           >
             <span
               aria-hidden="true"
-              className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#0055FF] dark:bg-[#3B82F6]"
+              className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]"
             />
-            <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#0055FF] dark:text-[#60A5FA]">
+            <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
               AI &nbsp;&times;&nbsp; SOFTWARE &nbsp;&times;&nbsp; REAL IMPACT
             </span>
           </div>
 
           {/* Mobile Headline (strictly < md, matching mockup with cursive "with") */}
-          <h1 className="md:hidden font-serif text-[clamp(1.95rem,7vw,2.65rem)] font-medium tracking-tight text-primary leading-[1.12]">
+          <h1 className="md:hidden font-serif text-[clamp(2.4rem,10vw,3.2rem)] font-medium tracking-tight text-primary leading-[1.08]">
             <span className="block py-0.5">Technology that</span>
             <span className="block py-0.5">moves your</span>
-            <span className="block py-0.5">
-              <span>business </span>
-              <span className="font-[family-name:var(--font-handwriting)] italic font-semibold text-[#7138FF] dark:text-[#8B4DFF] text-[1.15em] tracking-normal">
-                with
-              </span>
+            <span className="flex items-baseline gap-[0.3em] py-0.5">
+              <span>business</span>
+              <span>with</span>
             </span>
             <span className="block py-0.5">
               <RotatingHeroText

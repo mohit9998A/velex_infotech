@@ -26,12 +26,7 @@ export function CtaBanner() {
       />
 
       <div className="reveal-on-scroll relative mx-auto max-w-4xl px-4 text-center sm:px-6">
-        {/* Eyebrow badge */}
-        <div className="inline-flex items-center justify-center gap-2 mb-4 sm:mb-5">
-          <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs font-bold uppercase tracking-wider bg-purple-500/10 dark:bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/20 shadow-sm">
-            <Sparkles className="size-3.5 animate-pulse" /> Ready when you are
-          </span>
-        </div>
+       
 
         {/* Headline */}
         <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white max-w-3xl mx-auto">

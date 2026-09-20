@@ -117,9 +117,9 @@ export function PortfolioPreview({
         <span className="ml-2 truncate font-mono text-xs text-secondary">
           {label}
         </span>
-        {frameReady && (
-          <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full bg-success/10 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-success">
-            <span className="size-1.5 rounded-full bg-success" />
+        {(frameReady || Boolean(item.preview?.mode === "live" || (item.external && item.href))) && (
+          <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full bg-emerald-500/10 dark:bg-emerald-400/10 px-2 py-0.5 text-[10px] font-mono font-semibold tracking-wider text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+            <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
             LIVE
           </span>
         )}
@@ -129,7 +129,7 @@ export function PortfolioPreview({
       <div
         ref={viewportRef}
         className={cn(
-          "relative aspect-[16/10] overflow-hidden",
+          "relative aspect-[16/8.5] sm:aspect-[16/10] overflow-hidden",
           preview ? "bg-elevated" : cn("bg-gradient-to-br", item.accent),
         )}
       >

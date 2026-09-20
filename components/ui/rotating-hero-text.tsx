@@ -15,7 +15,7 @@ const DEFAULT_WORDS = [
   "forward.",
   "with AI Agents.",
   "with Automation.",
-  "with Receptionist.",
+  "with AI Receptionist.",
   "with WhatsApp AI.",
   "with Integrations.",
   "with AI Strategy.",
