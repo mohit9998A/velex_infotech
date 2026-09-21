@@ -55,7 +55,7 @@ export default function LeadFormDialog() {
               which lives in here) is the first thing announced. */}
           <aside
             data-lenis-prevent
-            className="border-b border-slate-200/80 bg-slate-50/70 p-6 sm:p-8 lg:min-h-0 lg:overflow-y-auto lg:overflow-x-hidden lg:border-b-0 lg:border-r lg:border-slate-200/80 lg:p-8 dark:border-white/10 dark:bg-white/[0.02]"
+            className="border-b border-slate-200/80 bg-slate-50/70 p-6 sm:p-7 lg:min-h-0 lg:overflow-hidden lg:border-b-0 lg:border-r lg:border-slate-200/80 lg:p-5 xl:p-6 2xl:p-8 dark:border-white/10 dark:bg-white/[0.02]"
           >
             <LeadFormAside />
           </aside>
