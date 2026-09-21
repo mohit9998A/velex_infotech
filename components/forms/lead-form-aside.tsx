@@ -55,53 +55,58 @@ const stats = statsData.slice(0, 3);
 
 export function LeadFormAside() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-5">
       {/* Decorative. The dialog is labelled by its title below, and the brand
           is announced by the page behind the overlay. */}
       <div aria-hidden>
         <Logo href={null} />
       </div>
 
-      <div className="flex flex-col gap-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#7138FF]/[0.07] dark:bg-[#8B4DFF]/15 border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 text-[#7138FF] dark:text-[#B99CFF] font-sans text-xs font-semibold tracking-wide w-fit">
-          <Sparkles className="size-3.5 text-[#7138FF] dark:text-[#8B4DFF]" aria-hidden="true" />
-          Free Strategy Call
+      <div className="flex flex-col gap-3 sm:gap-4">
+        <div className="flex items-center gap-3">
+          <span
+            aria-hidden="true"
+            className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]"
+          />
+          <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+            Free Strategy Call
+          </span>
         </div>
 
-        <DialogTitle className="font-display text-3xl leading-[1.1] sm:text-4xl lg:text-[2.75rem]">
+        <DialogTitle className="font-serif text-2xl sm:text-3xl lg:text-[2.35rem] font-medium leading-[1.08] text-primary tracking-tight">
           Let&apos;s Build Your
           <br />
-          <span className="text-gradient-purple">AI Advantage</span>
+          <span className="text-gradient-purple font-serif">AI Advantage</span>
         </DialogTitle>
 
-        <DialogDescription className="text-base">
+        <DialogDescription className="font-sans text-sm sm:text-base leading-[1.55] text-secondary font-normal">
           Tell us about your project and our team will come back with a tailored
           plan within one business day. No obligation.
         </DialogDescription>
       </div>
 
-      <ul className="flex flex-col gap-4">
+      <ul className="flex flex-col gap-3 sm:gap-3.5">
         {benefits.map(({ icon: Icon, title, note }) => (
           <li key={title} className="flex items-start gap-3">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-purple-core/12 text-purple-glow">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#7138FF]/10 text-[#7138FF] dark:bg-[#8B4DFF]/15 dark:text-[#B99CFF]">
               <Icon className="size-4" aria-hidden="true" />
             </span>
             <span>
-              <span className="block text-sm font-semibold text-primary">
+              <span className="block font-sans text-sm font-semibold text-primary">
                 {title}
               </span>
-              <span className="block text-sm text-secondary">{note}</span>
+              <span className="block font-sans text-xs text-secondary leading-snug">{note}</span>
             </span>
           </li>
         ))}
       </ul>
 
-      {/* Bare `border-t`: the unlayered `* { border-color: var(--vx-border) }`
-          in globals.css supplies the colour and beats any border utility. */}
-      <div className="border-t" />
+      <div className="border-t border-slate-200/80 dark:border-white/10" />
 
-      <section className="flex flex-col gap-3">
-        <h3 className="font-mono-label text-secondary">Why businesses choose Velex</h3>
+      <section className="flex flex-col gap-2.5">
+        <h3 className="font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.16em] uppercase text-[#7138FF] dark:text-[#8B4DFF]">
+          Why businesses choose Velex
+        </h3>
         <dl className="grid grid-cols-3 gap-2">
           {stats.map((s) => (
             // `flex-col-reverse`: a <dl> requires <dt> before <dd> in the DOM,
@@ -110,12 +115,12 @@ export function LeadFormAside() {
             // ("Projects Delivered, 40 plus").
             <div
               key={s.label}
-              className="lift-card flex flex-col-reverse items-center gap-1 rounded-2xl bg-card px-2 py-4 text-center"
+              className="lift-card flex flex-col-reverse items-center gap-1 rounded-xl bg-white dark:bg-white/[0.03] border border-slate-200/80 dark:border-white/[0.08] px-2 py-3 text-center shadow-xs"
             >
-              <dt className="text-[0.7rem] leading-tight text-secondary">
+              <dt className="font-mono text-[9px] sm:text-[10px] font-bold tracking-[0.12em] uppercase text-secondary mt-1 leading-[1.25]">
                 {s.label}
               </dt>
-              <dd className="font-display text-2xl text-gradient">
+              <dd className="font-sans font-bold text-2xl sm:text-3xl text-[#7138FF] dark:text-[#8B4DFF] tracking-tight">
                 {s.value}
                 {s.suffix}
               </dd>
@@ -124,27 +129,29 @@ export function LeadFormAside() {
         </dl>
       </section>
 
-      <section className="lift-card flex flex-col gap-3 rounded-2xl bg-card px-4 py-4">
-        <h3 className="text-center font-mono-label text-secondary">
+      <section className="lift-card flex flex-col gap-2.5 rounded-xl bg-white dark:bg-white/[0.03] border border-slate-200/80 dark:border-white/[0.08] px-3.5 py-3 shadow-xs">
+        <h3 className="text-center font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.16em] uppercase text-secondary">
           Working with businesses in
         </h3>
         <ul className="grid grid-cols-4 gap-2">
           {markets.map((m) => (
-            <li key={m.id} className="flex flex-col items-center gap-1.5">
+            <li key={m.id} className="flex flex-col items-center gap-1">
               <Flag countryCode={m.countryCode} />
-              <span className="text-[0.7rem] text-secondary">{m.shortName}</span>
+              <span className="font-mono text-[10px] font-bold tracking-wider uppercase text-secondary">{m.shortName}</span>
             </li>
           ))}
         </ul>
       </section>
 
       <section className="flex flex-col gap-2">
-        <h3 className="font-mono-label text-secondary">Selected client work</h3>
-        <ul className="flex flex-wrap gap-x-2 gap-y-1.5">
+        <h3 className="font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.16em] uppercase text-[#7138FF] dark:text-[#8B4DFF]">
+          Selected client work
+        </h3>
+        <ul className="flex flex-wrap gap-1.5">
           {permittedClients.map((name) => (
             <li
               key={name}
-              className="rounded-full border border-vx-border bg-card px-3 py-1 font-display text-sm text-secondary"
+              className="rounded-full border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.04] px-2.5 py-1 font-mono text-xs font-semibold tracking-wider text-secondary shadow-2xs"
             >
               {name}
             </li>

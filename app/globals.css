@@ -139,8 +139,24 @@ html.light {
   border-color: var(--vx-border);
 }
 
-html {
-  scrollbar-color: var(--vx-purple-core) var(--vx-void);
+/* Sleek custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(113, 56, 255, 0.22);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(113, 56, 255, 0.45);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(113, 56, 255, 0.25) transparent;
 }
 
 body {
@@ -588,39 +604,44 @@ html.dark .badge-pill {
   border: 1px solid var(--vx-border);
   background: var(--vx-card);
   transition:
-    border-color 250ms ease,
-    background-color 250ms ease,
-    box-shadow 250ms ease,
-    transform 250ms ease;
+    border-color 200ms ease,
+    background-color 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
 }
 
 .option-card:hover,
 .option-pill:hover {
   border-color: var(--vx-border-bright);
   background: var(--vx-card-hover);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 /* `:has()` rather than a `peer-checked` sibling selector, so the markup is
    free to put the visually-hidden radio anywhere inside the label. */
 .option-card:has(:checked) {
-  border-color: var(--vx-purple-glow);
-  background: var(--vx-card-hover);
-  box-shadow: var(--vx-glow-sm);
+  border-color: var(--vx-electric-purple);
+  background: rgba(113, 56, 255, 0.05);
+  box-shadow: 0 0 20px rgba(113, 56, 255, 0.15);
+}
+html.dark .option-card:has(:checked) {
+  border-color: var(--vx-vivid-violet);
+  background: rgba(139, 77, 255, 0.12);
+  box-shadow: 0 0 25px rgba(139, 77, 255, 0.25);
 }
 
 .option-pill:has(:checked) {
-  border-color: var(--vx-purple-core);
-  background: var(--vx-purple-core);
+  border-color: var(--vx-electric-purple);
+  background: linear-gradient(135deg, var(--vx-electric-purple) 0%, var(--vx-vivid-violet) 100%);
   color: #fff;
-  box-shadow: var(--vx-glow-sm);
+  box-shadow: 0 4px 16px rgba(113, 56, 255, 0.35);
 }
 
 /* The radio is sr-only, so it cannot draw its own focus ring — the label has
    to. Without this the card grid is unusable by keyboard. */
 .option-card:has(:focus-visible),
 .option-pill:has(:focus-visible) {
-  outline: 2px solid var(--vx-purple-glow);
+  outline: 2px solid var(--vx-electric-purple);
   outline-offset: 2px;
 }
 
@@ -629,28 +650,28 @@ html.dark .badge-pill {
 .field-group {
   border: 1px solid var(--vx-border);
   transition:
-    border-color 250ms ease,
-    box-shadow 250ms ease;
+    border-color 200ms ease,
+    box-shadow 200ms ease;
 }
 
 .field-group:focus-within {
-  border-color: var(--vx-purple-glow);
-  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.3);
+  border-color: var(--vx-electric-purple);
+  box-shadow: 0 0 0 3px rgba(113, 56, 255, 0.18);
 }
 
 /* Hover lift for non-selectable tiles (stats, trust cards). */
 .lift-card {
   border: 1px solid var(--vx-border);
   transition:
-    border-color 250ms ease,
-    box-shadow 250ms ease,
-    transform 250ms ease;
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
 }
 
 .lift-card:hover {
   border-color: var(--vx-border-bright);
   box-shadow: var(--vx-glow-sm);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 /* Painted as a background-IMAGE so it composes with the `primary` button
@@ -658,9 +679,19 @@ html.dark .badge-pill {
 .btn-gradient {
   background-image: linear-gradient(
     135deg,
-    var(--vx-purple-core) 0%,
-    var(--vx-purple-glow) 100%
+    var(--vx-electric-purple) 0%,
+    var(--vx-vivid-violet) 100%
   );
+}
+
+.btn-glow {
+  box-shadow: 0 4px 24px rgba(113, 56, 255, 0.35);
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+
+.btn-glow:hover {
+  box-shadow: 0 6px 32px rgba(113, 56, 255, 0.55);
+  transform: translateY(-1px);
 }
 
 .lead-modal {
@@ -931,6 +962,55 @@ html.dark .badge-pill {
   to {
     height: 0;
     opacity: 0;
+  }
+}
+
+/* ============================================
+   GOOGLE-STYLE SKELETON SHIMMER
+   ============================================ */
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-skeleton-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 2s infinite ease-in-out;
+  pointer-events: none;
+}
+
+html.dark .animate-skeleton-shimmer::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-skeleton-shimmer::after {
+    animation: none !important;
+    display: none !important;
   }
 }
 

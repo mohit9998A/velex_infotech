@@ -55,12 +55,7 @@ export default function LeadFormDialog() {
               which lives in here) is the first thing announced. */}
           <aside
             data-lenis-prevent
-            // A purple wash, not `bg-surface/40`. In the light theme
-            // --vx-surface and --vx-elevated are BOTH #ffffff, so a surface
-            // tint would leave the panel indistinguishable from the form
-            // column. A translucent brand tint separates the two in both
-            // themes and is the mockup's lavender panel on white.
-            className="border-b bg-purple-core/[0.055] p-5 sm:p-8 lg:min-h-0 lg:overflow-y-auto lg:overflow-x-hidden lg:border-b-0 lg:border-r lg:p-10"
+            className="border-b border-slate-200/80 bg-slate-50/70 p-6 sm:p-8 lg:min-h-0 lg:overflow-y-auto lg:overflow-x-hidden lg:border-b-0 lg:border-r lg:border-slate-200/80 lg:p-8 dark:border-white/10 dark:bg-white/[0.02]"
           >
             <LeadFormAside />
           </aside>
@@ -77,7 +72,7 @@ export default function LeadFormDialog() {
               floor, with content sliding through the gap underneath it. */}
           <div
             data-lenis-prevent
-            className="p-5 pb-0 sm:p-8 sm:pb-0 lg:min-h-0 lg:overflow-y-auto lg:overflow-x-hidden lg:p-10 lg:pb-0"
+            className="bg-white p-6 pb-0 sm:p-8 sm:pb-0 lg:min-h-0 lg:overflow-y-auto lg:overflow-x-hidden lg:p-10 lg:pb-0 dark:bg-[#0A0818]"
           >
             {/* key forces a fresh form (and reset) each time the modal opens */}
             <LeadForm
@@ -92,7 +87,7 @@ export default function LeadFormDialog() {
         {/* Custom close rather than the built-in one: `size="wide"` removes the
             dialog's padding, so the default button would sit flush in the
             corner with panel content running underneath it. */}
-        <DialogClose className="absolute right-3 top-3 z-10 inline-flex size-11 items-center justify-center rounded-full bg-surface/70 text-secondary backdrop-blur-sm transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-elevated sm:right-4 sm:top-4">
+        <DialogClose className="absolute right-3 top-3 z-20 inline-flex size-10 items-center justify-center rounded-full bg-slate-100/80 text-slate-500 backdrop-blur-sm transition-all hover:bg-slate-200 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7138FF] sm:right-4 sm:top-4 dark:bg-white/10 dark:text-white/60 dark:hover:bg-white/20 dark:hover:text-white">
           <X className="size-5" />
           <span className="sr-only">Close</span>
         </DialogClose>

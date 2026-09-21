@@ -1,7 +1,4 @@
-"use client";
-
 import type { CSSProperties } from "react";
-import { motion } from "motion/react";
 import type { IntegrationItem } from "@/types";
 import integrationsData from "@/content/integrations.json";
 
@@ -79,31 +76,18 @@ export function IntegrationsSection() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         {/* Header */}
         <div className="relative text-center max-w-3xl mx-auto pb-10 sm:pb-14">
-
           {/* Headline */}
-          <motion.h2
-            className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.08 }}
-          >
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
             Plugs into your{" "}
             <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               entire stack
             </span>
-          </motion.h2>
+          </h2>
 
           {/* Subheading */}
-          <motion.p
-            className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-3 sm:mt-4 max-w-2xl mx-auto text-slate-600 dark:text-white/60"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.15 }}
-          >
+          <p className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-3 sm:mt-4 max-w-2xl mx-auto text-slate-600 dark:text-white/60">
             We seamlessly integrate with the tools you already rely on — and the AI platforms defining what&apos;s next.
-          </motion.p>
+          </p>
         </div>
 
         {/* Marquee Rows with Side Fade Mask */}

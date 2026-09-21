@@ -1,8 +1,5 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "motion/react";
-import { ArrowUpRight, BookOpen, Clock } from "lucide-react";
+import { ArrowUpRight, Clock } from "lucide-react";
 
 import { blogPosts } from "@/content/blog";
 
@@ -15,10 +12,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
 /**
  * Three most recent posts, on the homepage.
  *
- * The blog previously had zero inbound links from `/` — it was reachable only
- * through the nav dropdown. For a site where almost nothing is indexed, a link
- * from the strongest page on the domain is the most useful internal signal a
- * new post can receive.
+ * Rendered as a Server Component to eliminate client bundle execution.
  */
 export function LatestPostsSection() {
   const posts = blogPosts.slice(0, 3);
@@ -35,44 +29,24 @@ export function LatestPostsSection() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         {/* Header */}
         <div className="relative text-center max-w-3xl mx-auto pb-10 sm:pb-14">
-
           {/* Headline */}
-          <motion.h2
-            className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.08 }}
-          >
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
             From our{" "}
             <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               engineering journal
             </span>
-          </motion.h2>
+          </h2>
 
           {/* Subheading */}
-          <motion.p
-            className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-3 sm:mt-4 max-w-2xl mx-auto text-slate-600 dark:text-white/60"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.15 }}
-          >
+          <p className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-3 sm:mt-4 max-w-2xl mx-auto text-slate-600 dark:text-white/60">
             Practical guides on AI agents, custom software, and what builds actually cost — including the trade-offs vendors leave out.
-          </motion.p>
+          </p>
         </div>
 
         {/* Staggered Post Cards */}
         <div className="grid gap-6 md:grid-cols-3">
-          {posts.map((post, idx) => (
-            <motion.div
-              key={post.slug}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="flex"
-            >
+          {posts.map((post) => (
+            <div key={post.slug} className="flex">
               <Link
                 href={`/blog/${post.slug}`}
                 className="group relative flex flex-1 flex-col justify-between rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] backdrop-blur-md p-6 sm:p-7 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:border-purple-400/80 dark:hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-1.5"
@@ -111,18 +85,12 @@ export function LatestPostsSection() {
                   </span>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Explore All CTA Button */}
-        <motion.div
-          className="mt-12 sm:mt-14 text-center"
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-        >
+        <div className="mt-12 sm:mt-14 text-center">
           <Link
             href="/blog"
             className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-sans text-sm font-semibold transition-all duration-300 bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-lg shadow-purple-500/10 hover:shadow-purple-500/20 hover:scale-[1.03] active:scale-[0.98] cursor-pointer group"
@@ -130,7 +98,7 @@ export function LatestPostsSection() {
             <span>Read every intelligence guide</span>
             <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

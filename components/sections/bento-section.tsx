@@ -91,8 +91,8 @@ export function BentoSection() {
                 src="https://res.cloudinary.com/d0grbozz/image/upload/v1789797044/cosmic-planet.png"
                 alt="Velex Cosmos"
                 fill
-                priority
-                sizes="(max-width: 768px) 100vw, 650px"
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 650px"
                 className="object-cover object-right-bottom transition-transform duration-700 ease-out group-hover:scale-[1.03]"
               />
 

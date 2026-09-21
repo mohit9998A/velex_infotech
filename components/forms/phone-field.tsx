@@ -53,7 +53,7 @@ export function PhoneField({
     rest.trim() === "" ? "" : `${dial} ${rest}`;
 
   return (
-    <div className="field-group flex h-[3.25rem] overflow-hidden rounded-2xl bg-surface/60 sm:h-[3.75rem]">
+    <div className="field-group flex h-[3.25rem] overflow-hidden rounded-xl bg-white/90 sm:h-[3.5rem] dark:bg-white/[0.03]">
       <Select
         value={country}
         onValueChange={(next) => {
@@ -68,26 +68,26 @@ export function PhoneField({
             platform, which emoji flags do not (Windows has no flag glyphs). */}
         <SelectTrigger
           aria-label="Country dial code"
-          className="h-full w-auto shrink-0 gap-2 rounded-none border-0 bg-transparent px-3 focus:ring-0 sm:px-4"
+          className="h-full w-auto shrink-0 gap-2 rounded-none border-0 bg-transparent px-3 text-slate-700 focus:ring-0 sm:px-4 dark:text-white/80"
         >
-          <span className="rounded bg-card px-1.5 py-0.5 text-[0.7rem] font-semibold tracking-wider text-secondary">
+          <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[0.7rem] font-semibold tracking-wider text-slate-700 dark:bg-white/10 dark:text-white/80">
             {selected.code}
           </span>
-          <span className="text-sm text-secondary">{selected.dial}</span>
+          <span className="text-sm text-slate-600 dark:text-white/70">{selected.dial}</span>
         </SelectTrigger>
         <SelectContent>
           {DIAL_COUNTRIES.map((c) => (
             <SelectItem key={c.code} value={c.code}>
-              <span className="mr-2 font-semibold tracking-wider text-secondary">
+              <span className="mr-2 font-semibold tracking-wider text-slate-700 dark:text-white/80">
                 {c.code}
               </span>
-              {c.name} <span className="text-secondary">{c.dial}</span>
+              {c.name} <span className="text-slate-500 dark:text-white/60">{c.dial}</span>
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
 
-      <span aria-hidden="true" className="my-3 w-px shrink-0 bg-vx-border" />
+      <span aria-hidden="true" className="my-3 w-px shrink-0 bg-slate-200 dark:bg-white/10" />
 
       <input
         id={id}
@@ -101,7 +101,7 @@ export function PhoneField({
         value={national}
         onChange={(e) => onChange(join(selected.dial, e.target.value))}
         onBlur={onBlur}
-        className="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-base text-primary outline-none placeholder:text-muted sm:px-4"
+        className="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-base text-slate-900 outline-none placeholder:text-slate-400 sm:px-4 dark:text-white dark:placeholder:text-white/35"
       />
     </div>
   );
