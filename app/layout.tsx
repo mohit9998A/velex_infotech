@@ -99,7 +99,7 @@ export default function RootLayout({
   return (
     <html
       lang={siteConfig.htmlLang}
-      className={`${fontVariables} dark`}
+      className={`${fontVariables} light`}
       suppressHydrationWarning
     >
       <head>

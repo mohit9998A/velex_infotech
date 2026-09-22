@@ -8,7 +8,8 @@
    Aesthetic: "Crystalline Intelligence"
    ============================================ */
 
-:root {
+:root,
+html.light {
   /* Official Brand Color Palette */
   --vx-deep-violet: #32108F;      /* Primary brand / dark backgrounds */
   --vx-royal-purple: #5424D6;     /* Main logo color */
@@ -24,9 +25,51 @@
   --vx-purple-core: #7138FF;
   --vx-purple-glow: #8B4DFF;
   --vx-gold: #B99CFF;
-  --vx-purple-ink: #8B4DFF;
+  --vx-purple-ink: #5424D6;
 
-  /* Backgrounds (dark, default) */
+  /* Backgrounds (light, default) */
+  --vx-void: #F8F7FF;
+  --vx-surface: #ffffff;
+  --vx-elevated: #ffffff;
+  --vx-glass: rgba(248, 247, 255, 0.85);
+
+  /* Borders */
+  --vx-border: rgba(113, 56, 255, 0.16);
+  --vx-border-bright: rgba(113, 56, 255, 0.4);
+
+  /* Scrolled navbar background (theme-aware) */
+  --vx-nav-bg: rgba(248, 247, 255, 0.88);
+  --vx-nav-shadow: 0 8px 30px rgba(13, 10, 36, 0.08);
+
+  /* Text */
+  --vx-text-primary: #0D0A24;
+  --vx-text-secondary: #32108F;
+  --vx-text-muted: #5424D6;
+
+  /* Status */
+  --vx-success: #22d3a5;
+  --vx-warning: #f5a623;
+  --vx-error: #ff4757;
+
+  /* Effects */
+  --vx-glow-sm: 0 0 20px rgba(113, 56, 255, 0.35);
+  --vx-glow-md: 0 0 60px rgba(139, 77, 255, 0.45);
+  --vx-glow-lg: 0 0 120px rgba(113, 56, 255, 0.55);
+  --vx-glow-gold: 0 0 40px rgba(185, 156, 255, 0.35);
+
+  /* Selectable surfaces */
+  --vx-card: #F8F7FF;
+  --vx-card-hover: rgba(113, 56, 255, 0.08);
+
+  /* Lead modal drop shadow */
+  --vx-modal-shadow: 0 40px 120px rgba(113, 56, 255, 0.15);
+
+  --background: var(--vx-void);
+  --foreground: var(--vx-text-primary);
+}
+
+/* Dark theme */
+html.dark {
   --vx-void: #04040A;
   --vx-surface: #0A0818;
   --vx-elevated: #100D24;
@@ -44,17 +87,7 @@
   --vx-text-primary: #F8F7FF;
   --vx-text-secondary: #B99CFF;
   --vx-text-muted: #8B4DFF;
-
-  /* Status */
-  --vx-success: #22d3a5;
-  --vx-warning: #f5a623;
-  --vx-error: #ff4757;
-
-  /* Effects */
-  --vx-glow-sm: 0 0 20px rgba(113, 56, 255, 0.35);
-  --vx-glow-md: 0 0 60px rgba(139, 77, 255, 0.45);
-  --vx-glow-lg: 0 0 120px rgba(113, 56, 255, 0.55);
-  --vx-glow-gold: 0 0 40px rgba(185, 156, 255, 0.35);
+  --vx-purple-ink: #8B4DFF;
 
   /* Selectable surfaces */
   --vx-card: rgba(255, 255, 255, 0.04);
@@ -63,27 +96,6 @@
   /* Lead modal drop shadow */
   --vx-modal-shadow: 0 40px 120px rgba(113, 56, 255, 0.4);
 
-  --background: var(--vx-void);
-  --foreground: var(--vx-text-primary);
-}
-
-/* Light theme */
-html.light {
-  --vx-void: #F8F7FF;
-  --vx-surface: #ffffff;
-  --vx-elevated: #ffffff;
-  --vx-glass: rgba(248, 247, 255, 0.85);
-  --vx-border: rgba(113, 56, 255, 0.16);
-  --vx-border-bright: rgba(113, 56, 255, 0.4);
-  --vx-text-primary: #0D0A24;
-  --vx-text-secondary: #32108F;
-  --vx-text-muted: #5424D6;
-  --vx-nav-bg: rgba(248, 247, 255, 0.88);
-  --vx-nav-shadow: 0 8px 30px rgba(13, 10, 36, 0.08);
-  --vx-purple-ink: #5424D6;
-  --vx-card: #F8F7FF;
-  --vx-card-hover: rgba(113, 56, 255, 0.08);
-  --vx-modal-shadow: 0 40px 120px rgba(113, 56, 255, 0.15);
   --background: var(--vx-void);
   --foreground: var(--vx-text-primary);
 }

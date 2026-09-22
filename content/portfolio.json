@@ -18,9 +18,8 @@
     ],
     "techStack": ["Next.js", "TypeScript", "TailwindCSS", "Stripe API", "PWA"],
     "preview": {
-      "mode": "live",
-      "poster": "/images/portfolio/groundzero.webp",
-      "settleMs": 1000
+      "mode": "image",
+      "poster": "/images/portfolio/groundzero.webp"
     }
   },
   {
@@ -42,33 +41,54 @@
     ],
     "techStack": ["Next.js", "TypeScript", "Framer Motion", "TailwindCSS", "Vercel"],
     "preview": {
-      "mode": "live",
-      "poster": "/images/portfolio/daur.webp",
-      "settleMs": 1000
+      "mode": "image",
+      "poster": "/images/portfolio/daur.webp"
     }
   },
   {
-    "id": "bonn",
-    "title": "Bonn — Brand Web Experience",
-    "client": "Bonn",
+    "id": "laromaire",
+    "title": "Laromaire — Premium Perfume Brand",
+    "client": "Laromaire",
     "category": "Web Development",
     "segment": "B2C",
-    "description": "A premium, conversion-focused brand website with refined motion, fast load times, and a luxury editorial feel.",
-    "result": "Premium brand presence, built for speed.",
-    "href": "https://www.bonn.in",
+    "description": "A luxury e-commerce experience for an artisanal perfume brand — bespoke visual design, sensory product storytelling, and seamless checkout.",
+    "result": "Luxury fragrance digital presence and high-converting storefront.",
+    "href": "https://laromaire.com",
     "external": true,
     "accent": "from-purple-core/30 to-purple-deep/10",
     "placeholder": false,
     "highlights": [
-      "High-performance brand story & product showcase",
-      "Optimized asset pipeline with sub-second LCP",
-      "Direct lead conversion & regional enquiry capture"
+      "Artisanal fragrance catalogue & sensory product discovery",
+      "High-conversion checkout & seamless mobile commerce",
+      "Luxury editorial visual design with high-speed performance"
     ],
-    "techStack": ["Next.js", "TypeScript", "TailwindCSS", "Motion", "SEO Engine"],
+    "techStack": ["E-Commerce", "Shopify", "TailwindCSS", "UI/UX", "Motion"],
     "preview": {
-      "mode": "live",
-      "poster": "/images/portfolio/bonn.webp",
-      "settleMs": 1000
+      "mode": "image",
+      "poster": "/images/portfolio/laromaire.webp"
+    }
+  },
+  {
+    "id": "shudhiherbals",
+    "title": "Shudhi Herbals — Ayurvedic Wellness Storefront",
+    "client": "Shudhi Herbals",
+    "category": "Web Development",
+    "segment": "B2C",
+    "description": "An authentic ayurvedic wellness and healthcare e-commerce platform engineered for product credibility, fast navigation, and streamlined order conversion.",
+    "result": "Fast, credible digital storefront for ayurvedic healthcare products.",
+    "href": "https://www.shudhiherbals.com",
+    "external": true,
+    "accent": "from-success/25 to-purple-core/10",
+    "placeholder": false,
+    "highlights": [
+      "Comprehensive herbal wellness catalogue & health categories",
+      "Optimized mobile browsing with swift checkout funnel",
+      "Direct-to-consumer trust architecture & localized customer trust"
+    ],
+    "techStack": ["E-Commerce", "Web Development", "Shopify", "UI/UX", "SEO Engine"],
+    "preview": {
+      "mode": "image",
+      "poster": "/images/portfolio/shudhiherbals.webp"
     }
   },
   {
@@ -90,9 +110,8 @@
     ],
     "techStack": ["Next.js", "TypeScript", "TailwindCSS", "Node.js", "B2B Funnel"],
     "preview": {
-      "mode": "live",
-      "poster": "/images/portfolio/fabxpert.webp",
-      "settleMs": 1000
+      "mode": "image",
+      "poster": "/images/portfolio/fabxpert.webp"
     }
   },
   {

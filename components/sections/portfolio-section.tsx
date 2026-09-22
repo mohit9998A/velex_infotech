@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 
 import type { PortfolioItem } from "@/types";
@@ -60,14 +60,6 @@ export function PortfolioSection() {
       setActiveIndex(targetIdx);
     }
   });
-
-  // Only the hovered card may hold a live embed, so at most one iframe is ever
-  // mounted no matter how many previewable projects are on screen.
-  const [liveId, setLiveId] = useState<string | null>(null);
-  const deactivate = useCallback(
-    (id: string) => setLiveId((current) => (current === id ? null : current)),
-    [],
-  );
 
   return (
     <section
@@ -181,9 +173,6 @@ export function PortfolioSection() {
                   >
                     <PortfolioCard
                       item={currentItem}
-                      isLive={true}
-                      onActivate={() => setLiveId(currentItem.id)}
-                      onDeactivate={() => deactivate(currentItem.id)}
                       index={activeIndex}
                       total={filtered.length}
                     />

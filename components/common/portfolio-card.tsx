@@ -7,16 +7,10 @@ import { PortfolioPreview } from "@/components/common/portfolio-preview";
 
 export function PortfolioCard({
   item,
-  isLive,
-  onActivate,
-  onDeactivate,
   index = 0,
   total = 4,
 }: {
   item: PortfolioItem;
-  isLive: boolean;
-  onActivate: () => void;
-  onDeactivate: () => void;
   index?: number;
   total?: number;
 }) {
@@ -28,10 +22,12 @@ export function PortfolioCard({
       <div className="flex items-center justify-between gap-4 mb-1.5 sm:mb-2.5 font-mono text-[11px] sm:text-xs">
         <div className="flex items-center gap-2">
           <span className="text-[#7138FF] dark:text-[#8B4DFF] font-bold">
-            0{index + 1}
+            {String(index + 1).padStart(2, "0")}
           </span>
           <span className="text-slate-400 dark:text-white/40">/</span>
-          <span className="text-slate-400 dark:text-white/40">0{total}</span>
+          <span className="text-slate-400 dark:text-white/40">
+            {String(total).padStart(2, "0")}
+          </span>
           <span className="text-slate-300 dark:text-white/20">&bull;</span>
           <span className="font-sans font-semibold text-slate-900 dark:text-white">
             {item.client}
@@ -67,8 +63,6 @@ export function PortfolioCard({
               href={item.href!}
               target="_blank"
               rel="noopener noreferrer"
-              onFocus={onActivate}
-              onBlur={onDeactivate}
               className="inline-flex items-center gap-1 font-semibold text-slate-900 dark:text-white hover:text-[#7138FF] dark:hover:text-[#8B4DFF] transition-colors group/link mt-0.5"
             >
               <span>View project</span>
@@ -83,11 +77,7 @@ export function PortfolioCard({
       </div>
 
       {/* Dual Showcase Canvas: Browser Preview (8 Cols) | Details Card (4 Cols) */}
-      <div
-        className="grid grid-cols-1 lg:grid-cols-12 gap-2.5 sm:gap-6 items-stretch"
-        onMouseEnter={onActivate}
-        onMouseLeave={onDeactivate}
-      >
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-2.5 sm:gap-6 items-stretch">
         {/* Main Media Canvas (8 Cols / Left Side) */}
         {isLink ? (
           <a
@@ -97,11 +87,11 @@ export function PortfolioCard({
             title={`Open ${item.title} in a new tab`}
             className="group/media lg:col-span-8 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/90 dark:border-white/10 bg-slate-950 text-white shadow-xl relative transition-all duration-500 hover:border-purple-400/80 dark:hover:border-purple-500/50 block cursor-pointer"
           >
-            <PortfolioPreview item={item} isLive={isLive} />
+            <PortfolioPreview item={item} />
           </a>
         ) : (
           <div className="group/media lg:col-span-8 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/90 dark:border-white/10 bg-slate-950 text-white shadow-xl relative transition-all duration-500 hover:border-purple-400/80 dark:hover:border-purple-500/50">
-            <PortfolioPreview item={item} isLive={isLive} />
+            <PortfolioPreview item={item} />
           </div>
         )}
 

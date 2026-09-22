@@ -77,7 +77,7 @@ export function LatestPostsSection() {
                 {/* Footer Meta & Read Link */}
                 <div className="mt-6 pt-4 border-t border-slate-200/80 dark:border-white/10 flex items-center justify-between font-mono text-xs text-slate-500 dark:text-white/50">
                   <span className="font-sans font-medium text-slate-500 dark:text-white/50">
-                    By {post.author}
+                    By {post.author === "Mohit Dutta" ? "Velex Engineering" : post.author}
                   </span>
                   <span className="inline-flex items-center gap-1 font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors">
                     <span>Read guide</span>

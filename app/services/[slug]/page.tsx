@@ -14,9 +14,8 @@ import {
   MessageCircle,
 } from "lucide-react";
 
-import type { ProcessStep, ServiceItem } from "@/types";
+import type { ServiceItem } from "@/types";
 import servicesData from "@/content/services.json";
-import processData from "@/content/process.json";
 import { blogPosts } from "@/content/blog";
 import { pageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, jsonLd, serviceSchema } from "@/lib/schema";
@@ -34,9 +33,9 @@ import { ConsultButtons } from "@/components/common/consult-buttons";
 import { TrustLogos } from "@/components/common/trust-logos";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { FaqSection } from "@/components/sections/faq-section";
+import { HowWeWorkSchematic } from "@/components/sections/how-we-work-schematic";
 
 const services = servicesData as ServiceItem[];
-const steps = processData as ProcessStep[];
 
 export const dynamicParams = false;
 
@@ -275,30 +274,8 @@ export default async function ServicePage({
         </section>
       )}
 
-      {/* How we work */}
-      <section className="section-pad relative">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <SectionHeader eyebrow="How we work" title="From idea to intelligence" />
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {steps.map((step) => (
-              <div
-                key={step.id}
-                className="rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-purple-400/80 dark:hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/10"
-              >
-                <span className="font-display text-4xl font-extrabold text-[#7138FF]/30 dark:text-[#8B4DFF]/40">
-                  {step.index}
-                </span>
-                <h3 className="mt-3 font-serif text-lg font-bold text-[#0D0A24] dark:text-white">
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-sm text-slate-600 dark:text-white/70 leading-relaxed font-sans">
-                  {step.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* How we work (Interactive Blueprint Architecture) */}
+      <HowWeWorkSchematic />
 
       {/* Service FAQ */}
       {service.faqs && service.faqs.length > 0 && (
