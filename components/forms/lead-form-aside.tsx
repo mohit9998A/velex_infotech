@@ -55,104 +55,56 @@ const stats = statsData.slice(0, 3);
 
 export function LeadFormAside() {
   return (
-    <div className="flex flex-col gap-6">
-      {/* Decorative. The dialog is labelled by its title below, and the brand
-          is announced by the page behind the overlay. */}
-      <div aria-hidden>
-        <Logo href={null} />
-      </div>
+    <div className="flex flex-col justify-between gap-4 lg:h-full lg:gap-2.5 xl:gap-3.5">
+      {/* Top group: Brand lockup, headline, benefits */}
+      <div className="flex flex-col gap-3 sm:gap-3.5 lg:gap-2 xl:gap-3">
+        {/* Decorative. The dialog is labelled by its title below, and the brand
+            is announced by the page behind the overlay. */}
+        <div aria-hidden>
+          <Logo href={null} />
+        </div>
 
-      <div className="flex flex-col gap-4">
-        {/* text-purple-ink, not text-purple-glow: #a855f7 is only 3.9:1 on
-            white, which fails AA for a label this size in the light theme. */}
-        <span className="badge-pill w-fit font-mono-label text-purple-ink">
-          <Sparkles className="size-3.5" aria-hidden="true" />
-          Free strategy call
-        </span>
-
-        <DialogTitle className="font-display text-3xl leading-[1.1] sm:text-4xl lg:text-[2.75rem]">
-          Let&apos;s Build Your
-          <br />
-          <span className="text-gradient-purple">AI Advantage</span>
-        </DialogTitle>
-
-        <DialogDescription className="text-base">
-          Tell us about your project and our team will come back with a tailored
-          plan within one business day. No obligation.
-        </DialogDescription>
-      </div>
-
-      <ul className="flex flex-col gap-4">
-        {benefits.map(({ icon: Icon, title, note }) => (
-          <li key={title} className="flex items-start gap-3">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-purple-core/12 text-purple-glow">
-              <Icon className="size-4" aria-hidden="true" />
+        <div className="flex flex-col gap-2 sm:gap-2.5 lg:gap-1.5 xl:gap-2">
+          <div className="flex items-center gap-2.5">
+            <span
+              aria-hidden="true"
+              className="h-[2px] w-5 sm:w-6 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]"
+            />
+            <span className="font-mono text-[10.5px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#8B4DFF]">
+              Free Strategy Call
             </span>
-            <span>
-              <span className="block text-sm font-semibold text-primary">
-                {title}
+          </div>
+
+          <DialogTitle className="font-serif text-2xl sm:text-3xl lg:text-[1.75rem] xl:text-[2rem] 2xl:text-[2.25rem] font-medium leading-[1.1] text-primary tracking-tight">
+            Let&apos;s Build Your
+            <br />
+            <span className="text-gradient-purple font-serif">AI Advantage</span>
+          </DialogTitle>
+
+          <DialogDescription className="font-sans text-xs sm:text-sm lg:text-[12.5px] xl:text-sm leading-[1.45] text-secondary font-normal">
+            Tell us about your project and our team will come back with a tailored
+            plan within one business day. No obligation.
+          </DialogDescription>
+        </div>
+
+        <ul className="flex flex-col gap-2 sm:gap-2.5 lg:gap-1.5 xl:gap-2">
+          {benefits.map(({ icon: Icon, title, note }) => (
+            <li key={title} className="flex items-start gap-2.5">
+              <span className="flex size-7.5 sm:size-8 lg:size-7 xl:size-8 shrink-0 items-center justify-center rounded-lg bg-[#7138FF]/10 text-[#7138FF] dark:bg-[#8B4DFF]/15 dark:text-[#B99CFF] mt-0.5">
+                <Icon className="size-3.5 sm:size-4 lg:size-3.5 xl:size-4" aria-hidden="true" />
               </span>
-              <span className="block text-sm text-secondary">{note}</span>
-            </span>
-          </li>
-        ))}
-      </ul>
-
-      {/* Bare `border-t`: the unlayered `* { border-color: var(--vx-border) }`
-          in globals.css supplies the colour and beats any border utility. */}
-      <div className="border-t" />
-
-      <section className="flex flex-col gap-3">
-        <h3 className="font-mono-label text-secondary">Why businesses choose Velex</h3>
-        <dl className="grid grid-cols-3 gap-2">
-          {stats.map((s) => (
-            // `flex-col-reverse`: a <dl> requires <dt> before <dd> in the DOM,
-            // but the tile reads value-first. Reversing visually keeps the
-            // markup valid AND gives a screen reader the better order
-            // ("Projects Delivered, 40 plus").
-            <div
-              key={s.label}
-              className="lift-card flex flex-col-reverse items-center gap-1 rounded-2xl bg-card px-2 py-4 text-center"
-            >
-              <dt className="text-[0.7rem] leading-tight text-secondary">
-                {s.label}
-              </dt>
-              <dd className="font-display text-2xl text-gradient">
-                {s.value}
-                {s.suffix}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      <section className="lift-card flex flex-col gap-3 rounded-2xl bg-card px-4 py-4">
-        <h3 className="text-center font-mono-label text-secondary">
-          Working with businesses in
-        </h3>
-        <ul className="grid grid-cols-4 gap-2">
-          {markets.map((m) => (
-            <li key={m.id} className="flex flex-col items-center gap-1.5">
-              <Flag countryCode={m.countryCode} />
-              <span className="text-[0.7rem] text-secondary">{m.shortName}</span>
+              <span className="min-w-0">
+                <span className="block font-sans text-xs sm:text-[13px] font-semibold text-primary leading-tight">
+                  {title}
+                </span>
+                <span className="block font-sans text-[11px] sm:text-xs text-secondary leading-tight mt-0.5">
+                  {note}
+                </span>
+              </span>
             </li>
           ))}
         </ul>
-      </section>
-
-      <section className="flex flex-col gap-2">
-        <h3 className="font-mono-label text-secondary">Selected client work</h3>
-        <ul className="flex flex-wrap gap-x-2 gap-y-1.5">
-          {permittedClients.map((name) => (
-            <li
-              key={name}
-              className="rounded-full border border-vx-border bg-card px-3 py-1 font-display text-sm text-secondary"
-            >
-              {name}
-            </li>
-          ))}
-        </ul>
-      </section>
+      </div>
     </div>
   );
 }

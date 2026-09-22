@@ -36,6 +36,7 @@ const SheetContent = React.forwardRef<
     <SheetOverlay />
     <SheetPrimitive.Content
       ref={ref}
+      data-lenis-prevent
       className={cn(
         "fixed z-[130] flex h-full w-[85vw] max-w-sm flex-col gap-6 border-vx-border bg-elevated/95 p-6 backdrop-blur-xl shadow-[0_0_80px_rgba(107,33,255,0.2)] transition data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-300",
         side === "right"

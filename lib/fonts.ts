@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Caveat, Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 
 /**
  * Single engineered typeface across the site: Geist — a neutral, professional
@@ -14,11 +14,30 @@ const geist = Geist({
   display: "swap",
 });
 
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
+  display: "swap",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-handwriting",
+  display: "swap",
+});
+
 /** Display headings (Geist, heavy weights) */
 export const fontDisplay = geist;
 
 /** Body copy (Geist) */
 export const fontSans = geist;
+
+/** Editorial Serif Display */
+export const fontSerif = playfair;
+
+/** Handwritten annotations */
+export const fontHandwriting = caveat;
 
 /** Mono — stats, labels, code identity */
 // Used only for small labels and stats, never for LCP text — so don't let it
@@ -30,4 +49,5 @@ export const fontMono = Geist_Mono({
   preload: false,
 });
 
-export const fontVariables = `${geist.variable} ${fontMono.variable}`;
+export const fontVariables = `${geist.variable} ${fontMono.variable} ${playfair.variable} ${caveat.variable}`;
+

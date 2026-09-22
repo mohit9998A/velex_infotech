@@ -68,7 +68,7 @@ export function ChoiceGroup({
   return (
     <div>
       <div className="mb-2 flex items-center justify-between gap-2">
-        <span id={labelId} className="text-sm font-medium text-secondary">
+        <span id={labelId} className="text-sm font-medium text-slate-800 dark:text-white/90">
           {legend}
           {required && (
             <span className="ml-0.5 text-error" aria-hidden="true">
@@ -93,8 +93,8 @@ export function ChoiceGroup({
             className={cn(
               "group relative cursor-pointer select-none",
               variant === "card"
-                ? "option-card flex min-h-[4.5rem] flex-col items-center justify-center gap-1.5 rounded-2xl px-2 py-3 text-center"
-                : "option-pill flex min-h-11 items-center justify-center rounded-full px-4 py-2 text-center",
+                ? "option-card flex min-h-[4.25rem] flex-col items-center justify-center gap-1.5 rounded-xl px-2.5 py-3 text-center text-slate-800 dark:text-white/90"
+                : "option-pill flex min-h-10 items-center justify-center rounded-full px-3.5 py-2 text-center text-xs font-medium sm:text-sm text-slate-700 dark:text-white/80",
             )}
           >
             <input
@@ -106,7 +106,7 @@ export function ChoiceGroup({
 
             {Icon && (
               <Icon
-                className="size-5 text-purple-glow transition-transform duration-[250ms] group-hover:scale-110"
+                className="size-5 text-[#7138FF] transition-transform duration-[200ms] group-hover:scale-110 dark:text-[#8B4DFF]"
                 aria-hidden="true"
               />
             )}
@@ -114,7 +114,7 @@ export function ChoiceGroup({
             <span
               className={cn(
                 "font-medium leading-tight",
-                variant === "card" ? "text-[0.7rem] sm:text-xs" : "text-sm",
+                variant === "card" ? "text-[0.72rem] sm:text-xs" : "text-sm",
               )}
             >
               {label}
@@ -123,7 +123,7 @@ export function ChoiceGroup({
             {variant === "card" && (
               <span
                 aria-hidden="true"
-                className="absolute right-1.5 top-1.5 flex size-4 items-center justify-center rounded-full bg-purple-core opacity-0 transition-opacity duration-[250ms] group-has-[:checked]:opacity-100"
+                className="absolute right-1.5 top-1.5 flex size-4 items-center justify-center rounded-full bg-[#7138FF] opacity-0 shadow-xs transition-opacity duration-[200ms] group-has-[:checked]:opacity-100 dark:bg-[#8B4DFF]"
               >
                 <Check className="size-2.5 text-white" strokeWidth={3} />
               </span>

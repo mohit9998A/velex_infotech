@@ -1,11 +1,10 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 
-import { cn } from "@/lib/utils";
 import type { PortfolioItem } from "@/types";
 import portfolioData from "@/content/portfolio.json";
-import { SectionHeader } from "@/components/common/section-header";
 import { PortfolioCard } from "@/components/common/portfolio-card";
 
 /**
@@ -30,72 +29,158 @@ export function PortfolioSection() {
     [active],
   );
 
-  // Only the hovered card may hold a live embed, so at most one iframe is ever
-  // mounted no matter how many previewable projects are on screen.
-  const [liveId, setLiveId] = useState<string | null>(null);
-  const deactivate = useCallback(
-    (id: string) => setLiveId((current) => (current === id ? null : current)),
-    [],
-  );
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Safe active project item
+  const currentItem = filtered[activeIndex] || filtered[0];
+
+  const handleFilterChange = (f: string) => {
+    setActive(f);
+    setActiveIndex(0);
+    setDirection(1);
+  };
+
+  // Pure scroll-driven sticky listener
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (filtered.length <= 1) return;
+    const step = 1 / filtered.length;
+    const targetIdx = Math.min(
+      Math.floor(latest / step),
+      filtered.length - 1,
+    );
+    if (targetIdx !== activeIndex && targetIdx >= 0) {
+      setDirection(targetIdx > activeIndex ? 1 : -1);
+      setActiveIndex(targetIdx);
+    }
+  });
 
   return (
-    <section id="portfolio" className="section-pad relative scroll-mt-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeader
-          eyebrow="Our Work"
-          title="Selected work & case studies"
-          subtitle="Real builds for real businesses — from luxury brand sites to autonomous AI systems."
-        />
+    <section
+      id="portfolio"
+      className="defer-paint relative py-16 sm:py-24 bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-500 overflow-x-clip scroll-mt-24"
+    >
+      {/* Ambient background glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[48rem] h-[28rem] bg-gradient-to-r from-blue-500/10 via-purple-500/15 to-pink-500/10 blur-3xl rounded-full opacity-60 dark:opacity-30"
+      />
 
-        {/* Filters */}
-        <div className="mt-10 flex flex-wrap justify-center gap-2">
-          {filters.map((f) => (
-            <button
-              key={f}
-              type="button"
-              onClick={() => setActive(f)}
-              className={cn(
-                "relative rounded-full border px-4 py-1.5 text-sm transition-colors",
-                active === f
-                  ? "border-vx-border-bright text-primary"
-                  : "border-vx-border text-secondary hover:text-primary",
-              )}
-            >
-              {/* Per-button pill cross-fading on opacity, rather than a
-                  framer-motion shared-element `layoutId`. A spring-driven
-                  shared element measures both buttons on every click; this is
-                  a composited opacity change with no measurement and no
-                  library. The pill fades between filters instead of sliding. */}
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "absolute inset-0 -z-10 rounded-full bg-purple-core/15 transition-opacity duration-300",
-                  active === f ? "opacity-100" : "opacity-0",
-                )}
-              />
-              {f}
-            </button>
-          ))}
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
+        {/* Header */}
+        <div className="relative text-center max-w-3xl mx-auto pb-8 sm:pb-12">
+          {/* Headline */}
+          <motion.h2
+            className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.08 }}
+          >
+            Selected work &{" "}
+            <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
+              case studies
+            </span>
+          </motion.h2>
+
+          {/* Subheading */}
+          <motion.p
+            className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-3 sm:mt-4 max-w-2xl mx-auto text-slate-600 dark:text-white/60"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.15 }}
+          >
+            Real builds for real businesses — from high-converting luxury storefronts to custom industrial platforms.
+          </motion.p>
+
+          {/* Category Filter Bar */}
+          <motion.div
+            className="mt-6 sm:mt-8 flex flex-wrap justify-center items-center gap-2"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+          >
+            {filters.map((f) => {
+              const isActiveFilter = active === f;
+              return (
+                <button
+                  key={f}
+                  type="button"
+                  onClick={() => handleFilterChange(f)}
+                  className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs font-semibold transition-all duration-300 cursor-pointer ${
+                    isActiveFilter
+                      ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-md shadow-purple-500/10 scale-105"
+                      : "bg-slate-100 dark:bg-white/[0.05] text-slate-600 dark:text-white/60 border border-slate-200/80 dark:border-white/10 hover:bg-slate-200/70 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                >
+                  {isActiveFilter && (
+                    <span className="size-1.5 rounded-full bg-purple-500 dark:bg-purple-400 animate-pulse" />
+                  )}
+                  <span>{f}</span>
+                </button>
+              );
+            })}
+          </motion.div>
         </div>
 
-        {/* Grid.
-            `key={active}` remounts the cards on filter change so their CSS
-            enter animation replays — which is what `AnimatePresence` was doing,
-            minus the layout measurement. Exit animations are gone; with four
-            items re-rendering instantly it is imperceptible. */}
+        {/* Scroll Track & Sticky Showcase Frame */}
         <div
-          key={active}
-          className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          ref={containerRef}
+          className="relative"
+          style={{ height: filtered.length > 1 ? `${filtered.length * 60 + 20}vh` : "auto" }}
         >
-          {filtered.map((item) => (
-            <PortfolioCard
-              key={item.id}
-              item={item}
-              isLive={liveId === item.id}
-              onActivate={() => setLiveId(item.id)}
-              onDeactivate={() => deactivate(item.id)}
-            />
-          ))}
+          <div className="sticky top-14 sm:top-24 flex flex-col gap-2 sm:gap-5 py-1 sm:py-4">
+            {/* In-Place Animated Project Frame */}
+            {currentItem && (
+              <div className="relative overflow-hidden min-h-[400px] sm:min-h-[480px] flex items-start sm:items-center">
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={currentItem.id}
+                    custom={direction}
+                    variants={{
+                      enter: (dir: number) => ({
+                        x: dir > 0 ? 140 : -140,
+                        opacity: 0,
+                        scale: 0.98,
+                      }),
+                      center: {
+                        x: 0,
+                        opacity: 1,
+                        scale: 1,
+                      },
+                      exit: (dir: number) => ({
+                        x: dir > 0 ? -140 : 140,
+                        opacity: 0,
+                        scale: 0.98,
+                      }),
+                    }}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{
+                      duration: 0.5,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    className="w-full"
+                  >
+                    <PortfolioCard
+                      item={currentItem}
+                      index={activeIndex}
+                      total={filtered.length}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>

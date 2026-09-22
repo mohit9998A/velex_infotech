@@ -12,11 +12,11 @@ interface CountUpProps {
   durationMs?: number;
 }
 
-/** Counts from 0 to `value` once it scrolls into view. */
-export function CountUp({ value, suffix = "", prefix = "", durationMs = 1600 }: CountUpProps) {
+/** Counts from 0 to `value` each time it scrolls into view (both scrolling down and above). */
+export function CountUp({ value, suffix = "", prefix = "", durationMs = 1400 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const [display, setDisplay] = useState(0);
-  const started = useRef(false);
+  const animFrameId = useRef<number | null>(null);
   const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -29,25 +29,46 @@ export function CountUp({ value, suffix = "", prefix = "", durationMs = 1600 }: 
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (!entries[0].isIntersecting || started.current) return;
-        started.current = true;
-        const start = performance.now();
-        const tick = (now: number) => {
-          const progress = Math.min((now - start) / durationMs, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          setDisplay(Math.round(eased * value));
-          if (progress < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
+        const entry = entries[0];
+        if (animFrameId.current) {
+          cancelAnimationFrame(animFrameId.current);
+          animFrameId.current = null;
+        }
+
+        if (entry.isIntersecting) {
+          const start = performance.now();
+          const startVal = 0;
+          const tick = (now: number) => {
+            const progress = Math.min((now - start) / durationMs, 1);
+            // Smooth easeOutCubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setDisplay(Math.round(startVal + eased * (value - startVal)));
+            if (progress < 1) {
+              animFrameId.current = requestAnimationFrame(tick);
+            } else {
+              animFrameId.current = null;
+            }
+          };
+          animFrameId.current = requestAnimationFrame(tick);
+        } else {
+          // Reset so scrolling back down or scrolling above triggers the counter animation again
+          setDisplay(0);
+        }
       },
-      { threshold: 0.4 },
+      { threshold: 0.2, rootMargin: "0px 0px -40px 0px" },
     );
     observer.observe(el);
-    return () => observer.disconnect();
+
+    return () => {
+      observer.disconnect();
+      if (animFrameId.current) {
+        cancelAnimationFrame(animFrameId.current);
+      }
+    };
   }, [value, durationMs, reducedMotion]);
 
   return (
-    <span ref={ref}>
+    <span ref={ref} className="inline-block tabular-nums">
       {prefix}
       {display}
       {suffix}
