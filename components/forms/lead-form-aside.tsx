@@ -53,7 +53,7 @@ const benefits = [
  *  benefit above already says it, and saying it twice reads as padding. */
 const stats = statsData.slice(0, 3);
 
-export function LeadFormAside() {
+export function LeadFormAside({ isDialog = true }: { isDialog?: boolean } = {}) {
   return (
     <div className="flex flex-col justify-between gap-4 lg:h-full lg:gap-2.5 xl:gap-3.5">
       {/* Top group: Brand lockup, headline, benefits */}
@@ -75,16 +75,31 @@ export function LeadFormAside() {
             </span>
           </div>
 
-          <DialogTitle className="font-serif text-2xl sm:text-3xl lg:text-[1.75rem] xl:text-[2rem] 2xl:text-[2.25rem] font-medium leading-[1.1] text-primary tracking-tight">
-            Let&apos;s Build Your
-            <br />
-            <span className="text-gradient-purple font-serif">AI Advantage</span>
-          </DialogTitle>
+          {isDialog ? (
+            <DialogTitle className="font-serif text-2xl sm:text-3xl lg:text-[1.75rem] xl:text-[2rem] 2xl:text-[2.25rem] font-medium leading-[1.1] text-primary tracking-tight">
+              Let&apos;s Build Your
+              <br />
+              <span className="text-gradient-purple font-serif">AI Advantage</span>
+            </DialogTitle>
+          ) : (
+            <h1 className="font-serif text-2xl sm:text-3xl lg:text-[1.75rem] xl:text-[2rem] 2xl:text-[2.25rem] font-medium leading-[1.1] text-primary tracking-tight">
+              Let&apos;s Build Your
+              <br />
+              <span className="text-gradient-purple font-serif">AI Advantage</span>
+            </h1>
+          )}
 
-          <DialogDescription className="font-sans text-xs sm:text-sm lg:text-[12.5px] xl:text-sm leading-[1.45] text-secondary font-normal">
-            Tell us about your project and our team will come back with a tailored
-            plan within one business day. No obligation.
-          </DialogDescription>
+          {isDialog ? (
+            <DialogDescription className="font-sans text-xs sm:text-sm lg:text-[12.5px] xl:text-sm leading-[1.45] text-secondary font-normal">
+              Tell us about your project and our team will come back with a tailored
+              plan within one business day. No obligation.
+            </DialogDescription>
+          ) : (
+            <p className="font-sans text-xs sm:text-sm lg:text-[12.5px] xl:text-sm leading-[1.45] text-secondary font-normal">
+              Tell us about your project and our team will come back with a tailored
+              plan within one business day. No obligation.
+            </p>
+          )}
         </div>
 
         <ul className="flex flex-col gap-2 sm:gap-2.5 lg:gap-1.5 xl:gap-2">

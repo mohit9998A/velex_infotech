@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Menu,
   ArrowRight,
@@ -77,6 +78,7 @@ export function Navbar() {
   const scrolled = useScrolled(80);
   const [mobileOpen, setMobileOpen] = useState(false);
   const openModal = useLeadModal((s) => s.openModal);
+  const pathname = usePathname();
   const { resolvedTheme, setTheme } = useTheme();
   const toggleTheme = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
 
@@ -187,10 +189,12 @@ export function Navbar() {
             variant="blue"
             size="sm"
             className="group hidden h-10 px-6 text-sm font-semibold rounded-full shadow-[0_4px_20px_rgba(113,56,255,0.35)] hover:shadow-[0_6px_28px_rgba(113,56,255,0.5)] sm:inline-flex"
-            onClick={() => openModal()}
+            asChild
           >
-            Get Started
-            <ArrowRight className="size-4 ml-1.5 transition-transform group-hover:translate-x-0.5" />
+            <Link href="/contact">
+              Get Started
+              <ArrowRight className="size-4 ml-1.5 transition-transform group-hover:translate-x-0.5" />
+            </Link>
           </Button>
 
           {/* Mobile menu */}
@@ -370,13 +374,13 @@ export function Navbar() {
                     variant="blue"
                     size="default"
                     className="w-full h-12 rounded-full bg-[#7138FF] hover:bg-[#5E2AE2] text-white font-semibold text-sm shadow-[0_8px_25px_rgba(113,56,255,0.4)] flex items-center justify-center gap-2 transition-all active:scale-[0.99]"
-                    onClick={() => {
-                      setMobileOpen(false);
-                      openModal();
-                    }}
+                    asChild
+                    onClick={() => setMobileOpen(false)}
                   >
-                    <span>Get Started</span>
-                    <ArrowRight className="size-4" />
+                    <Link href="/contact">
+                      <span>Get Started</span>
+                      <ArrowRight className="size-4" />
+                    </Link>
                   </Button>
 
                   {/* Switch Theme Row */}
