@@ -10,17 +10,12 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import type { StatItem } from "@/types";
-import statsData from "@/content/stats.json";
 import { siteConfig } from "@/config/site";
 import { marketsShortLine, officesLine, pageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, jsonLd, webPageSchema } from "@/lib/schema";
 import { Breadcrumbs } from "@/components/common/breadcrumbs";
-import { StatCard } from "@/components/common/stat-card";
 import { ConsultButtons } from "@/components/common/consult-buttons";
 import { CtaBanner } from "@/components/sections/cta-banner";
-
-const stats = statsData as StatItem[];
 
 const title = "About Velex Infotech — AI Engineering from India";
 const description = `Velex Infotech builds AI agents, automation and custom software for businesses in the ${marketsShortLine}, with engineering hubs in ${officesLine}.`;
@@ -139,18 +134,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* Stats Section (design.md 2.2 & 4.3) 
-      <section className="relative pb-12">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {stats.map((s) => (
-              <StatCard key={s.label} value={s.value} suffix={s.suffix} label={s.label} />
-            ))}
-          </div>
-        </div>
-      </section>*/}
-
       {/* Story (design.md 1, 3.1, 4.2, 4.3) */}
       <section className="relative py-16 lg:py-24">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:items-center">

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, CheckCircle2, Lock, Sparkles } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, Lock } from "lucide-react";
 
 import type { PortfolioItem } from "@/types";
 import { PortfolioPreview } from "@/components/common/portfolio-preview";

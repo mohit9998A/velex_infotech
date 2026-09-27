@@ -2,11 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   Menu,
   ArrowRight,
-  Check,
   Building2,
   FolderKanban,
   LayoutGrid,
@@ -20,7 +18,6 @@ import {
   Layers,
   Users,
   Sun,
-  Moon,
   X,
   ChevronRight,
   type LucideIcon,
@@ -78,7 +75,6 @@ export function Navbar() {
   const scrolled = useScrolled(80);
   const [mobileOpen, setMobileOpen] = useState(false);
   const openModal = useLeadModal((s) => s.openModal);
-  const pathname = usePathname();
   const { resolvedTheme, setTheme } = useTheme();
   const toggleTheme = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
 
@@ -384,21 +380,17 @@ export function Navbar() {
                   </Button>
 
                   {/* Switch Theme Row */}
-                  <div
-                    role="button"
-                    tabIndex={0}
+                  <button
+                    type="button"
                     onClick={toggleTheme}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") toggleTheme();
-                    }}
-                    className="flex items-center justify-between py-2 px-1 text-xs font-semibold text-slate-700 dark:text-white/80 hover:text-[#7138FF] dark:hover:text-[#8B4DFF] transition-colors cursor-pointer select-none"
+                    className="w-full flex items-center justify-between py-2 px-1 text-xs font-semibold text-slate-700 dark:text-white/80 hover:text-[#7138FF] dark:hover:text-[#8B4DFF] transition-colors cursor-pointer select-none"
                   >
                     <div className="flex items-center gap-3">
                       <Sun className="size-4 text-slate-600 dark:text-white/70" />
                       <span>Switch Theme</span>
                     </div>
                     <ChevronRight className="size-4 text-slate-400 dark:text-white/40" />
-                  </div>
+                  </button>
                 </div>
               </div>
             </SheetContent>

@@ -1,5 +1,5 @@
-import { LocationShellSkeleton } from "@/components/sections/skeletons/location-shell-skeleton";
+import { ServicesSkeleton } from "@/components/sections/skeletons/services-skeleton";
 
 export default function ServicesLoading() {
-  return <LocationShellSkeleton />;
+  return <ServicesSkeleton />;
 }

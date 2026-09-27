@@ -118,20 +118,7 @@ export function ServicesSection() {
 
   const activeService =
     services.find((s) => s.slug === activeSlug) ?? services[0];
-  const activeIndex = services.findIndex((s) => s.slug === activeSlug);
   const theme = SERVICE_THEMES[activeService.slug] ?? SERVICE_THEMES["ai-automation"];
-
-  const handleSelectService = (slug: string, index: number) => {
-    setActiveSlug(slug);
-    if (scrollContainerRef.current) {
-      const containerTop = scrollContainerRef.current.offsetTop;
-      const containerHeight = scrollContainerRef.current.offsetHeight;
-      const travel = containerHeight - window.innerHeight;
-      const progressTarget = index === 5 ? 0.85 : index * 0.15 + 0.05;
-      const targetY = containerTop + travel * progressTarget;
-      window.scrollTo({ top: targetY, behavior: "smooth" });
-    }
-  };
 
   return (
     <section
@@ -279,7 +266,6 @@ export function ServicesSection() {
                       alt={`${activeService.title} platform visual`}
                       width={1200}
                       height={800}
-                      priority
                       className="w-full h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.25)] dark:drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)] transition-transform duration-500 group-hover:scale-103"
                     />
                   </motion.div>

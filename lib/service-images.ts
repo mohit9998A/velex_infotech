@@ -107,12 +107,12 @@ export const serviceHeroMetrics: Record<string, ServiceHeroMetric[]> = {
   ],
   "ai-receptionist": [
     { icon: "zap", value: "<1 Sec", label: "Sub-Second Voice Response" },
-    { icon: "chart", value: "24/7/365", label: "Zero Missed Calls or Leads" },
+    { icon: "chart", value: "Always-On", label: "Zero Missed Calls or Leads" },
     { icon: "sparkles", value: "English + Hindi", label: "Fluent Dual-Language Booking" },
   ],
   "whatsapp-bot": [
     { icon: "zap", value: "Meta API", label: "Official Verified Business API" },
-    { icon: "chart", value: "24/7", label: "Automated Lead Capture & CRM Sync" },
+    { icon: "chart", value: "Always-On", label: "Automated Lead Capture & CRM Sync" },
     { icon: "clock", value: "1–2 Weeks", label: "Setup to Live Chat Launch" },
   ],
   "ai-integration": [

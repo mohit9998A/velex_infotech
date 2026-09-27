@@ -11,7 +11,7 @@ export function TrustLogos({ className }: TrustLogosProps) {
       <div className="flex items-center gap-3 mb-4">
         <span className="h-[2px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
         <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
-          Trusted by forward-thinking businesses
+          Technologies &amp; platforms we build with
         </span>
       </div>
       <div className="flex flex-wrap items-center gap-x-8 gap-y-4 text-slate-500/90 dark:text-[#B99CFF]/70">

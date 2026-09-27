@@ -6,7 +6,6 @@ import {
   Clock,
   Gem,
   MessageSquareReply,
-  Sparkles,
   Globe2,
   Play,
   Zap,

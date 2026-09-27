@@ -208,7 +208,7 @@ export default function HealthcarePage() {
               >
                 <div>
                   <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[#7138FF] dark:text-[#8B4DFF]">
-                    0{idx + 1} // DOMAIN SYSTEM
+                    0{idx + 1} {"//"} DOMAIN SYSTEM
                   </span>
                   <h3 className="mt-3 font-serif text-xl font-bold text-[#0D0A24] dark:text-white">
                     {item.title}

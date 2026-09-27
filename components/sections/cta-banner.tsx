@@ -1,4 +1,4 @@
-import { MessageCircle, Sparkles } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { ConsultButtons } from "@/components/common/consult-buttons";

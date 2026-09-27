@@ -1,5 +1,3 @@
-import { HelpCircle } from "lucide-react";
-
 import type { FaqItem } from "@/types";
 import faqsData from "@/content/faqs.json";
 import { faqSchema, jsonLd } from "@/lib/schema";
@@ -53,6 +51,11 @@ export function FaqSection({
       <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
         {/* Header */}
         <div className="relative text-center max-w-3xl mx-auto pb-10 sm:pb-14">
+          {eyebrow && (
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 text-[#7138FF] dark:text-[#B99CFF] font-mono text-xs font-semibold uppercase tracking-wider mb-4">
+              {eyebrow}
+            </div>
+          )}
 
           {/* Title */}
           <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">

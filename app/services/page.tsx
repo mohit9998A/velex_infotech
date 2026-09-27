@@ -3,16 +3,12 @@ import Image from "next/image";
 import {
   ArrowRight,
   ArrowUpRight,
-  Globe,
   MessageCircle,
   Sparkles,
-  Users,
-  Zap,
 } from "lucide-react";
 
 import type { ServiceItem } from "@/types";
 import servicesData from "@/content/services.json";
-import statsData from "@/content/stats.json";
 import { marketsShortLine, pageMetadata } from "@/lib/seo";
 import { siteConfig } from "@/config/site";
 import { breadcrumbSchema, itemListSchema, jsonLd } from "@/lib/schema";

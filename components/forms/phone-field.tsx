@@ -146,6 +146,8 @@ export function PhoneField({
     );
   };
 
+  const listboxId = `${id}-dial-listbox`;
+
   return (
     <div
       ref={dropdownRef}
@@ -155,6 +157,7 @@ export function PhoneField({
       <button
         type="button"
         aria-haspopup="listbox"
+        aria-controls={listboxId}
         aria-expanded={isOpen}
         aria-label="Country dial code"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -207,7 +210,9 @@ export function PhoneField({
 
           {/* List of Countries */}
           <div
+            id={listboxId}
             role="listbox"
+            aria-label="Select country dial code"
             tabIndex={-1}
             className="max-h-60 overflow-y-auto overscroll-contain p-0.5 text-xs scrollbar-thin sm:max-h-68"
           >

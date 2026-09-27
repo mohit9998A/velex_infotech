@@ -1,9 +1,5 @@
-import { Clock3, FileCheck2, ShieldCheck, Sparkles } from "lucide-react";
+import { Clock3, FileCheck2, ShieldCheck } from "lucide-react";
 
-import statsData from "@/content/stats.json";
-import { markets } from "@/config/site";
-import { permittedClients } from "@/lib/clients";
-import { Flag } from "@/components/common/flag";
 import { Logo } from "@/components/common/logo";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 
@@ -48,10 +44,6 @@ const benefits = [
     note: "Happy to sign before you share anything sensitive.",
   },
 ];
-
-/** Three tiles, so the fourth stat ("1 day Reply Time") is dropped — the first
- *  benefit above already says it, and saying it twice reads as padding. */
-const stats = statsData.slice(0, 3);
 
 export function LeadFormAside({ isDialog = true }: { isDialog?: boolean } = {}) {
   return (

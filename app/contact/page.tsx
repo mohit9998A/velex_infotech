@@ -1,17 +1,13 @@
 import {
   Phone,
   Mail,
-  MapPin,
   MessageCircle,
   Clock,
-  ShieldCheck,
-  Clock3,
-  FileCheck2,
   ArrowUpRight,
 } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
-import { marketsShortLine, officesLine, pageMetadata } from "@/lib/seo";
+import { marketsShortLine, pageMetadata } from "@/lib/seo";
 import {
   breadcrumbSchema,
   jsonLd,
