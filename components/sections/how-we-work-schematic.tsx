@@ -10,6 +10,7 @@ interface StepItem {
   description: string;
   layerIndex: number;
   side: "left" | "right";
+  tags: string[];
 }
 
 const STEPS: StepItem[] = [
@@ -20,6 +21,7 @@ const STEPS: StepItem[] = [
     description: "Import tasks, assets, feedback, and project data into a unified workspace.",
     layerIndex: 0,
     side: "left",
+    tags: ["Data Ingestion", "API Connectors", "Unified Hub"],
   },
   {
     id: "structure",
@@ -28,6 +30,7 @@ const STEPS: StepItem[] = [
     description: "Organize workflows with smart layers, connected systems, and modular components.",
     layerIndex: 1,
     side: "right",
+    tags: ["Modular Layers", "Schema Mapping", "Smart Rules"],
   },
   {
     id: "collaborate",
@@ -36,6 +39,7 @@ const STEPS: StepItem[] = [
     description: "Work in real time with comments, approvals, shared boards, and live updates.",
     layerIndex: 2,
     side: "left",
+    tags: ["Real-time Sync", "Approvals", "Audit Logging"],
   },
   {
     id: "automate",
@@ -44,6 +48,7 @@ const STEPS: StepItem[] = [
     description: "Reduce repetitive work using AI-powered suggestions, automations, and synced actions.",
     layerIndex: 3,
     side: "right",
+    tags: ["AI Agents", "Auto-Triggers", "LLM Pipelines"],
   },
   {
     id: "deploy",
@@ -52,6 +57,7 @@ const STEPS: StepItem[] = [
     description: "Turn finalized workflows into production-ready systems and ship faster with confidence.",
     layerIndex: 4,
     side: "left",
+    tags: ["Production Build", "High Availability", "24/7 Monitoring"],
   },
 ];
 
@@ -603,81 +609,75 @@ export function HowWeWorkSchematic() {
           </div>
 
           {/* Mobile Responsive Layout (md:hidden) */}
-          <div className="md:hidden flex flex-col divide-y divide-slate-200/90 dark:divide-white/[0.08] p-4 sm:p-6">
-            {/* Miniature Isometric Stack Preview */}
-            <div className="py-6 flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox={`0 0 ${width} ${height}`}
-                className="w-full max-w-[280px] h-auto drop-shadow-lg"
-              >
-                {[4, 3, 2, 1, 0].map((idx) => {
-                  const cy = layerYs[idx];
-                  if (cy === undefined) return null;
-                  const { leftFace, rightFace } = isoExtrusion(cx, cy, rx, ry, thickness);
-                  const isHovered = activeLayer === idx;
+          <div className="md:hidden p-4 sm:p-6 space-y-4">
+            <div className="relative pl-7 space-y-4 before:absolute before:left-[11px] before:top-4 before:bottom-4 before:w-[2px] before:bg-gradient-to-b before:from-[#7138FF] before:via-[#8B4DFF]/50 before:to-[#7138FF]/20">
+              {STEPS.map((step, idx) => {
+                const isActive = activeLayer === step.layerIndex || (activeLayer === null && idx === 0);
+                return (
+                  <div
+                    key={step.id}
+                    onClick={() => setActiveLayer(step.layerIndex)}
+                    className={cn(
+                      "relative group rounded-2xl border p-4 sm:p-5 transition-all duration-300 cursor-pointer",
+                      isActive
+                        ? "border-[#7138FF]/70 dark:border-[#8B4DFF]/70 bg-gradient-to-br from-purple-500/[0.08] via-purple-500/[0.03] to-transparent dark:from-[#7138FF]/15 dark:via-white/[0.03] dark:to-transparent shadow-[0_8px_25px_rgba(113,56,255,0.12)]"
+                        : "border-slate-200/90 dark:border-white/[0.08] bg-white/60 dark:bg-white/[0.02] hover:border-slate-300 dark:hover:border-white/20"
+                    )}
+                  >
+                    {/* Glowing Node Dot on Timeline */}
+                    <span
+                      className={cn(
+                        "absolute -left-[24px] top-6 size-3.5 rounded-full border-2 transition-all duration-300 -translate-x-1/2",
+                        isActive
+                          ? "border-[#7138FF] bg-white dark:bg-[#7138FF] ring-4 ring-[#7138FF]/25 scale-110"
+                          : "border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0C0C14]"
+                      )}
+                    />
 
-                  return (
-                    <g
-                      key={`mob-layer-${idx}`}
-                      onClick={() => setActiveLayer(idx === activeLayer ? null : idx)}
-                      className={cn(isHovered && "iso-active")}
-                    >
-                      <polygon points={leftFace} className="iso-plate-left" strokeWidth={1} />
-                      <polygon points={rightFace} className="iso-plate-right" strokeWidth={1} />
-                      <polygon points={isoDiamond(cx, cy, rx, ry)} className="iso-plate-top" strokeWidth={1.2} />
-                    </g>
-                  );
-                })}
-              </svg>
-            </div>
-
-            {/* 5 Sequential Steps */}
-            {STEPS.map((step) => {
-              const isActive = activeLayer === step.layerIndex;
-              return (
-                <button
-                  type="button"
-                  key={step.id}
-                  onClick={() => setActiveLayer(isActive ? null : step.layerIndex)}
-                  className={cn(
-                    "w-full text-left py-4.5 px-3 transition-colors rounded-xl cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7138FF]",
-                    isActive
-                      ? "bg-purple-500/[0.08] dark:bg-white/[0.04]"
-                      : "hover:bg-slate-50 dark:hover:bg-white/[0.02]"
-                  )}
-                >
-                  <div className="flex items-center justify-between mb-1.5">
-                    <div className="flex items-center gap-2.5">
-                      <span
-                        className={cn(
-                          "size-2 rounded-full transition-colors",
-                          isActive
-                            ? "bg-[#7138FF] dark:bg-[#8B4DFF]"
-                            : "bg-slate-300 dark:bg-slate-600"
-                        )}
-                      />
-                      <span
-                        className={cn(
-                          "font-mono text-xs font-bold uppercase tracking-[0.2em] transition-colors",
-                          isActive
-                            ? "text-[#7138FF] dark:text-[#B99CFF]"
-                            : "text-slate-800 dark:text-white"
-                        )}
-                      >
-                        {step.title}
-                      </span>
+                    {/* Header: Phase badge & Title */}
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 text-[#7138FF] dark:text-[#B99CFF] uppercase tracking-wider">
+                          PHASE {step.stepNumber}
+                        </span>
+                        <h3
+                          className={cn(
+                            "font-mono text-sm font-bold uppercase tracking-[0.18em] transition-colors",
+                            isActive
+                              ? "text-[#7138FF] dark:text-white"
+                              : "text-slate-800 dark:text-slate-200"
+                          )}
+                        >
+                          {step.title}
+                        </h3>
+                      </div>
                     </div>
-                    <span className="font-mono text-[11px] text-[#7138FF] dark:text-[#8B4DFF]/70">
-                      PHASE {step.stepNumber}
-                    </span>
+
+                    {/* Description */}
+                    <p className="font-sans text-xs leading-relaxed text-slate-600 dark:text-slate-300/90">
+                      {step.description}
+                    </p>
+
+                    {/* Capabilities Tags */}
+                    <div className="mt-3.5 flex flex-wrap gap-1.5 pt-2.5 border-t border-slate-200/60 dark:border-white/[0.06]">
+                      {step.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className={cn(
+                            "font-mono text-[10px] font-medium px-2.5 py-1 rounded-full transition-colors",
+                            isActive
+                              ? "bg-[#7138FF]/10 dark:bg-[#8B4DFF]/20 text-[#7138FF] dark:text-[#B99CFF] border border-[#7138FF]/20 dark:border-[#8B4DFF]/30"
+                              : "bg-slate-100 dark:bg-white/[0.05] text-slate-600 dark:text-slate-400 border border-slate-200/60 dark:border-white/[0.06]"
+                          )}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <p className="font-sans text-xs leading-relaxed text-slate-600 dark:text-slate-400 pl-4.5">
-                    {step.description}
-                  </p>
-                </button>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
