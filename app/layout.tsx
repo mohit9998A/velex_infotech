@@ -66,7 +66,7 @@ export const metadata: Metadata = {
       { url: "/favicon.ico", sizes: "any" },
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
-    apple: { url: "/favicon.ico" },
+    apple: "/apple-touch-icon.png",
     shortcut: "/favicon.ico",
   },
   alternates: { canonical: siteConfig.url },
@@ -99,7 +99,7 @@ export default function RootLayout({
   return (
     <html
       lang={siteConfig.htmlLang}
-      className={`${fontVariables} dark`}
+      className={`${fontVariables} light`}
       suppressHydrationWarning
     >
       <head>

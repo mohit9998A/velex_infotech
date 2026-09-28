@@ -90,7 +90,7 @@ function prune(hits: number[], now: number, horizonMs: number): number[] {
   const cutoff = now - horizonMs;
   // Timestamps are appended in order, so the survivors are always a suffix.
   let i = 0;
-  while (i < hits.length && hits[i] <= cutoff) i++;
+  while (i < hits.length && (hits[i] ?? 0) <= cutoff) i++;
   return i === 0 ? hits : hits.slice(i);
 }
 
@@ -121,12 +121,12 @@ export function check(key: string, rules: RateRule[], now = Date.now()): RateRes
   for (const rule of rules) {
     const cutoff = now - rule.windowMs;
     let count = 0;
-    for (let i = hits.length - 1; i >= 0 && hits[i] > cutoff; i--) count++;
+    for (let i = hits.length - 1; i >= 0 && (hits[i] ?? 0) > cutoff; i--) count++;
 
     if (count >= rule.limit) {
       // The oldest hit still inside the window is the one whose expiry frees a
       // slot, so that is the honest retry time.
-      const oldestInWindow = hits[hits.length - count];
+      const oldestInWindow = hits[hits.length - count] ?? now;
       const retryAfter = Math.max(1, Math.ceil((oldestInWindow + rule.windowMs - now) / 1000));
       return { ok: false, retryAfter };
     }

@@ -9,7 +9,10 @@ export function WhatsAppButton() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 600);
+    const onScroll = () => {
+      const isPast = window.scrollY > 600;
+      setVisible((prev) => (prev !== isPast ? isPast : prev));
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -21,9 +24,11 @@ export function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
+      tabIndex={visible ? 0 : -1}
+      aria-hidden={!visible}
       className={cn(
         "fixed bottom-6 right-6 z-[105] inline-flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_0_30px_rgba(37,211,102,0.5)] transition-all duration-300 hover:scale-110",
-        visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0",
+        visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0 invisible",
       )}
     >
       <svg viewBox="0 0 24 24" fill="currentColor" className="size-7" aria-hidden="true">

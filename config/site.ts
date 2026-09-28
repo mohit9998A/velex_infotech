@@ -103,6 +103,15 @@ export const siteConfig = {
   social: {
     instagram: "https://instagram.com/velexinfotech.ai",
   },
+  /**
+   * Legal page update dates kept in sync between page content and sitemap.xml
+   */
+  legalDates: {
+    termsUpdated: "June 2025",
+    termsLastModified: "2025-06-01",
+    privacyUpdated: "August 2026",
+    privacyLastModified: "2026-08-07",
+  },
   stats: {
     // TODO(velex): replace with real, defensible counts. A specific small
     // number ("14 projects, 9 clients") reads as more credible than a round

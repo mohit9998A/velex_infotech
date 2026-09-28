@@ -5,17 +5,11 @@ import { useEffect } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
 /**
- * Lenis smooth scroll, wired to GSAP's ticker so ScrollTrigger stays in sync.
+ * High-performance Lenis smooth scroll.
  *
- * Split out of `providers.tsx` and dynamically imported so gsap (73 KiB),
- * ScrollTrigger (45 KiB) and lenis (18 KiB) leave the shared bundle. They were
- * imported at module scope in the root layout, so all ~135 KiB shipped on every
- * route — including /blog, /privacy-policy and /terms-of-service, which use
- * none of it. That matched the ~131 KiB of unused JS Lighthouse reported.
- *
- * The imports are now inside the effect, so they are also skipped entirely when
- * the user prefers reduced motion — previously the guard was a runtime check
- * that ran after the bytes had already downloaded.
+ * Configured for silky-smooth 60-120Hz scrolling with optimal easing,
+ * native touch scrolling on mobile (no gesture hijacking), and
+ * clean requestAnimationFrame loop.
  */
 export default function SmoothScroll() {
   const reducedMotion = usePrefersReducedMotion();
@@ -23,43 +17,49 @@ export default function SmoothScroll() {
   useEffect(() => {
     if (reducedMotion) return;
 
-    let cleanup: (() => void) | undefined;
     let cancelled = false;
+    let rafId: number | undefined;
+    let lenisInstance: InstanceType<typeof import("lenis")["default"]> | undefined;
 
     (async () => {
-      const [{ default: Lenis }, { gsap }, { ScrollTrigger }] = await Promise.all([
-        import("lenis"),
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-      ]);
-
-      // The component may have unmounted while the chunks were in flight.
+      const { default: Lenis } = await import("lenis");
       if (cancelled) return;
 
-      gsap.registerPlugin(ScrollTrigger);
-
       const lenis = new Lenis({
-        duration: 1.1,
+        duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        touchMultiplier: 1.6,
+        wheelMultiplier: 1,
+        touchMultiplier: 1.5,
+        syncTouch: true, // Enables silky-smooth inertial scrolling on mobile touch screens
+        syncTouchLerp: 0.085, // Smooth responsive touch interpolation
+        touchInertiaExponent: 1.75, // Natural fluid momentum on touch release
       });
 
-      lenis.on("scroll", ScrollTrigger.update);
+      lenisInstance = lenis;
 
-      const raf = (time: number) => lenis.raf(time * 1000);
-      gsap.ticker.add(raf);
-      gsap.ticker.lagSmoothing(0);
+      // Expose globally for convenience if modals/drawers need to stop/start scroll
+      if (typeof window !== "undefined") {
+        (window as unknown as { lenis?: typeof lenis }).lenis = lenis;
+      }
 
-      cleanup = () => {
-        gsap.ticker.remove(raf);
-        lenis.destroy();
-      };
+      function raf(time: number) {
+        lenis.raf(time);
+        rafId = requestAnimationFrame(raf);
+      }
+
+      rafId = requestAnimationFrame(raf);
     })();
 
     return () => {
       cancelled = true;
-      cleanup?.();
+      if (rafId !== undefined) {
+        cancelAnimationFrame(rafId);
+      }
+      lenisInstance?.destroy();
+      if (typeof window !== "undefined" && (window as unknown as { lenis?: unknown }).lenis === lenisInstance) {
+        delete (window as unknown as { lenis?: unknown }).lenis;
+      }
     };
   }, [reducedMotion]);
 

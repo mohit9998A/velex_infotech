@@ -12,6 +12,16 @@ import { Button } from "@/components/ui/button";
 interface ConsultButtonsProps {
   presetService?: string;
   primaryLabel?: string;
+  primaryVariant?:
+    | "primary"
+    | "blue"
+    | "gold"
+    | "outline"
+    | "ghost"
+    | "link"
+    | "crystal";
+  primaryClassName?: string;
+  primaryIcon?: ReactNode;
   /**
    * Replaces the default WhatsApp button entirely. Lets a Server Component
    * keep its own secondary CTA (the hero's "View Our Work" anchor, say) while
@@ -29,6 +39,9 @@ interface ConsultButtonsProps {
 export function ConsultButtons({
   presetService,
   primaryLabel = "Get Free Consultation",
+  primaryVariant = "primary",
+  primaryClassName,
+  primaryIcon,
   secondary,
   size = "lg",
   className,
@@ -40,14 +53,16 @@ export function ConsultButtons({
     <div className={cn("flex flex-col gap-4 sm:flex-row", className)} style={style}>
       <Button
         size={size}
-        className="btn-glow"
+        variant={primaryVariant}
+        className={cn(primaryVariant === "primary" ? "btn-glow" : "", primaryClassName)}
         onClick={() => openModal(presetService)}
         // The dialog is a separate chunk (see lead-form-modal.tsx). Warm it on
         // intent so the first open never waits on a network round-trip.
         onPointerEnter={prefetchLeadForm}
         onFocus={prefetchLeadForm}
       >
-        {primaryLabel}
+        <span>{primaryLabel}</span>
+        {primaryIcon}
       </Button>
       {secondary ?? (
         <Button size={size} variant="crystal" asChild>

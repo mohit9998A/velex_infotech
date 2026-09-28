@@ -39,11 +39,11 @@ export type Currency = (typeof CURRENCIES)[number];
  * inbox, there is no CRM yet. It gets expensive later.
  */
 export const BUDGET_BANDS = [
-  { id: "band-1", INR: "₹25K – ₹1L", USD: "$300 – $1,200", GBP: "£250 – £950", CAD: "C$400 – C$1,600" },
-  { id: "band-2", INR: "₹1L – ₹5L", USD: "$1,200 – $6,000", GBP: "£950 – £4,800", CAD: "C$1,600 – C$8,000" },
-  { id: "band-3", INR: "₹5L – ₹15L", USD: "$6,000 – $18,000", GBP: "£4,800 – £14,000", CAD: "C$8,000 – C$24,000" },
-  { id: "band-4", INR: "₹15L+", USD: "$18,000+", GBP: "£14,000+", CAD: "C$24,000+" },
-  { id: "unsure", INR: "Not sure yet", USD: "Not sure yet", GBP: "Not sure yet", CAD: "Not sure yet" },
+  { id: "band-1", INR: "₹25K – ₹50K", USD: "$300 – $600", GBP: "£250 – £500", CAD: "C$400 – C$800" },
+  { id: "band-2", INR: "₹50K – ₹1 Lac", USD: "$600 – $1,200", GBP: "£500 – £1,000", CAD: "C$800 – C$1,600" },
+  { id: "band-3", INR: "₹1 – ₹2 Lac", USD: "$1,200 – $2,500", GBP: "£1,000 – £2,000", CAD: "C$1,600 – C$3,400" },
+  { id: "band-4", INR: "₹2+ Lacs", USD: "$2,500+", GBP: "£2,000+", CAD: "C$3,400+" },
+  { id: "unsure", INR: "Not sure", USD: "Not sure", GBP: "Not sure", CAD: "Not sure" },
 ] as const;
 
 export const BUDGET_OPTIONS = BUDGET_BANDS.map((b) => b.id) as unknown as [
@@ -55,7 +55,7 @@ export const BUDGET_OPTIONS = BUDGET_BANDS.map((b) => b.id) as unknown as [
 export function formatBudget(bandId: string, currency: Currency): string {
   const band = BUDGET_BANDS.find((b) => b.id === bandId);
   if (!band) return bandId;
-  if (band.id === "unsure") return "Not sure yet";
+  if (band.id === "unsure") return "Not sure";
   return `${currency} ${band[currency]}`;
 }
 
