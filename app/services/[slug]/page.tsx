@@ -147,6 +147,21 @@ export default async function ServicePage({
                 {service.tagline}
               </p>
 
+              {/* Mobile 3D Hero Illustration (placed right after heading/tagline on mobile) */}
+              <div className="relative my-6 flex items-center justify-center lg:hidden">
+                <div className="pointer-events-none absolute -inset-6 rounded-full bg-gradient-to-tr from-[#7138FF]/25 via-[#8B4DFF]/20 to-transparent blur-2xl [transform:translateZ(0)]" />
+                <Image
+                  src={heroImageUrl}
+                  alt={`${service.title} — workflow and platform architecture illustration`}
+                  width={800}
+                  height={533}
+                  loading="eager"
+                  fetchPriority="high"
+                  sizes="(max-width: 640px) 100vw, 600px"
+                  className="w-full h-auto max-h-[360px] sm:max-h-[440px] object-contain drop-shadow-[0_20px_40px_rgba(107,33,255,0.22)] animate-float"
+                />
+              </div>
+
               {/* Overview Description (design.md 3.1) */}
               <p className="mt-5 text-base sm:text-lg leading-relaxed text-slate-600 dark:text-white/70 max-w-xl font-sans">
                 {service.overview ?? service.description}
@@ -204,8 +219,8 @@ export default async function ServicePage({
               </div>
             </div>
 
-            {/* Right Column (Hero 3D Illustration - shifted a little above) */}
-            <div className="relative flex items-center justify-center lg:col-span-6 lg:-mt-12 xl:-mt-16 lg:-translate-y-4 xl:-translate-y-6">
+            {/* Right Column (Hero 3D Illustration - desktop only) */}
+            <div className="relative hidden lg:flex items-center justify-center lg:col-span-6 lg:-mt-12 xl:-mt-16 lg:-translate-y-4 xl:-translate-y-6">
               {/* Ambient Glow (design.md 7.2 Hardware Accelerated) */}
               <div className="pointer-events-none absolute -inset-8 sm:-inset-12 rounded-full bg-gradient-to-tr from-[#7138FF]/25 via-[#8B4DFF]/20 to-transparent blur-3xl [transform:translateZ(0)]" />
 
