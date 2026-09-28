@@ -17,7 +17,7 @@ import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { ConsultButtons } from "@/components/common/consult-buttons";
 import { Button } from "@/components/ui/button";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { serviceCardImages } from "@/lib/service-images";
+import { defaultServiceCardImage, serviceCardImages } from "@/lib/service-images";
 
 const services = servicesData as ServiceItem[];
 
@@ -96,7 +96,7 @@ export default function ServicesIndexPage() {
                 alt="AI & Software Capabilities - Smarter Faster Together"
                 width={520}
                 height={520}
-                priority
+                sizes="(min-width: 1536px) 440px, (min-width: 1280px) 380px, (min-width: 1024px) 290px, 0px"
                 className="size-full object-contain animate-float drop-shadow-[0_20px_45px_rgba(113,56,255,0.18)]"
               />
             </div>
@@ -153,7 +153,7 @@ export default function ServicesIndexPage() {
                 alt="Global Market Footprint - Real Business Impact"
                 width={520}
                 height={520}
-                priority
+                sizes="(min-width: 1536px) 460px, (min-width: 1280px) 400px, (min-width: 1024px) 310px, 0px"
                 className="size-full object-contain animate-float [animation-delay:2.5s] drop-shadow-[0_20px_45px_rgba(113,56,255,0.18)]"
               />
             </div>
@@ -187,7 +187,8 @@ export default function ServicesIndexPage() {
               const Icon = getServiceIcon(service.icon);
               const cardImage =
                 serviceCardImages[service.slug] ??
-                serviceCardImages["ai-automation"];
+                serviceCardImages["ai-automation"] ??
+                defaultServiceCardImage;
 
               return (
                 <Link

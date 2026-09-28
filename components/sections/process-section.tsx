@@ -31,16 +31,18 @@ interface StepMeta {
   items: { label: string; icon: LucideIcon }[];
 }
 
+const DEFAULT_STEP_META: StepMeta = {
+  handwritten: "Understand Deeply",
+  image: "https://res.cloudinary.com/d0grbozz/image/upload/v1789797249/step1.webp",
+  items: [
+    { label: "Workflow audit", icon: FileText },
+    { label: "Opportunity map", icon: Lightbulb },
+    { label: "Success metrics", icon: BarChart3 },
+  ],
+};
+
 const STEP_DETAILS: Record<string, StepMeta> = {
-  discovery: {
-    handwritten: "Understand Deeply",
-    image: "https://res.cloudinary.com/d0grbozz/image/upload/v1789797249/step1.webp",
-    items: [
-      { label: "Workflow audit", icon: FileText },
-      { label: "Opportunity map", icon: Lightbulb },
-      { label: "Success metrics", icon: BarChart3 },
-    ],
-  },
+  discovery: DEFAULT_STEP_META,
   strategy: {
     handwritten: "Design the Right Path",
     image: "https://res.cloudinary.com/d0grbozz/image/upload/v1789797249/step2.webp",
@@ -77,11 +79,13 @@ function generateCurvyPath(coords: { x: number; y: number }[]) {
   if (coords.length < 2) return "";
 
   const c0 = coords[0];
+  if (!c0) return "";
   let path = `M ${c0.x} ${c0.y} `;
 
   for (let i = 0; i < coords.length - 1; i++) {
     const curr = coords[i];
     const next = coords[i + 1];
+    if (!curr || !next) continue;
     const dy = next.y - curr.y;
     const yMid = curr.y + dy / 2;
     // Sweep leftwards into the space between the 3D icons
@@ -200,32 +204,20 @@ export function ProcessSection() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 w-full flex flex-col justify-between">
         {/* Header */}
-        <div className="relative text-center max-w-3xl mx-auto pb-6 sm:pb-10">
+        <div className="reveal-on-scroll relative text-center max-w-3xl mx-auto pb-6 sm:pb-10">
 
           {/* Headline */}
-          <motion.h2
-            className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.08 }}
-          >
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
             From idea to{" "}
             <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               intelligence
             </span>
-          </motion.h2>
+          </h2>
 
           {/* Subheading */}
-          <motion.p
-            className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-3 sm:mt-4 max-w-2xl mx-auto text-slate-600 dark:text-white/60"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.15 }}
-          >
+          <p className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-3 sm:mt-4 max-w-2xl mx-auto text-slate-600 dark:text-white/60">
             A precise, four-step path that turns ambition into deployed, compounding results.
-          </motion.p>
+          </p>
         </div>
 
         {/* DESKTOP LAYOUT (Horizontal) */}
@@ -279,7 +271,7 @@ export function ProcessSection() {
 
             <div className="grid grid-cols-4 gap-4 items-end">
               {steps.map((step, idx) => {
-                const meta = STEP_DETAILS[step.id] ?? STEP_DETAILS.discovery;
+                const meta = STEP_DETAILS[step.id] ?? DEFAULT_STEP_META;
                 const isActive = currentStep === idx;
 
                 return (
@@ -326,7 +318,7 @@ export function ProcessSection() {
           {/* The 4 Process Step Cards (Desktop) */}
           <div className="grid grid-cols-4 gap-4">
             {steps.map((step, idx) => {
-              const meta = STEP_DETAILS[step.id] ?? STEP_DETAILS.discovery;
+              const meta = STEP_DETAILS[step.id] ?? DEFAULT_STEP_META;
               const isActive = currentStep === idx;
               
               return (
@@ -350,7 +342,7 @@ export function ProcessSection() {
                         className={`font-mono text-xs font-bold transition-colors duration-300 ${
                           isActive
                             ? "text-[#7138FF] dark:text-[#8B4DFF]"
-                            : "text-slate-400 dark:text-white/40"
+                            : "text-slate-500 dark:text-white/40"
                         }`}
                       >
                         {step.index}
@@ -458,13 +450,15 @@ export function ProcessSection() {
           </svg>
           
           {steps.map((step, idx) => {
-            const meta = STEP_DETAILS[step.id] ?? STEP_DETAILS.discovery;
+            const meta = STEP_DETAILS[step.id] ?? DEFAULT_STEP_META;
             const isActive = currentStep === idx;
             return (
-              <div 
+              <button 
+                type="button"
                 key={step.id} 
-                className="relative flex items-center gap-3 sm:gap-6 w-full z-10"
+                className="relative flex items-center gap-3 sm:gap-6 w-full z-10 text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7138FF] rounded-2xl"
                 onClick={() => setActiveStep(idx)}
+                aria-pressed={isActive}
               >
                 {/* Left: Image */}
                 <div className="w-[5.5rem] sm:w-[7.5rem] shrink-0 relative flex justify-center items-center">
@@ -477,7 +471,14 @@ export function ProcessSection() {
                           : "bg-[#7138FF]/15 dark:bg-[#7138FF]/20"
                       }`}
                     />
-                    <Image src={meta.image} alt={step.title} fill className="object-contain" priority={idx < 2} />
+                    <Image
+                      src={meta.image}
+                      alt={step.title}
+                      fill
+                      sizes="(max-width: 640px) 80px, 112px"
+                      className="object-contain"
+                      priority={idx < 2}
+                    />
                   </div>
                 </div>
                 
@@ -511,7 +512,7 @@ export function ProcessSection() {
                         className={`font-mono text-[10px] sm:text-xs font-bold transition-colors duration-300 ${
                           isActive
                             ? "text-[#7138FF] dark:text-[#8B4DFF]"
-                            : "text-slate-400 dark:text-white/40"
+                            : "text-slate-500 dark:text-white/40"
                         }`}
                       >
                         {step.index}
@@ -544,7 +545,7 @@ export function ProcessSection() {
                     })}
                   </ul>
                 </motion.div>
-              </div>
+              </button>
             )
           })}
         </div>
@@ -580,7 +581,7 @@ export function ProcessSection() {
                     className={`transition-colors duration-300 ${
                       isHighlighted
                         ? "font-semibold text-slate-900 dark:text-white"
-                        : "text-slate-400 dark:text-white/40"
+                        : "text-slate-500 dark:text-white/40"
                     }`}
                   >
                     {stage}

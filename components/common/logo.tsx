@@ -23,12 +23,12 @@ export function Logo({ className, showWordmark = true, href = "/" }: LogoProps) 
     <>
       <span className="relative inline-flex items-center justify-center">
         <Image
-          src="/images/logo/logo.png"
+          src="https://res.cloudinary.com/d0grbozz/image/upload/v1790569390/logo.png"
           alt="Velex Infotech"
-          width={34}
-          height={34}
+          width={36}
+          height={36}
           priority
-          className="size-8 sm:size-9 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]"
+          className="size-8 sm:size-9 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.6)] group-hover:scale-105 transition-transform duration-300"
         />
       </span>
       {showWordmark && (

@@ -8,5 +8,4 @@ export { PortfolioSkeleton } from "./portfolio-skeleton";
 export { LatestPostsSkeleton } from "./latest-posts-skeleton";
 export { FaqSkeleton } from "./faq-skeleton";
 export { CtaBannerSkeleton } from "./cta-banner-skeleton";
-export { TestimonialsSkeleton } from "./testimonials-skeleton";
 export { LocationShellSkeleton } from "./location-shell-skeleton";

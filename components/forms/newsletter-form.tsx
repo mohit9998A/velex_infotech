@@ -51,7 +51,13 @@ export function NewsletterForm() {
   }
 
   return (
-    <div>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        submit();
+      }}
+      noValidate
+    >
       <div className="flex items-center gap-2">
         <Input
           type="email"
@@ -63,21 +69,19 @@ export function NewsletterForm() {
             setEmail(e.target.value);
             if (status === "error") setStatus("idle");
           }}
-          onKeyDown={(e) => e.key === "Enter" && submit()}
           className="flex-1"
         />
         <button
-          type="button"
+          type="submit"
           aria-label="Subscribe"
-          onClick={submit}
-          className="btn-glow inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-purple-core text-white transition hover:-translate-y-0.5"
+          className="btn-glow inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-purple-core text-white transition hover:-translate-y-0.5 cursor-pointer"
         >
           <ArrowRight className="size-4" />
         </button>
       </div>
       {status === "error" && (
-        <p className="mt-2 text-xs text-error">Please enter a valid email.</p>
+        <p role="alert" className="mt-2 text-xs text-error">Please enter a valid email.</p>
       )}
-    </div>
+    </form>
   );
 }

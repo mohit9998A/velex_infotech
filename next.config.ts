@@ -16,8 +16,7 @@ const nextConfig: NextConfig = {
   // the one route where failure costs a lead. It is not on Next's built-in
   // auto-externalized list, so it has to be named here.
   serverExternalPackages: ["nodemailer"],
-  // Blog posts are .mdx files imported by app/blog/[slug]/page.tsx.
-  pageExtensions: ["ts", "tsx", "js", "jsx", "mdx"],
+  pageExtensions: ["ts", "tsx", "js", "jsx"],
   images: {
     // AVIF first, WebP fallback. The 7 service hero PNGs are 680-880 KB each
     // and were previously served raw through a plain <img>; routed through

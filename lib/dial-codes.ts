@@ -202,6 +202,6 @@ export function findDialCountry(code: string): DialCountry {
   return (
     DIAL_COUNTRIES.find((c) => c.code.toUpperCase() === code.toUpperCase()) ??
     DIAL_COUNTRIES.find((c) => c.code === "US") ??
-    DIAL_COUNTRIES[0]
+    DIAL_COUNTRIES[0] ?? { code: "US", name: "United States", dial: "+1" }
   );
 }

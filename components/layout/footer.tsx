@@ -28,13 +28,15 @@ const socialIcons: Record<string, (props: IconProps) => React.ReactElement> = {
   instagram: InstagramIcon,
 };
 
-const socials = Object.entries(siteConfig.social)
-  .filter(([key]) => key in socialIcons)
-  .map(([key, href]) => ({
-    icon: socialIcons[key],
+const socials = Object.entries(siteConfig.social).flatMap(([key, href]) => {
+  const icon = socialIcons[key];
+  if (!icon) return [];
+  return [{
+    icon,
     href,
     label: key.charAt(0).toUpperCase() + key.slice(1),
-  }));
+  }];
+});
 
 export function Footer() {
   return (

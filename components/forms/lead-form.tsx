@@ -205,7 +205,7 @@ export function LeadForm({
           if (field === "website") continue;
           setError(field as keyof LeadFormValues, {
             type: "server",
-            message: messages[0],
+            message: messages[0] ?? "Invalid value",
           });
           mapped = true;
         }
@@ -275,6 +275,9 @@ export function LeadForm({
           inputSize="lg"
           placeholder="Your full name"
           autoComplete="name"
+          aria-required="true"
+          aria-invalid={errors.name ? "true" : undefined}
+          aria-describedby={errors.name ? "lead-name-error" : undefined}
           {...register("name")}
         />
       </Field>
@@ -287,6 +290,9 @@ export function LeadForm({
           inputMode="email"
           placeholder="you@company.com"
           autoComplete="email"
+          aria-required="true"
+          aria-invalid={errors.email ? "true" : undefined}
+          aria-describedby={errors.email ? "lead-email-error" : undefined}
           {...register("email")}
         />
       </Field>
@@ -308,6 +314,9 @@ export function LeadForm({
               onBlur={field.onBlur}
               country={phoneCountry}
               onCountryChange={setPhoneCountry}
+              aria-required="true"
+              aria-invalid={errors.phone ? "true" : undefined}
+              aria-describedby={errors.phone ? "lead-phone-error" : undefined}
             />
           )}
         />
@@ -384,6 +393,7 @@ export function LeadForm({
       <Field
         label="Tell us about your project"
         htmlFor="lead-message"
+        error={errors.message?.message}
         action={
           <span
             className={cn(
@@ -404,6 +414,8 @@ export function LeadForm({
           placeholder={
             'Example: "I want to automate customer support using an AI chatbot integrated with WhatsApp and our CRM."'
           }
+          aria-invalid={errors.message ? "true" : undefined}
+          aria-describedby={errors.message ? "lead-message-error" : undefined}
           {...register("message")}
         />
       </Field>
@@ -490,6 +502,15 @@ export function LeadForm({
           >
             Privacy policy
           </a>
+          <span>and</span>
+          <a
+            href="/terms-of-service"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 text-slate-700 hover:text-[#7138FF] transition-colors dark:text-white/80 dark:hover:text-[#8B4DFF]"
+          >
+            Terms of service
+          </a>
         </p>
       </div>
     </form>
@@ -512,6 +533,7 @@ function Field({
   required?: boolean;
   children: React.ReactNode;
 }) {
+  const errorId = error ? `${htmlFor}-error` : undefined;
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between gap-2">
@@ -526,7 +548,11 @@ function Field({
         {action}
       </div>
       {children}
-      {error && <span className="text-xs text-error">{error}</span>}
+      {error && (
+        <span id={errorId} role="alert" className="text-xs text-error">
+          {error}
+        </span>
+      )}
     </div>
   );
 }

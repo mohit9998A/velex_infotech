@@ -304,6 +304,7 @@ export function HowWeWorkSchematic() {
                 {/* 5 Stacked Isometric Layers (Bottom to Top) */}
                 {[4, 3, 2, 1, 0].map((idx) => {
                   const cy = layerYs[idx];
+                  if (cy === undefined) return null;
                   const { leftFace, rightFace } = isoExtrusion(cx, cy, rx, ry, thickness);
                   const isHovered = activeLayer === idx;
 
@@ -531,7 +532,7 @@ export function HowWeWorkSchematic() {
             <div className="md:col-span-4 flex flex-col justify-between border-l border-slate-200/90 dark:border-white/[0.08]">
               {/* Top Spacer Cell (aligned with Collect) */}
               <div className="h-[18%] border-b border-slate-200/90 dark:border-white/[0.08] flex items-center px-6 lg:px-8">
-                <span className="font-mono text-[11px] text-slate-400 dark:text-white/20 uppercase tracking-[0.2em]">
+                <span className="font-mono text-[11px] text-slate-500 dark:text-white/40 uppercase tracking-[0.2em]">
                   SCHEMATIC // SPEC-02
                 </span>
               </div>
@@ -594,7 +595,7 @@ export function HowWeWorkSchematic() {
 
               {/* Bottom Spacer Cell (aligned with Deploy) */}
               <div className="h-[18%] flex items-center px-6 lg:px-8">
-                <span className="font-mono text-[11px] text-slate-400 dark:text-white/20 uppercase tracking-[0.2em]">
+                <span className="font-mono text-[11px] text-slate-500 dark:text-white/40 uppercase tracking-[0.2em]">
                   PRODUCTION READY
                 </span>
               </div>
@@ -612,6 +613,7 @@ export function HowWeWorkSchematic() {
               >
                 {[4, 3, 2, 1, 0].map((idx) => {
                   const cy = layerYs[idx];
+                  if (cy === undefined) return null;
                   const { leftFace, rightFace } = isoExtrusion(cx, cy, rx, ry, thickness);
                   const isHovered = activeLayer === idx;
 
@@ -634,11 +636,12 @@ export function HowWeWorkSchematic() {
             {STEPS.map((step) => {
               const isActive = activeLayer === step.layerIndex;
               return (
-                <div
+                <button
+                  type="button"
                   key={step.id}
                   onClick={() => setActiveLayer(isActive ? null : step.layerIndex)}
                   className={cn(
-                    "py-4.5 px-3 transition-colors rounded-xl cursor-pointer",
+                    "w-full text-left py-4.5 px-3 transition-colors rounded-xl cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7138FF]",
                     isActive
                       ? "bg-purple-500/[0.08] dark:bg-white/[0.04]"
                       : "hover:bg-slate-50 dark:hover:bg-white/[0.02]"
@@ -672,7 +675,7 @@ export function HowWeWorkSchematic() {
                   <p className="font-sans text-xs leading-relaxed text-slate-600 dark:text-slate-400 pl-4.5">
                     {step.description}
                   </p>
-                </div>
+                </button>
               );
             })}
           </div>

@@ -17,7 +17,7 @@ export const siteDomain = new URL(siteConfig.url).host;
  * places, so "Ludhiana, Punjab, India" had become the site's entire stated
  * geography — including on pages meant to sell to US and UK buyers.
  */
-export const officesLine = `${offices.map((o) => o.city).join(" & ")}, ${offices[0].country}`;
+export const officesLine = `${offices.map((o) => o.city).join(" & ")}, ${offices[0]?.country ?? ""}`;
 
 /** "United States · United Kingdom · Canada · India" */
 export const marketsLine = markets.map((m) => m.countryName).join(" · ");
@@ -25,7 +25,8 @@ export const marketsLine = markets.map((m) => m.countryName).join(" · ");
 /** "US, UK, Canada and India" — the short form for titles and headlines. */
 export const marketsShortLine = (() => {
   const names = markets.map((m) => m.shortName);
-  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+  const last = names[names.length - 1] ?? "";
+  return `${names.slice(0, -1).join(", ")} and ${last}`;
 })();
 
 /**

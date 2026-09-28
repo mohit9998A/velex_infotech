@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { ThemeProvider } from "next-themes";
+import { MotionConfig } from "motion/react";
 
 /**
  * Loaded as its own chunk after the page is interactive. This keeps
@@ -23,8 +24,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableSystem={false}
       disableTransitionOnChange
     >
-      <SmoothScroll />
-      {children}
+      <MotionConfig reducedMotion="user">
+        <SmoothScroll />
+        {children}
+      </MotionConfig>
     </ThemeProvider>
   );
 }

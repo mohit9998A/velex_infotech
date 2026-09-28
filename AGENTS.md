@@ -55,4 +55,4 @@ updated in lockstep or the failure is silent:
 3. `config/navigation.ts` — otherwise the page is orphaned.
 
 `app/sitemap.ts` and `app/llms.txt/route.ts` derive from the JSON and need no
-edit. Run `npm run verify:content` to check all of the above.
+edit.

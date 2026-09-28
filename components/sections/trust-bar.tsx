@@ -21,7 +21,7 @@ export function TrustBar() {
           {items.map((name, i) => (
             <span
               key={`${name}-${i}`}
-              aria-hidden={i >= singlePass.length || undefined}
+              aria-hidden={i >= clients.length || undefined}
               className="whitespace-nowrap font-display text-xl text-[#7138FF]/80 dark:text-[#8B4DFF]/80 transition-colors hover:text-[#7138FF] dark:hover:text-white"
             >
               {name}

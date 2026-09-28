@@ -64,7 +64,7 @@ export function PortfolioSection() {
   return (
     <section
       id="portfolio"
-      className="defer-paint relative py-16 sm:py-24 bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-500 overflow-x-clip scroll-mt-24"
+      className="relative py-16 sm:py-24 bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-500 overflow-x-clip scroll-mt-24"
     >
       {/* Ambient background glow */}
       <div
@@ -74,40 +74,22 @@ export function PortfolioSection() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         {/* Header */}
-        <div className="relative text-center max-w-3xl mx-auto pb-8 sm:pb-12">
+        <div className="reveal-on-scroll relative text-center max-w-3xl mx-auto pb-8 sm:pb-12">
           {/* Headline */}
-          <motion.h2
-            className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.08 }}
-          >
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
             Selected work &{" "}
             <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               case studies
             </span>
-          </motion.h2>
+          </h2>
 
           {/* Subheading */}
-          <motion.p
-            className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-3 sm:mt-4 max-w-2xl mx-auto text-slate-600 dark:text-white/60"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.15 }}
-          >
+          <p className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-3 sm:mt-4 max-w-2xl mx-auto text-slate-600 dark:text-white/60">
             Real builds for real businesses — from high-converting luxury storefronts to custom industrial platforms.
-          </motion.p>
+          </p>
 
           {/* Category Filter Bar */}
-          <motion.div
-            className="mt-6 sm:mt-8 flex flex-wrap justify-center items-center gap-2"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-          >
+          <div className="mt-6 sm:mt-8 flex flex-wrap justify-center items-center gap-2">
             {filters.map((f) => {
               const isActiveFilter = active === f;
               return (
@@ -128,7 +110,7 @@ export function PortfolioSection() {
                 </button>
               );
             })}
-          </motion.div>
+          </div>
         </div>
 
         {/* Scroll Track & Sticky Showcase Frame */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -20,8 +20,11 @@ import servicesData from "@/content/services.json";
 import { useLeadModal } from "@/lib/store/lead-modal";
 import { prefetchLeadForm } from "@/components/forms/lead-form-modal";
 
+const DEFAULT_SERVICE_VISUAL =
+  "https://res.cloudinary.com/d0grbozz/image/upload/v1789796660/automation.webp";
+
 const SERVICE_VISUALS: Record<string, string> = {
-  "ai-automation": "https://res.cloudinary.com/d0grbozz/image/upload/v1789796660/automation.webp",
+  "ai-automation": DEFAULT_SERVICE_VISUAL,
   "agentic-ai": "https://res.cloudinary.com/d0grbozz/image/upload/v1789796660/agent.webp",
   "ai-receptionist": "https://res.cloudinary.com/d0grbozz/image/upload/v1789796660/receptionist.webp",
   "whatsapp-bot": "https://res.cloudinary.com/d0grbozz/image/upload/v1789796661/whatsapp.webp",
@@ -77,9 +80,28 @@ const SERVICE_THEMES: Record<
   },
 };
 
+const DEFAULT_THEME = {
+  accent: "#60A5FA",
+  accentLight: "#2563EB",
+};
+
 export function ServicesSection() {
   const [activeSlug, setActiveSlug] = useState<string>("ai-automation");
   const openModal = useLeadModal((s) => s.openModal);
+
+  // Preserve keyboard focus if active service changes while user was focused inside
+  const leftColumnRef = useRef<HTMLDivElement>(null);
+  const hadFocusRef = useRef(false);
+
+  useEffect(() => {
+    if (hadFocusRef.current && leftColumnRef.current) {
+      const focusable = leftColumnRef.current.querySelector<HTMLElement>(
+        'a, button, [tabindex="0"]'
+      );
+      focusable?.focus();
+      hadFocusRef.current = false;
+    }
+  }, [activeSlug]);
 
   // Track scrolling container to switch active content dynamically on scroll
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -117,8 +139,8 @@ export function ServicesSection() {
   });
 
   const activeService =
-    services.find((s) => s.slug === activeSlug) ?? services[0];
-  const theme = SERVICE_THEMES[activeService.slug] ?? SERVICE_THEMES["ai-automation"];
+    services.find((s) => s.slug === activeSlug) ?? services[0] ?? allServices[0]!;
+  const theme = (activeService ? SERVICE_THEMES[activeService.slug] : undefined) ?? DEFAULT_THEME;
 
   return (
     <section
@@ -146,37 +168,36 @@ export function ServicesSection() {
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 z-10 w-full flex flex-col justify-between h-full">
             
             {/* FIXED HEADING */}
-            <div className="text-center max-w-3xl mx-auto shrink-0 pt-2 sm:pt-4">
-              <motion.h2
-                className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white"
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.08 }}
-              >
+            <div className="reveal-on-scroll text-center max-w-3xl mx-auto shrink-0 pt-2 sm:pt-4">
+              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
                 Intelligent systems. <br className="hidden sm:inline" />
                 <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
                   Built to move business forward.
                 </span>
-              </motion.h2>
+              </h2>
 
-              <motion.p
-                className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-2.5 sm:mt-3 max-w-2xl mx-auto text-slate-600 dark:text-white/60 line-clamp-2"
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.15 }}
-              >
+              <p className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-2.5 sm:mt-3 max-w-2xl mx-auto text-slate-600 dark:text-white/60 line-clamp-2">
                 We build the high-performance infrastructure for autonomous workflows,
                 real-world execution environments, and intelligent agent applications.
-              </motion.p>
+              </p>
             </div>
 
             {/* 2-Column Showcase (Replaces content at exact same place) */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center my-auto py-1 sm:py-2">
               
               {/* LEFT COLUMN: Single Active Service (Replaces content at exact same place) */}
-              <div className="lg:col-span-6 flex flex-col justify-center min-h-[260px] sm:min-h-[300px]">
+              <div
+                ref={leftColumnRef}
+                onFocusCapture={() => {
+                  hadFocusRef.current = true;
+                }}
+                onBlurCapture={(e) => {
+                  if (!leftColumnRef.current?.contains(e.relatedTarget as Node)) {
+                    hadFocusRef.current = false;
+                  }
+                }}
+                className="lg:col-span-6 flex flex-col justify-center min-h-[260px] sm:min-h-[300px]"
+              >
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeService.slug}
@@ -262,10 +283,11 @@ export function ServicesSection() {
                     className="relative w-full max-w-[500px] lg:max-w-[560px] flex items-center justify-center group"
                   >
                     <Image
-                      src={SERVICE_VISUALS[activeSlug] ?? SERVICE_VISUALS["ai-automation"]}
+                      src={SERVICE_VISUALS[activeSlug] ?? DEFAULT_SERVICE_VISUAL}
                       alt={`${activeService.title} platform visual`}
                       width={1200}
                       height={800}
+                      sizes="(max-width: 1024px) 100vw, 560px"
                       className="w-full h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.25)] dark:drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)] transition-transform duration-500 group-hover:scale-103"
                     />
                   </motion.div>

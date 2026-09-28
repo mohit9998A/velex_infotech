@@ -21,6 +21,9 @@ interface PhoneFieldProps {
   /** ISO 3166-1 alpha-2. Owned by the parent so it can be set SSR-safely. */
   country: string;
   onCountryChange: (code: string) => void;
+  "aria-invalid"?: boolean | "true" | "false";
+  "aria-required"?: boolean | "true" | "false";
+  "aria-describedby"?: string;
 }
 
 /**
@@ -36,6 +39,9 @@ export function PhoneField({
   onBlur,
   country,
   onCountryChange,
+  "aria-invalid": ariaInvalid,
+  "aria-required": ariaRequired,
+  "aria-describedby": ariaDescribedby,
 }: PhoneFieldProps) {
   const selected = findDialCountry(country);
   const national = value.startsWith(selected.dial)
@@ -47,8 +53,19 @@ export function PhoneField({
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const closeDropdown = (returnFocus = true) => {
+    setIsOpen(false);
+    setSearchQuery("");
+    setHighlightedIndex(-1);
+    if (returnFocus) {
+      setTimeout(() => triggerRef.current?.focus(), 0);
+    }
+  };
 
   // Close dropdown on outside click or Escape key
   useEffect(() => {
@@ -56,13 +73,13 @@ export function PhoneField({
 
     const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setIsOpen(false);
+        closeDropdown(false);
       }
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setIsOpen(false);
+        closeDropdown(true);
       }
     };
 
@@ -86,6 +103,7 @@ export function PhoneField({
       return () => clearTimeout(timer);
     } else {
       setSearchQuery("");
+      setHighlightedIndex(-1);
     }
   }, [isOpen]);
 
@@ -107,29 +125,62 @@ export function PhoneField({
     return POPULAR_COUNTRY_CODES.map((code) => findDialCountry(code));
   }, []);
 
-  const renderCountryItem = (c: DialCountry, keyPrefix = "") => {
+  const visibleList = useMemo(() => {
+    return filteredCountries !== null ? filteredCountries : DIAL_COUNTRIES;
+  }, [filteredCountries]);
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setHighlightedIndex((prev) => (prev + 1) % visibleList.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setHighlightedIndex((prev) =>
+        prev <= 0 ? visibleList.length - 1 : prev - 1,
+      );
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const targetCountry =
+        highlightedIndex >= 0 && visibleList[highlightedIndex]
+          ? visibleList[highlightedIndex]
+          : visibleList[0];
+      if (targetCountry) {
+        onCountryChange(targetCountry.code);
+        onChange(join(targetCountry.dial, national));
+        closeDropdown(true);
+      }
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      closeDropdown(true);
+    }
+  };
+
+  const renderCountryItem = (c: DialCountry, keyPrefix = "", itemIndex?: number) => {
     const isSelected = c.code === country;
+    const isHighlighted = itemIndex !== undefined && itemIndex === highlightedIndex;
     return (
       <button
         key={`${keyPrefix}${c.code}`}
+        id={`${id}-country-${c.code}`}
         type="button"
         role="option"
         aria-selected={isSelected}
         onClick={() => {
           onCountryChange(c.code);
           onChange(join(c.dial, national));
-          setIsOpen(false);
-          setSearchQuery("");
+          closeDropdown(true);
         }}
         className={cn(
-          "flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs transition-colors sm:text-sm",
+          "flex w-full min-h-[44px] items-center justify-between rounded-xl px-3 py-2.5 text-left text-xs transition-colors sm:text-sm cursor-pointer",
           isSelected
             ? "bg-[#7138FF]/10 font-semibold text-[#7138FF] dark:bg-[#8B4DFF]/15 dark:text-[#B99CFF]"
+            : isHighlighted
+            ? "bg-slate-100 dark:bg-white/[0.08] text-slate-900 dark:text-white"
             : "text-slate-700 hover:bg-slate-100/80 dark:text-white/85 dark:hover:bg-white/[0.06]",
         )}
       >
         <div className="flex items-center gap-2.5 truncate">
-          <span className="font-mono text-[11px] font-bold text-slate-400 w-6 shrink-0 dark:text-white/40">
+          <span className="font-mono text-[11px] font-bold text-slate-500 w-6 shrink-0 dark:text-white/40">
             {c.code}
           </span>
           <span className="truncate">{c.name}</span>
@@ -155,6 +206,7 @@ export function PhoneField({
     >
       {/* Country Selector Trigger */}
       <button
+        ref={triggerRef}
         type="button"
         aria-haspopup="listbox"
         aria-controls={listboxId}
@@ -171,7 +223,7 @@ export function PhoneField({
         </span>
         <ChevronDown
           className={cn(
-            "size-3.5 text-slate-400 transition-transform duration-200 dark:text-white/40",
+            "size-3.5 text-slate-500 transition-transform duration-200 dark:text-white/40",
             isOpen && "rotate-180",
           )}
         />
@@ -186,20 +238,29 @@ export function PhoneField({
           {/* Search Input */}
           <div className="p-1.5 pb-2">
             <div className="relative flex items-center">
-              <Search className="pointer-events-none absolute left-3 size-3.5 text-slate-400 dark:text-white/40" />
+              <Search className="pointer-events-none absolute left-3 size-3.5 text-slate-500 dark:text-white/40" />
               <input
                 ref={searchInputRef}
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setHighlightedIndex(0);
+                }}
+                onKeyDown={handleSearchKeyDown}
+                aria-label="Search countries by name or dial code"
                 placeholder="Search country or code (+91, US)..."
-                className="h-9 w-full rounded-xl border border-slate-200/80 bg-slate-50/80 pl-8.5 pr-8 text-xs text-slate-800 placeholder:text-slate-400 outline-none transition-all focus:border-[#7138FF] focus:bg-white focus:ring-2 focus:ring-[#7138FF]/20 dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-white/40 dark:focus:border-[#8B4DFF] dark:focus:bg-[#16142E] dark:focus:ring-[#8B4DFF]/25"
+                className="h-9 w-full rounded-xl border border-slate-200/80 bg-slate-50/80 pl-8.5 pr-8 text-xs text-slate-800 placeholder:text-slate-500 outline-none transition-all focus:border-[#7138FF] focus:bg-white focus:ring-2 focus:ring-[#7138FF]/20 dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-white/40 dark:focus:border-[#8B4DFF] dark:focus:bg-[#16142E] dark:focus:ring-[#8B4DFF]/25"
               />
               {searchQuery && (
                 <button
                   type="button"
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-2.5 flex size-4 items-center justify-center rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-white"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setHighlightedIndex(-1);
+                    searchInputRef.current?.focus();
+                  }}
+                  className="absolute right-2.5 flex size-4 items-center justify-center rounded-full text-slate-500 hover:text-slate-700 dark:hover:text-white"
                   aria-label="Clear search"
                 >
                   <X className="size-3" />
@@ -218,18 +279,18 @@ export function PhoneField({
           >
             {filteredCountries !== null ? (
               filteredCountries.length === 0 ? (
-                <div className="py-8 text-center text-xs text-slate-400 dark:text-white/40">
+                <div className="py-8 text-center text-xs text-slate-500 dark:text-white/40">
                   No countries matching &quot;{searchQuery}&quot;
                 </div>
               ) : (
                 <div className="space-y-0.5">
-                  {filteredCountries.map((c) => renderCountryItem(c))}
+                  {filteredCountries.map((c, idx) => renderCountryItem(c, "", idx))}
                 </div>
               )
             ) : (
               <div className="space-y-3 pb-1">
                 <div>
-                  <div className="px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-white/40">
+                  <div className="px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-white/40">
                     Frequently Used
                   </div>
                   <div className="mt-0.5 space-y-0.5">
@@ -238,11 +299,11 @@ export function PhoneField({
                 </div>
 
                 <div>
-                  <div className="border-t border-slate-100 px-3 py-1 pt-2 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:border-white/10 dark:text-white/40">
+                  <div className="border-t border-slate-100 px-3 py-1 pt-2 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:border-white/10 dark:text-white/40">
                     All Countries (A–Z)
                   </div>
                   <div className="mt-0.5 space-y-0.5">
-                    {DIAL_COUNTRIES.map((c) => renderCountryItem(c))}
+                    {DIAL_COUNTRIES.map((c, idx) => renderCountryItem(c, "", idx))}
                   </div>
                 </div>
               </div>
@@ -265,7 +326,10 @@ export function PhoneField({
         value={national}
         onChange={(e) => onChange(join(selected.dial, e.target.value))}
         onBlur={onBlur}
-        className="h-full min-w-0 flex-1 rounded-r-xl border-0 bg-transparent px-3 text-base text-slate-900 outline-none placeholder:text-slate-400 sm:px-4 dark:text-white dark:placeholder:text-white/35"
+        aria-invalid={ariaInvalid}
+        aria-required={ariaRequired}
+        aria-describedby={ariaDescribedby}
+        className="h-full min-w-0 flex-1 rounded-r-xl border-0 bg-transparent px-3 text-base text-slate-900 outline-none placeholder:text-slate-500 sm:px-4 dark:text-white dark:placeholder:text-white/35"
       />
     </div>
   );

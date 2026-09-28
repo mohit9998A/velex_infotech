@@ -21,6 +21,7 @@ import { pageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, jsonLd, serviceSchema } from "@/lib/schema";
 import { getServiceIcon } from "@/lib/icons";
 import {
+  defaultServiceHeroImage,
   serviceHeroImages,
   serviceHeroMetrics,
   type ServiceHeroMetric,
@@ -88,7 +89,8 @@ export default async function ServicePage({
 
   const heroImageUrl =
     serviceHeroImages[service.slug] ??
-    serviceHeroImages["ai-automation"];
+    serviceHeroImages["ai-automation"] ??
+    defaultServiceHeroImage;
   const metrics = serviceHeroMetrics[service.slug];
 
   const related = services.filter((s) => s.slug !== service.slug).slice(0, 3);

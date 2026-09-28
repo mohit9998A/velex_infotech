@@ -16,7 +16,8 @@ import { cn } from "@/lib/utils";
  * full bandwidth for a scene it never saw.
  *
  * The import now cannot fire until `shouldLoad` is true, which only happens
- * after mount and only on hardware that will actually use it.
+ * after mount, strictly gated on `(min-width: 768px)` viewport width, hardware
+ * capability, and user motion/data preferences.
  *
  * `ssr: false` costs nothing here: this is a decorative WebGL canvas with no
  * text and no crawlable content.
@@ -32,53 +33,7 @@ interface InteractiveRobotSplineProps {
   className?: string;
 }
 
-/**
- * The static crystal. Rendered on every device, immediately, as the single
- * placeholder for both branches.
- *
- * There used to be a second component, `SplineSkeleton`, rendered TWICE — once
- * directly and once as the Suspense fallback — so two copies shipped in the
- * initial HTML, each carrying a 64px blur, a backdrop-filter, an 80px shadow
- * and two infinite animations, above the fold on the frame that decides LCP.
- * This is strictly cheaper and it is the same crystal motif, so desktop now
- * gets a real crystal → scene cross-fade instead of skeleton → skeleton → scene.
- */
-function StaticCrystal() {
-  return (
-    <div className="absolute inset-0 flex items-center justify-center">
-      <div className="relative size-[min(72vw,420px)]">
-        {/* Gradient, not `blur-3xl` — a Gaussian blur of a solid circle is a
-            radial gradient, but the browser has to allocate a layer and run a
-            filter pass to find that out. Above the fold, that is LCP-frame work. */}
-        <div className="absolute inset-0 glow-blob" />
-        <svg
-          viewBox="0 0 200 200"
-          className="relative size-full animate-float drop-shadow-[0_0_60px_rgba(107,33,255,0.5)]"
-        >
-          <defs>
-            <linearGradient id="crystal-fallback" x1="0" y1="0" x2="200" y2="200">
-              <stop offset="0%" stopColor="#A855F7" />
-              <stop offset="55%" stopColor="#6B21FF" />
-              <stop offset="100%" stopColor="#E4C76B" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M100 12 L165 70 L100 188 L35 70 Z"
-            fill="url(#crystal-fallback)"
-            fillOpacity="0.85"
-            stroke="#F0EEFF"
-            strokeOpacity="0.3"
-          />
-          <path
-            d="M35 70 H165 M100 12 V188 M68 70 L100 188 L132 70"
-            stroke="#04040A"
-            strokeOpacity="0.35"
-          />
-        </svg>
-      </div>
-    </div>
-  );
-}
+
 
 export function InteractiveRobotSpline({
   scene,
@@ -94,7 +49,9 @@ export function InteractiveRobotSpline({
     if (!containerRef.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setInView(entry.isIntersecting);
+        if (entry) {
+          setInView(entry.isIntersecting);
+        }
       },
       { rootMargin: "300px 0px" },
     );
@@ -106,6 +63,8 @@ export function InteractiveRobotSpline({
     // Every check below is a CLIENT fact, so all of them are read AFTER mount.
     // Reading any of them during render is what caused the original bug.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const mql = window.matchMedia("(min-width: 768px)");
 
     const conn = (
       navigator as Navigator & {
@@ -119,39 +78,52 @@ export function InteractiveRobotSpline({
     // Deferred to idle so the fetch competes with nothing during the LCP
     // window. The timeout is the ceiling: on a busy main thread the scene still
     // arrives, just late.
-    const ric =
-      window.requestIdleCallback ??
-      ((cb: IdleRequestCallback) =>
-        window.setTimeout(
-          () => cb({ didTimeout: true, timeRemaining: () => 0 }),
-          1500,
-        ));
-    const id = ric(() => setShouldLoad(true), { timeout: 3000 });
+    let id: number | null = null;
+    const scheduleLoad = () => {
+      const ric =
+        window.requestIdleCallback ??
+        ((cb: IdleRequestCallback) =>
+          window.setTimeout(
+            () => cb({ didTimeout: true, timeRemaining: () => 0 }),
+            200,
+          ));
+      id = ric(() => setShouldLoad(true), { timeout: 800 }) as number;
+    };
+
+    if (mql.matches) {
+      scheduleLoad();
+    } else {
+      const handler = (e: MediaQueryListEvent) => {
+        if (e.matches) {
+          scheduleLoad();
+          mql.removeEventListener("change", handler);
+        }
+      };
+      mql.addEventListener("change", handler);
+      return () => {
+        mql.removeEventListener("change", handler);
+        if (id !== null) {
+          if (window.cancelIdleCallback) window.cancelIdleCallback(id);
+          else window.clearTimeout(id);
+        }
+      };
+    }
 
     return () => {
-      if (window.cancelIdleCallback) window.cancelIdleCallback(id as number);
-      else window.clearTimeout(id as number);
+      if (id !== null) {
+        if (window.cancelIdleCallback) window.cancelIdleCallback(id);
+        else window.clearTimeout(id);
+      }
     };
   }, []);
 
   return (
     <div ref={containerRef} className={cn("relative", className)}>
-      {/* Cross-fades out once the scene reports ready, rather than unmounting —
-          so there is never a frame with neither visual present. */}
-      <div
-        className={cn(
-          "absolute inset-0 transition-opacity duration-700",
-          loaded ? "opacity-0" : "opacity-100",
-        )}
-      >
-        <StaticCrystal />
-      </div>
-
       {shouldLoad && (
         <div
           className={cn(
-            "!h-full !w-full transition-opacity duration-300",
-            inView ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none",
+            "!h-full !w-full transition-opacity duration-700",
+            loaded && inView ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none",
           )}
           style={{
             contentVisibility: inView ? "visible" : "hidden",

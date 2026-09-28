@@ -73,7 +73,7 @@ const DialogContent = React.forwardRef<
     >
       {children}
       {!hideClose && (
-        <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-1 text-secondary opacity-80 transition hover:bg-white/5 hover:text-primary focus:outline-none">
+        <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-1 text-secondary opacity-80 transition hover:bg-white/5 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7138FF] dark:focus-visible:ring-[#8B4DFF] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#080614]">
           <X className="size-5" />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>
@@ -82,14 +82,6 @@ const DialogContent = React.forwardRef<
   </DialogPortal>
 ));
 DialogContent.displayName = "DialogContent";
-
-const DialogHeader = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("flex flex-col space-y-2 text-left", className)} {...props} />
-);
-DialogHeader.displayName = "DialogHeader";
 
 const DialogTitle = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Title>,
@@ -122,7 +114,6 @@ export {
   DialogTrigger,
   DialogClose,
   DialogContent,
-  DialogHeader,
   DialogTitle,
   DialogDescription,
 };

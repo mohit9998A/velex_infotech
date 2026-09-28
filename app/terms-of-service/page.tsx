@@ -33,7 +33,7 @@ export default function TermsOfServicePage() {
             Terms of Service
           </h1>
           <p className="mt-2.5 font-mono text-xs font-semibold uppercase tracking-wider text-[#7138FF] dark:text-[#B99CFF]">
-            Last updated: June 2025
+            Last updated: {siteConfig.legalDates.termsUpdated}
           </p>
         </div>
 

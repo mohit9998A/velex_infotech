@@ -31,7 +31,11 @@ const blogListSchema = {
     description: p.description,
     url: absoluteUrl(`/blog/${p.slug}`),
     datePublished: p.publishedAt,
-    author: { "@type": "Organization", name: "Velex Infotech" },
+    author: {
+      "@type": "Person",
+      "@id": absoluteUrl("/about#mohit-dutta"),
+      name: p.author,
+    },
   })),
 };
 

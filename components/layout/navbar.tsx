@@ -45,6 +45,7 @@ import {
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetTitle,
   SheetTrigger,
   SheetClose,
@@ -108,7 +109,7 @@ export function Navbar() {
                   <div className="w-[460px] p-3.5 bg-white/95 dark:bg-[#070611]/95 backdrop-blur-2xl border border-slate-200/90 dark:border-white/12 rounded-3xl shadow-2xl shadow-purple-500/10">
                     <div className="space-y-2">
                       <div className="flex items-center justify-between px-1">
-                        <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-white/40">
+                        <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-500 dark:text-white/40">
                           {group.label} Capabilities
                         </span>
                       </div>
@@ -149,7 +150,7 @@ export function Navbar() {
 
                     {/* Bottom Footer Bar */}
                     <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-white/10 px-1 flex items-center justify-between">
-                      <span className="text-[11px] font-mono text-slate-400 dark:text-white/40 flex items-center gap-1.5">
+                      <span className="text-[11px] font-mono text-slate-500 dark:text-white/40 flex items-center gap-1.5">
                         
                         Need a custom AI or software solution?
                       </span>
@@ -197,8 +198,9 @@ export function Navbar() {
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
               <button
+                type="button"
                 aria-label="Open menu"
-                className="inline-flex size-10 items-center justify-center rounded-full border border-black/15 dark:border-white/15 bg-black/[0.03] dark:bg-white/[0.04] text-primary hover:bg-black/[0.07] dark:hover:bg-white/[0.08] lg:hidden transition-colors"
+                className="inline-flex size-10 items-center justify-center rounded-full border border-black/15 dark:border-white/15 bg-black/[0.03] dark:bg-white/[0.04] text-primary hover:bg-black/[0.07] dark:hover:bg-white/[0.08] lg:hidden transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7138FF] dark:focus-visible:ring-[#8B4DFF]"
               >
                 <Menu className="size-5" />
               </button>
@@ -208,6 +210,7 @@ export function Navbar() {
               className="p-0 gap-0 w-[92vw] sm:w-[420px] max-w-[420px] h-full flex flex-row overflow-hidden rounded-l-3xl border-l border-slate-200/80 dark:border-white/10 shadow-2xl bg-white dark:bg-[#070611] [&>button:last-child]:hidden"
             >
               <SheetTitle className="sr-only">Navigation menu</SheetTitle>
+              <SheetDescription className="sr-only">Mobile navigation links and contact options</SheetDescription>
 
               {/* Left Vertical Ribbon / Banner */}
               <div className="w-16 sm:w-20 shrink-0 relative flex flex-col justify-between items-center py-6 px-1 bg-gradient-to-b from-[#EAE2FF] via-[#E2D4FF] to-[#D5C2FF] dark:from-[#211047] dark:via-[#180A34] dark:to-[#0F0523] border-r border-[#7138FF]/15 dark:border-white/10 overflow-hidden select-none">
@@ -244,7 +247,7 @@ export function Navbar() {
                   <div className="flex items-start justify-between">
                     <div>
                       <Logo />
-                      <p className="font-mono text-[8px] sm:text-[9px] tracking-[0.22em] uppercase text-slate-400 dark:text-white/40 mt-1 pl-0.5">
+                      <p className="font-mono text-[8px] sm:text-[9px] tracking-[0.22em] uppercase text-slate-500 dark:text-white/40 mt-1 pl-0.5">
                         IDEAS &bull; ENGINEERING &bull; IMPACT
                       </p>
                     </div>
@@ -252,7 +255,7 @@ export function Navbar() {
                       <button
                         type="button"
                         aria-label="Close menu"
-                        className="p-1.5 rounded-full text-slate-700 dark:text-white/80 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+                        className="p-1.5 rounded-full text-slate-700 dark:text-white/80 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7138FF] dark:focus-visible:ring-[#8B4DFF]"
                       >
                         <X className="size-5" />
                       </button>

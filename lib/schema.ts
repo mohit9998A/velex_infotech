@@ -57,9 +57,9 @@ export function organizationSchema() {
     url: siteConfig.url,
     logo: {
       "@type": "ImageObject",
-      url: absoluteUrl("/images/logo/velex-logo.svg"),
-      width: 512,
-      height: 128,
+      url: "https://res.cloudinary.com/d0grbozz/image/upload/v1790569390/logo.png",
+      width: 1225,
+      height: 1284,
     },
     foundingDate: "2024",
     // Reference, not an inline Person — the full node is emitted once, on
@@ -195,7 +195,7 @@ export function localBusinessSchema(officeId: string = headquarters.id) {
     description: siteConfig.description,
     url: absoluteUrl(office.path),
     parentOrganization: orgRef,
-    image: absoluteUrl("/images/logo/velex-logo.svg"),
+    image: "https://res.cloudinary.com/d0grbozz/image/upload/v1790569390/logo.png",
     telephone: siteConfig.phone,
     email: siteConfig.email,
     address: postalAddress(office),
@@ -375,3 +375,4 @@ export function jsonLd(...nodes: object[]) {
 }
 
 export { personRef };
+

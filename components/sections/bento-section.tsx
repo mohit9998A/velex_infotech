@@ -45,33 +45,21 @@ export function BentoSection() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto pb-6 sm:pb-12">
+        <div className="reveal-on-scroll text-center max-w-3xl mx-auto pb-6 sm:pb-12">
 
           {/* Headline */}
-          <motion.h2
-            className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
             Why{" "}
             <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               Velex Infotech
             </span>
-          </motion.h2>
+          </h2>
 
           {/* Subheading */}
-          <motion.p
-            className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-4 sm:mt-5 max-w-2xl mx-auto text-slate-600 dark:text-white/60"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+          <p className="font-sans text-sm sm:text-base md:text-lg leading-relaxed mt-4 sm:mt-5 max-w-2xl mx-auto text-slate-600 dark:text-white/60">
             Not all agencies are created equal. We engineer intelligence — and
             back it with proof.
-          </motion.p>
+          </p>
         </div>
 
         {/* Bento Grid */}
@@ -138,10 +126,12 @@ export function BentoSection() {
                 type="button"
                 onClick={() => openModal()}
                 onPointerEnter={prefetchLeadForm}
+                aria-haspopup="dialog"
+                aria-label="Start a consultation: Watch our story"
                 className="group/story inline-flex items-center gap-1.5 sm:gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 rounded-full"
               >
                 <span className="size-7 sm:size-10 rounded-full border border-white/30 bg-white/10 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 group-hover/story:scale-110 group-hover/story:bg-white/20 group-hover/story:border-white/60 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                  <Play className="size-2.5 sm:size-3.5 fill-white text-white translate-x-0.5" />
+                  <Play className="size-2.5 sm:size-3.5 fill-white text-white translate-x-0.5" aria-hidden="true" />
                 </span>
                 <span className="font-sans text-[9px] sm:text-sm font-medium text-white/90 border-b border-white/40 pb-0.5 transition-colors group-hover/story:border-white group-hover/story:text-white">
                   Watch Our Story
@@ -171,13 +161,13 @@ export function BentoSection() {
           >
             <div className="flex items-center justify-between mb-2 sm:mb-4">
               <span className="font-mono text-[9px] sm:text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
-                {stats[0].label}
+                {stats[0]?.label ?? ""}
               </span>
 
             </div>
             <div>
               <span className="font-serif text-[32px] sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
-                <CountUp value={stats[0].value} suffix={stats[0].suffix} />
+                <CountUp value={stats[0]?.value ?? 0} suffix={stats[0]?.suffix ?? ""} />
               </span>
             </div>
           </motion.div>
@@ -192,12 +182,12 @@ export function BentoSection() {
           >
             <div className="flex items-center justify-between mb-2 sm:mb-4">
               <span className="font-mono text-[9px] sm:text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
-                {stats[1].label}
+                {stats[1]?.label ?? ""}
               </span>
             </div>
             <div>
               <span className="font-serif text-[32px] sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
-                <CountUp value={stats[1].value} suffix={stats[1].suffix} />
+                <CountUp value={stats[1]?.value ?? 0} suffix={stats[1]?.suffix ?? ""} />
               </span>
             </div>
           </motion.div>
@@ -257,13 +247,13 @@ export function BentoSection() {
             </div>
             <div className="flex items-center justify-between mb-1 sm:mb-2">
               <span className="font-mono text-[9px] sm:text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
-                {stats[2].label}
+                {stats[2]?.label ?? ""}
               </span>
 
             </div>
             <div>
               <span className="font-serif text-[32px] sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
-                <CountUp value={stats[2].value} suffix={stats[2].suffix} />
+                <CountUp value={stats[2]?.value ?? 0} suffix={stats[2]?.suffix ?? ""} />
               </span>
               <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-white/50 mt-0.5 sm:mt-1.5">
                 Global delivery presence.
@@ -284,13 +274,13 @@ export function BentoSection() {
             </div>
             <div className="flex items-center justify-between mb-1 sm:mb-2">
               <span className="font-mono text-[9px] sm:text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
-                {stats[3].label}
+                {stats[3]?.label ?? ""}
               </span>
 
             </div>
             <div>
               <span className="font-serif text-[32px] sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
-                <CountUp value={stats[3].value} suffix={stats[3].suffix} />
+                <CountUp value={stats[3]?.value ?? 0} suffix={stats[3]?.suffix ?? ""} />
               </span>
               <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-white/50 mt-0.5 sm:mt-1.5">
                 Average initial response.

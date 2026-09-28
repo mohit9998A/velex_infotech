@@ -114,10 +114,10 @@ export default async function BlogPostPage({
               <span>
                 By{" "}
                 <Link
-                  href="/about"
+                  href="/about#mohit-dutta"
                   className="text-[#7138FF] dark:text-[#B99CFF] hover:underline"
                 >
-                  {post.author === "Mohit Dutta" ? "Velex Engineering" : post.author}
+                  {post.author}
                 </Link>
               </span>
               <span aria-hidden="true">·</span>

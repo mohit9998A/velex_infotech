@@ -46,10 +46,10 @@ html.light {
   --vx-text-secondary: #32108F;
   --vx-text-muted: #5424D6;
 
-  /* Status */
-  --vx-success: #22d3a5;
-  --vx-warning: #f5a623;
-  --vx-error: #ff4757;
+  /* Status (WCAG 2.2 AA compliant on light backgrounds >= 4.5:1) */
+  --vx-success: #059669;
+  --vx-warning: #b45309;
+  --vx-error: #dc2626;
 
   /* Effects */
   --vx-glow-sm: 0 0 20px rgba(113, 56, 255, 0.35);
@@ -88,6 +88,11 @@ html.dark {
   --vx-text-secondary: #B99CFF;
   --vx-text-muted: #8B4DFF;
   --vx-purple-ink: #8B4DFF;
+
+  /* Status (vibrant for dark mode >= 5.8:1 on #04040A) */
+  --vx-success: #22d3a5;
+  --vx-warning: #f5a623;
+  --vx-error: #ff4757;
 
   /* Selectable surfaces */
   --vx-card: rgba(255, 255, 255, 0.04);
@@ -140,7 +145,7 @@ html.dark {
   --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --font-serif: var(--font-serif), "Playfair Display", Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-serif: var(--font-playfair), "Playfair Display", Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 /* ============================================
@@ -209,22 +214,24 @@ html.lenis body {
    TYPOGRAPHY
    ============================================ */
 
-.font-display {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-}
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
 
-.font-serif {
-  font-family: var(--font-serif);
-}
+  .font-serif {
+    font-family: var(--font-serif);
+  }
 
-.font-mono-label {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  .font-mono-label {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
 }
 
 /* Hero H1 only. The binding constraint is the COLUMN, not the viewport: the
@@ -508,8 +515,7 @@ html.dark .badge-pill {
 
    Safe for SEO: content stays in the DOM and in the accessibility tree, and
    Googlebot renders with a very tall viewport. Never apply above the fold, and
-   never to .process-section — ScrollTrigger reads track.scrollWidth, which
-   containment breaks.
+   never to sticky or pinned sections where containment breaks scroll calculations.
    --------------------------------------------------------------------------- */
 .defer-paint {
   content-visibility: auto;
@@ -559,23 +565,6 @@ html.dark .badge-pill {
 
 .pause-on-hover:hover {
   animation-play-state: paused;
-}
-
-@keyframes accordion-down {
-  from {
-    height: 0;
-  }
-  to {
-    height: var(--radix-accordion-content-height);
-  }
-}
-@keyframes accordion-up {
-  from {
-    height: var(--radix-accordion-content-height);
-  }
-  to {
-    height: 0;
-  }
 }
 
 /* ============================================
@@ -694,16 +683,6 @@ html.dark .option-card:has(:checked) {
     var(--vx-electric-purple) 0%,
     var(--vx-vivid-violet) 100%
   );
-}
-
-.btn-glow {
-  box-shadow: 0 4px 24px rgba(113, 56, 255, 0.35);
-  transition: box-shadow 200ms ease, transform 200ms ease;
-}
-
-.btn-glow:hover {
-  box-shadow: 0 6px 32px rgba(113, 56, 255, 0.55);
-  transform: translateY(-1px);
 }
 
 .lead-modal {
@@ -832,68 +811,6 @@ html.dark .option-card:has(:checked) {
 .scroll-progress {
   transform: scaleX(0);
   transform-origin: 0 50%;
-}
-
-/* ---------------------------------------------------------------------------
-   PROCESS SECTION — layout branch
-   The vertical stack is the BASE layout: it is what phones and reduced-motion
-   users keep, and therefore what the server should render. The pinned
-   horizontal track is the enhancement, applied only under exactly the
-   conditions where the GSAP scrub exists to drive it.
-
-   `min-width: 768px` is the exact complement of `useIsMobile`'s
-   `max-width: 767px`, so the CSS and the effect in process-section.tsx agree
-   by construction rather than by coincidence.
-
-   `prefers-reduced-motion` has to be part of the query, not just the effect:
-   the horizontal layout is `overflow: hidden` and depends entirely on
-   ScrollTrigger to move the track. A desktop reduced-motion user who got this
-   layout without the driver would find the last two cards unreachable.
-   --------------------------------------------------------------------------- */
-@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-  .process-section {
-    padding-block: 0;
-  }
-
-  /* The viewport height and the clip live here rather than on .process-section
-     because this is the element ScrollTrigger fixes to the viewport. The
-     <section> has to stay an ordinary block that React alone owns — see the
-     note at the top of components/sections/process-section.tsx.
-
-     `relative` comes from the class list in that file, and makes this the
-     containing block for the absolutely-positioned .process-header below. */
-  .process-pin {
-    height: 100dvh;
-    overflow: hidden;
-  }
-
-  .process-header {
-    position: absolute;
-    inset-inline: 0;
-    top: 0;
-    z-index: 10;
-    max-width: 80rem;
-    padding-top: 4rem;
-  }
-
-  .process-track {
-    height: 100%;
-    max-width: none;
-    margin-top: 0;
-    flex-direction: row;
-    align-items: center;
-    gap: 2rem;
-    padding-left: max(1rem, calc((100vw - 80rem) / 2 + 1.5rem));
-    padding-right: 40vw;
-    /* Kept here, unlike on `.hero-word`: this element genuinely transforms
-       continuously while pinned, and only while the section is on screen. */
-    will-change: transform;
-  }
-
-  .process-track > * {
-    width: 34rem;
-    flex-shrink: 0;
-  }
 }
 
 @supports (animation-timeline: scroll()) {

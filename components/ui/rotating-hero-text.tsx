@@ -47,7 +47,7 @@ export function RotatingHeroText({
     return () => clearInterval(timer);
   }, [displayWords.length, interval]);
 
-  const currentWord = displayWords[index];
+  const currentWord = displayWords[index] ?? displayWords[0] ?? "";
 
   return (
     <span
@@ -63,7 +63,7 @@ export function RotatingHeroText({
       {/* Render plain static text before mount so server HTML and first client frame match */}
       {!mounted ? (
         <span className="italic font-serif text-[#7138FF] dark:text-[#8B4DFF] whitespace-nowrap leading-normal">
-          {displayWords[0]}
+          {displayWords[0] ?? ""}
         </span>
       ) : (
         <AnimatePresence mode="popLayout" initial={false}>

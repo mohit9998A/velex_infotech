@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
 interface CountUpProps {
@@ -30,6 +29,7 @@ export function CountUp({ value, suffix = "", prefix = "", durationMs = 1400 }: 
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
+        if (!entry) return;
         if (animFrameId.current) {
           cancelAnimationFrame(animFrameId.current);
           animFrameId.current = null;
@@ -73,29 +73,5 @@ export function CountUp({ value, suffix = "", prefix = "", durationMs = 1400 }: 
       {display}
       {suffix}
     </span>
-  );
-}
-
-interface StatCardProps {
-  value: number;
-  suffix?: string;
-  prefix?: string;
-  label: string;
-  className?: string;
-}
-
-export function StatCard({ value, suffix, prefix, label, className }: StatCardProps) {
-  return (
-    <div
-      className={cn(
-        "glass-card flex flex-col justify-center p-6",
-        className,
-      )}
-    >
-      <span className="font-display text-4xl text-gradient md:text-5xl">
-        <CountUp value={value} suffix={suffix} prefix={prefix} />
-      </span>
-      <span className="mt-2 font-mono-label text-muted">{label}</span>
-    </div>
   );
 }

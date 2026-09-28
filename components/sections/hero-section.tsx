@@ -40,10 +40,14 @@ export function HeroSection() {
       />
 
       {/* Mobile 3D Robot Image: renders on < md only, matching reference mockup */}
-      <div className="absolute right-[-15%] sm:right-[-5%] bottom-[75px] sm:bottom-[85px] w-[85%] sm:w-[70%] max-w-[450px] pointer-events-none select-none z-0 md:hidden">
+      <div
+        aria-hidden="true"
+        className="absolute right-[-15%] sm:right-[-5%] bottom-[75px] sm:bottom-[85px] w-[85%] sm:w-[70%] max-w-[450px] pointer-events-none select-none z-0 md:hidden"
+      >
         <Image
           src={ROBOT_MOBILE_IMG}
-          alt="Velex AI Partner Robot"
+          alt=""
+          aria-hidden="true"
           width={600}
           height={630}
           priority
@@ -182,23 +186,23 @@ export function HeroSection() {
             <dl className="grid grid-cols-3 divide-x divide-slate-200/80 dark:divide-white/10 text-center">
               {heroStats.map((s) => (
                 <div key={s.label} className="flex flex-col items-center px-1">
-                  <dd className="font-sans font-bold text-[24px] sm:text-[28px] text-[#7138FF] dark:text-[#8B4DFF] tracking-tight leading-none">
-                    {s.value}
-                  </dd>
-                  <dt className="font-mono text-[9px] sm:text-[10px] font-bold tracking-[0.12em] uppercase text-[#1E1B4B] dark:text-[#C7D2FE] mt-2 leading-[1.25]">
+                  <dt className="order-2 font-mono text-[9px] sm:text-[10px] font-bold tracking-[0.12em] uppercase text-[#1E1B4B] dark:text-[#C7D2FE] mt-2 leading-[1.25]">
                     {s.label.split(" ").map((word, i) => (
                       <span key={i} className="block">
                         {word}
                       </span>
                     ))}
                   </dt>
+                  <dd className="order-1 font-sans font-bold text-[24px] sm:text-[28px] text-[#7138FF] dark:text-[#8B4DFF] tracking-tight leading-none">
+                    {s.value}
+                  </dd>
                 </div>
               ))}
             </dl>
           </div>
         </div>
 
-        {/* Desktop Stats (strictly >= md, 100% UNTOUCHED) */}
+        {/* Desktop Stats (strictly >= md, dt precedes dd in DOM) */}
         <dl
           className="hero-fade mt-[clamp(1.75rem,5.5svh,3.5rem)] hidden md:flex flex-wrap items-center gap-y-4 max-w-2xl"
           style={{ "--i": 2 } as CSSProperties}
@@ -206,12 +210,12 @@ export function HeroSection() {
           {heroStats.map((s, idx) => (
             <div key={s.label} className="flex items-center">
               <div className="flex flex-col pr-4 sm:pr-6 lg:pr-8">
-                <dd className="order-1 font-sans font-bold text-2xl sm:text-3xl text-[#7138FF] dark:text-[#8B4DFF] tracking-tight">
-                  {s.value}
-                </dd>
                 <dt className="order-2 font-mono text-[10px] sm:text-[11px] font-medium tracking-[0.16em] uppercase text-secondary mt-1">
                   {s.label}
                 </dt>
+                <dd className="order-1 font-sans font-bold text-2xl sm:text-3xl text-[#7138FF] dark:text-[#8B4DFF] tracking-tight">
+                  {s.value}
+                </dd>
               </div>
               {idx < heroStats.length - 1 && (
                 <div

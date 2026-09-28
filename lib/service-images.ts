@@ -44,6 +44,8 @@ export const serviceImages: Record<string, StaticImageData> = {
   "data-analytics": webDevelopment,
 };
 
+export const defaultServiceCardImage: StaticImageData = aiAutomation;
+
 export const serviceCardImages: Record<string, StaticImageData> = {
   "ai-automation": aiAutomation,
   "agentic-ai": agenticAi,
@@ -74,6 +76,8 @@ const consultHeroUrl =
   "https://res.cloudinary.com/d0grbozz/image/upload/v1789991433/consult_hero.webp";
 const automationHeroUrl =
   "https://res.cloudinary.com/d0grbozz/image/upload/v1789991433/automation_hero.webp";
+
+export const defaultServiceHeroImage: string = automationHeroUrl;
 
 export const serviceHeroImages: Record<string, string> = {
   "ai-automation": automationHeroUrl,

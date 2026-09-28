@@ -51,8 +51,28 @@ export function HeroSkeleton() {
           </div>
         </div>
 
-        {/* Stats Row */}
-        <div className="mt-[clamp(1.75rem,5.5svh,3.5rem)] flex flex-wrap items-center gap-6 sm:gap-10">
+        {/* Mobile Stats Card Skeleton (< md) */}
+        <div className="block md:hidden mt-6 sm:mt-8 w-full">
+          <div className="w-full rounded-[24px] bg-white/95 dark:bg-[#12121e]/90 border border-slate-200/80 dark:border-white/10 py-4 sm:py-5 px-3">
+            <div className="grid grid-cols-3 divide-x divide-slate-200/80 dark:divide-white/10 text-center">
+              <div className="flex flex-col items-center px-1 gap-2">
+                <Skeleton className="h-6 w-14 rounded" />
+                <Skeleton className="h-3 w-16 rounded-xs" />
+              </div>
+              <div className="flex flex-col items-center px-1 gap-2">
+                <Skeleton className="h-6 w-14 rounded" />
+                <Skeleton className="h-3 w-16 rounded-xs" />
+              </div>
+              <div className="flex flex-col items-center px-1 gap-2">
+                <Skeleton className="h-6 w-14 rounded" />
+                <Skeleton className="h-3 w-16 rounded-xs" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop Stats Row Skeleton (>= md) */}
+        <div className="mt-[clamp(1.75rem,5.5svh,3.5rem)] hidden md:flex flex-wrap items-center gap-6 sm:gap-10">
           <div className="flex flex-col gap-1.5">
             <Skeleton className="h-7 sm:h-8 w-20 rounded" />
             <Skeleton className="h-3.5 w-28 rounded-sm" />
