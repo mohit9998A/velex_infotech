@@ -101,35 +101,35 @@ export function BlogEditorForm({
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-4 sm:px-6 pt-32 sm:pt-36 lg:pt-40 pb-20">
+    <div className="mx-auto max-w-5xl px-3.5 sm:px-6 pt-24 sm:pt-32 lg:pt-40 pb-16">
       {/* Back button */}
       <Link
         href="/admin"
-        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-white/70 hover:text-purple-600 dark:hover:text-white transition mb-6"
+        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-white/70 hover:text-purple-600 dark:hover:text-white transition mb-4 sm:mb-6"
       >
         <ArrowLeft className="size-4" />
         Back to Dashboard
       </Link>
 
-      <div className="flex flex-col gap-2 border-b border-slate-200 dark:border-white/10 pb-6 mb-8">
-        <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#7138FF] dark:text-[#8B4DFF]">
+      <div className="flex flex-col gap-1.5 border-b border-slate-200 dark:border-white/10 pb-5 sm:pb-6 mb-6 sm:mb-8">
+        <span className="font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-[#7138FF] dark:text-[#8B4DFF]">
           {isEditing ? "EDIT POST" : "CREATE NEW POST"}
         </span>
-        <h1 className="font-serif text-3xl font-bold text-[#0D0A24] dark:text-white">
+        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0D0A24] dark:text-white">
           {isEditing ? `Editing "${initialData?.title || "Blog Post"}"` : "Draft a New Blog Post"}
         </h1>
       </div>
 
       {error && (
-        <div className="mb-6 flex items-center gap-2.5 rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-xs text-red-600 dark:text-red-400">
-          <AlertCircle className="size-4 shrink-0" />
-          <span>{error}</span>
+        <div className="mb-6 flex items-start gap-2.5 rounded-xl border border-red-500/30 bg-red-500/10 p-3.5 sm:p-4 text-xs text-red-600 dark:text-red-400 break-words">
+          <AlertCircle className="size-4 shrink-0 mt-0.5" />
+          <span className="break-all">{error}</span>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
         {/* Main Title & Slug Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-white/80 mb-1.5">
               Title *
@@ -140,7 +140,7 @@ export function BlogEditorForm({
               value={title}
               onChange={(e) => handleTitleChange(e.target.value)}
               placeholder="e.g. Building Agentic AI Systems in Production"
-              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-white/30 focus:border-purple-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-white/30 focus:border-purple-500 focus:outline-none"
             />
           </div>
 
@@ -154,7 +154,7 @@ export function BlogEditorForm({
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
               placeholder="building-agentic-ai-systems"
-              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-3 text-sm font-mono text-purple-600 dark:text-purple-300 placeholder-slate-400 focus:border-purple-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-3 text-base sm:text-sm font-mono text-purple-600 dark:text-purple-300 placeholder-slate-400 focus:border-purple-500 focus:outline-none"
             />
           </div>
         </div>
@@ -170,12 +170,12 @@ export function BlogEditorForm({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="A short, compelling summary of the article for social sharing and search engines..."
-            className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-white/30 focus:border-purple-500 focus:outline-none"
+            className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-white/30 focus:border-purple-500 focus:outline-none"
           />
         </div>
 
         {/* Metadata Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-white/80 mb-1.5">
               Author
@@ -184,7 +184,7 @@ export function BlogEditorForm({
               type="text"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
-              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-2.5 text-xs text-slate-900 dark:text-white focus:border-purple-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-2.5 text-base sm:text-xs text-slate-900 dark:text-white focus:border-purple-500 focus:outline-none"
             />
           </div>
 
@@ -196,7 +196,7 @@ export function BlogEditorForm({
               type="date"
               value={publishedAt}
               onChange={(e) => setPublishedAt(e.target.value)}
-              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-2.5 text-xs text-slate-900 dark:text-white focus:border-purple-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-2.5 text-base sm:text-xs text-slate-900 dark:text-white focus:border-purple-500 focus:outline-none"
             />
           </div>
 
@@ -210,7 +210,7 @@ export function BlogEditorForm({
               max="60"
               value={readingMinutes}
               onChange={(e) => setReadingMinutes(Number(e.target.value))}
-              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-2.5 text-xs text-slate-900 dark:text-white focus:border-purple-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-2.5 text-base sm:text-xs text-slate-900 dark:text-white focus:border-purple-500 focus:outline-none"
             />
           </div>
 
@@ -221,7 +221,7 @@ export function BlogEditorForm({
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as "published" | "hidden")}
-              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-[#0D0A24] p-2.5 text-xs text-slate-900 dark:text-white focus:border-purple-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-[#0D0A24] p-2.5 text-base sm:text-xs text-slate-900 dark:text-white focus:border-purple-500 focus:outline-none"
             >
               <option value="published">Published (Visible)</option>
               <option value="hidden">Hidden (Draft)</option>
@@ -229,7 +229,7 @@ export function BlogEditorForm({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-white/80 mb-1.5">
               Target Keyword (SEO)
@@ -239,7 +239,7 @@ export function BlogEditorForm({
               value={targetKeyword}
               onChange={(e) => setTargetKeyword(e.target.value)}
               placeholder="e.g. agentic ai development"
-              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-2.5 text-xs text-slate-900 dark:text-white focus:border-purple-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-2.5 text-base sm:text-xs text-slate-900 dark:text-white focus:border-purple-500 focus:outline-none"
             />
           </div>
 
@@ -252,14 +252,14 @@ export function BlogEditorForm({
               value={coverImage}
               onChange={(e) => setCoverImage(e.target.value)}
               placeholder="https://example.com/cover.jpg"
-              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-2.5 text-xs text-slate-900 dark:text-white focus:border-purple-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/[0.04] p-2.5 text-base sm:text-xs text-slate-900 dark:text-white focus:border-purple-500 focus:outline-none"
             />
           </div>
         </div>
 
         {/* Content Editor & Live Preview */}
-        <div className="rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-4 backdrop-blur-md">
-          <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-3 mb-4">
+        <div className="rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-3.5 sm:p-4 backdrop-blur-md">
+          <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-3 mb-4 gap-2">
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-white/80">
               Article Content (Markdown) *
             </label>
@@ -293,14 +293,14 @@ export function BlogEditorForm({
           {activeTab === "write" ? (
             <textarea
               required
-              rows={16}
+              rows={12}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Write your article in Markdown syntax... Use ## Headings, **bold**, lists, and links."
-              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-black/30 p-4 font-mono text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-white/30 focus:border-purple-500 focus:outline-none leading-relaxed"
+              className="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-black/30 p-3 sm:p-4 font-mono text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-white/30 focus:border-purple-500 focus:outline-none leading-relaxed sm:rows-16"
             />
           ) : (
-            <div className="min-h-[380px] rounded-xl border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-black/30 p-6 prose dark:prose-invert max-w-none font-sans text-sm text-slate-800 dark:text-white/90 overflow-auto">
+            <div className="min-h-[280px] sm:min-h-[380px] rounded-xl border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-black/30 p-4 sm:p-6 prose dark:prose-invert max-w-none font-sans text-sm text-slate-800 dark:text-white/90 overflow-auto">
               {content ? (
                 <div className="whitespace-pre-wrap leading-relaxed">{content}</div>
               ) : (
@@ -311,10 +311,10 @@ export function BlogEditorForm({
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center justify-end gap-3 pt-4">
+        <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center sm:justify-end gap-2.5 sm:gap-3 pt-3 sm:pt-4">
           <Link
             href="/admin"
-            className="rounded-xl border border-slate-300 dark:border-white/10 px-5 py-3 text-xs font-semibold text-slate-700 dark:text-white/80 hover:bg-slate-50 dark:hover:bg-white/10 transition"
+            className="rounded-xl border border-slate-300 dark:border-white/10 px-5 py-3 text-xs font-semibold text-slate-700 dark:text-white/80 hover:bg-slate-50 dark:hover:bg-white/10 transition text-center justify-center inline-flex items-center"
           >
             Cancel
           </Link>
@@ -322,7 +322,7 @@ export function BlogEditorForm({
           <button
             type="submit"
             disabled={loading}
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#7138FF] to-[#8B4DFF] px-6 py-3 text-xs font-semibold text-white shadow-lg shadow-purple-500/25 hover:brightness-110 active:scale-[0.99] disabled:opacity-50 transition"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7138FF] to-[#8B4DFF] px-6 py-3 text-xs font-semibold text-white shadow-lg shadow-purple-500/25 hover:brightness-110 active:scale-[0.99] disabled:opacity-50 transition touch-manipulation"
           >
             {loading ? (
               <span className="animate-pulse">Saving Post...</span>

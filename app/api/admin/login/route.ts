@@ -14,8 +14,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const defaultEmail = process.env.ADMIN_EMAIL || "admin@velexinfotech.com";
-    const defaultPassword = process.env.ADMIN_PASSWORD || "admin123456";
+    const defaultEmail = process.env.ADMIN_EMAIL || "velexinfotech@gmail.com";
+    const defaultPassword = process.env.ADMIN_PASSWORD || "MohitPrabh26";
 
     let isValid = false;
 
