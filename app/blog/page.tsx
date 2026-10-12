@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Clock } from "lucide-react";
 
-import { blogPosts } from "@/content/blog";
+import { getPublishedBlogs } from "@/lib/blogs-db";
 import { pageMetadata, absoluteUrl } from "@/lib/seo";
 import { breadcrumbSchema, jsonLd } from "@/lib/schema";
 import { Breadcrumbs } from "@/components/common/breadcrumbs";
@@ -20,26 +20,27 @@ const dateFormatter = new Intl.DateTimeFormat("en-IN", {
   year: "numeric",
 });
 
-const blogListSchema = {
-  "@type": "Blog",
-  "@id": absoluteUrl("/blog#blog"),
-  name: "Velex Infotech — The Intelligence Brief",
-  url: absoluteUrl("/blog"),
-  blogPost: blogPosts.map((p) => ({
-    "@type": "BlogPosting",
-    headline: p.title,
-    description: p.description,
-    url: absoluteUrl(`/blog/${p.slug}`),
-    datePublished: p.publishedAt,
-    author: {
-      "@type": "Person",
-      "@id": absoluteUrl("/about#mohit-dutta"),
-      name: p.author,
-    },
-  })),
-};
+export default async function BlogPage() {
+  const blogPosts = await getPublishedBlogs();
 
-export default function BlogPage() {
+  const blogListSchema = {
+    "@type": "Blog",
+    "@id": absoluteUrl("/blog#blog"),
+    name: "Velex Infotech — The Intelligence Brief",
+    url: absoluteUrl("/blog"),
+    blogPost: blogPosts.map((p) => ({
+      "@type": "BlogPosting",
+      headline: p.title,
+      description: p.description,
+      url: absoluteUrl(`/blog/${p.slug}`),
+      datePublished: p.publishedAt,
+      author: {
+        "@type": "Person",
+        "@id": absoluteUrl("/about#mohit-dutta"),
+        name: p.author,
+      },
+    })),
+  };
   return (
     <section className="relative overflow-hidden pb-24 pt-28 lg:pt-36">
       <script

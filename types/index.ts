@@ -156,6 +156,10 @@ export interface BlogPost {
   readingMinutes: number;
   /** Service slugs this post links to, used to render "related services". */
   relatedServices: string[];
+  /** Optional post body content (for database-stored posts). */
+  content?: string;
+  /** Optional status flag (defaults to published). */
+  status?: "published" | "hidden";
 }
 
 export interface NavLink {
