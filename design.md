@@ -134,7 +134,7 @@ Headlines utilize CSS `clamp()` to scale seamlessly from mobile devices to ultra
 ┌────────────────────────────────────────────────────────┐
 │ 1. HeroSection: 3D Robot / Mobile Robot + Rotating H1 │
 ├────────────────────────────────────────────────────────┤
-│ 2. TrustBar: Infinite Marquee of Verified Clients      │
+│ 2. TrustBar: Stats + Trusted-Brands Panel (static)     │
 ├────────────────────────────────────────────────────────┤
 │ 3. ServicesSection: 10 Core Capabilities Grid         │
 ├────────────────────────────────────────────────────────┤

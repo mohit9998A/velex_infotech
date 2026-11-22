@@ -55,14 +55,12 @@ The entry point of the application, balancing high-conversion clarity with cutti
 ---
 
 ### 2.2 Trust Bar (`trust-bar.tsx`)
-Seamless, infinite horizontal marquee displaying verified client engagements.
+Static (non-scrolling) panel with two rows: a stats row, then a "Trusted by leading brands" row.
 
-- **Animation**: Continuous marquee (`animate-scroll-left`) utilizing 3D transform (`translate3d(..., 0, 0)`) and `will-change: transform` for zero-jank 60/120Hz compositing.
-- **Seam Math**: Seamless loop calculation `translateX(calc(-50% - var(--marquee-gap) / 2))` preventing stutter on cycle restart.
-- **Theme Styling**:
-  - Eyebrow: `.font-mono-label` in theme purple (`text-[#7138FF] dark:text-[#8B4DFF]`).
-  - Client Names: `font-display text-xl text-[#7138FF]/80 dark:text-[#8B4DFF]/80 hover:text-[#7138FF] dark:hover:text-white`.
-- **Edge Masking**: CSS mask gradient `[mask-image:linear-gradient(to_right,transparent,#000_12%,#000_88%,transparent)]` creating soft edge dissipation.
+- **Stats row**: `content/stats.json` (the same source as the hero and bento) plus a markets cell built from `markets` in `config/site.ts`. 2×2 on phones, one row of stats from `sm`, markets cell joins the row from `lg`.
+- **Brands row**: clients that are both in `permittedClients` (`lib/clients.ts`) and have a published case study in `content/portfolio.json`. Each gets a typographic wordmark from the `wordmarks` map; unknown names fall back to plain text. 2×2 on phones, one row of logos from `md` with label + CTA above, a single row (label | logos | CTA) from `xl`.
+- **Dividers**: each cell draws a short left and top hairline; the grid sits 1px up/left inside an `overflow-hidden` wrapper so first-row/first-column lines are clipped. Lines therefore only appear *between* cells at any column count.
+- **CTA**: "View case studies" → `#portfolio`.
 
 ---
 

@@ -1,28 +1,5 @@
 [
   {
-    "id": "groundzero",
-    "title": "Ground Zero — Sports Venue Booking Platform",
-    "client": "Ground Zero",
-    "category": "Web Development",
-    "segment": "B2C",
-    "description": "A booking platform for sports venues — court discovery, availability, and online reservations wrapped in a bold, high-energy brand system.",
-    "result": "Venue discovery to confirmed booking, end to end.",
-    "href": "https://www.groundzero.in",
-    "external": true,
-    "accent": "from-success/25 to-purple-core/10",
-    "placeholder": false,
-    "highlights": [
-      "Real-time court availability & instant booking",
-      "Mobile-first PWA with high-speed asset loading",
-      "Integrated payment processing & instant confirmation"
-    ],
-    "techStack": ["Next.js", "TypeScript", "TailwindCSS", "Stripe API", "PWA"],
-    "preview": {
-      "mode": "image",
-      "poster": "/images/portfolio/groundzero.webp"
-    }
-  },
-  {
     "id": "daur",
     "title": "DAUR — Luxury Fashion Brand",
     "client": "DAUR",
