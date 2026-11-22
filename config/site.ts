@@ -41,9 +41,9 @@ export const siteConfig = {
    * server with `npm run verify:smtp`.
    */
   leadInbox: "team@velexinfotech.com",
-  phoneDisplay: "+91 89689 35766",
-  phone: "+918968935766",
-  whatsapp: "https://wa.me/918968935766",
+  phoneDisplay: "+91 70875 02553",
+  phone: "+917087502553",
+  whatsapp: "https://wa.me/917087502553",
   /**
    * Plain `en`, not `en-IN`.
    *
@@ -76,10 +76,11 @@ export const siteConfig = {
    * every site that uses it — so it lives here with the rest of the site
    * identity rather than in an env var that silently vanishes on a new deploy.
    *
-   * Rendered via <GoogleAnalytics> from @next/third-parties in app/layout.tsx,
-   * not the raw gtag snippet. The component emits the same two tags, but routes
-   * them through next/script so they load `afterInteractive` and survive client
-   * navigation without re-executing.
+   * Rendered in app/layout.tsx as the standard two gtag tags through
+   * next/script with `strategy="lazyOnload"`, so they survive client
+   * navigation without re-executing and load after the page instead of
+   * competing with it. (Not @next/third-parties' <GoogleAnalytics>: that uses
+   * `afterInteractive`, which preloads gtag.js in <head> on every route.)
    *
    * Note: neither the component nor the raw snippet fires a page_view on an App
    * Router client-side navigation. That is GA4's job — Admin > Data Streams >

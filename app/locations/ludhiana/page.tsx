@@ -35,8 +35,10 @@ export const metadata = pageMetadata({
 const localFaqs = [
   {
     question: "Where is your office in Ludhiana?",
-    answer:
-      "We are based in Ludhiana, Punjab (141001). We meet clients in person across the city and the wider Ludhiana district, and work remotely with clients elsewhere in Punjab and across India. Call +91 89689 35766 to arrange a visit.",
+    // Read from siteConfig rather than written out: this answer is also
+    // emitted as FAQPage JSON-LD, and a hard-coded copy is how the old number
+    // survived here after config/site.ts had moved on.
+    answer: `We are based in Ludhiana, Punjab (141001). We meet clients in person across the city and the wider Ludhiana district, and work remotely with clients elsewhere in Punjab and across India. Call ${siteConfig.phoneDisplay} to arrange a visit.`,
   },
   {
     question: "Do you work with Ludhiana's manufacturing and export businesses?",
