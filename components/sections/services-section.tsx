@@ -134,6 +134,12 @@ export function ServicesSection() {
   const hadFocusRef = useRef(false);
   const activeRef = useRef(0);
 
+  // Which visuals have been mounted: the active one and its neighbours, and
+  // never unmounted once fetched. Mounting all six up front added ~250 KB of
+  // images to every first load on phones; one step of look-ahead is enough
+  // for each visual to be fetched and decoded before its cross-fade.
+  const [imageWindow, setImageWindow] = useState({ lo: 0, hi: 1 });
+
   const scrollTrackRef = useRef<HTMLDivElement>(null);
   useScrollProgress(scrollTrackRef, 0, 1, (progress) => {
     const next = indexForProgress(progress);
@@ -141,6 +147,11 @@ export function ServicesSection() {
     activeRef.current = next;
     hadFocusRef.current = Boolean(
       leftColumnRef.current?.contains(document.activeElement),
+    );
+    setImageWindow((w) =>
+      next - 1 >= w.lo && next + 1 <= w.hi
+        ? w
+        : { lo: Math.min(w.lo, next - 1), hi: Math.max(w.hi, next + 1) },
     );
     setActiveIndex(next);
   });
@@ -307,14 +318,16 @@ export function ServicesSection() {
                               ),
                         )}
                       >
-                        <Image
-                          src={SERVICE_VISUALS[service.slug] ?? DEFAULT_SERVICE_VISUAL}
-                          alt={isActive ? `${service.title} platform visual` : ""}
-                          width={1200}
-                          height={800}
-                          sizes="(max-width: 1024px) 100vw, 560px"
-                          className="w-full h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.25)] dark:drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)] transition-transform duration-500 group-hover:scale-103"
-                        />
+                        {i >= imageWindow.lo && i <= imageWindow.hi && (
+                          <Image
+                            src={SERVICE_VISUALS[service.slug] ?? DEFAULT_SERVICE_VISUAL}
+                            alt={isActive ? `${service.title} platform visual` : ""}
+                            width={1200}
+                            height={800}
+                            sizes="(max-width: 1024px) 100vw, 560px"
+                            className="w-full h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.25)] dark:drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)] transition-transform duration-500 group-hover:scale-103"
+                          />
+                        )}
                       </div>
                     );
                   })}
