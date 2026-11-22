@@ -1,5 +1,4 @@
-"use client";
-
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import {
   ShieldCheck,
@@ -7,40 +6,52 @@ import {
   Gem,
   MessageSquareReply,
   Globe2,
-  Play,
   Zap,
 } from "lucide-react";
-import { motion } from "motion/react";
 
 import type { StatItem } from "@/types";
 import statsData from "@/content/stats.json";
 import { CountUp } from "@/components/common/stat-card";
 import { Logo } from "@/components/common/logo";
-import { useLeadModal } from "@/lib/store/lead-modal";
-import { prefetchLeadForm } from "@/components/forms/lead-form-modal";
+import { RevealGroup } from "@/components/common/reveal-group";
+import { BentoStoryButton } from "@/components/sections/bento-story-button";
 
 const stats = statsData as StatItem[];
 
+// No `backdrop-blur-md`: every card sits on the section's flat white /
+// #04040A fill, so the frosted-glass pass had nothing to blur — it was a
+// per-frame GPU readback while scrolling with no visible result.
 const cardBaseClass =
   "group relative p-4 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 " +
-  "bg-white/80 dark:bg-white/[0.03] backdrop-blur-md " +
+  "bg-white/80 dark:bg-white/[0.03] " +
   "border border-slate-200/90 dark:border-white/[0.08] " +
   "shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_30px_rgba(0,0,0,0.4)] " +
   "hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(107,33,255,0.08)] dark:hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_16px_36px_rgba(107,33,255,0.2)] " +
   "hover:border-purple-300/80 dark:hover:border-purple-500/30 overflow-hidden flex flex-col justify-between";
 
-export function BentoSection() {
-  const openModal = useLeadModal((s) => s.openModal);
+/** Staggered entrance, consumed by `[data-reveal]` in globals.css. */
+const reveal = (delayMs: number) =>
+  ({ "--reveal-delay": `${delayMs}ms` }) as CSSProperties;
 
+/**
+ * A SERVER component.
+ *
+ * It was `"use client"` for nine framer-motion `whileInView` fades and one
+ * `openModal()` call. The fades are now CSS (`RevealGroup` only flips a data
+ * attribute), the modal trigger is the `BentoStoryButton` client leaf, and
+ * `CountUp` was already its own client component — so the grid markup no
+ * longer hydrates at all.
+ */
+export function BentoSection() {
   return (
     <section
       id="why-us"
       className="relative w-full pt-8 sm:pt-14 pb-20 sm:pb-28 bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-300 overflow-hidden"
     >
-      {/* Ambient background glow */}
+      {/* Ambient background glow (gradient + soft mask, not a blur filter) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[45rem] h-[25rem] bg-gradient-to-b from-purple-500/10 via-indigo-500/5 to-transparent blur-3xl opacity-70 dark:opacity-40"
+        className="glow-soft pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[45rem] h-[25rem] bg-gradient-to-b from-purple-500/10 via-indigo-500/5 to-transparent opacity-70 dark:opacity-40"
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
@@ -63,14 +74,12 @@ export function BentoSection() {
         </div>
 
         {/* Bento Grid */}
-        <div className="grid auto-rows-[minmax(90px,auto)] sm:auto-rows-[minmax(120px,auto)] grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <RevealGroup className="grid auto-rows-[minmax(90px,auto)] sm:auto-rows-[minmax(120px,auto)] grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {/* 1. Featured Philosophy Quote (2 cols x 2 rows) */}
-          <motion.div
+          <div
+            data-reveal
+            style={reveal(0)}
             className="group relative col-span-2 sm:row-span-2 p-4 sm:p-7 rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between transition-all duration-300 bg-[#070913] text-white border border-purple-500/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_16px_40px_rgba(0,0,0,0.5)] hover:-translate-y-1 hover:border-purple-400/60 hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_20px_50px_rgba(107,33,255,0.3)]"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
           >
             {/* Cosmic Planet Background */}
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -122,21 +131,7 @@ export function BentoSection() {
             {/* Bottom Row */}
             <div className="relative z-10 flex items-end justify-between gap-4 pt-1 sm:pt-3">
               {/* Watch Our Story CTA */}
-              <button
-                type="button"
-                onClick={() => openModal()}
-                onPointerEnter={prefetchLeadForm}
-                aria-haspopup="dialog"
-                aria-label="Start a consultation: Watch our story"
-                className="group/story inline-flex items-center gap-1.5 sm:gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 rounded-full"
-              >
-                <span className="size-7 sm:size-10 rounded-full border border-white/30 bg-white/10 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 group-hover/story:scale-110 group-hover/story:bg-white/20 group-hover/story:border-white/60 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                  <Play className="size-2.5 sm:size-3.5 fill-white text-white translate-x-0.5" aria-hidden="true" />
-                </span>
-                <span className="font-sans text-[9px] sm:text-sm font-medium text-white/90 border-b border-white/40 pb-0.5 transition-colors group-hover/story:border-white group-hover/story:text-white">
-                  Watch Our Story
-                </span>
-              </button>
+              <BentoStoryButton />
 
               {/* Ideas / Products / People / Progress */}
               <div className="flex flex-col items-start text-left shrink-0">
@@ -149,16 +144,10 @@ export function BentoSection() {
                 <div className="w-4 sm:w-7 h-[1.5px] sm:h-[2px] bg-purple-400/90 rounded-full mt-1 sm:mt-2" />
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* 2. Stat: 40+ Projects Delivered */}
-          <motion.div
-            className={cardBaseClass + " col-span-1"}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
+          <div data-reveal style={reveal(100)} className={cardBaseClass + " col-span-1"}>
             <div className="flex items-center justify-between mb-2 sm:mb-4">
               <span className="font-mono text-[9px] sm:text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
                 {stats[0]?.label ?? ""}
@@ -170,16 +159,10 @@ export function BentoSection() {
                 <CountUp value={stats[0]?.value ?? 0} suffix={stats[0]?.suffix ?? ""} />
               </span>
             </div>
-          </motion.div>
+          </div>
 
           {/* 3. Stat: 20+ Clients Served */}
-          <motion.div
-            className={cardBaseClass + " col-span-1"}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+          <div data-reveal style={reveal(200)} className={cardBaseClass + " col-span-1"}>
             <div className="flex items-center justify-between mb-2 sm:mb-4">
               <span className="font-mono text-[9px] sm:text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
                 {stats[1]?.label ?? ""}
@@ -190,16 +173,10 @@ export function BentoSection() {
                 <CountUp value={stats[1]?.value ?? 0} suffix={stats[1]?.suffix ?? ""} />
               </span>
             </div>
-          </motion.div>
+          </div>
 
           {/* 4. Crystal Quality */}
-          <motion.div
-            className={cardBaseClass + " col-span-1"}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-          >
+          <div data-reveal style={reveal(250)} className={cardBaseClass + " col-span-1"}>
             <div className="size-8 sm:size-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex items-center justify-center mb-2 sm:mb-3">
               <Gem className="size-4 sm:size-5 text-amber-500 dark:text-amber-400" />
             </div>
@@ -211,16 +188,10 @@ export function BentoSection() {
                 Guaranteed on every build.
               </p>
             </div>
-          </motion.div>
+          </div>
 
           {/* 5. Timezone coverage: UK & US Overlap */}
-          <motion.div
-            className={cardBaseClass + " col-span-1"}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
+          <div data-reveal style={reveal(300)} className={cardBaseClass + " col-span-1"}>
             <div className="size-8 sm:size-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-2 sm:mb-3">
               <Clock className="size-4 sm:size-5" />
             </div>
@@ -232,16 +203,10 @@ export function BentoSection() {
                 Live hours with London, New York and Toronto.
               </p>
             </div>
-          </motion.div>
+          </div>
 
           {/* 6. Stat: 4 Markets Served */}
-          <motion.div
-            className={cardBaseClass + " col-span-1"}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-          >
+          <div data-reveal style={reveal(350)} className={cardBaseClass + " col-span-1"}>
             <div className="size-8 sm:size-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex items-center justify-center mb-2 sm:mb-3">
               <Globe2 className="size-4 sm:size-5 text-emerald-500 dark:text-emerald-400" />
             </div>
@@ -259,16 +224,10 @@ export function BentoSection() {
                 Global delivery presence.
               </p>
             </div>
-          </motion.div>
+          </div>
 
           {/* 7. Stat: 1 Day Reply Time */}
-          <motion.div
-            className={cardBaseClass + " col-span-1"}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
+          <div data-reveal style={reveal(400)} className={cardBaseClass + " col-span-1"}>
             <div className="size-8 sm:size-10 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 flex items-center justify-center mb-2 sm:mb-3">
               <Zap className="size-4 sm:size-5 text-red-500 dark:text-red-400" />
             </div>
@@ -286,16 +245,10 @@ export function BentoSection() {
                 Average initial response.
               </p>
             </div>
-          </motion.div>
+          </div>
 
           {/* 8. SLA / Security: Enterprise-grade */}
-          <motion.div
-            className={cardBaseClass + " hidden sm:flex"}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.45 }}
-          >
+          <div data-reveal style={reveal(450)} className={cardBaseClass + " hidden sm:flex"}>
             <div className="size-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-3">
               <ShieldCheck className="size-5" />
             </div>
@@ -307,16 +260,10 @@ export function BentoSection() {
                 Secure, compliant, reliable.
               </p>
             </div>
-          </motion.div>
+          </div>
 
           {/* 9. Response Commitment: 1 business day */}
-          <motion.div
-            className={cardBaseClass + " hidden sm:flex"}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
+          <div data-reveal style={reveal(500)} className={cardBaseClass + " hidden sm:flex"}>
             <div className="size-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex items-center justify-center mb-3">
               <MessageSquareReply className="size-5 text-amber-500 dark:text-amber-400" />
             </div>
@@ -328,8 +275,8 @@ export function BentoSection() {
                 Every enquiry answered by a person.
               </p>
             </div>
-          </motion.div>
-        </div>
+          </div>
+        </RevealGroup>
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -14,6 +14,10 @@ const SPLINE_SCENE =
 
 const ROBOT_MOBILE_IMG =
   "https://res.cloudinary.com/d0grbozz/image/upload/v1789817498/robot.png";
+
+/** 1x1 transparent GIF: what the robot <picture> resolves to at >= md. */
+const TRANSPARENT_PIXEL =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
 import statsData from "@/content/stats.json";
 
@@ -31,8 +35,29 @@ const heroStats = stats.slice(0, 3).map((s) => ({
 }));
 
 export function HeroSection() {
+  // Mobile robot = the mobile LCP element. Art-directed rather than
+  // `<Image priority>`: `priority` emitted a media-less <link rel=preload> in
+  // <head>, so desktops downloaded this image too even though it is
+  // display:none at >= md, and (in Next 16) without fetchpriority=high. Here
+  // the >= md source is a 1x1 data URI, so desktops fetch nothing, and phones
+  // get an eager, high-priority, correctly-`sizes`d request straight from the
+  // HTML (the preload scanner finds the <img> as early as it found the link).
+  // `sizes` includes the scale-110 overscan.
+  const { props: robotImg } = getImageProps({
+    src: ROBOT_MOBILE_IMG,
+    alt: "",
+    width: 600,
+    height: 630,
+    sizes: "(min-width: 640px) min(77vw, 495px), 94vw",
+    loading: "eager",
+    fetchPriority: "high",
+  });
+
   return (
-    <section className="relative flex min-h-dvh w-full flex-col justify-between overflow-hidden pt-20 pb-4 sm:pb-6 md:flex-row md:items-center md:pt-[clamp(6rem,9svh,7rem)] md:pb-[clamp(3rem,8svh,5.5rem)]">
+    // `svh`, not `dvh`: a dvh box changes height every time the mobile URL
+    // bar shows or hides mid-scroll, re-laying out the whole page under the
+    // visitor's finger. svh is the size of the first view anyway.
+    <section className="relative flex min-h-svh w-full flex-col justify-between overflow-hidden pt-20 pb-4 sm:pb-6 md:flex-row md:items-center md:pt-[clamp(6rem,9svh,7rem)] md:pb-[clamp(3rem,8svh,5.5rem)]">
       {/* Desktop 3D Spline robot: 100% UNTOUCHED, renders on >= md only */}
       <InteractiveRobotSpline
         scene={SPLINE_SCENE}
@@ -44,21 +69,24 @@ export function HeroSection() {
         aria-hidden="true"
         className="absolute right-[-15%] sm:right-[-5%] bottom-[75px] sm:bottom-[85px] w-[85%] sm:w-[70%] max-w-[450px] pointer-events-none select-none z-0 md:hidden"
       >
-        <Image
-          src={ROBOT_MOBILE_IMG}
-          alt=""
-          aria-hidden="true"
-          width={600}
-          height={630}
-          priority
-          className="w-full h-auto object-contain drop-shadow-[0_15px_35px_rgba(113,56,255,0.15)] scale-110 origin-bottom-right"
-        />
+        <picture>
+          <source media="(min-width: 768px)" srcSet={TRANSPARENT_PIXEL} />
+          <img
+            {...robotImg}
+            alt=""
+            aria-hidden="true"
+            className="w-full h-auto object-contain drop-shadow-[0_15px_35px_rgba(113,56,255,0.15)] scale-110 origin-bottom-right"
+          />
+        </picture>
       </div>
 
-      {/* Mobile Ambient Glow: soft purple circle behind top annotation and robot */}
+      {/* Mobile Ambient Glow: soft purple circle behind top annotation and robot.
+          The softer outer stops stand in for the `blur-xl` it used to carry —
+          a filter pass on the first frame of the mobile hero for a gradient
+          that already fades to transparent. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute right-[-25px] top-[100px] size-56 rounded-full bg-[radial-gradient(circle,rgba(168,85,247,0.3)_0%,rgba(113,56,255,0.12)_45%,transparent_70%)] blur-xl md:hidden"
+        className="pointer-events-none absolute right-[-25px] top-[100px] size-56 rounded-full bg-[radial-gradient(circle,rgba(168,85,247,0.27)_0%,rgba(113,56,255,0.12)_42%,rgba(113,56,255,0.04)_62%,transparent_76%)] md:hidden"
       />
 
       {/* Readability + ambient gradients */}
@@ -182,7 +210,7 @@ export function HeroSection() {
 
         {/* Mobile Stats Card (strictly < md, matching mockup with 2-line labels) */}
         <div className="block md:hidden mt-6 sm:mt-8 w-full">
-          <div className="w-full rounded-[24px] bg-white/95 dark:bg-[#12121e]/90 backdrop-blur-md border border-slate-200/80 dark:border-white/10 py-4 sm:py-5 px-3 shadow-[0_10px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+          <div className="w-full rounded-[24px] bg-white/95 dark:bg-[#12121e]/90 border border-slate-200/80 dark:border-white/10 py-4 sm:py-5 px-3 shadow-[0_10px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
             <dl className="grid grid-cols-3 divide-x divide-slate-200/80 dark:divide-white/10 text-center">
               {heroStats.map((s) => (
                 <div key={s.label} className="flex flex-col items-center px-1">

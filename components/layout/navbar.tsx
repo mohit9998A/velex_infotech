@@ -27,7 +27,7 @@ import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 import { navGroups } from "@/config/navigation";
-import { useScrolled } from "@/hooks/use-scroll";
+import { useScrolledAttribute } from "@/hooks/use-scroll";
 import { useLeadModal } from "@/lib/store/lead-modal";
 import { getServiceIconByTitle } from "@/lib/icons";
 import { Logo } from "@/components/common/logo";
@@ -73,7 +73,10 @@ function getNavIcon(label: string): LucideIcon {
 }
 
 export function Navbar() {
-  const scrolled = useScrolled(80);
+  // Writes `data-scrolled` on the <header> instead of holding React state:
+  // crossing the threshold used to re-render this whole tree (Radix
+  // NavigationMenu + Sheet + every link) at the exact moment scrolling began.
+  const headerRef = useScrolledAttribute<HTMLElement>(80);
   const [mobileOpen, setMobileOpen] = useState(false);
   const openModal = useLeadModal((s) => s.openModal);
   const { resolvedTheme, setTheme } = useTheme();
@@ -81,12 +84,8 @@ export function Navbar() {
 
   return (
     <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-[100] transition-[background-color,border-color,box-shadow,padding] duration-300",
-        scrolled
-          ? "border-b border-black/10 dark:border-white/10 bg-white/80 dark:bg-void/80 backdrop-blur-md shadow-sm py-[0.65rem]"
-          : "bg-transparent py-[1.1rem]",
-      )}
+      ref={headerRef}
+      className="group/header fixed inset-x-0 top-0 z-[100] transition-[background-color,border-color,box-shadow,padding] duration-300 bg-transparent py-[1.1rem] data-scrolled:border-b data-scrolled:border-black/10 dark:data-scrolled:border-white/10 data-scrolled:bg-white/80 dark:data-scrolled:bg-void/80 data-scrolled:backdrop-blur-md data-scrolled:shadow-sm data-scrolled:py-[0.65rem]"
     >
       <div className="mx-auto flex h-[3.6rem] max-w-7xl items-center justify-between px-4 sm:px-6">
         <Logo />

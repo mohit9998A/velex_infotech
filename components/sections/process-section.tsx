@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import {
   FileText,
@@ -18,10 +18,11 @@ import {
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
-import { motion, useScroll } from "motion/react";
 
 import type { ProcessStep } from "@/types";
 import processData from "@/content/process.json";
+import { useScrollProgress } from "@/hooks/use-scroll-progress";
+import { RevealGroup } from "@/components/common/reveal-group";
 
 const steps = processData as ProcessStep[];
 
@@ -100,6 +101,23 @@ function generateCurvyPath(coords: { x: number; y: number }[]) {
   return path;
 }
 
+function stepForProgress(progress: number) {
+  if (progress < 0.25) return 0;
+  if (progress < 0.5) return 1;
+  if (progress < 0.75) return 2;
+  return 3;
+}
+
+/** Per-card entrance, consumed by `[data-reveal]` in globals.css. */
+function revealStyle(delayMs: number, axis: "x" | "y"): CSSProperties {
+  return {
+    "--reveal-delay": `${delayMs}ms`,
+    "--reveal-duration": "400ms",
+    "--reveal-x": axis === "x" ? "20px" : "0px",
+    "--reveal-y": axis === "y" ? "20px" : "0px",
+  } as CSSProperties;
+}
+
 export function ProcessSection() {
   const containerRef = useRef<HTMLElement>(null);
   const mobileContainerRef = useRef<HTMLDivElement>(null);
@@ -107,24 +125,25 @@ export function ProcessSection() {
   const [nodeCoords, setNodeCoords] = useState<{ x: number; y: number }[]>([]);
   const [activeStep, setActiveStep] = useState<number>(0);
   const [hoveredStep, setHoveredStep] = useState<number | null>(null);
+  const activeStepRef = useRef(0);
 
   const currentStep = hoveredStep !== null ? hoveredStep : activeStep;
 
-  // Scroll-driven progressive activation from 01 -> 02 -> 03 -> 04
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start 75%", "end 25%"],
+  // Scroll-driven progressive activation from 01 -> 02 -> 03 -> 04.
+  // Same window as the old motion `useScroll({ offset: ["start 75%", "end 25%"] })`;
+  // state only changes when the step does, and not while a card is hovered.
+  useScrollProgress(containerRef, 0.75, 0.25, (progress) => {
+    if (hoveredStep !== null) return;
+    const next = stepForProgress(progress);
+    if (next === activeStepRef.current) return;
+    activeStepRef.current = next;
+    setActiveStep(next);
   });
 
-  useEffect(() => {
-    return scrollYProgress.on("change", (latest) => {
-      if (hoveredStep !== null) return;
-      if (latest < 0.25) setActiveStep(0);
-      else if (latest < 0.5) setActiveStep(1);
-      else if (latest < 0.75) setActiveStep(2);
-      else setActiveStep(3);
-    });
-  }, [scrollYProgress, hoveredStep]);
+  const selectStep = (idx: number) => {
+    activeStepRef.current = idx;
+    setActiveStep(idx);
+  };
 
   // Synchronize mobile node positions for precise SVG curve alignment
   useEffect(() => {
@@ -150,6 +169,8 @@ export function ProcessSection() {
 
     updatePositions();
 
+    // The ResizeObserver already covers viewport resizes (the container's
+    // width follows the viewport), so no separate window listener.
     const ro = new ResizeObserver(() => {
       updatePositions();
     });
@@ -161,10 +182,8 @@ export function ProcessSection() {
       if (el) ro.observe(el);
     });
 
-    window.addEventListener("resize", updatePositions);
     return () => {
       ro.disconnect();
-      window.removeEventListener("resize", updatePositions);
     };
   }, []);
 
@@ -176,6 +195,7 @@ export function ProcessSection() {
   ];
   const activeCoords = nodeCoords.length === 4 ? nodeCoords : defaultCoords;
   const curvyPathD = generateCurvyPath(activeCoords);
+  const progress = currentStep / 3;
 
   return (
     <section
@@ -183,14 +203,18 @@ export function ProcessSection() {
       ref={containerRef}
       className="relative w-full py-12 lg:py-6 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center bg-[#FAF9FD] dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-500 overflow-hidden"
     >
-      {/* Dynamic ambient background glow following active card */}
+      {/* Dynamic ambient background glow following active card.
+          Moves with a compositor `transform` on a full-width rail (25% of the
+          rail = one column) instead of transitioning `left`, which re-ran
+          layout and re-rasterised a blur-3xl layer on every frame for 700ms.
+          The blur filter itself is now a gradient + soft mask (.glow-soft). */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/4 w-[32rem] h-[22rem] rounded-full bg-gradient-to-r from-[#5424D6]/20 via-[#7138FF]/25 to-[#8B4DFF]/20 blur-3xl transition-all duration-700 ease-out opacity-70 dark:opacity-35 -translate-x-1/2"
-        style={{
-          left: `${12.5 + currentStep * 25}%`,
-        }}
-      />
+        className="pointer-events-none absolute inset-x-0 top-1/4 h-[22rem] transition-transform duration-700 ease-out"
+        style={{ transform: `translateX(${currentStep * 25}%)` }}
+      >
+        <div className="glow-soft absolute left-[12.5%] top-0 w-[32rem] h-[22rem] -translate-x-1/2 bg-gradient-to-r from-[#5424D6]/20 via-[#7138FF]/25 to-[#8B4DFF]/20 opacity-70 dark:opacity-35" />
+      </div>
 
       {/* Subtle orbital background lines */}
       <div
@@ -202,7 +226,7 @@ export function ProcessSection() {
         }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 w-full flex flex-col justify-between">
+      <RevealGroup className="relative mx-auto max-w-7xl px-4 sm:px-6 w-full flex flex-col justify-between">
         {/* Header */}
         <div className="reveal-on-scroll relative text-center max-w-3xl mx-auto pb-6 sm:pb-10">
 
@@ -260,10 +284,10 @@ export function ProcessSection() {
                   strokeWidth="2.5"
                   strokeLinecap="round"
                   filter="url(#wave-glow)"
-                  className="transition-all duration-700 ease-out"
+                  className="transition-[stroke-dashoffset] duration-700 ease-out"
                   style={{
                     strokeDasharray: "1000",
-                    strokeDashoffset: `${1000 - (currentStep / 3) * 1000}`,
+                    strokeDashoffset: `${1000 - progress * 1000}`,
                   }}
                 />
               </svg>
@@ -299,13 +323,15 @@ export function ProcessSection() {
                       />
 
                       <div className="relative size-full overflow-hidden">
+                        {/* Far below the fold: lazy (the old `priority` here
+                            preloaded four images in <head> on every visit,
+                            competing with the LCP on mobile). */}
                         <Image
                           src={meta.image}
                           alt={`${step.title} visual`}
                           fill
                           sizes="200px"
                           className="object-contain transition-transform duration-500"
-                          priority={idx < 2}
                         />
                       </div>
                     </div>
@@ -320,21 +346,19 @@ export function ProcessSection() {
             {steps.map((step, idx) => {
               const meta = STEP_DETAILS[step.id] ?? DEFAULT_STEP_META;
               const isActive = currentStep === idx;
-              
+
               return (
-                <motion.div
+                <div
                   key={step.id}
+                  data-reveal
+                  style={revealStyle(idx * 80, "y")}
                   onMouseEnter={() => setHoveredStep(idx)}
                   onMouseLeave={() => setHoveredStep(null)}
                   className={`group relative p-5 rounded-2xl transition-all duration-500 flex flex-col justify-between cursor-pointer ${
                     isActive
                       ? "-translate-y-1.5 bg-white dark:bg-white/[0.06] border-[#7138FF]/80 dark:border-[#8B4DFF]/50 shadow-[0_12px_32px_rgba(113,56,255,0.15)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_12px_32px_rgba(113,56,255,0.3)]"
                       : "bg-white/70 dark:bg-white/[0.03] border-slate-200/80 dark:border-white/[0.08] shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:border-[#7138FF]/60"
-                  } backdrop-blur-md border`}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.08 }}
+                  } border`}
                 >
                   <div>
                     <div className="flex items-center justify-between">
@@ -377,14 +401,14 @@ export function ProcessSection() {
                       );
                     })}
                   </ul>
-                </motion.div>
+                </div>
               );
             })}
           </div>
         </div>
 
         {/* MOBILE LAYOUT (Creative Vertical Wavy Timeline) */}
-        <div 
+        <div
           ref={mobileContainerRef}
           className="flex flex-col lg:hidden relative gap-6 sm:gap-8 w-full mt-2"
         >
@@ -407,19 +431,22 @@ export function ProcessSection() {
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
-              {/* Progressive path reveal mask matching desktop web UI duration and easing */}
+              {/* Progressive path reveal: a normalised (pathLength=1) stroke
+                  whose dash offset transitions in CSS — same 0.7s ease-out
+                  the motion.path pathLength animation used. */}
               <mask id="mobile-curve-progress-mask">
-                <motion.path
+                <path
                   d={curvyPathD}
+                  pathLength={1}
                   stroke="white"
                   strokeWidth="16"
                   strokeLinecap="round"
                   fill="none"
-                  initial={false}
-                  animate={{
-                    pathLength: currentStep / 3,
+                  className="transition-[stroke-dashoffset] duration-700 ease-out"
+                  style={{
+                    strokeDasharray: "1 1",
+                    strokeDashoffset: 1 - progress,
                   }}
-                  transition={{ duration: 0.7, ease: "easeOut" }}
                 />
               </mask>
             </defs>
@@ -448,16 +475,16 @@ export function ProcessSection() {
               className="opacity-95"
             />
           </svg>
-          
+
           {steps.map((step, idx) => {
             const meta = STEP_DETAILS[step.id] ?? DEFAULT_STEP_META;
             const isActive = currentStep === idx;
             return (
-              <button 
+              <button
                 type="button"
-                key={step.id} 
+                key={step.id}
                 className="relative flex items-center gap-3 sm:gap-6 w-full z-10 text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7138FF] rounded-2xl"
-                onClick={() => setActiveStep(idx)}
+                onClick={() => selectStep(idx)}
                 aria-pressed={isActive}
               >
                 {/* Left: Image */}
@@ -477,34 +504,31 @@ export function ProcessSection() {
                       fill
                       sizes="(max-width: 640px) 80px, 112px"
                       className="object-contain"
-                      priority={idx < 2}
                     />
                   </div>
                 </div>
-                
+
                 {/* Center Node on the wavy path */}
-                <div 
+                <div
                   ref={(el) => { nodeRefs.current[idx] = el; }}
                   className={`absolute left-[5.5rem] sm:left-[7.5rem] -translate-x-1/2 rounded-full transition-all duration-700 ease-out z-20 flex items-center justify-center ${
-                    isActive 
-                      ? "w-3.5 h-3.5 bg-[#7138FF] shadow-[0_0_12px_rgba(113,56,255,0.95)] ring-4 ring-[#7138FF]/30 scale-110" 
+                    isActive
+                      ? "w-3.5 h-3.5 bg-[#7138FF] shadow-[0_0_12px_rgba(113,56,255,0.95)] ring-4 ring-[#7138FF]/30 scale-110"
                       : idx < currentStep
                       ? "w-2.5 h-2.5 sm:w-3 sm:h-3 bg-[#7138FF] ring-2 ring-[#7138FF]/40"
                       : "w-2.5 h-2.5 sm:w-3 sm:h-3 bg-slate-300 dark:bg-white/20 ring-2 ring-slate-200 dark:ring-white/10"
                   }`}
                 />
-                
+
                 {/* Right: Card */}
-                <motion.div
+                <div
+                  data-reveal
+                  style={revealStyle(idx * 100, "x")}
                   className={`flex-1 group relative p-4 sm:p-5 rounded-xl sm:rounded-2xl transition-all duration-500 flex flex-col justify-between cursor-pointer ${
                     isActive
                       ? "bg-white dark:bg-white/[0.06] border-[#7138FF]/80 dark:border-[#8B4DFF]/50 shadow-[0_12px_32px_rgba(113,56,255,0.15)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_12px_32px_rgba(113,56,255,0.3)]"
                       : "bg-white/70 dark:bg-white/[0.03] border-slate-200/80 dark:border-white/[0.08] shadow-[0_2px_12px_rgba(0,0,0,0.03)]"
-                  } backdrop-blur-md border`}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.1 }}
+                  } border`}
                 >
                   <div>
                     <div className="flex items-center justify-between mb-1">
@@ -544,7 +568,7 @@ export function ProcessSection() {
                       );
                     })}
                   </ul>
-                </motion.div>
+                </div>
               </button>
             )
           })}
@@ -559,11 +583,12 @@ export function ProcessSection() {
               {/* Start Dot */}
               <span className="size-2 rounded-full bg-[#B99CFF] dark:bg-[#8B4DFF] shadow-[0_0_8px_rgba(185,156,255,0.8)] shrink-0 z-10" />
 
-              {/* Track Base + Active Progress Fill */}
+              {/* Track Base + Active Progress Fill (scaleX, not width: no
+                  layout per frame while it animates) */}
               <div className="relative flex-1 h-[1.5px] bg-slate-200/90 dark:bg-white/15 overflow-hidden mx-0.5">
                 <div
-                  className="h-full bg-gradient-to-r from-[#B99CFF] via-[#7138FF] to-[#5424D6] transition-all duration-700 ease-out"
-                  style={{ width: `${(currentStep / 3) * 100}%` }}
+                  className="h-full w-full origin-left bg-gradient-to-r from-[#B99CFF] via-[#7138FF] to-[#5424D6] transition-transform duration-700 ease-out"
+                  style={{ transform: `scaleX(${progress})` }}
                 />
               </div>
 
@@ -574,7 +599,7 @@ export function ProcessSection() {
             {/* Stage Labels beneath the line */}
             <div className="flex items-center justify-between font-mono text-[10px] sm:text-xs tracking-[0.2em] uppercase text-slate-500 dark:text-white/50">
               {TIMELINE_STAGES.map((stage, i) => {
-                const isHighlighted = (i / (TIMELINE_STAGES.length - 1)) <= (currentStep / 3);
+                const isHighlighted = (i / (TIMELINE_STAGES.length - 1)) <= progress;
                 return (
                   <span
                     key={stage}
@@ -591,7 +616,7 @@ export function ProcessSection() {
             </div>
           </div>
         </div>
-      </div>
+      </RevealGroup>
     </section>
   );
 }

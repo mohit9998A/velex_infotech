@@ -94,7 +94,7 @@ export function PortfolioCard({
         )}
 
         {/* Outcome & Details Card (4 Cols / Right Side) */}
-        <div className="lg:col-span-4 rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-white/[0.08] bg-white/95 dark:bg-white/[0.03] backdrop-blur-md p-3.5 sm:p-7 flex flex-col justify-between shadow-[0_8px_30px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+        <div className="lg:col-span-4 rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-white/[0.08] bg-white/95 dark:bg-white/[0.03] p-3.5 sm:p-7 flex flex-col justify-between shadow-[0_8px_30px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
           <div className="space-y-2.5 sm:space-y-5">
             {/* Category & Segment Clean Meta */}
             <div className="flex items-center gap-2 font-mono text-[11px] sm:text-xs">

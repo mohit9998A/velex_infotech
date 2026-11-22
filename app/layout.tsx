@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 
 import { fontVariables } from "@/lib/fonts";
 import { siteConfig } from "@/config/site";
@@ -138,14 +138,33 @@ export default function RootLayout({
           <WhatsAppButton />
           <LeadFormModal />
         </Providers>
+        {/* Google Analytics, loaded with `lazyOnload`: after the window load
+            event, in idle time. The previous <GoogleAnalytics> component from
+            @next/third-parties uses next/script's default `afterInteractive`
+            strategy, which made Next emit a <link rel="preload"> for gtag.js
+            (~155 KB compressed) in <head> on every route — so on a phone it
+            competed with the LCP image and the fonts for the first second of
+            bandwidth. These two tags are exactly what that component rendered
+            (the dataLayer/gtag('js')/gtag('config') bootstrap, then gtag.js).
+
+            Guarded so a missing ID renders nothing rather than
+            `gtag('config', '')`, which would silently collect into no property
+            at all. Client-side navigations still need GA4's "page changes
+            based on browser history events" enhanced measurement (see
+            config/site.ts). */}
+        {siteConfig.gaMeasurementId ? (
+          <>
+            <Script id="ga-init" strategy="lazyOnload">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${siteConfig.gaMeasurementId}');`}
+            </Script>
+            <Script
+              id="ga"
+              src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.gaMeasurementId}`}
+              strategy="lazyOnload"
+            />
+          </>
+        ) : null}
       </body>
-      {/* Sibling of <body>, per the Next 16 guide — the component renders two
-          next/script tags, which React hoists. Guarded so a missing ID renders
-          nothing rather than `gtag('config', '')`, which would silently collect
-          into no property at all. */}
-      {siteConfig.gaMeasurementId ? (
-        <GoogleAnalytics gaId={siteConfig.gaMeasurementId} />
-      ) : null}
     </html>
   );
 }

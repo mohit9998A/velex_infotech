@@ -45,7 +45,7 @@ export function FaqSection({
       {/* Ambient background glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[48rem] h-[28rem] bg-gradient-to-r from-blue-500/10 via-purple-500/15 to-pink-500/10 blur-3xl rounded-full opacity-60 dark:opacity-30"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[48rem] h-[28rem] bg-gradient-to-r from-blue-500/10 via-purple-500/15 to-pink-500/10 glow-soft opacity-60 dark:opacity-30"
       />
 
       <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
@@ -85,7 +85,7 @@ export function FaqSection({
             <AccordionItem
               key={faq.id ?? faq.question}
               value={faq.id ?? faq.question}
-              className="rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] backdrop-blur-md px-6 sm:px-8 transition-all duration-300 data-[state=open]:border-purple-400/80 dark:data-[state=open]:border-purple-500/50 data-[state=open]:bg-white dark:data-[state=open]:bg-white/[0.06] shadow-[0_4px_20px_rgba(0,0,0,0.02)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+              className="rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] px-6 sm:px-8 transition-all duration-300 data-[state=open]:border-purple-400/80 dark:data-[state=open]:border-purple-500/50 data-[state=open]:bg-white dark:data-[state=open]:bg-white/[0.06] shadow-[0_4px_20px_rgba(0,0,0,0.02)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
             >
               <AccordionTrigger className="font-serif text-lg sm:text-xl font-medium text-slate-900 dark:text-white hover:text-purple-600 dark:hover:text-purple-300 py-6 text-left leading-snug">
                 {faq.question}

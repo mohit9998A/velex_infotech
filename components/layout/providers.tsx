@@ -1,21 +1,19 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { ThemeProvider } from "next-themes";
-import { MotionConfig } from "motion/react";
 
 /**
- * Loaded as its own chunk after the page is interactive. This keeps
- * smooth scroll logic out of the shared bundle that every route pays for —
- * see the note in smooth-scroll.tsx.
+ * Deliberately just the theme provider.
  *
- * `ssr: false` is correct here: the component renders null and only sets up
- * browser-side scroll behaviour, so there is nothing to server-render.
+ * - No smooth-scroll library. Lenis used to be mounted here; its non-passive
+ *   wheel/touch listeners made every scroll frame wait on the main thread,
+ *   which is what made the site lag and freeze while anything else was
+ *   running. See the note in globals.css.
+ * - No `<MotionConfig>`. It was the only animation-library import in the
+ *   root layout, so it put part of motion into the shared chunk of every
+ *   route. Nothing uses motion any more; reduced-motion handling lives in CSS
+ *   (`prefers-reduced-motion` blocks in globals.css).
  */
-const SmoothScroll = dynamic(() => import("@/components/layout/smooth-scroll"), {
-  ssr: false,
-});
-
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
@@ -24,10 +22,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableSystem={false}
       disableTransitionOnChange
     >
-      <MotionConfig reducedMotion="user">
-        <SmoothScroll />
-        {children}
-      </MotionConfig>
+      {children}
     </ThemeProvider>
   );
 }

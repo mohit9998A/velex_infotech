@@ -1,10 +1,11 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 
 import type { PortfolioItem } from "@/types";
 import portfolioData from "@/content/portfolio.json";
+import { cn } from "@/lib/utils";
+import { useScrollProgress } from "@/hooks/use-scroll-progress";
 import { PortfolioCard } from "@/components/common/portfolio-card";
 
 /**
@@ -17,6 +18,20 @@ import { PortfolioCard } from "@/components/common/portfolio-card";
  */
 const items = (portfolioData as PortfolioItem[]).filter((i) => !i.placeholder);
 
+/**
+ * Pinned case-study carousel driven by scroll.
+ *
+ * Every card in the current filter is rendered once and stacked in a single
+ * grid cell. A card before the active one rests "exited" to the left, a card
+ * after it waits on the right, so advancing slides the old card out left and
+ * the new one in from the right — and scrolling back reverses it — with no
+ * direction state at all. The slide is an opacity/translate/scale CSS
+ * transition on the compositor.
+ *
+ * This replaces `AnimatePresence mode="wait"` + motion's `useScroll`, which
+ * remounted the whole card (and its screenshot <img>) on every step, fetching
+ * and decoding the image mid-scroll.
+ */
 export function PortfolioSection() {
   const filters = useMemo(() => {
     const cats = Array.from(new Set(items.map((i) => i.category)));
@@ -30,35 +45,25 @@ export function PortfolioSection() {
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
+  const activeRef = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Safe active project item
-  const currentItem = filtered[activeIndex] || filtered[0];
 
   const handleFilterChange = (f: string) => {
     setActive(f);
+    activeRef.current = 0;
     setActiveIndex(0);
-    setDirection(1);
   };
 
-  // Pure scroll-driven sticky listener
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+  // Scroll-driven step: each card owns an equal slice of the track. Called on
+  // every scroll event while the track is near the viewport, so it bails out
+  // before touching React state unless the step actually changed.
+  useScrollProgress(containerRef, 0, 1, (progress) => {
     if (filtered.length <= 1) return;
     const step = 1 / filtered.length;
-    const targetIdx = Math.min(
-      Math.floor(latest / step),
-      filtered.length - 1,
-    );
-    if (targetIdx !== activeIndex && targetIdx >= 0) {
-      setDirection(targetIdx > activeIndex ? 1 : -1);
-      setActiveIndex(targetIdx);
-    }
+    const next = Math.min(Math.floor(progress / step), filtered.length - 1);
+    if (next === activeRef.current) return;
+    activeRef.current = next;
+    setActiveIndex(next);
   });
 
   return (
@@ -66,10 +71,11 @@ export function PortfolioSection() {
       id="portfolio"
       className="relative py-16 sm:py-24 bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-500 overflow-x-clip scroll-mt-24"
     >
-      {/* Ambient background glow */}
+      {/* Ambient background glow — gradient + soft mask instead of a
+          blur-3xl filter (see `.glow-soft` in globals.css). */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[48rem] h-[28rem] bg-gradient-to-r from-blue-500/10 via-purple-500/15 to-pink-500/10 blur-3xl rounded-full opacity-60 dark:opacity-30"
+        className="glow-soft pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[48rem] h-[28rem] bg-gradient-to-r from-blue-500/10 via-purple-500/15 to-pink-500/10 opacity-60 dark:opacity-30"
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
@@ -121,45 +127,29 @@ export function PortfolioSection() {
         >
           <div className="sticky top-14 sm:top-24 flex flex-col gap-2 sm:gap-5 py-1 sm:py-4">
             {/* In-Place Animated Project Frame */}
-            {currentItem && (
-              <div className="relative overflow-hidden min-h-[400px] sm:min-h-[480px] flex items-start sm:items-center">
-                <AnimatePresence mode="wait" custom={direction}>
-                  <motion.div
-                    key={currentItem.id}
-                    custom={direction}
-                    variants={{
-                      enter: (dir: number) => ({
-                        x: dir > 0 ? 140 : -140,
-                        opacity: 0,
-                        scale: 0.98,
-                      }),
-                      center: {
-                        x: 0,
-                        opacity: 1,
-                        scale: 1,
-                      },
-                      exit: (dir: number) => ({
-                        x: dir > 0 ? -140 : 140,
-                        opacity: 0,
-                        scale: 0.98,
-                      }),
-                    }}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      duration: 0.5,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                    className="w-full"
-                  >
-                    <PortfolioCard
-                      item={currentItem}
-                      index={activeIndex}
-                      total={filtered.length}
-                    />
-                  </motion.div>
-                </AnimatePresence>
+            {filtered.length > 0 && (
+              <div className="relative overflow-hidden min-h-[400px] sm:min-h-[480px] grid items-start sm:items-center">
+                {filtered.map((item, i) => {
+                  const isActive = i === activeIndex;
+                  return (
+                    <div
+                      key={item.id}
+                      aria-hidden={!isActive || undefined}
+                      inert={!isActive}
+                      className={cn(
+                        "[grid-area:1/1] w-full transition-[opacity,translate,scale] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                        isActive
+                          ? "opacity-100 translate-x-0 scale-100 delay-100"
+                          : cn(
+                              "opacity-0 scale-[0.98] pointer-events-none",
+                              i < activeIndex ? "-translate-x-[140px]" : "translate-x-[140px]",
+                            ),
+                      )}
+                    >
+                      <PortfolioCard item={item} index={i} total={filtered.length} />
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>

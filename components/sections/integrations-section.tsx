@@ -8,7 +8,7 @@ function Tile({ item, ariaHidden }: { item: IntegrationItem; ariaHidden?: boolea
   return (
     <div
       aria-hidden={ariaHidden || undefined}
-      className="flex w-max items-center gap-3.5 rounded-xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-white/[0.04] backdrop-blur-md px-5 py-3 shadow-[0_2px_8px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_4px_16px_rgba(0,0,0,0.3)] hover:-translate-y-0.5 hover:border-purple-300 dark:hover:border-purple-500/30 transition-all duration-300"
+      className="flex w-max items-center gap-3.5 rounded-xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-white/[0.04] px-5 py-3 shadow-[0_2px_8px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_4px_16px_rgba(0,0,0,0.3)] hover:-translate-y-0.5 hover:border-purple-300 dark:hover:border-purple-500/30 transition-all duration-300"
     >
       {item.logo ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -70,7 +70,7 @@ export function IntegrationsSection() {
       <div className="pointer-events-none absolute inset-0 grid-bg opacity-30 dark:opacity-20" />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[48rem] h-[28rem] bg-gradient-to-r from-blue-500/10 via-purple-500/15 to-pink-500/10 blur-3xl rounded-full opacity-70 dark:opacity-40"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[48rem] h-[28rem] bg-gradient-to-r from-blue-500/10 via-purple-500/15 to-pink-500/10 glow-soft opacity-70 dark:opacity-40"
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">

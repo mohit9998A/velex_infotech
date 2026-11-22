@@ -23,7 +23,7 @@ export function LatestPostsSection() {
       {/* Ambient background glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[48rem] h-[28rem] bg-gradient-to-r from-purple-600/10 via-blue-600/10 to-pink-600/10 blur-3xl rounded-full opacity-60 dark:opacity-30"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[48rem] h-[28rem] bg-gradient-to-r from-purple-600/10 via-blue-600/10 to-pink-600/10 glow-soft opacity-60 dark:opacity-30"
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
@@ -49,7 +49,7 @@ export function LatestPostsSection() {
             <div key={post.slug} className="flex">
               <Link
                 href={`/blog/${post.slug}`}
-                className="group relative flex flex-1 flex-col justify-between rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] backdrop-blur-md p-6 sm:p-7 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:border-purple-400/80 dark:hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-1.5"
+                className="group relative flex flex-1 flex-col justify-between rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-6 sm:p-7 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:border-purple-400/80 dark:hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-1.5"
               >
                 <div>
                   {/* Top Meta Row */}

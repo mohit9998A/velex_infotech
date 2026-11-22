@@ -1,22 +1,14 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  ChevronRight,
-} from "lucide-react";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useMotionValueEvent,
-} from "motion/react";
+import { ArrowRight, ArrowUpRight, ChevronRight } from "lucide-react";
 
 import type { ServiceItem } from "@/types";
 import servicesData from "@/content/services.json";
+import { cn } from "@/lib/utils";
+import { useScrollProgress } from "@/hooks/use-scroll-progress";
 import { useLeadModal } from "@/lib/store/lead-modal";
 import { prefetchLeadForm } from "@/components/forms/lead-form-modal";
 
@@ -85,62 +77,84 @@ const DEFAULT_THEME = {
   accentLight: "#2563EB",
 };
 
+/**
+ * A soft colour glow as a plain radial gradient, standing in for a solid
+ * `rounded-full` box under `filter: blur()`.
+ *
+ * The element carrying this must be the OLD box grown by 2σ on every side
+ * (a Gaussian blur spreads that far), and the stops trace the blurred
+ * profile: ~95% at the core, 50% at the old edge, ~16% one σ outside it,
+ * gone at 2σ. Painted once, no filter pass, no layer of its own.
+ */
+function glowGradient(hex: string) {
+  return `radial-gradient(closest-side, ${hex}f2 0%, ${hex}f2 25%, ${hex}80 55%, ${hex}29 78%, transparent 100%)`;
+}
+
+// 6 services: services 0-4 each own 15% of the scroll track (0..0.75) and the
+// 6th owns the last 25%, so the final service stays fully readable while
+// stationary before the page moves on to the next section.
+function indexForProgress(progress: number) {
+  if (progress < 0.15) return 0;
+  if (progress < 0.3) return 1;
+  if (progress < 0.45) return 2;
+  if (progress < 0.6) return 3;
+  if (progress < 0.75) return 4;
+  return 5;
+}
+
+/**
+ * Pinned "one service at a time" showcase.
+ *
+ * Performance notes — this section sits inside a 420–480vh scroll track, so
+ * everything here happens while the visitor is actively scrolling:
+ *
+ *  - All six services are rendered once and stacked in the same grid cell;
+ *    switching only flips classes, and the cross-fade is an opacity/translate
+ *    CSS transition on the compositor. It used to be `AnimatePresence` that
+ *    unmounted and remounted the copy AND the next/image on every switch, so
+ *    each image was fetched and decoded mid-scroll, on the main thread, at
+ *    exactly the moment it was needed.
+ *  - The ambient glow was two 880px/480px boxes under `blur(140px)` /
+ *    `blur(120px)` with `transition-all duration-700` on background-color:
+ *    every service change re-rasterised a ~1700x1400px Gaussian blur on every
+ *    frame for 700ms, inside a position:sticky container. It is now one
+ *    radial-gradient layer per service, cross-faded with opacity.
+ *  - Progress comes from `useScrollProgress` (one rect read per scroll event,
+ *    only while the track is near the viewport) instead of motion's
+ *    `useScroll`, and state only changes when the index changes.
+ */
 export function ServicesSection() {
-  const [activeSlug, setActiveSlug] = useState<string>("ai-automation");
+  const [activeIndex, setActiveIndex] = useState(0);
   const openModal = useLeadModal((s) => s.openModal);
 
-  // Preserve keyboard focus if active service changes while user was focused inside
+  // Keyboard focus: if focus is inside the copy column when the service
+  // changes, carry it to the same control in the newly active service rather
+  // than letting it fall back to <body> when the old block becomes inert.
   const leftColumnRef = useRef<HTMLDivElement>(null);
   const hadFocusRef = useRef(false);
+  const activeRef = useRef(0);
+
+  const scrollTrackRef = useRef<HTMLDivElement>(null);
+  useScrollProgress(scrollTrackRef, 0, 1, (progress) => {
+    const next = indexForProgress(progress);
+    if (next === activeRef.current) return;
+    activeRef.current = next;
+    hadFocusRef.current = Boolean(
+      leftColumnRef.current?.contains(document.activeElement),
+    );
+    setActiveIndex(next);
+  });
 
   useEffect(() => {
-    if (hadFocusRef.current && leftColumnRef.current) {
-      const focusable = leftColumnRef.current.querySelector<HTMLElement>(
-        'a, button, [tabindex="0"]'
-      );
-      focusable?.focus();
-      hadFocusRef.current = false;
-    }
-  }, [activeSlug]);
+    if (!hadFocusRef.current) return;
+    hadFocusRef.current = false;
+    leftColumnRef.current
+      ?.querySelector<HTMLElement>("[data-active] a[href], [data-active] button")
+      ?.focus({ preventScroll: true });
+  }, [activeIndex]);
 
-  // Track scrolling container to switch active content dynamically on scroll
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: scrollContainerRef,
-    offset: ["start start", "end end"],
-  });
-
-  // Automatically update active slug as user scrolls down through sticky section
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    // 6 services total:
-    // We map progress [0..1] so that services 0 to 4 each take 15% of the scroll track (0..0.75),
-    // and the 6th service (index 5) takes the remaining 25% (0.75..1.00).
-    // This guarantees the last service is 100% visible and fully readable while stationary,
-    // and only after scrolling through its full window does the next scroll advance to the next section.
-    let index = 0;
-    if (latest < 0.15) {
-      index = 0;
-    } else if (latest < 0.30) {
-      index = 1;
-    } else if (latest < 0.45) {
-      index = 2;
-    } else if (latest < 0.60) {
-      index = 3;
-    } else if (latest < 0.75) {
-      index = 4;
-    } else {
-      index = 5;
-    }
-
-    const targetSlug = services[index]?.slug;
-    if (targetSlug && targetSlug !== activeSlug) {
-      setActiveSlug(targetSlug);
-    }
-  });
-
-  const activeService =
-    services.find((s) => s.slug === activeSlug) ?? services[0] ?? allServices[0]!;
-  const theme = (activeService ? SERVICE_THEMES[activeService.slug] : undefined) ?? DEFAULT_THEME;
+  const activeService = services[activeIndex] ?? services[0] ?? allServices[0]!;
+  const theme = SERVICE_THEMES[activeService.slug] ?? DEFAULT_THEME;
 
   return (
     <section
@@ -148,25 +162,46 @@ export function ServicesSection() {
       className="relative w-full bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-300"
     >
       {/* Outer Scroll Track: pins heading + showcase in place across all 6 services with dedicated dwell for the last service */}
-      <div ref={scrollContainerRef} className="relative h-[420vh] sm:h-[480vh] w-full">
-        
-        {/* Sticky Viewport Container: Locks heading + showcase to screen below navbar */}
-        <div className="sticky top-14 sm:top-16 h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] w-full flex flex-col justify-between py-6 sm:py-8 overflow-hidden z-10">
-          
-          {/* Dynamic Ambient Background Glow */}
+      <div ref={scrollTrackRef} className="relative h-[420vh] sm:h-[480vh] w-full">
+
+        {/* Sticky Viewport Container: Locks heading + showcase to screen below navbar.
+            `svh`, not `vh`: on phones `100vh` is the LARGE viewport, so with
+            the URL bar showing, the bottom of the panel (the "Explore all
+            capabilities" link) sat underneath the browser chrome. */}
+        <div className="sticky top-14 sm:top-16 h-[calc(100svh-3.5rem)] sm:h-[calc(100svh-4rem)] w-full flex flex-col justify-between py-6 sm:py-8 overflow-hidden z-10">
+
+          {/* Dynamic Ambient Background Glow — one gradient layer per service,
+              cross-faded (see the component comment). Box = the old
+              55rem x 35rem blob grown by 2σ (σ = 140px) on each side. */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55rem] h-[35rem] rounded-full blur-[140px] opacity-15 dark:opacity-25 transition-all duration-700"
-            style={{ backgroundColor: theme.accent }}
-          />
+            className="pointer-events-none absolute inset-0 opacity-15 dark:opacity-25"
+          >
+            {services.map((s, i) => (
+              <div
+                key={s.slug}
+                className={cn(
+                  "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90rem] h-[70rem] transition-opacity duration-700",
+                  i === activeIndex ? "opacity-100" : "opacity-0",
+                )}
+                style={{
+                  backgroundImage: glowGradient(
+                    (SERVICE_THEMES[s.slug] ?? DEFAULT_THEME).accent,
+                  ),
+                }}
+              />
+            ))}
+          </div>
+          {/* Secondary glow: the old 30rem blob at bottom-10/right-10 under
+              blur(120px), grown by 2σ (240px) per side about the same centre. */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute bottom-10 right-10 w-[30rem] h-[30rem] rounded-full blur-[120px] opacity-10 dark:opacity-15"
-            style={{ backgroundColor: theme.accentLight }}
+            className="pointer-events-none absolute -bottom-[12.5rem] -right-[12.5rem] w-[60rem] h-[60rem] opacity-10 dark:opacity-15"
+            style={{ backgroundImage: glowGradient(theme.accentLight) }}
           />
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 z-10 w-full flex flex-col justify-between h-full">
-            
+
             {/* FIXED HEADING */}
             <div className="reveal-on-scroll text-center max-w-3xl mx-auto shrink-0 pt-2 sm:pt-4">
               <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
@@ -184,114 +219,106 @@ export function ServicesSection() {
 
             {/* 2-Column Showcase (Replaces content at exact same place) */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center my-auto py-1 sm:py-2">
-              
-              {/* LEFT COLUMN: Single Active Service (Replaces content at exact same place) */}
+
+              {/* LEFT COLUMN: all six services stacked in one grid cell; only
+                  the active one is visible, interactive and exposed to AT. */}
               <div
                 ref={leftColumnRef}
-                onFocusCapture={() => {
-                  hadFocusRef.current = true;
-                }}
-                onBlurCapture={(e) => {
-                  if (!leftColumnRef.current?.contains(e.relatedTarget as Node)) {
-                    hadFocusRef.current = false;
-                  }
-                }}
-                className="lg:col-span-6 flex flex-col justify-center min-h-[260px] sm:min-h-[300px]"
+                className="lg:col-span-6 grid items-center min-h-[260px] sm:min-h-[300px]"
               >
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeService.slug}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="space-y-3 sm:space-y-4"
-                  >
-                    {/* Service Title > */}
-                    <div>
-                      <Link
-                        href={activeService.href}
-                        onMouseEnter={prefetchLeadForm}
-                        className="group inline-flex items-center gap-2"
-                      >
-                        <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#8B4DFF] transition-colors">
-                          {activeService.title}
-                        </h3>
-                        <ChevronRight className="size-7 sm:size-8 text-[#7138FF] dark:text-[#8B4DFF] transition-transform group-hover:translate-x-1.5" />
-                      </Link>
-                    </div>
-
-                    {/* Tagline & Description */}
-                    <p className="font-sans text-[15px] sm:text-base md:text-lg text-slate-600 dark:text-white/80 leading-relaxed font-normal">
-                      {activeService.description}
-                    </p>
-
-                    {/* Core Capabilities 
-                    {activeService.highlights && (
-                      <div className="space-y-1 pt-0.5">
-                        <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-400 dark:text-white/50 block">
-                          Key Deliverables:
-                        </span>
-                        <div className="flex flex-wrap gap-1.5">
-                          {activeService.highlights.map((h) => (
-                            <span
-                              key={h}
-                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 dark:bg-white/[0.05] border border-slate-200 dark:border-white/10 text-slate-800 dark:text-white/90 backdrop-blur-md shadow-xs dark:shadow-none"
-                            >
-                              <CheckCircle2 className="size-3.5 text-purple-600 dark:text-purple-400 shrink-0" />
-                              {h}
-                            </span>
-                          ))}
-                        </div>
+                {services.map((service, i) => {
+                  const isActive = i === activeIndex;
+                  return (
+                    <div
+                      key={service.slug}
+                      data-active={isActive || undefined}
+                      aria-hidden={!isActive || undefined}
+                      inert={!isActive}
+                      className={cn(
+                        "[grid-area:1/1] space-y-3 sm:space-y-4 transition-[opacity,translate] duration-300 ease-in-out",
+                        isActive
+                          ? "opacity-100 translate-y-0 delay-150"
+                          : i < activeIndex
+                            ? "opacity-0 -translate-y-3 pointer-events-none"
+                            : "opacity-0 translate-y-3 pointer-events-none",
+                      )}
+                    >
+                      {/* Service Title > */}
+                      <div>
+                        <Link
+                          href={service.href}
+                          onMouseEnter={prefetchLeadForm}
+                          className="group inline-flex items-center gap-2"
+                        >
+                          <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#8B4DFF] transition-colors">
+                            {service.title}
+                          </h3>
+                          <ChevronRight className="size-7 sm:size-8 text-[#7138FF] dark:text-[#8B4DFF] transition-transform group-hover:translate-x-1.5" />
+                        </Link>
                       </div>
-                    )}*/}
 
-                    {/* Action Buttons */}
-                    <div className="pt-1.5 flex flex-wrap items-center gap-3">
-                      <button
-                        type="button"
-                        onClick={() => openModal(activeService.title)}
-                        className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-sans text-sm font-semibold bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 transition-all shadow-md dark:shadow-xl hover:scale-102 cursor-pointer"
-                      >
-                        Start a project
-                        <ArrowUpRight className="size-4" />
-                      </button>
+                      {/* Tagline & Description */}
+                      <p className="font-sans text-[15px] sm:text-base md:text-lg text-slate-600 dark:text-white/80 leading-relaxed font-normal">
+                        {service.description}
+                      </p>
 
-                      <Link
-                        href={activeService.href}
-                        onMouseEnter={prefetchLeadForm}
-                        className="inline-flex items-center gap-1.5 text-[13px] sm:text-sm font-medium text-slate-700 hover:text-slate-950 dark:text-white/80 dark:hover:text-white underline underline-offset-4 decoration-slate-300 hover:decoration-slate-950 dark:decoration-white/30 dark:hover:decoration-white transition-colors"
-                      >
-                        Explore capability
-                        <ArrowRight className="size-4" />
-                      </Link>
+                      {/* Action Buttons */}
+                      <div className="pt-1.5 flex flex-wrap items-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => openModal(service.title)}
+                          className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-sans text-sm font-semibold bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 transition-all shadow-md dark:shadow-xl hover:scale-102 cursor-pointer"
+                        >
+                          Start a project
+                          <ArrowUpRight className="size-4" />
+                        </button>
+
+                        <Link
+                          href={service.href}
+                          onMouseEnter={prefetchLeadForm}
+                          className="inline-flex items-center gap-1.5 text-[13px] sm:text-sm font-medium text-slate-700 hover:text-slate-950 dark:text-white/80 dark:hover:text-white underline underline-offset-4 decoration-slate-300 hover:decoration-slate-950 dark:decoration-white/30 dark:hover:decoration-white transition-colors"
+                        >
+                          Explore capability
+                          <ArrowRight className="size-4" />
+                        </Link>
+                      </div>
                     </div>
-
-                  </motion.div>
-                </AnimatePresence>
+                  );
+                })}
               </div>
 
-              {/* RIGHT COLUMN: Pinned 3D Visual */}
+              {/* RIGHT COLUMN: Pinned 3D Visual — all six images stacked and
+                  decoded ahead of time; a switch is a compositor cross-fade. */}
               <div className="lg:col-span-6 relative flex justify-center items-center py-1 lg:py-0">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeSlug}
-                    initial={{ opacity: 0, scale: 0.96, y: 6 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.96, y: -6 }}
-                    transition={{ duration: 0.35, ease: "easeInOut" }}
-                    className="relative w-full max-w-[500px] lg:max-w-[560px] flex items-center justify-center group"
-                  >
-                    <Image
-                      src={SERVICE_VISUALS[activeSlug] ?? DEFAULT_SERVICE_VISUAL}
-                      alt={`${activeService.title} platform visual`}
-                      width={1200}
-                      height={800}
-                      sizes="(max-width: 1024px) 100vw, 560px"
-                      className="w-full h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.25)] dark:drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)] transition-transform duration-500 group-hover:scale-103"
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                <div className="grid w-full max-w-[500px] lg:max-w-[560px] items-center justify-items-center">
+                  {services.map((service, i) => {
+                    const isActive = i === activeIndex;
+                    return (
+                      <div
+                        key={service.slug}
+                        aria-hidden={!isActive || undefined}
+                        className={cn(
+                          "[grid-area:1/1] relative w-full flex items-center justify-center group transition-[opacity,scale,translate] duration-350 ease-in-out",
+                          isActive
+                            ? "opacity-100 scale-100 translate-y-0"
+                            : cn(
+                                "opacity-0 scale-[0.96] pointer-events-none",
+                                i < activeIndex ? "-translate-y-1.5" : "translate-y-1.5",
+                              ),
+                        )}
+                      >
+                        <Image
+                          src={SERVICE_VISUALS[service.slug] ?? DEFAULT_SERVICE_VISUAL}
+                          alt={isActive ? `${service.title} platform visual` : ""}
+                          width={1200}
+                          height={800}
+                          sizes="(max-width: 1024px) 100vw, 560px"
+                          className="w-full h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.25)] dark:drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)] transition-transform duration-500 group-hover:scale-103"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
             </div>

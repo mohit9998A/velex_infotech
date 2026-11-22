@@ -1,5 +1,3 @@
-import ReactDOM from "react-dom";
-
 import { marketsShortLine, pageMetadata } from "@/lib/seo";
 import { HeroSection } from "@/components/sections/hero-section";
 import { LatestPostsSection } from "@/components/sections/latest-posts";
@@ -32,12 +30,9 @@ export const metadata = {
 };
 
 export default function HomePage() {
-  // Scoped here rather than in the root layout, where it fired on every route
-  // including /privacy-policy. React 19 hoists resource hints from Server
-  // Components into <head>. It matters more now than it did before: the Spline
-  // fetch is deliberately deferred to idle, so the connection wants warming.
-  ReactDOM.preconnect("https://prod.spline.design");
-
+  // No server-side Spline preconnect here any more: it was sent to phones,
+  // which never load the scene. The desktop-only gate in
+  // components/blocks/interactive-3d-robot.tsx now warms those origins itself.
   return (
     <>
       <HeroSection />

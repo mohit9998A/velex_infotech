@@ -22,7 +22,7 @@ export function CtaBanner() {
       {/* Ambient background glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[52rem] h-[30rem] bg-gradient-to-r from-blue-600/15 via-purple-600/25 to-pink-600/15 blur-3xl rounded-full opacity-70 dark:opacity-40"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[52rem] h-[30rem] bg-gradient-to-r from-blue-600/15 via-purple-600/25 to-pink-600/15 glow-soft opacity-70 dark:opacity-40"
       />
 
       <div className="reveal-on-scroll relative mx-auto max-w-4xl px-4 text-center sm:px-6">
