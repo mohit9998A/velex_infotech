@@ -68,8 +68,8 @@ export const siteConfig = {
    * indexing problem cannot be diagnosed — only guessed at.
    */
   verification: {
-    google: "",
-    bing: "",
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
+    bing: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION || "",
   },
   /**
    * GA4 measurement ID. Public by definition — it ships in the page source of
