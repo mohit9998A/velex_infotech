@@ -55,7 +55,7 @@ export function Footer() {
               {officesLine}.
             </p>
             <div className="mt-1 max-w-sm">
-              <p className="mb-2 font-mono text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">
+              <p className="mb-2 font-sans text-xs font-medium uppercase tracking-wider text-purple-600 dark:text-purple-400">
                 Join the intelligence brief
               </p>
               <NewsletterForm />
@@ -65,7 +65,7 @@ export function Footer() {
           {/* Link columns from nav groups */}
           {navGroups.map((group) => (
             <div key={group.label}>
-              <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 mb-4">
+              <h3 className="font-sans text-xs font-medium uppercase tracking-wider text-purple-600 dark:text-purple-400 mb-4">
                 {group.label}
               </h3>
               <ul className="flex flex-col gap-2.5 font-sans text-sm">

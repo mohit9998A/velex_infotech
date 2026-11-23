@@ -104,14 +104,14 @@ export default function LocationsHubPage() {
             {/* Aesthetic Kicker (design.md 4.2) */}
             <div className="flex items-center justify-center gap-3">
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                 GLOBAL DELIVERY FOOTPRINT
               </span>
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
             </div>
 
             {/* Main Headline (design.md 3.1 & 2.1) */}
-            <h1 className="mt-4 font-serif text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-balance leading-[1.08] text-[#0D0A24] dark:text-white">
+            <h1 className="mt-4 font-heading text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-balance leading-[1.08] text-[#0D0A24] dark:text-white">
               Where we{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5424D6] via-[#7138FF] to-[#8B4DFF] dark:from-[#A87FFF] dark:via-[#B99CFF] dark:to-white">
                 work
@@ -143,12 +143,12 @@ export default function LocationsHubPage() {
           <div className="text-center">
             <div className="flex items-center justify-center gap-3">
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                 ENGINEERING HUBS
               </span>
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
             </div>
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               Where our people are
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-base sm:text-lg text-slate-600 dark:text-white/70 font-sans">
@@ -167,10 +167,10 @@ export default function LocationsHubPage() {
                   <span className="inline-flex size-14 items-center justify-center rounded-2xl border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 text-[#7138FF] dark:text-[#8B4DFF] shadow-[0_4px_20px_rgba(113,56,255,0.25)] group-hover:scale-105 transition-transform">
                     <Building2 className="size-7" />
                   </span>
-                  <h3 className="mt-6 font-serif text-2xl font-bold text-[#0D0A24] dark:text-white">
+                  <h3 className="mt-6 font-heading text-2xl font-semibold text-[#0D0A24] dark:text-white">
                     {office.city}, {office.region}
                   </h3>
-                  <p className="mt-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-[#7138FF] dark:text-[#B99CFF]">
+                  <p className="mt-1.5 font-sans text-xs font-medium uppercase tracking-wider text-[#7138FF] dark:text-[#B99CFF]">
                     {office.hasAddress ? "Staffed Headquarters" : "Distributed Engineering Pod"}
                   </p>
                   <p className="mt-4 text-base text-slate-600 dark:text-white/70 font-sans leading-relaxed">
@@ -194,12 +194,12 @@ export default function LocationsHubPage() {
           <div className="text-center">
             <div className="flex items-center justify-center gap-3">
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                 CLIENT MARKETS
               </span>
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
             </div>
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               Where our clients are
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-base sm:text-lg text-slate-600 dark:text-white/70 font-sans">
@@ -218,10 +218,10 @@ export default function LocationsHubPage() {
                   <span className="inline-flex size-11 items-center justify-center rounded-xl border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 text-[#7138FF] dark:text-[#8B4DFF] group-hover:scale-105 transition-transform">
                     <Globe2 className="size-5" />
                   </span>
-                  <h3 className="mt-4 font-serif text-xl font-bold text-[#0D0A24] dark:text-white">
+                  <h3 className="mt-4 font-heading text-xl font-semibold text-[#0D0A24] dark:text-white">
                     {market.countryName}
                   </h3>
-                  <p className="mt-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-[#7138FF] dark:text-[#B99CFF]">
+                  <p className="mt-1.5 font-sans text-xs font-medium uppercase tracking-wider text-[#7138FF] dark:text-[#B99CFF]">
                     Invoiced in {market.currency}
                   </p>
                   <p className="mt-3 text-sm text-slate-600 dark:text-white/70 font-sans line-clamp-3 leading-relaxed">

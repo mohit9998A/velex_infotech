@@ -231,7 +231,7 @@ export function ProcessSection() {
         <div className="reveal-on-scroll relative text-center max-w-3xl mx-auto pb-6 sm:pb-10">
 
           {/* Headline */}
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white">
             From idea to{" "}
             <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               intelligence
@@ -363,7 +363,7 @@ export function ProcessSection() {
                   <div>
                     <div className="flex items-center justify-between">
                       <span
-                        className={`font-mono text-xs font-bold transition-colors duration-300 ${
+                        className={`font-sans text-xs font-bold transition-colors duration-300 ${
                           isActive
                             ? "text-[#7138FF] dark:text-[#8B4DFF]"
                             : "text-slate-500 dark:text-white/40"
@@ -375,7 +375,7 @@ export function ProcessSection() {
                         <Sparkles className="size-3.5 text-[#7138FF] dark:text-[#8B4DFF] animate-pulse" />
                       )}
                     </div>
-                    <h3 className="mt-1.5 font-serif text-2xl font-bold text-slate-900 dark:text-white">
+                    <h3 className="mt-1.5 font-heading text-2xl font-semibold text-slate-900 dark:text-white">
                       {step.title}
                     </h3>
                     <p className="mt-1.5 font-sans text-sm text-slate-600 dark:text-white/70 leading-relaxed line-clamp-3">
@@ -533,7 +533,7 @@ export function ProcessSection() {
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span
-                        className={`font-mono text-[10px] sm:text-xs font-bold transition-colors duration-300 ${
+                        className={`font-sans text-[10px] sm:text-xs font-bold transition-colors duration-300 ${
                           isActive
                             ? "text-[#7138FF] dark:text-[#8B4DFF]"
                             : "text-slate-500 dark:text-white/40"
@@ -542,7 +542,7 @@ export function ProcessSection() {
                         {step.index}
                       </span>
                     </div>
-                    <h3 className="font-serif text-lg sm:text-2xl font-bold text-slate-900 dark:text-white leading-tight">
+                    <h3 className="font-heading text-lg sm:text-2xl font-semibold text-slate-900 dark:text-white leading-tight">
                       {step.title}
                     </h3>
                     <p className="mt-1.5 font-sans text-[11px] sm:text-sm text-slate-600 dark:text-white/70 leading-relaxed line-clamp-3">
@@ -597,7 +597,7 @@ export function ProcessSection() {
             </div>
 
             {/* Stage Labels beneath the line */}
-            <div className="flex items-center justify-between font-mono text-[10px] sm:text-xs tracking-[0.2em] uppercase text-slate-500 dark:text-white/50">
+            <div className="flex items-center justify-between font-sans text-[10px] sm:text-xs tracking-[0.2em] uppercase text-slate-500 dark:text-white/50">
               {TIMELINE_STAGES.map((stage, i) => {
                 const isHighlighted = (i / (TIMELINE_STAGES.length - 1)) <= progress;
                 return (

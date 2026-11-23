@@ -13,7 +13,7 @@ import Link from "next/link";
 const components: MDXComponents = {
   h2: ({ children, ...props }) => (
     <h2
-      className="mt-14 scroll-mt-28 font-serif text-2xl sm:text-3xl font-bold tracking-tight text-[#0D0A24] dark:text-white text-balance"
+      className="mt-14 scroll-mt-28 font-heading text-2xl sm:text-3xl font-bold tracking-tight text-[#0D0A24] dark:text-white text-balance"
       {...props}
     >
       {children}
@@ -21,7 +21,7 @@ const components: MDXComponents = {
   ),
   h3: ({ children, ...props }) => (
     <h3
-      className="mt-10 scroll-mt-28 font-serif text-xl sm:text-2xl font-bold text-[#0D0A24] dark:text-white"
+      className="mt-10 scroll-mt-28 font-heading text-xl sm:text-2xl font-semibold text-[#0D0A24] dark:text-white"
       {...props}
     >
       {children}
@@ -63,7 +63,7 @@ const components: MDXComponents = {
   ),
   blockquote: ({ children, ...props }) => (
     <blockquote
-      className="mt-6 border-l-2 border-[#7138FF] dark:border-[#8B4DFF] pl-5 font-serif text-lg italic text-[#0D0A24] dark:text-white leading-relaxed"
+      className="mt-6 border-l-2 border-[#7138FF] dark:border-[#8B4DFF] pl-5 font-heading text-lg font-medium text-[#0D0A24] dark:text-white leading-relaxed"
       {...props}
     >
       {children}
@@ -106,7 +106,7 @@ const components: MDXComponents = {
   ),
   th: ({ children, ...props }) => (
     <th
-      className="border-b border-slate-200/90 dark:border-white/[0.08] bg-slate-100/70 dark:bg-white/[0.04] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[#0D0A24] dark:text-white font-semibold"
+      className="border-b border-slate-200/90 dark:border-white/[0.08] bg-slate-100/70 dark:bg-white/[0.04] px-4 py-3 font-sans text-xs uppercase tracking-wider text-[#0D0A24] dark:text-white font-medium"
       {...props}
     >
       {children}

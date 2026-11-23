@@ -118,7 +118,7 @@ export default function LudhianaPage() {
 
           <span className="badge-pill w-fit">
             <MapPin className="size-3.5 text-gold" />
-            <span className="font-mono-label text-primary">Ludhiana, Punjab</span>
+            <span className="font-label text-primary">Ludhiana, Punjab</span>
           </span>
 
           <h1 className="mt-6 font-display text-h1 text-balance text-primary">
@@ -139,7 +139,7 @@ export default function LudhianaPage() {
             <div className="glass-card flex items-start gap-3 p-5">
               <MapPin className="mt-0.5 size-5 shrink-0 text-purple-glow" />
               <span className="flex flex-col">
-                <span className="font-mono-label text-muted">Office</span>
+                <span className="font-label text-muted">Office</span>
                 <span className="text-primary">Ludhiana, Punjab 141001</span>
               </span>
             </div>
@@ -149,14 +149,14 @@ export default function LudhianaPage() {
             >
               <Phone className="mt-0.5 size-5 shrink-0 text-purple-glow" />
               <span className="flex flex-col">
-                <span className="font-mono-label text-muted">Call</span>
+                <span className="font-label text-muted">Call</span>
                 <span className="text-primary">{siteConfig.phoneDisplay}</span>
               </span>
             </a>
             <div className="glass-card flex items-start gap-3 p-5">
               <Clock className="mt-0.5 size-5 shrink-0 text-purple-glow" />
               <span className="flex flex-col">
-                <span className="font-mono-label text-muted">Hours</span>
+                <span className="font-label text-muted">Hours</span>
                 <span className="text-primary">Mon–Fri, 9am–7pm</span>
               </span>
             </div>

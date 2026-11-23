@@ -33,7 +33,7 @@ export function PortfolioPreview({
         <span className="size-2 shrink-0 rounded-full bg-error/70" />
         <span className="size-2 shrink-0 rounded-full bg-warning/70" />
         <span className="size-2 shrink-0 rounded-full bg-success/70" />
-        <span className="ml-2 truncate font-mono text-xs text-secondary">
+        <span className="ml-2 truncate font-sans text-xs text-secondary">
           {label}
         </span>
       </div>
@@ -48,7 +48,7 @@ export function PortfolioPreview({
         {/* Hover Overlay Badge */}
         {item.external && item.href && (
           <div className="pointer-events-none absolute inset-0 bg-slate-950/30 backdrop-blur-[2px] opacity-0 group-hover/media:opacity-100 transition-all duration-300 flex items-center justify-center z-20">
-            <div className="inline-flex items-center gap-2 px-4.5 py-2.5 rounded-full bg-slate-950/90 text-white dark:bg-white dark:text-slate-950 border border-white/20 dark:border-slate-800 font-mono text-xs font-semibold shadow-2xl transition-transform duration-300 scale-90 group-hover/media:scale-100">
+            <div className="inline-flex items-center gap-2 px-4.5 py-2.5 rounded-full bg-slate-950/90 text-white dark:bg-white dark:text-slate-950 border border-white/20 dark:border-slate-800 font-sans text-xs font-semibold shadow-2xl transition-transform duration-300 scale-90 group-hover/media:scale-100">
               <span>Click to open project</span>
               <ArrowUpRight className="size-4" />
             </div>

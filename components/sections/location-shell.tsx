@@ -78,7 +78,7 @@ export function LocationShell({
             </div>
 
             {/* Main Headline (design.md 3.1 & 2.1) */}
-            <h1 className="mt-4 font-serif text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-balance leading-[1.08] text-[#0D0A24] dark:text-white">
+            <h1 className="mt-4 font-heading text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-balance leading-[1.08] text-[#0D0A24] dark:text-white">
               {h1}
             </h1>
 
@@ -113,10 +113,10 @@ export function LocationShell({
                 key={fact.label}
                 className="rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md"
               >
-                <dt className="font-mono text-xs font-semibold uppercase tracking-wider text-[#7138FF] dark:text-[#8B4DFF]">
+                <dt className="font-sans text-xs font-medium uppercase tracking-wider text-[#7138FF] dark:text-[#8B4DFF]">
                   {fact.label}
                 </dt>
-                <dd className="mt-1.5 font-serif text-lg font-bold text-[#0D0A24] dark:text-white">
+                <dd className="mt-1.5 font-heading text-lg font-semibold text-[#0D0A24] dark:text-white">
                   {fact.value}
                 </dd>
               </div>
@@ -132,12 +132,12 @@ export function LocationShell({
             <div className="text-center">
               <div className="flex items-center justify-center gap-3">
                 <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-                <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+                <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                   WORKING HOURS OVERLAP
                 </span>
                 <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
               </div>
-              <h2 className="mt-3 font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+              <h2 className="mt-3 font-heading text-3xl sm:text-4xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
                 When you can actually reach us
               </h2>
               <p className="mx-auto mt-2 text-sm sm:text-base text-slate-600 dark:text-white/70 font-sans">
@@ -149,10 +149,10 @@ export function LocationShell({
               <table className="w-full min-w-[32rem] border-collapse text-left">
                 <thead>
                   <tr className="border-b border-slate-200/80 dark:border-white/[0.08]">
-                    <th className="py-3 px-4 font-mono text-xs uppercase tracking-wider text-[#0D0A24] dark:text-white font-semibold">
+                    <th className="py-3 px-4 font-sans text-xs uppercase tracking-wider text-[#0D0A24] dark:text-white font-medium">
                       Your time zone
                     </th>
-                    <th className="py-3 px-4 font-mono text-xs uppercase tracking-wider text-[#0D0A24] dark:text-white font-semibold">
+                    <th className="py-3 px-4 font-sans text-xs uppercase tracking-wider text-[#0D0A24] dark:text-white font-medium">
                       Live overlap with our teams
                     </th>
                   </tr>
@@ -163,7 +163,7 @@ export function LocationShell({
                       key={row.market}
                       className="border-b border-slate-200/60 dark:border-white/[0.04] last:border-0"
                     >
-                      <td className="py-3.5 px-4 font-semibold text-[#0D0A24] dark:text-white font-serif text-base">
+                      <td className="py-3.5 px-4 font-semibold text-[#0D0A24] dark:text-white font-heading text-base">
                         {row.market}
                       </td>
                       <td className="py-3.5 px-4 text-sm text-slate-600 dark:text-white/70 font-sans">
@@ -184,12 +184,12 @@ export function LocationShell({
           <div className="text-center">
             <div className="flex items-center justify-center gap-3">
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                 MARKET CONTEXT
               </span>
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
             </div>
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               What this market actually needs
             </h2>
           </div>
@@ -201,10 +201,10 @@ export function LocationShell({
                 className="group relative rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-7 sm:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-purple-400/80 dark:hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/10 flex flex-col justify-between"
               >
                 <div>
-                  <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[#7138FF] dark:text-[#8B4DFF]">
+                  <span className="font-sans text-xs font-medium uppercase tracking-wider text-[#7138FF] dark:text-[#8B4DFF]">
                     0{idx + 1} {"//"} INSIGHT
                   </span>
-                  <h3 className="mt-2 font-serif text-xl font-bold text-[#0D0A24] dark:text-white">
+                  <h3 className="mt-2 font-heading text-xl font-semibold text-[#0D0A24] dark:text-white">
                     {item.title}
                   </h3>
                   <p className="mt-2.5 text-sm sm:text-base text-slate-600 dark:text-white/70 font-sans leading-relaxed">
@@ -223,12 +223,12 @@ export function LocationShell({
           <div className="text-center">
             <div className="flex items-center justify-center gap-3">
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                 GOVERNANCE &amp; SECURITY
               </span>
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
             </div>
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               {compliance.heading}
             </h2>
           </div>
@@ -263,12 +263,12 @@ export function LocationShell({
           <div className="text-center">
             <div className="flex items-center justify-center gap-3">
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                 RECOMMENDED SERVICES
               </span>
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
             </div>
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               {servicesTitle}
             </h2>
           </div>
@@ -286,7 +286,7 @@ export function LocationShell({
                     <span className="inline-flex size-11 items-center justify-center rounded-xl border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 text-[#7138FF] dark:text-[#8B4DFF] group-hover:scale-105 transition-transform">
                       <Icon className="size-5" />
                     </span>
-                    <h3 className="mt-4 font-serif text-lg font-bold text-[#0D0A24] dark:text-white">
+                    <h3 className="mt-4 font-heading text-lg font-semibold text-[#0D0A24] dark:text-white">
                       {s.title}
                     </h3>
                     <p className="mt-1.5 text-sm text-slate-600 dark:text-white/70 font-sans line-clamp-2">
@@ -314,11 +314,11 @@ export function LocationShell({
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="flex items-center gap-3">
               <span className="h-[2px] w-6 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#8B4DFF]">
                 GLOBAL PRESENCE
               </span>
             </div>
-            <h2 className="mt-3 font-serif text-2xl sm:text-3xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="mt-3 font-heading text-2xl sm:text-3xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               Other places we work
             </h2>
 
@@ -330,7 +330,7 @@ export function LocationShell({
                     className="group rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-purple-400/80 dark:hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/10 flex h-full flex-col justify-between"
                   >
                     <div>
-                      <h3 className="font-serif text-xl font-bold text-[#0D0A24] dark:text-white">
+                      <h3 className="font-heading text-xl font-semibold text-[#0D0A24] dark:text-white">
                         {sib.name}
                       </h3>
                       <p className="mt-2.5 text-sm text-slate-600 dark:text-white/70 font-sans leading-relaxed">

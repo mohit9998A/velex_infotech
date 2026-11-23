@@ -117,7 +117,7 @@ export default async function BlogPostPage({
               <span>THE INTELLIGENCE BRIEF</span>
             </div>
 
-            <h1 className="mt-4 font-serif text-[clamp(2.2rem,4.8vw,3.8rem)] font-bold tracking-tight text-balance leading-[1.12] text-[#0D0A24] dark:text-white">
+            <h1 className="mt-4 font-heading text-[clamp(2.2rem,4.8vw,3.8rem)] font-bold tracking-tight text-balance leading-[1.12] text-[#0D0A24] dark:text-white">
               {post.title}
             </h1>
 
@@ -125,7 +125,7 @@ export default async function BlogPostPage({
               {post.description}
             </p>
 
-            <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-y border-slate-200/80 dark:border-white/[0.08] py-4 font-mono text-xs font-semibold text-slate-500 dark:text-white/60 uppercase tracking-wider">
+            <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-y border-slate-200/80 dark:border-white/[0.08] py-4 font-sans text-xs font-medium text-slate-500 dark:text-white/60 uppercase tracking-wider">
               <span>
                 By{" "}
                 <Link
@@ -163,11 +163,11 @@ export default async function BlogPostPage({
             <aside className="mt-16 border-t border-slate-200/80 dark:border-white/[0.08] pt-12">
               <div className="flex items-center gap-3">
                 <span className="h-[2px] w-6 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-                <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#8B4DFF]">
+                <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#8B4DFF]">
                   RELATED SERVICES
                 </span>
               </div>
-              <h2 className="mt-3 font-serif text-2xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+              <h2 className="mt-3 font-heading text-2xl font-semibold tracking-tight text-[#0D0A24] dark:text-white">
                 Capabilities referenced in this brief
               </h2>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -183,7 +183,7 @@ export default async function BlogPostPage({
                         <span className="inline-flex size-10 items-center justify-center rounded-xl border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 text-[#7138FF] dark:text-[#8B4DFF] group-hover:scale-105 transition-transform">
                           <Icon className="size-5" />
                         </span>
-                        <h3 className="mt-3 font-serif text-lg font-bold text-[#0D0A24] dark:text-white">
+                        <h3 className="mt-3 font-heading text-lg font-semibold text-[#0D0A24] dark:text-white">
                           {s.title}
                         </h3>
                         <p className="mt-1 text-sm text-slate-600 dark:text-white/70 font-sans line-clamp-2">
@@ -204,7 +204,7 @@ export default async function BlogPostPage({
           {/* More Articles */}
           {more.length > 0 && (
             <aside className="mt-16 border-t border-slate-200/80 dark:border-white/[0.08] pt-12">
-              <h2 className="font-serif text-2xl font-bold text-[#0D0A24] dark:text-white">
+              <h2 className="font-heading text-2xl font-semibold text-[#0D0A24] dark:text-white">
                 More from The Intelligence Brief
               </h2>
               <ul className="mt-6 space-y-4">
@@ -215,7 +215,7 @@ export default async function BlogPostPage({
                       className="group flex flex-col sm:flex-row sm:items-center sm:justify-between rounded-xl border border-slate-200/90 dark:border-white/[0.08] bg-white/60 dark:bg-white/[0.02] p-4 transition-all hover:border-purple-400/80 hover:bg-white dark:hover:bg-white/[0.05]"
                     >
                       <div>
-                        <h3 className="font-serif text-base font-bold text-[#0D0A24] dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#B99CFF] transition-colors">
+                        <h3 className="font-heading text-base font-semibold text-[#0D0A24] dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#B99CFF] transition-colors">
                           {p.title}
                         </h3>
                         <p className="mt-1 text-xs text-slate-500 dark:text-white/60 line-clamp-1">

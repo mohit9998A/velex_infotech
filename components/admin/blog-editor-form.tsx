@@ -115,7 +115,7 @@ export function BlogEditorForm({
         <span className="font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-[#7138FF] dark:text-[#8B4DFF]">
           {isEditing ? "EDIT POST" : "CREATE NEW POST"}
         </span>
-        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0D0A24] dark:text-white">
+        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-[#0D0A24] dark:text-white">
           {isEditing ? `Editing "${initialData?.title || "Blog Post"}"` : "Draft a New Blog Post"}
         </h1>
       </div>

@@ -51,7 +51,7 @@ export function AdminLogin({ onSuccess }: AdminLoginProps) {
             <ShieldCheck className="size-6 sm:size-7" />
           </div>
 
-          <h1 className="mt-4 sm:mt-5 font-serif text-xl sm:text-2xl font-bold text-[#0D0A24] dark:text-white">
+          <h1 className="mt-4 sm:mt-5 font-heading text-xl sm:text-2xl font-bold text-[#0D0A24] dark:text-white">
             Admin Authentication
           </h1>
           <p className="mt-1.5 text-xs sm:text-sm text-slate-600 dark:text-white/60">

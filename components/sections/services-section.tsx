@@ -268,7 +268,7 @@ export function ServicesSection() {
 
             {/* FIXED HEADING */}
             <div className="reveal-on-scroll text-center max-w-3xl mx-auto shrink-0 pt-2 sm:pt-4">
-              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
+              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white">
                 Intelligent systems. <br className="hidden sm:inline" />
                 <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
                   Built to move business forward.
@@ -325,7 +325,7 @@ export function ServicesSection() {
                           onMouseEnter={prefetchLeadForm}
                           className="group inline-flex items-center gap-2"
                         >
-                          <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#8B4DFF] transition-colors">
+                          <h3 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#8B4DFF] transition-colors">
                             <span className="sr-only">{service.title}</span>
                             <TypedTitle text={service.title} active={isActive} inView={inView} />
                           </h3>

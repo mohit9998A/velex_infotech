@@ -62,22 +62,22 @@ export function LeadFormAside({ isDialog = true }: { isDialog?: boolean } = {}) 
               aria-hidden="true"
               className="h-[2px] w-5 sm:w-6 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]"
             />
-            <span className="font-mono text-[10.5px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#8B4DFF]">
+            <span className="font-sans text-[10.5px] sm:text-[11px] font-medium uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#8B4DFF]">
               Free Strategy Call
             </span>
           </div>
 
           {isDialog ? (
-            <DialogTitle className="font-serif text-2xl sm:text-3xl lg:text-[1.75rem] xl:text-[2rem] 2xl:text-[2.25rem] font-medium leading-[1.1] text-primary tracking-tight">
+            <DialogTitle className="font-heading text-2xl sm:text-3xl lg:text-[1.75rem] xl:text-[2rem] 2xl:text-[2.25rem] font-bold leading-[1.1] text-primary tracking-tight">
               Let&apos;s Build Your
               <br />
-              <span className="text-gradient-purple font-serif">AI Advantage</span>
+              <span className="text-gradient-purple font-heading">AI Advantage</span>
             </DialogTitle>
           ) : (
-            <h1 className="font-serif text-2xl sm:text-3xl lg:text-[1.75rem] xl:text-[2rem] 2xl:text-[2.25rem] font-medium leading-[1.1] text-primary tracking-tight">
+            <h1 className="font-heading text-2xl sm:text-3xl lg:text-[1.75rem] xl:text-[2rem] 2xl:text-[2.25rem] font-bold leading-[1.1] text-primary tracking-tight">
               Let&apos;s Build Your
               <br />
-              <span className="text-gradient-purple font-serif">AI Advantage</span>
+              <span className="text-gradient-purple font-heading">AI Advantage</span>
             </h1>
           )}
 

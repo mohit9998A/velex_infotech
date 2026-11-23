@@ -108,7 +108,7 @@ export function Navbar() {
                   <div className="w-[460px] p-3.5 bg-white/95 dark:bg-[#070611]/95 backdrop-blur-2xl border border-slate-200/90 dark:border-white/12 rounded-3xl shadow-2xl shadow-purple-500/10">
                     <div className="space-y-2">
                       <div className="flex items-center justify-between px-1">
-                        <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-500 dark:text-white/40">
+                        <span className="font-sans text-[10px] font-medium uppercase tracking-widest text-slate-500 dark:text-white/40">
                           {group.label} Capabilities
                         </span>
                       </div>
@@ -149,7 +149,7 @@ export function Navbar() {
 
                     {/* Bottom Footer Bar */}
                     <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-white/10 px-1 flex items-center justify-between">
-                      <span className="text-[11px] font-mono text-slate-500 dark:text-white/40 flex items-center gap-1.5">
+                      <span className="text-[11px] font-sans text-slate-500 dark:text-white/40 flex items-center gap-1.5">
                         
                         Need a custom AI or software solution?
                       </span>
@@ -218,7 +218,7 @@ export function Navbar() {
 
                 {/* Top / Middle Rotated Text */}
                 <div className="flex flex-col items-center gap-3 pt-6 z-10">
-                  <span className="[writing-mode:vertical-rl] rotate-180 font-mono text-[9px] sm:text-[10px] tracking-[0.28em] uppercase text-[#7138FF]/75 dark:text-[#B99CFF]/75 font-bold">
+                  <span className="[writing-mode:vertical-rl] rotate-180 font-sans text-[9px] sm:text-[10px] tracking-[0.28em] uppercase text-[#7138FF]/75 dark:text-[#B99CFF]/75 font-medium">
                     BUILD WHAT&apos;S NEXT
                   </span>
                   <div className="w-px h-10 bg-[#7138FF]/30 dark:bg-[#B99CFF]/30" />
@@ -226,7 +226,7 @@ export function Navbar() {
 
                 {/* Bottom Slogan & Avatar */}
                 <div className="flex flex-col items-center gap-4 pb-2 z-10">
-                  <div className="font-mono text-[8px] sm:text-[8.5px] tracking-[0.2em] uppercase text-[#7138FF]/70 dark:text-[#B99CFF]/70 text-center leading-tight">
+                  <div className="font-sans text-[8px] sm:text-[8.5px] tracking-[0.2em] uppercase text-[#7138FF]/70 dark:text-[#B99CFF]/70 text-center leading-tight">
                     <div>SMARTER</div>
                     <div>FASTER</div>
                     <div>TOGETHER</div>
@@ -246,7 +246,7 @@ export function Navbar() {
                   <div className="flex items-start justify-between">
                     <div>
                       <Logo />
-                      <p className="font-mono text-[8px] sm:text-[9px] tracking-[0.22em] uppercase text-slate-500 dark:text-white/40 mt-1 pl-0.5">
+                      <p className="font-sans text-[8px] sm:text-[9px] tracking-[0.22em] uppercase text-slate-500 dark:text-white/40 mt-1 pl-0.5">
                         IDEAS &bull; ENGINEERING &bull; IMPACT
                       </p>
                     </div>

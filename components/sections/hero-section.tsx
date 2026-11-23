@@ -84,13 +84,13 @@ export function HeroSection() {
               aria-hidden="true"
               className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]"
             />
-            <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+            <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
               AI &nbsp;&times;&nbsp; SOFTWARE &nbsp;&times;&nbsp; REAL IMPACT
             </span>
           </div>
 
           {/* Mobile Headline (strictly < md, matching mockup with cursive "with") */}
-          <h1 className="md:hidden font-serif text-[clamp(2.4rem,10vw,3.2rem)] font-medium tracking-tight text-primary leading-[1.08]">
+          <h1 className="md:hidden font-heading text-[clamp(2.4rem,10vw,3.2rem)] font-bold tracking-tight text-primary leading-[1.08]">
             <span className="block py-0.5">Technology that</span>
             <span className="block py-0.5">moves your</span>
             <span className="flex items-baseline gap-[0.3em] py-0.5">
@@ -113,7 +113,7 @@ export function HeroSection() {
           </h1>
 
           {/* Desktop Headline (strictly >= md, 100% UNTOUCHED) */}
-          <h1 className="hidden md:block font-serif text-[clamp(2.35rem,5.2vw,4.25rem)] font-medium tracking-tight text-primary leading-[1.08]">
+          <h1 className="hidden md:block font-heading text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-primary leading-[1.08]">
             <span className="block overflow-hidden py-1">
               <span
                 className="hero-word inline-block"

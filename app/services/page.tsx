@@ -109,11 +109,11 @@ export default function ServicesIndexPage() {
                 Our Services
               </div>
 
-              {/* Main Heading with Playfair Display editorial typography (design.md section 3) */}
-              <h1 className="mt-5 font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] font-bold leading-[1.08] tracking-tight text-[#0D0A24] dark:text-[#F8F7FF] text-balance">
+              {/* Main heading: IBM Plex Sans, accent line in brand purple (design.md section 3) */}
+              <h1 className="mt-5 font-heading text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] font-bold leading-[1.08] tracking-tight text-[#0D0A24] dark:text-[#F8F7FF] text-balance">
                 AI, data &amp;
                 <br />
-                <span className="font-serif italic font-normal text-[#7138FF] dark:text-[#8B4DFF] block mt-1">
+                <span className="font-heading text-[#7138FF] dark:text-[#8B4DFF] block mt-1">
                   software services
                 </span>
               </h1>
@@ -167,7 +167,7 @@ export default function ServicesIndexPage() {
           <div className="reveal-on-scroll flex flex-col items-center text-center mx-auto max-w-2xl gap-3">
             <div className="flex items-center justify-center gap-3">
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                 What We Build
               </span>
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
@@ -237,7 +237,7 @@ export default function ServicesIndexPage() {
                           {service.badge ?? "Verified"}
                         </span>
                       </div>
-                      <p className="mt-1.5 font-mono text-[11px] font-semibold text-[#5424D6] dark:text-[#B99CFF] uppercase tracking-[0.18em]">
+                      <p className="mt-1.5 font-sans text-[11px] font-medium text-[#5424D6] dark:text-[#B99CFF] uppercase tracking-[0.18em]">
                         {service.tagline}
                       </p>
                     </div>
@@ -263,7 +263,7 @@ export default function ServicesIndexPage() {
 
                     {/* Top: Category & Badge */}
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#B99CFF]">
+                      <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#B99CFF]">
                         {service.segment ?? "Service"} · {service.title}
                       </span>
                       {service.badge && (

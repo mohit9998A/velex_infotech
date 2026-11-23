@@ -141,7 +141,7 @@ export default function HealthcarePage() {
             </div>
 
             {/* Main Headline (design.md 3.1 & 2.1) */}
-            <h1 className="mt-4 font-serif text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-balance leading-[1.08] text-[#0D0A24] dark:text-white">
+            <h1 className="mt-4 font-heading text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-balance leading-[1.08] text-[#0D0A24] dark:text-white">
               Custom{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5424D6] via-[#7138FF] to-[#8B4DFF] dark:from-[#A87FFF] dark:via-[#B99CFF] dark:to-white">
                 healthcare software
@@ -186,13 +186,13 @@ export default function HealthcarePage() {
             {/* Aesthetic Kicker (design.md 4.2) */}
             <div className="flex items-center justify-center gap-3">
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                 CORE ARCHITECTURES
               </span>
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
             </div>
 
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               Systems healthcare businesses actually ask for
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-base sm:text-lg text-slate-600 dark:text-white/70 font-sans">
@@ -207,10 +207,10 @@ export default function HealthcarePage() {
                 className="group relative rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-7 sm:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-purple-400/80 dark:hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/10 flex flex-col justify-between"
               >
                 <div>
-                  <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[#7138FF] dark:text-[#8B4DFF]">
+                  <span className="font-sans text-xs font-medium uppercase tracking-wider text-[#7138FF] dark:text-[#8B4DFF]">
                     0{idx + 1} {"//"} DOMAIN SYSTEM
                   </span>
-                  <h3 className="mt-3 font-serif text-xl font-bold text-[#0D0A24] dark:text-white">
+                  <h3 className="mt-3 font-heading text-xl font-semibold text-[#0D0A24] dark:text-white">
                     {item.title}
                   </h3>
                   <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-white/70 font-sans leading-relaxed">
@@ -230,13 +230,13 @@ export default function HealthcarePage() {
             {/* Aesthetic Kicker (design.md 4.2) */}
             <div className="flex items-center justify-center gap-3">
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                 COMPLIANCE POSTURE
               </span>
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
             </div>
 
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               What we hold, and what we don&apos;t
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-base sm:text-lg text-slate-600 dark:text-white/70 font-sans">
@@ -249,7 +249,7 @@ export default function HealthcarePage() {
             <div className="flex items-start gap-4">
               <ShieldAlert className="mt-1 size-6 shrink-0 text-amber-500" />
               <div>
-                <h3 className="font-serif text-xl font-bold text-[#0D0A24] dark:text-white">
+                <h3 className="font-heading text-xl font-semibold text-[#0D0A24] dark:text-white">
                   Velex Infotech holds no HIPAA, HITRUST or SOC 2 attestation
                 </h3>
                 <p className="mt-2.5 text-sm sm:text-base text-slate-600 dark:text-white/80 font-sans leading-relaxed">
@@ -266,7 +266,7 @@ export default function HealthcarePage() {
           </div>
 
           {/* Technical Safeguards Grid */}
-          <h3 className="mt-12 font-serif text-2xl font-bold text-[#0D0A24] dark:text-white">
+          <h3 className="mt-12 font-heading text-2xl font-semibold text-[#0D0A24] dark:text-white">
             Technical safeguards we build in as standard
           </h3>
           <ul className="mt-6 flex flex-col gap-3">
@@ -292,13 +292,13 @@ export default function HealthcarePage() {
             {/* Aesthetic Kicker (design.md 4.2) */}
             <div className="flex items-center justify-center gap-3">
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                 INTEGRATED CAPABILITIES
               </span>
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
             </div>
 
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               What a healthcare build usually draws on
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-base sm:text-lg text-slate-600 dark:text-white/70 font-sans">
@@ -319,7 +319,7 @@ export default function HealthcarePage() {
                     <span className="inline-flex size-11 items-center justify-center rounded-xl border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 text-[#7138FF] dark:text-[#8B4DFF] group-hover:scale-105 transition-transform">
                       <Icon className="size-5" />
                     </span>
-                    <h3 className="mt-4 font-serif text-lg font-bold text-[#0D0A24] dark:text-white">
+                    <h3 className="mt-4 font-heading text-lg font-semibold text-[#0D0A24] dark:text-white">
                       {s.title}
                     </h3>
                     <p className="mt-1.5 text-sm text-slate-600 dark:text-white/70 font-sans line-clamp-2">

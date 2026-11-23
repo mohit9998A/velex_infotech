@@ -54,7 +54,7 @@ const wordmarks: Record<string, ReactNode> = {
   "Shudhi Herbals": (
     <span className="flex flex-col items-center leading-none">
       <span className="font-serif text-[1.3rem] font-medium italic sm:text-[1.42rem]">Shudhi</span>
-      <span className="mt-1 pl-[0.45em] font-mono text-[0.5rem] uppercase tracking-[0.45em] sm:text-[0.55rem]">
+      <span className="mt-1 pl-[0.45em] font-sans text-[0.5rem] uppercase tracking-[0.45em] sm:text-[0.55rem]">
         Herbals
       </span>
     </span>
@@ -156,7 +156,7 @@ export function TrustPanel({
                   {markets.map((m) => (
                     <span
                       key={m.id}
-                      className="grid size-8 place-items-center rounded-full border-2 border-white bg-gradient-to-br from-[#8B4DFF] to-[#5424D6] font-mono text-[10px] font-bold text-white sm:size-9 dark:border-[#0A0818]"
+                      className="grid size-8 place-items-center rounded-full border-2 border-white bg-gradient-to-br from-[#8B4DFF] to-[#5424D6] font-sans text-[10px] font-bold text-white sm:size-9 dark:border-[#0A0818]"
                     >
                       {m.shortName.length <= 3 ? m.shortName : m.countryCode}
                     </span>

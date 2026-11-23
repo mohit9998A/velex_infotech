@@ -29,7 +29,7 @@ export function CtaBanner() {
        
 
         {/* Headline */}
-        <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white max-w-3xl mx-auto">
+        <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white max-w-3xl mx-auto">
           Ready to transform{" "}
           <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
             your business?

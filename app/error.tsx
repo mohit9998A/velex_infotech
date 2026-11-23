@@ -29,7 +29,7 @@ export default function Error({
       <div className="pointer-events-none absolute -top-24 left-1/2 size-[40rem] -translate-x-1/2 glow-blob" />
 
       <div className="relative mx-auto max-w-xl px-4 text-center sm:px-6">
-        <span className="font-mono-label text-purple-glow">Something broke</span>
+        <span className="font-label text-purple-glow">Something broke</span>
         <h1 className="mt-4 font-display text-h1 text-balance text-primary">
           This page didn&apos;t load
         </h1>
@@ -55,7 +55,7 @@ export default function Error({
         </div>
 
         {error.digest && (
-          <p className="mt-8 font-mono-label text-muted">
+          <p className="mt-8 font-label text-muted">
             Reference: {error.digest}
           </p>
         )}

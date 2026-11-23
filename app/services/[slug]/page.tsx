@@ -140,7 +140,7 @@ export default async function ServicePage({
               />
 
               {/* Title & Tagline (design.md 3.1 & 2.1) */}
-              <h1 className="font-serif text-[clamp(2.35rem,5vw,4.25rem)] font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#5424D6] via-[#7138FF] to-[#8B4DFF] dark:from-[#A87FFF] dark:via-[#B99CFF] dark:to-white leading-[1.08]">
+              <h1 className="font-heading text-[clamp(2.35rem,5vw,4.25rem)] font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#5424D6] via-[#7138FF] to-[#8B4DFF] dark:from-[#A87FFF] dark:via-[#B99CFF] dark:to-white leading-[1.08]">
                 {service.title}
               </h1>
               <p className="mt-3 text-2xl sm:text-3xl font-display font-semibold tracking-[-0.02em] text-[#0D0A24] dark:text-white">
@@ -201,7 +201,7 @@ export default async function ServicePage({
                         {renderMetricIcon(m.icon)}
                       </div>
                       <div>
-                        <div className="font-display text-xl sm:text-2xl font-extrabold tracking-[-0.03em] text-[#0D0A24] dark:text-white">
+                        <div className="font-display text-xl sm:text-2xl font-bold tracking-[-0.03em] text-[#0D0A24] dark:text-white">
                           {m.value}
                         </div>
                         <div className="font-sans text-xs font-medium text-slate-600 dark:text-[#B99CFF]/80 leading-snug">
@@ -256,7 +256,7 @@ export default async function ServicePage({
                   key={b.title}
                   className="rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-purple-400/80 dark:hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/10"
                 >
-                  <h3 className="font-serif text-xl font-semibold text-[#0D0A24] dark:text-white">
+                  <h3 className="font-heading text-xl font-semibold text-[#0D0A24] dark:text-white">
                     {b.title}
                   </h3>
                   <p className="mt-2 text-sm sm:text-base text-slate-600 dark:text-white/70 leading-relaxed font-sans">
@@ -273,7 +273,7 @@ export default async function ServicePage({
       {service.useCases && service.useCases.length > 0 && (
         <section className="relative pb-16">
           <div className="mx-auto max-w-4xl px-4 sm:px-6">
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               Common use cases
             </h2>
             <ul className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -306,7 +306,7 @@ export default async function ServicePage({
       <section className="relative pb-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex items-center justify-between">
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               Explore more services
             </h2>
             <Link
@@ -328,7 +328,7 @@ export default async function ServicePage({
                   <span className="inline-flex size-11 items-center justify-center rounded-xl border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 text-[#7138FF] dark:text-[#8B4DFF]">
                     <RIcon className="size-5" />
                   </span>
-                  <h3 className="mt-4 font-serif text-lg font-bold text-[#0D0A24] dark:text-white">
+                  <h3 className="mt-4 font-heading text-lg font-semibold text-[#0D0A24] dark:text-white">
                     {r.title}
                   </h3>
                   <p className="mt-1 text-sm text-slate-600 dark:text-white/70 font-sans">
@@ -349,7 +349,7 @@ export default async function ServicePage({
       {relatedReading.length > 0 && (
         <section className="relative pb-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               Related reading
             </h2>
             <ul className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -359,10 +359,10 @@ export default async function ServicePage({
                     href={`/blog/${post.slug}`}
                     className="group rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md flex h-full flex-col transition-all duration-300 hover:-translate-y-1.5 hover:border-purple-400/80 dark:hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/10"
                   >
-                    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-[#7138FF] dark:text-[#8B4DFF]">
+                    <span className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-[#7138FF] dark:text-[#8B4DFF]">
                       {post.readingMinutes} min read
                     </span>
-                    <h3 className="mt-2 font-serif text-lg font-bold text-balance text-[#0D0A24] dark:text-white">
+                    <h3 className="mt-2 font-heading text-lg font-semibold text-balance text-[#0D0A24] dark:text-white">
                       {post.title}
                     </h3>
                     <p className="mt-2 text-sm text-slate-600 dark:text-white/70 leading-relaxed font-sans">

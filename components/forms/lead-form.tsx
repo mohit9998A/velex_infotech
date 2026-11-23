@@ -240,7 +240,7 @@ export function LeadForm({
         className="flex flex-col items-center gap-4 py-8 text-center"
       >
         <CheckCircle2 className="size-12 text-success" />
-        <h3 className="font-serif text-2xl sm:text-3xl font-medium tracking-tight text-primary">
+        <h3 className="font-heading text-2xl sm:text-3xl font-semibold tracking-tight text-primary">
           Request received
         </h3>
         <p className="max-w-xs font-sans text-sm text-secondary leading-relaxed">

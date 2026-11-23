@@ -50,12 +50,32 @@
 
 ## 3. Typography System
 
-| Style / Family | CSS Class | Characteristics | Application |
+Two faces, loaded in `lib/fonts.ts`: **IBM Plex Sans** for headings, **Inter** for
+everything else. `h1`–`h6` default to IBM Plex Sans in `app/globals.css`.
+
+| Element | Font | Weight | Class |
 | :--- | :--- | :--- | :--- |
-| **Display** | `font-display` | Geometric, bold, tracking `-0.03em`, tight line-height | Key metrics (`40+`), hero statistics, client names |
-| **Editorial Serif** | `font-serif` | Playfair/Editorial, medium weight, high elegance | Main section headings, hero headline, italic accents |
-| **Interface Sans** | `font-sans` | High legibility, neutral, balanced letter-spacing | Body paragraphs, buttons, navigation, form inputs |
-| **Technical Mono** | `font-mono` / `.font-mono-label` | Uppercase, `tracking-[0.18em]`, technical precision | Kicker eyebrows, timeline steps, dates, code snippets |
+| Hero heading | IBM Plex Sans | 700 | `font-heading font-bold` |
+| Section headings (`h1`, `h2`) | IBM Plex Sans | 700 | `font-heading font-bold` |
+| Subheadings (`h3`, `h4`, card titles) | IBM Plex Sans | 600 | `font-heading font-semibold` |
+| Key metrics / stats | IBM Plex Sans | 700 | `font-display` (700, tracking `-0.02em`) |
+| Paragraphs | Inter | 400 | `font-sans` (the body default) |
+| Navigation | Inter | 500 | `font-medium` |
+| Buttons | Inter | 600 | `font-semibold` |
+| Small labels / kickers | Inter | 500 | `font-sans font-medium uppercase` or `.font-label` |
+
+Rules:
+
+- Avoid excessive bold, oversized letter-spacing and "futuristic" display faces.
+- No italic headings. Only upright IBM Plex Sans is loaded, so `italic` would
+  make the browser synthesize a slanted fake. Use colour (brand purple) for
+  accents instead.
+- IBM Plex Sans tops out at 700: `font-extrabold`/`font-black` on a heading
+  silently renders as 700.
+- `font-mono` is for real code only (MDX `<code>`, admin editors); it is the
+  system monospace stack and downloads nothing.
+- `font-serif` (Playfair Display) is **logo lettering only**: the VELEX wordmark
+  and the client wordmarks in the trust bar. Never use it for headings or copy.
 
 ### 3.1 Fluid Type Sizing
 Headlines utilize CSS `clamp()` to scale seamlessly from mobile devices to ultrawide monitors without awkward line breaks:
@@ -82,7 +102,7 @@ Headlines utilize CSS `clamp()` to scale seamlessly from mobile devices to ultra
   ```tsx
   <div className="flex items-center gap-3">
     <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-    <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+    <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
       KICKER TEXT
     </span>
   </div>

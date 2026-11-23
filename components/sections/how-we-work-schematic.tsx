@@ -97,11 +97,11 @@ export function HowWeWorkSchematic() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 text-[#7138FF] dark:text-[#B99CFF] font-mono text-xs font-semibold uppercase tracking-wider mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 text-[#7138FF] dark:text-[#B99CFF] font-sans text-xs font-medium uppercase tracking-wider mb-4">
             <span className="size-1.5 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF] animate-pulse" />
             <span>HOW WE WORK</span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-slate-900 dark:text-white leading-tight">
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white leading-tight">
             From idea to{" "}
             <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               intelligence
@@ -138,7 +138,7 @@ export function HowWeWorkSchematic() {
                 <div className="flex items-center gap-2 mb-2">
                   <span
                     className={cn(
-                      "font-mono text-xs lg:text-sm font-bold uppercase tracking-[0.22em] transition-colors duration-300",
+                      "font-sans text-xs lg:text-sm font-medium uppercase tracking-[0.22em] transition-colors duration-300",
                       activeLayer === 0
                         ? "text-[#7138FF] dark:text-[#B99CFF]"
                         : "text-slate-800 dark:text-white/90 group-hover:text-[#7138FF] dark:group-hover:text-white"
@@ -166,7 +166,7 @@ export function HowWeWorkSchematic() {
                 <div className="flex items-center gap-2 mb-2">
                   <span
                     className={cn(
-                      "font-mono text-xs lg:text-sm font-bold uppercase tracking-[0.22em] transition-colors duration-300",
+                      "font-sans text-xs lg:text-sm font-medium uppercase tracking-[0.22em] transition-colors duration-300",
                       activeLayer === 2
                         ? "text-[#7138FF] dark:text-[#B99CFF]"
                         : "text-slate-800 dark:text-white/90 group-hover:text-[#7138FF] dark:group-hover:text-white"
@@ -194,7 +194,7 @@ export function HowWeWorkSchematic() {
                 <div className="flex items-center gap-2 mb-2">
                   <span
                     className={cn(
-                      "font-mono text-xs lg:text-sm font-bold uppercase tracking-[0.22em] transition-colors duration-300",
+                      "font-sans text-xs lg:text-sm font-medium uppercase tracking-[0.22em] transition-colors duration-300",
                       activeLayer === 4
                         ? "text-[#7138FF] dark:text-[#B99CFF]"
                         : "text-slate-800 dark:text-white/90 group-hover:text-[#7138FF] dark:group-hover:text-white"
@@ -538,7 +538,7 @@ export function HowWeWorkSchematic() {
             <div className="md:col-span-4 flex flex-col justify-between border-l border-slate-200/90 dark:border-white/[0.08]">
               {/* Top Spacer Cell (aligned with Collect) */}
               <div className="h-[18%] border-b border-slate-200/90 dark:border-white/[0.08] flex items-center px-6 lg:px-8">
-                <span className="font-mono text-[11px] text-slate-500 dark:text-white/40 uppercase tracking-[0.2em]">
+                <span className="font-sans text-[11px] text-slate-500 dark:text-white/40 uppercase tracking-[0.2em]">
                   SCHEMATIC // SPEC-02
                 </span>
               </div>
@@ -557,7 +557,7 @@ export function HowWeWorkSchematic() {
                 <div className="flex items-center gap-2 mb-2">
                   <span
                     className={cn(
-                      "font-mono text-xs lg:text-sm font-bold uppercase tracking-[0.22em] transition-colors duration-300",
+                      "font-sans text-xs lg:text-sm font-medium uppercase tracking-[0.22em] transition-colors duration-300",
                       activeLayer === 1
                         ? "text-[#7138FF] dark:text-[#B99CFF]"
                         : "text-slate-800 dark:text-white/90 group-hover:text-[#7138FF] dark:group-hover:text-white"
@@ -585,7 +585,7 @@ export function HowWeWorkSchematic() {
                 <div className="flex items-center gap-2 mb-2">
                   <span
                     className={cn(
-                      "font-mono text-xs lg:text-sm font-bold uppercase tracking-[0.22em] transition-colors duration-300",
+                      "font-sans text-xs lg:text-sm font-medium uppercase tracking-[0.22em] transition-colors duration-300",
                       activeLayer === 3
                         ? "text-[#7138FF] dark:text-[#B99CFF]"
                         : "text-slate-800 dark:text-white/90 group-hover:text-[#7138FF] dark:group-hover:text-white"
@@ -601,7 +601,7 @@ export function HowWeWorkSchematic() {
 
               {/* Bottom Spacer Cell (aligned with Deploy) */}
               <div className="h-[18%] flex items-center px-6 lg:px-8">
-                <span className="font-mono text-[11px] text-slate-500 dark:text-white/40 uppercase tracking-[0.2em]">
+                <span className="font-sans text-[11px] text-slate-500 dark:text-white/40 uppercase tracking-[0.2em]">
                   PRODUCTION READY
                 </span>
               </div>
@@ -637,12 +637,12 @@ export function HowWeWorkSchematic() {
                     {/* Header: Phase badge & Title */}
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 text-[#7138FF] dark:text-[#B99CFF] uppercase tracking-wider">
+                        <span className="font-sans text-[10px] font-medium px-2 py-0.5 rounded-md bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 text-[#7138FF] dark:text-[#B99CFF] uppercase tracking-wider">
                           PHASE {step.stepNumber}
                         </span>
                         <h3
                           className={cn(
-                            "font-mono text-sm font-bold uppercase tracking-[0.18em] transition-colors",
+                            "font-sans text-sm font-medium uppercase tracking-[0.18em] transition-colors",
                             isActive
                               ? "text-[#7138FF] dark:text-white"
                               : "text-slate-800 dark:text-slate-200"
@@ -664,7 +664,7 @@ export function HowWeWorkSchematic() {
                         <span
                           key={tag}
                           className={cn(
-                            "font-mono text-[10px] font-medium px-2.5 py-1 rounded-full transition-colors",
+                            "font-sans text-[10px] font-medium px-2.5 py-1 rounded-full transition-colors",
                             isActive
                               ? "bg-[#7138FF]/10 dark:bg-[#8B4DFF]/20 text-[#7138FF] dark:text-[#B99CFF] border border-[#7138FF]/20 dark:border-[#8B4DFF]/30"
                               : "bg-slate-100 dark:bg-white/[0.05] text-slate-600 dark:text-slate-400 border border-slate-200/60 dark:border-white/[0.06]"

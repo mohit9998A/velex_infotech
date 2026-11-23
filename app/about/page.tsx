@@ -99,7 +99,7 @@ export default function AboutPage() {
           <div className="text-center">
             
             {/* Main Headline (design.md 3.1 & 2.1) */}
-            <h1 className="mt-4 font-serif text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-balance leading-[1.08] text-[#0D0A24] dark:text-white">
+            <h1 className="mt-4 font-heading text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-balance leading-[1.08] text-[#0D0A24] dark:text-white">
               We engineer{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5424D6] via-[#7138FF] to-[#8B4DFF] dark:from-[#A87FFF] dark:via-[#B99CFF] dark:to-white">
                 intelligence
@@ -142,12 +142,12 @@ export default function AboutPage() {
             {/* Aesthetic Kicker (design.md 4.2) */}
             <div className="flex items-center gap-3">
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                 OUR ORIGIN &amp; MISSION
               </span>
             </div>
 
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               Founded to make AI useful
             </h2>
 
@@ -177,7 +177,7 @@ export default function AboutPage() {
                   key={item.q}
                   className="rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.02)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md transition-colors hover:border-purple-300 dark:hover:border-purple-500/40"
                 >
-                  <dt className="font-serif text-base font-bold text-[#0D0A24] dark:text-white">
+                  <dt className="font-heading text-base font-semibold text-[#0D0A24] dark:text-white">
                     {item.q}
                   </dt>
                   <dd className="mt-1.5 text-sm text-slate-600 dark:text-white/70 leading-relaxed font-sans">
@@ -205,10 +205,10 @@ export default function AboutPage() {
                   VX
                 </span>
                 <div>
-                  <h3 className="font-serif text-2xl font-bold text-[#0D0A24] dark:text-white">
+                  <h3 className="font-heading text-2xl font-semibold text-[#0D0A24] dark:text-white">
                     Velex Engineering
                   </h3>
-                  <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#B99CFF]">
+                  <p className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#B99CFF]">
                     Applied AI &amp; Systems Collective
                   </p>
                 </div>
@@ -220,7 +220,7 @@ export default function AboutPage() {
 
               <div className="mt-8 grid w-full grid-cols-2 gap-4 border-t border-slate-200/80 dark:border-white/[0.08] pt-6">
                 <div>
-                  <div className="font-display text-3xl font-extrabold text-[#0D0A24] dark:text-white tracking-tight">
+                  <div className="font-display text-3xl font-bold text-[#0D0A24] dark:text-white tracking-tight">
                     100%
                   </div>
                   <div className="mt-1 text-xs font-sans text-slate-500 dark:text-white/60">
@@ -228,7 +228,7 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <div>
-                  <div className="font-display text-3xl font-extrabold text-[#0D0A24] dark:text-white tracking-tight">
+                  <div className="font-display text-3xl font-bold text-[#0D0A24] dark:text-white tracking-tight">
                     0
                   </div>
                   <div className="mt-1 text-xs font-sans text-slate-500 dark:text-white/60">
@@ -263,13 +263,13 @@ export default function AboutPage() {
             {/* Aesthetic Kicker (design.md 4.2) */}
             <div className="flex items-center justify-center gap-3">
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
                 WHAT WE STAND FOR
               </span>
               <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
             </div>
 
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
+            <h2 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0D0A24] dark:text-white">
               Our principles
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-base sm:text-lg text-slate-600 dark:text-white/70 font-sans">
@@ -286,7 +286,7 @@ export default function AboutPage() {
                 <div className="inline-flex size-12 items-center justify-center rounded-xl border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 text-[#7138FF] dark:text-[#8B4DFF] group-hover:scale-105 transition-transform">
                   <v.icon className="size-6" />
                 </div>
-                <h3 className="mt-5 font-serif text-xl font-bold text-[#0D0A24] dark:text-white">
+                <h3 className="mt-5 font-heading text-xl font-semibold text-[#0D0A24] dark:text-white">
                   {v.title}
                 </h3>
                 <p className="mt-2.5 text-sm leading-relaxed text-slate-600 dark:text-white/70 font-sans">

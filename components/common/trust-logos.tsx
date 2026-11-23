@@ -10,7 +10,7 @@ export function TrustLogos({ className }: TrustLogosProps) {
     <div className={cn("w-full", className)}>
       <div className="flex items-center gap-3 mb-4">
         <span className="h-[2px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-        <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+        <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
           Technologies &amp; platforms we build with
         </span>
       </div>

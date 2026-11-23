@@ -59,7 +59,7 @@ export function BentoSection() {
         <div className="reveal-on-scroll text-center max-w-3xl mx-auto pb-6 sm:pb-12">
 
           {/* Headline */}
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white">
             Why{" "}
             <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               Velex Infotech
@@ -99,7 +99,7 @@ export function BentoSection() {
 
             {/* Top row */}
             <div className="relative z-10 flex items-center justify-between">
-              <span className="font-mono text-[9px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-purple-200/80">
+              <span className="font-sans text-[9px] sm:text-xs font-medium tracking-[0.22em] uppercase text-purple-200/80">
                 OUR PHILOSOPHY
               </span>
 
@@ -109,7 +109,7 @@ export function BentoSection() {
 
             {/* Quote body */}
             <blockquote className="relative z-10 my-auto py-1 sm:py-3.5">
-              <p className="font-serif text-[19px] sm:text-[28px] lg:text-[32px] leading-[1.15] sm:leading-[1.2] font-normal text-white max-w-md">
+              <p className="font-heading text-[19px] sm:text-[28px] lg:text-[32px] leading-[1.15] sm:leading-[1.2] font-normal text-white max-w-md">
                 &ldquo;We don&apos;t just
                 <br />
                 build software.
@@ -135,7 +135,7 @@ export function BentoSection() {
 
               {/* Ideas / Products / People / Progress */}
               <div className="flex flex-col items-start text-left shrink-0">
-                <div className="font-mono text-[7px] sm:text-[10px] font-medium tracking-[0.22em] text-white/60 space-y-[1px] sm:space-y-0.5 uppercase">
+                <div className="font-sans text-[7px] sm:text-[10px] font-medium tracking-[0.22em] text-white/60 space-y-[1px] sm:space-y-0.5 uppercase">
                   <div>IDEAS</div>
                   <div>PRODUCTS</div>
                   <div>PEOPLE</div>
@@ -149,13 +149,13 @@ export function BentoSection() {
           {/* 2. Stat: 40+ Projects Delivered */}
           <div data-reveal style={reveal(100)} className={cardBaseClass + " col-span-1"}>
             <div className="flex items-center justify-between mb-2 sm:mb-4">
-              <span className="font-mono text-[9px] sm:text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
+              <span className="font-sans text-[9px] sm:text-xs font-medium tracking-wider text-slate-500 dark:text-white/50 uppercase">
                 {stats[0]?.label ?? ""}
               </span>
 
             </div>
             <div>
-              <span className="font-serif text-[32px] sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-heading text-[32px] sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
                 <CountUp value={stats[0]?.value ?? 0} suffix={stats[0]?.suffix ?? ""} />
               </span>
             </div>
@@ -164,12 +164,12 @@ export function BentoSection() {
           {/* 3. Stat: 20+ Clients Served */}
           <div data-reveal style={reveal(200)} className={cardBaseClass + " col-span-1"}>
             <div className="flex items-center justify-between mb-2 sm:mb-4">
-              <span className="font-mono text-[9px] sm:text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
+              <span className="font-sans text-[9px] sm:text-xs font-medium tracking-wider text-slate-500 dark:text-white/50 uppercase">
                 {stats[1]?.label ?? ""}
               </span>
             </div>
             <div>
-              <span className="font-serif text-[32px] sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-heading text-[32px] sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
                 <CountUp value={stats[1]?.value ?? 0} suffix={stats[1]?.suffix ?? ""} />
               </span>
             </div>
@@ -181,7 +181,7 @@ export function BentoSection() {
               <Gem className="size-4 sm:size-5 text-amber-500 dark:text-amber-400" />
             </div>
             <div>
-              <h4 className="font-serif text-[15px] sm:text-lg font-bold text-slate-900 dark:text-white">
+              <h4 className="font-heading text-[15px] sm:text-lg font-semibold text-slate-900 dark:text-white">
                 Crystal Quality
               </h4>
               <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-slate-600 dark:text-white/70 leading-relaxed">
@@ -196,7 +196,7 @@ export function BentoSection() {
               <Clock className="size-4 sm:size-5" />
             </div>
             <div>
-              <h4 className="font-serif text-[15px] sm:text-lg font-bold text-slate-900 dark:text-white">
+              <h4 className="font-heading text-[15px] sm:text-lg font-semibold text-slate-900 dark:text-white">
                 UK &amp; US overlap
               </h4>
               <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-slate-600 dark:text-white/70 leading-relaxed">
@@ -211,13 +211,13 @@ export function BentoSection() {
               <Globe2 className="size-4 sm:size-5 text-emerald-500 dark:text-emerald-400" />
             </div>
             <div className="flex items-center justify-between mb-1 sm:mb-2">
-              <span className="font-mono text-[9px] sm:text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
+              <span className="font-sans text-[9px] sm:text-xs font-medium tracking-wider text-slate-500 dark:text-white/50 uppercase">
                 {stats[2]?.label ?? ""}
               </span>
 
             </div>
             <div>
-              <span className="font-serif text-[32px] sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-heading text-[32px] sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
                 <CountUp value={stats[2]?.value ?? 0} suffix={stats[2]?.suffix ?? ""} />
               </span>
               <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-white/50 mt-0.5 sm:mt-1.5">
@@ -232,13 +232,13 @@ export function BentoSection() {
               <Zap className="size-4 sm:size-5 text-red-500 dark:text-red-400" />
             </div>
             <div className="flex items-center justify-between mb-1 sm:mb-2">
-              <span className="font-mono text-[9px] sm:text-xs font-semibold tracking-wider text-slate-500 dark:text-white/50 uppercase">
+              <span className="font-sans text-[9px] sm:text-xs font-medium tracking-wider text-slate-500 dark:text-white/50 uppercase">
                 {stats[3]?.label ?? ""}
               </span>
 
             </div>
             <div>
-              <span className="font-serif text-[32px] sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-heading text-[32px] sm:text-5xl font-bold text-[#7138FF] dark:text-[#8B4DFF]">
                 <CountUp value={stats[3]?.value ?? 0} suffix={stats[3]?.suffix ?? ""} />
               </span>
               <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-white/50 mt-0.5 sm:mt-1.5">
@@ -253,7 +253,7 @@ export function BentoSection() {
               <ShieldCheck className="size-5" />
             </div>
             <div>
-              <h4 className="font-serif text-lg font-bold text-slate-900 dark:text-white">
+              <h4 className="font-heading text-lg font-semibold text-slate-900 dark:text-white">
                 Enterprise-grade
               </h4>
               <p className="mt-1 text-xs text-slate-600 dark:text-white/70 leading-relaxed">
@@ -268,7 +268,7 @@ export function BentoSection() {
               <MessageSquareReply className="size-5 text-amber-500 dark:text-amber-400" />
             </div>
             <div>
-              <h4 className="font-serif text-xl font-bold text-slate-900 dark:text-white">
+              <h4 className="font-heading text-xl font-semibold text-slate-900 dark:text-white">
                 1 business day
               </h4>
               <p className="mt-1 text-xs text-slate-600 dark:text-white/70 leading-relaxed">

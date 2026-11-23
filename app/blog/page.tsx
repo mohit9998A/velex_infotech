@@ -62,14 +62,14 @@ export default async function BlogPage() {
           {/* Aesthetic Kicker (design.md 4.2) */}
           <div className="flex items-center justify-center gap-3">
             <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-            <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+            <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
               THE INTELLIGENCE BRIEF
             </span>
             <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
           </div>
 
           {/* Main Headline (design.md 3.1 & 2.1) */}
-          <h1 className="mt-4 font-serif text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-balance leading-[1.08] text-[#0D0A24] dark:text-white">
+          <h1 className="mt-4 font-heading text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-balance leading-[1.08] text-[#0D0A24] dark:text-white">
             Practical insights on{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5424D6] via-[#7138FF] to-[#8B4DFF] dark:from-[#A87FFF] dark:via-[#B99CFF] dark:to-white">
               applied AI systems
@@ -91,7 +91,7 @@ export default async function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="group relative rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-7 sm:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-purple-400/80 dark:hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/10 flex flex-col"
               >
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs font-semibold text-[#7138FF] dark:text-[#8B4DFF] uppercase tracking-wider">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-sans text-xs font-medium text-[#7138FF] dark:text-[#8B4DFF] uppercase tracking-wider">
                   <time dateTime={post.publishedAt}>
                     {dateFormatter.format(new Date(post.publishedAt))}
                   </time>
@@ -102,7 +102,7 @@ export default async function BlogPage() {
                   </span>
                 </div>
 
-                <h2 className="mt-3 font-serif text-xl sm:text-2xl font-bold text-[#0D0A24] dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#B99CFF] transition-colors text-balance">
+                <h2 className="mt-3 font-heading text-xl sm:text-2xl font-semibold text-[#0D0A24] dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#B99CFF] transition-colors text-balance">
                   {post.title}
                 </h2>
 
@@ -121,7 +121,7 @@ export default async function BlogPage() {
 
         {/* Bottom Consultation Box (design.md 4.3 & 4.1) */}
         <div className="mt-16 rounded-3xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-8 sm:p-10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md text-center">
-          <h3 className="font-serif text-2xl font-bold text-[#0D0A24] dark:text-white">
+          <h3 className="font-heading text-2xl font-semibold text-[#0D0A24] dark:text-white">
             Have an automation process you&apos;re weighing up?
           </h3>
           <p className="mt-2.5 text-base text-slate-600 dark:text-white/70 font-sans max-w-xl mx-auto">

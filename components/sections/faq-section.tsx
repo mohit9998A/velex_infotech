@@ -52,13 +52,13 @@ export function FaqSection({
         {/* Header */}
         <div className="relative text-center max-w-3xl mx-auto pb-10 sm:pb-14">
           {eyebrow && (
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 text-[#7138FF] dark:text-[#B99CFF] font-mono text-xs font-semibold uppercase tracking-wider mb-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#7138FF]/10 dark:bg-[#8B4DFF]/15 border border-[#7138FF]/20 dark:border-[#8B4DFF]/30 text-[#7138FF] dark:text-[#B99CFF] font-sans text-xs font-medium uppercase tracking-wider mb-4">
               {eyebrow}
             </div>
           )}
 
           {/* Title */}
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white">
             {title === "Common questions" ? (
               <>
                 Common{" "}
@@ -87,7 +87,7 @@ export function FaqSection({
               value={faq.id ?? faq.question}
               className="rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] px-6 sm:px-8 transition-all duration-300 data-[state=open]:border-purple-400/80 dark:data-[state=open]:border-purple-500/50 data-[state=open]:bg-white dark:data-[state=open]:bg-white/[0.06] shadow-[0_4px_20px_rgba(0,0,0,0.02)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
             >
-              <AccordionTrigger className="font-serif text-lg sm:text-xl font-medium text-slate-900 dark:text-white hover:text-purple-600 dark:hover:text-purple-300 py-6 text-left leading-snug">
+              <AccordionTrigger className="font-heading text-lg sm:text-xl font-semibold text-slate-900 dark:text-white hover:text-purple-600 dark:hover:text-purple-300 py-6 text-left leading-snug">
                 {faq.question}
               </AccordionTrigger>
               <AccordionContent className="font-sans text-sm sm:text-base text-slate-600 dark:text-white/70 leading-relaxed pb-6 pr-4 sm:pr-8">

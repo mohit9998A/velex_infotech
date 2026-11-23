@@ -96,7 +96,7 @@ export default function ContactPage() {
           <div className="mt-14 max-w-5xl mx-auto">
             <div className="flex items-center gap-3 mb-6">
               <span className="h-[2px] w-6 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-              <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#8B4DFF]">
+              <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#8B4DFF]">
                 DIRECT COMMUNICATION CHANNELS
               </span>
             </div>
@@ -114,7 +114,7 @@ export default function ContactPage() {
                     <MessageCircle className="size-5" />
                   </span>
                   <div>
-                    <span className="block font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-white/60">
+                    <span className="block font-sans text-[11px] font-medium uppercase tracking-wider text-slate-500 dark:text-white/60">
                       WhatsApp Live Chat
                     </span>
                     <span className="block text-sm font-semibold text-[#0D0A24] dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#B99CFF] transition-colors">
@@ -135,7 +135,7 @@ export default function ContactPage() {
                     <Phone className="size-5" />
                   </span>
                   <div>
-                    <span className="block font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-white/60">
+                    <span className="block font-sans text-[11px] font-medium uppercase tracking-wider text-slate-500 dark:text-white/60">
                       Direct Telephone
                     </span>
                     <span className="block text-sm font-semibold text-[#0D0A24] dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#B99CFF] transition-colors">
@@ -156,7 +156,7 @@ export default function ContactPage() {
                     <Mail className="size-5" />
                   </span>
                   <div>
-                    <span className="block font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-white/60">
+                    <span className="block font-sans text-[11px] font-medium uppercase tracking-wider text-slate-500 dark:text-white/60">
                       Official Inbox
                     </span>
                     <span className="block text-sm font-semibold text-[#0D0A24] dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#B99CFF] transition-colors">
@@ -173,11 +173,11 @@ export default function ContactPage() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 dark:border-white/[0.06] pb-4">
                 <div className="flex items-center gap-2.5">
                   <Clock className="size-4 text-[#7138FF] dark:text-[#8B4DFF]" />
-                  <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#8B4DFF]">
+                  <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-[#7138FF] dark:text-[#8B4DFF]">
                     ACTIVE ENGINEERING HOURS & OVERSEAS OVERLAP
                   </span>
                 </div>
-                <span className="text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-white/60">
+                <span className="text-xs font-sans uppercase tracking-wider text-slate-500 dark:text-white/60">
                   09:00–19:00 IST · Monday to Friday
                 </span>
               </div>
@@ -187,7 +187,7 @@ export default function ContactPage() {
                     key={c.market}
                     className="flex flex-col gap-1 rounded-xl bg-slate-50 dark:bg-white/[0.02] p-3.5 border border-slate-200/50 dark:border-white/[0.04]"
                   >
-                    <span className="font-serif text-sm font-bold text-[#0D0A24] dark:text-white">
+                    <span className="font-heading text-sm font-bold text-[#0D0A24] dark:text-white">
                       {c.market}
                     </span>
                     <span className="text-xs text-slate-600 dark:text-white/70 font-sans leading-relaxed">

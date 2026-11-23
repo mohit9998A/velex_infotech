@@ -165,7 +165,7 @@ export function AdminDashboard({ onLogout, adminEmail }: AdminDashboardProps) {
               </span>
             )}
           </div>
-          <h1 className="mt-1 font-serif text-2xl sm:text-3xl font-bold text-[#0D0A24] dark:text-white">
+          <h1 className="mt-1 font-heading text-2xl sm:text-3xl font-bold text-[#0D0A24] dark:text-white">
             Blog Content Manager
           </h1>
         </div>
@@ -207,7 +207,7 @@ export function AdminDashboard({ onLogout, adminEmail }: AdminDashboardProps) {
             <span className="text-xs font-medium text-slate-500 dark:text-white/60">Total Posts</span>
             <FileText className="size-4 text-purple-500" />
           </div>
-          <div className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-3xl font-bold text-[#0D0A24] dark:text-white">
+          <div className="mt-1.5 sm:mt-2 font-heading text-2xl sm:text-3xl font-bold text-[#0D0A24] dark:text-white">
             {totalPosts}
           </div>
         </div>
@@ -217,7 +217,7 @@ export function AdminDashboard({ onLogout, adminEmail }: AdminDashboardProps) {
             <span className="text-xs font-medium text-slate-500 dark:text-white/60">Published & Visible</span>
             <Eye className="size-4 text-emerald-500" />
           </div>
-          <div className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+          <div className="mt-1.5 sm:mt-2 font-heading text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400">
             {publishedCount}
           </div>
         </div>
@@ -227,7 +227,7 @@ export function AdminDashboard({ onLogout, adminEmail }: AdminDashboardProps) {
             <span className="text-xs font-medium text-slate-500 dark:text-white/60">Hidden / Drafts</span>
             <EyeOff className="size-4 text-amber-500" />
           </div>
-          <div className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-3xl font-bold text-amber-600 dark:text-amber-400">
+          <div className="mt-1.5 sm:mt-2 font-heading text-2xl sm:text-3xl font-bold text-amber-600 dark:text-amber-400">
             {hiddenCount}
           </div>
         </div>
@@ -345,7 +345,7 @@ export function AdminDashboard({ onLogout, adminEmail }: AdminDashboardProps) {
                       className="hover:bg-slate-50/80 dark:hover:bg-white/[0.02] transition"
                     >
                       <td className="px-6 py-4 max-w-md">
-                        <div className="font-serif font-bold text-slate-900 dark:text-white text-sm line-clamp-1">
+                        <div className="font-heading font-bold text-slate-900 dark:text-white text-sm line-clamp-1">
                           {post.title}
                         </div>
                         <div className="font-mono text-[11px] text-slate-500 dark:text-white/40 truncate">
@@ -467,7 +467,7 @@ export function AdminDashboard({ onLogout, adminEmail }: AdminDashboardProps) {
 
                   {/* Title & Slug */}
                   <div className="mt-2.5">
-                    <h3 className="font-serif font-bold text-slate-900 dark:text-white text-base leading-snug line-clamp-2">
+                    <h3 className="font-heading font-semibold text-slate-900 dark:text-white text-base leading-snug line-clamp-2">
                       {post.title}
                     </h3>
                     <p className="mt-0.5 font-mono text-[11px] text-slate-500 dark:text-white/40 truncate">

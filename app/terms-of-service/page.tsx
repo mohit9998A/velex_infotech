@@ -23,16 +23,16 @@ export default function TermsOfServicePage() {
           {/* Aesthetic Kicker (design.md 4.2) */}
           <div className="flex items-center justify-center gap-3">
             <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
-            <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
+            <span className="font-sans text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
               TERMS &amp; CONDITIONS
             </span>
             <span className="h-[2.5px] w-6 sm:w-7 rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]" />
           </div>
 
-          <h1 className="mt-4 font-serif text-[clamp(2.35rem,5vw,3.75rem)] font-bold tracking-tight text-[#0D0A24] dark:text-white">
+          <h1 className="mt-4 font-heading text-[clamp(2.35rem,5vw,3.75rem)] font-bold tracking-tight text-[#0D0A24] dark:text-white">
             Terms of Service
           </h1>
-          <p className="mt-2.5 font-mono text-xs font-semibold uppercase tracking-wider text-[#7138FF] dark:text-[#B99CFF]">
+          <p className="mt-2.5 font-sans text-xs font-medium uppercase tracking-wider text-[#7138FF] dark:text-[#B99CFF]">
             Last updated: {siteConfig.legalDates.termsUpdated}
           </p>
         </div>
@@ -41,7 +41,7 @@ export default function TermsOfServicePage() {
         <div className="mt-10 rounded-3xl border border-slate-200/90 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.03] p-8 sm:p-12 shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl">
           <div className="flex flex-col gap-10 text-slate-600 dark:text-white/75 font-sans">
             <div>
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#0D0A24] dark:text-white">
+              <h2 className="font-heading text-xl sm:text-2xl font-semibold text-[#0D0A24] dark:text-white">
                 1. Use of this website
               </h2>
               <p className="mt-3 text-base leading-relaxed">
@@ -51,7 +51,7 @@ export default function TermsOfServicePage() {
             </div>
 
             <div className="border-t border-slate-200/80 dark:border-white/[0.08] pt-8">
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#0D0A24] dark:text-white">
+              <h2 className="font-heading text-xl sm:text-2xl font-semibold text-[#0D0A24] dark:text-white">
                 2. Services &amp; quotes
               </h2>
               <p className="mt-3 text-base leading-relaxed">
@@ -61,7 +61,7 @@ export default function TermsOfServicePage() {
             </div>
 
             <div className="border-t border-slate-200/80 dark:border-white/[0.08] pt-8">
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#0D0A24] dark:text-white">
+              <h2 className="font-heading text-xl sm:text-2xl font-semibold text-[#0D0A24] dark:text-white">
                 3. Intellectual property
               </h2>
               <p className="mt-3 text-base leading-relaxed">
@@ -71,7 +71,7 @@ export default function TermsOfServicePage() {
             </div>
 
             <div className="border-t border-slate-200/80 dark:border-white/[0.08] pt-8">
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#0D0A24] dark:text-white">
+              <h2 className="font-heading text-xl sm:text-2xl font-semibold text-[#0D0A24] dark:text-white">
                 4. Contact
               </h2>
               <p className="mt-3 text-base leading-relaxed">

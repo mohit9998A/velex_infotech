@@ -180,13 +180,13 @@ export function PhoneField({
         )}
       >
         <div className="flex items-center gap-2.5 truncate">
-          <span className="font-mono text-[11px] font-bold text-slate-500 w-6 shrink-0 dark:text-white/40">
+          <span className="font-sans text-[11px] font-bold text-slate-500 w-6 shrink-0 dark:text-white/40">
             {c.code}
           </span>
           <span className="truncate">{c.name}</span>
         </div>
         <div className="ml-2 flex shrink-0 items-center gap-2">
-          <span className="font-mono text-xs text-slate-500 dark:text-white/50">
+          <span className="font-sans text-xs text-slate-500 dark:text-white/50">
             {c.dial}
           </span>
           {isSelected && (
@@ -290,7 +290,7 @@ export function PhoneField({
             ) : (
               <div className="space-y-3 pb-1">
                 <div>
-                  <div className="px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-white/40">
+                  <div className="px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-wider text-slate-500 dark:text-white/40">
                     Frequently Used
                   </div>
                   <div className="mt-0.5 space-y-0.5">
@@ -299,7 +299,7 @@ export function PhoneField({
                 </div>
 
                 <div>
-                  <div className="border-t border-slate-100 px-3 py-1 pt-2 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:border-white/10 dark:text-white/40">
+                  <div className="border-t border-slate-100 px-3 py-1 pt-2 font-sans text-[10px] font-medium uppercase tracking-wider text-slate-500 dark:border-white/10 dark:text-white/40">
                     All Countries (A–Z)
                   </div>
                   <div className="mt-0.5 space-y-0.5">

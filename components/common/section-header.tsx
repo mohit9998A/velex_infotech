@@ -35,7 +35,7 @@ export function SectionHeader({
       )}
     >
       {eyebrow && (
-        <span className="font-mono-label text-purple-glow">{eyebrow}</span>
+        <span className="font-label text-purple-glow">{eyebrow}</span>
       )}
       <h2 className="font-display text-h2 text-balance text-primary">{title}</h2>
       {subtitle && (

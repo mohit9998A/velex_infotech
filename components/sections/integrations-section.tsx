@@ -22,7 +22,7 @@ function Tile({ item, ariaHidden }: { item: IntegrationItem; ariaHidden?: boolea
           className="size-5 object-contain shrink-0 dark:brightness-0 dark:invert"
         />
       ) : (
-        <span className="font-mono text-sm font-semibold text-purple-600 dark:text-purple-400 shrink-0">
+        <span className="font-sans text-sm font-semibold text-purple-600 dark:text-purple-400 shrink-0">
           {item.abbr}
         </span>
       )}
@@ -77,7 +77,7 @@ export function IntegrationsSection() {
         {/* Header */}
         <div className="relative text-center max-w-3xl mx-auto pb-10 sm:pb-14">
           {/* Headline */}
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white">
             Plugs into your{" "}
             <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               entire stack

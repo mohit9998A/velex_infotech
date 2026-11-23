@@ -142,9 +142,13 @@ html.dark {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  /* Type system: IBM Plex Sans for headings, Inter for everything else (lib/fonts.ts). */
+  --font-heading: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /* Real code only (MDX <code>, admin editors) — no web font is downloaded. */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  /* Logo lettering only (VELEX wordmark + client wordmarks). Not for headings. */
   --font-serif: var(--font-playfair), "Playfair Display", Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
@@ -183,11 +187,26 @@ body {
   -webkit-font-smoothing: antialiased;
   /* No `text-rendering: optimizeLegibility`. It forces the shaper off its fast
      path and enables optional ligatures plus full GSUB/GPOS lookups for EVERY
-     text run on the page — including the hero H1, i.e. the LCP element. Geist
-     is a modern variable font whose default `auto` behaviour already applies
-     kerning and standard ligatures, so the rendered result is materially the
-     same for a first-paint cost we do not need to pay. */
+     text run on the page — including the hero H1, i.e. the LCP element. Inter
+     and IBM Plex Sans are modern variable fonts whose default `auto` behaviour
+     already applies kerning and standard ligatures, so the rendered result is
+     materially the same for a first-paint cost we do not need to pay. */
   overflow-x: hidden;
+}
+
+/* Headings default to IBM Plex Sans. In `@layer base`, NOT unlayered: an unlayered
+   rule beats every Tailwind utility regardless of specificity (see the border
+   note under LEAD MODAL), so a heading styled as a label with `font-sans` —
+   the footer column titles, for one — would silently stay IBM Plex Sans. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
 }
 
 ::selection {
@@ -210,16 +229,16 @@ body {
   .font-display {
     font-family: var(--font-display);
     font-weight: 700;
-    letter-spacing: -0.03em;
+    /* -0.02em, not Geist's -0.03em: IBM Plex Sans is drawn with open,
+       even spacing and its letters start to touch when tracked that tight. */
+    letter-spacing: -0.02em;
     line-height: 1.05;
   }
 
-  .font-serif {
-    font-family: var(--font-serif);
-  }
-
-  .font-mono-label {
-    font-family: var(--font-mono);
+  /* Small uppercase kicker labels: Inter 500. */
+  .font-label {
+    font-family: var(--font-sans);
+    font-weight: 500;
     font-size: 0.78rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;

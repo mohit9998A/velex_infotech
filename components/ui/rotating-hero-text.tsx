@@ -149,7 +149,7 @@ export function RotatingHeroText({
         <span
           key={w}
           aria-hidden="true"
-          className="invisible [grid-area:1/1] italic font-serif leading-normal"
+          className="invisible [grid-area:1/1] font-heading leading-normal"
         >
           {w}
         </span>
@@ -160,7 +160,7 @@ export function RotatingHeroText({
           the wrapper. */}
       <span
         aria-hidden="true"
-        className="rht-reel [grid-area:1/1] h-[1lh] italic font-serif leading-normal text-[#7138FF] dark:text-[#8B4DFF]"
+        className="rht-reel [grid-area:1/1] h-[1lh] font-heading leading-normal text-[#7138FF] dark:text-[#8B4DFF]"
         style={reelStyle}
         onTransitionEnd={(e) => {
           if (e.target !== e.currentTarget || e.propertyName !== "transform") return;

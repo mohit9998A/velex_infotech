@@ -30,7 +30,7 @@ export function LatestPostsSection() {
         {/* Header */}
         <div className="relative text-center max-w-3xl mx-auto pb-10 sm:pb-14">
           {/* Headline */}
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white">
             From our{" "}
             <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               engineering journal
@@ -53,7 +53,7 @@ export function LatestPostsSection() {
               >
                 <div>
                   {/* Top Meta Row */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-slate-500 dark:text-white/50 mb-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2 font-sans text-xs text-slate-500 dark:text-white/50 mb-4">
                     <time dateTime={post.publishedAt} className="font-semibold text-purple-600 dark:text-purple-400">
                       {dateFormatter.format(new Date(post.publishedAt))}
                     </time>
@@ -64,7 +64,7 @@ export function LatestPostsSection() {
                   </div>
 
                   {/* Post Title */}
-                  <h3 className="font-serif text-xl sm:text-2xl font-medium leading-snug tracking-tight text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors duration-300 mb-3">
+                  <h3 className="font-heading text-xl sm:text-2xl font-semibold leading-snug tracking-tight text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors duration-300 mb-3">
                     {post.title}
                   </h3>
 
@@ -75,7 +75,7 @@ export function LatestPostsSection() {
                 </div>
 
                 {/* Footer Meta & Read Link */}
-                <div className="mt-6 pt-4 border-t border-slate-200/80 dark:border-white/10 flex items-center justify-between font-mono text-xs text-slate-500 dark:text-white/50">
+                <div className="mt-6 pt-4 border-t border-slate-200/80 dark:border-white/10 flex items-center justify-between font-sans text-xs text-slate-500 dark:text-white/50">
                   <span className="font-sans font-medium text-slate-500 dark:text-white/50">
                     By {post.author}
                   </span>
