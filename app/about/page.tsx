@@ -12,7 +12,7 @@ import {
 
 import { siteConfig } from "@/config/site";
 import { marketsShortLine, officesLine, pageMetadata } from "@/lib/seo";
-import { breadcrumbSchema, jsonLd, webPageSchema } from "@/lib/schema";
+import { breadcrumbSchema, jsonLd, personSchema, webPageSchema } from "@/lib/schema";
 import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { ConsultButtons } from "@/components/common/consult-buttons";
 import { CtaBanner } from "@/components/sections/cta-banner";
@@ -81,6 +81,7 @@ export default function AboutPage() {
         dangerouslySetInnerHTML={{
           __html: jsonLd(
             webPageSchema({ path: "/about", title, description }),
+            personSchema(),
             breadcrumbSchema(trail),
           ),
         }}
@@ -151,7 +152,7 @@ export default function AboutPage() {
               Founded to make AI useful
             </h2>
 
-            <div className="mt-6 flex flex-col gap-4 text-base sm:text-lg text-slate-600 dark:text-white/70 font-sans leading-relaxed">
+            <div id="mohit-dutta" className="mt-6 flex flex-col gap-4 text-base sm:text-lg text-slate-600 dark:text-white/70 font-sans leading-relaxed">
               <p>
                 <strong className="font-semibold text-[#0D0A24] dark:text-white">Velex Infotech</strong>{" "}
                 was founded with a direct, engineering-first mission: to build applied AI automation

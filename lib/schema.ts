@@ -148,7 +148,6 @@ export function personSchema() {
     "@type": "Person",
     "@id": PERSON_ID,
     name: siteConfig.founder,
-    jobTitle: "Founder & CEO",
     worksFor: orgRef,
     url: absoluteUrl("/about"),
     knowsAbout: [
