@@ -95,37 +95,40 @@ export function HeroSection() {
               fourth line. Individual services are featured in the Services
               section instead. */}
 
-          {/* Mobile Headline (< md): sized so it sets in three lines. */}
-          <h1 className="md:hidden font-heading text-[clamp(2rem,8.6vw,2.9rem)] font-bold tracking-tight text-primary leading-[1.1]">
-            <span className="block">Technology that</span>
-            <span className="block">moves your</span>
-            <span className="block text-[#7138FF] dark:text-[#8B4DFF]">business forward.</span>
-          </h1>
+          {/* Single H1 with responsive spans (T1) */}
+          <h1>
+            {/* Mobile Headline (< md): sized so it sets in three lines. */}
+            <span className="block md:hidden font-heading text-[clamp(2rem,8.6vw,2.9rem)] font-bold tracking-tight text-primary leading-[1.1]">
+              <span className="block">Technology that</span>
+              <span className="block">moves your</span>
+              <span className="block text-[#7138FF] dark:text-[#8B4DFF]">business forward.</span>
+            </span>
 
-          {/* Desktop Headline (>= md) */}
-          <h1 className="hidden md:block font-heading text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-primary leading-[1.08]">
-            <span className="block overflow-hidden py-1">
-              <span
-                className="hero-word inline-block"
-                style={{ "--i": 0 } as CSSProperties}
-              >
-                Technology that
+            {/* Desktop Headline (>= md) */}
+            <span className="hidden md:block font-heading text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-primary leading-[1.08]">
+              <span className="block overflow-hidden py-1">
+                <span
+                  className="hero-word inline-block"
+                  style={{ "--i": 0 } as CSSProperties}
+                >
+                  Technology that
+                </span>
               </span>
-            </span>
-            <span className="block overflow-hidden py-1">
-              <span
-                className="hero-word inline-block"
-                style={{ "--i": 1 } as CSSProperties}
-              >
-                moves your
+              <span className="block overflow-hidden py-1">
+                <span
+                  className="hero-word inline-block"
+                  style={{ "--i": 1 } as CSSProperties}
+                >
+                  moves your
+                </span>
               </span>
-            </span>
-            <span className="block overflow-hidden py-1">
-              <span
-                className="hero-word inline-block text-[#7138FF] dark:text-[#8B4DFF]"
-                style={{ "--i": 2 } as CSSProperties}
-              >
-                business forward.
+              <span className="block overflow-hidden py-1">
+                <span
+                  className="hero-word inline-block text-[#7138FF] dark:text-[#8B4DFF]"
+                  style={{ "--i": 2 } as CSSProperties}
+                >
+                  business forward.
+                </span>
               </span>
             </span>
           </h1>
