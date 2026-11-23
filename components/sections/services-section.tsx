@@ -100,22 +100,81 @@ const SLIDE_MS = 5000;
  * now an ordinary section: the page scrolls straight through to the next one,
  * and the services rotate on a timer instead.
  *
- * The timer only runs while the section is on screen and the tab is visible,
- * and pauses while a mouse is over the showcase or keyboard focus is inside it
- * (so nobody loses the slide they are reading or tabbing through). The dots
- * jump straight to a service and restart the 5 s count.
+ * The timer runs whenever the section is on screen and the tab is visible —
+ * hovering does NOT pause it. It only holds while a KEYBOARD user is tabbing
+ * through a slide (focus-visible inside), so their focused link cannot vanish
+ * under them. The dots jump straight to a service and restart the 5 s count.
  *
  * Rendering: all six services are stacked in one grid cell and cross-fade with
  * opacity/translate CSS transitions (compositor-only). Visuals mount one step
  * ahead of the active slide and stay mounted, so each is fetched and decoded
  * before it fades in, without loading all six on first view.
  */
+/** Per-character delay of the title typing effect, and its start delay. */
+const TYPE_MS = 55;
+const TYPE_START_MS = 250;
+
+/**
+ * Typewriter title for the active slide.
+ *
+ * - An invisible copy of the full title sizes the box, so the heading (and the
+ *   chevron after it) never shifts while the letters appear.
+ * - The letters are written straight into a text node (no React re-render per
+ *   character), and only for the active slide while the section is on screen.
+ * - The server HTML has the full title, and the real heading text for crawlers
+ *   and screen readers is the sr-only copy the caller renders next to this.
+ * - Reduced motion: the full title, no typing, no caret blink.
+ */
+function TypedTitle({ text, active, inView }: { text: string; active: boolean; inView: boolean }) {
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!active || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.textContent = text;
+      return;
+    }
+    // Active but not yet seen: hold it empty so it types when it arrives.
+    el.textContent = "";
+    if (!inView) return;
+
+    let i = 0;
+    let interval = 0;
+    const start = window.setTimeout(() => {
+      interval = window.setInterval(() => {
+        i += 1;
+        el.textContent = text.slice(0, i);
+        if (i >= text.length) window.clearInterval(interval);
+      }, TYPE_MS);
+    }, TYPE_START_MS);
+
+    return () => {
+      window.clearTimeout(start);
+      window.clearInterval(interval);
+    };
+  }, [text, active, inView]);
+
+  return (
+    <span aria-hidden="true" className="relative inline-grid">
+      {/* Sizer: full title + room for the caret (0.06em bar + 0.06em gap). */}
+      <span className="invisible [grid-area:1/1]">
+        {text}
+        <span className="inline-block w-[0.12em]" />
+      </span>
+      <span className="[grid-area:1/1]">
+        <span ref={ref}>{text}</span>
+        {active && <span className="typing-caret" />}
+      </span>
+    </span>
+  );
+}
+
 export function ServicesSection() {
   const [{ activeIndex, prevIndex }, setSlide] = useState({ activeIndex: 0, prevIndex: -1 });
   const [imageWindow, setImageWindow] = useState({ lo: 0, hi: 1 });
   const [inView, setInView] = useState(false);
   const [tabVisible, setTabVisible] = useState(true);
-  const [hovered, setHovered] = useState(false);
   const [focusedWithin, setFocusedWithin] = useState(false);
   const openModal = useLeadModal((s) => s.openModal);
   const sectionRef = useRef<HTMLElement>(null);
@@ -148,7 +207,7 @@ export function ServicesSection() {
     };
   }, []);
 
-  const running = inView && tabVisible && !hovered && !focusedWithin;
+  const running = inView && tabVisible && !focusedWithin;
 
   // One timeout per slide: any change of slide (auto or a dot click) or of
   // `running` restarts the full 5 s.
@@ -225,13 +284,11 @@ export function ServicesSection() {
             {/* 2-Column Showcase (Replaces content at exact same place) */}
             <div
               className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center mt-10 sm:mt-12"
-              onPointerEnter={(e) => {
-                if (e.pointerType === "mouse") setHovered(true);
+              onFocusCapture={(e) => {
+                // Keyboard focus only: a mouse click on a button also focuses
+                // it, and that must not freeze the rotation.
+                if ((e.target as HTMLElement).matches(":focus-visible")) setFocusedWithin(true);
               }}
-              onPointerLeave={(e) => {
-                if (e.pointerType === "mouse") setHovered(false);
-              }}
-              onFocusCapture={() => setFocusedWithin(true)}
               onBlurCapture={(e) => {
                 if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocusedWithin(false);
               }}
@@ -253,12 +310,12 @@ export function ServicesSection() {
                       aria-hidden={!isActive || undefined}
                       inert={!isActive}
                       className={cn(
-                        "[grid-area:1/1] space-y-3 sm:space-y-4 transition-[opacity,translate] duration-300 ease-in-out",
+                        "[grid-area:1/1] space-y-3 sm:space-y-4 transition-[opacity,translate] duration-600 ease-[cubic-bezier(0.22,1,0.36,1)]",
                         state === "active"
-                          ? "opacity-100 translate-y-0 delay-150"
+                          ? "opacity-100 translate-y-0 delay-200"
                           : state === "exited"
-                            ? "opacity-0 -translate-y-3 pointer-events-none"
-                            : "opacity-0 translate-y-3 pointer-events-none",
+                            ? "opacity-0 -translate-y-8 pointer-events-none"
+                            : "opacity-0 translate-y-8 pointer-events-none",
                       )}
                     >
                       {/* Service Title > */}
@@ -269,7 +326,8 @@ export function ServicesSection() {
                           className="group inline-flex items-center gap-2"
                         >
                           <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-[#7138FF] dark:group-hover:text-[#8B4DFF] transition-colors">
-                            {service.title}
+                            <span className="sr-only">{service.title}</span>
+                            <TypedTitle text={service.title} active={isActive} inView={inView} />
                           </h3>
                           <ChevronRight className="size-7 sm:size-8 text-[#7138FF] dark:text-[#8B4DFF] transition-transform group-hover:translate-x-1.5" />
                         </Link>
@@ -317,12 +375,12 @@ export function ServicesSection() {
                         key={service.slug}
                         aria-hidden={!isActive || undefined}
                         className={cn(
-                          "[grid-area:1/1] relative w-full flex items-center justify-center group transition-[opacity,scale,translate] duration-350 ease-in-out",
+                          "[grid-area:1/1] relative w-full flex items-center justify-center group transition-[opacity,scale,translate] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
                           isActive
-                            ? "opacity-100 scale-100 translate-y-0"
+                            ? "opacity-100 scale-100 translate-x-0 delay-100"
                             : cn(
-                                "opacity-0 scale-[0.96] pointer-events-none",
-                                state === "exited" ? "-translate-y-1.5" : "translate-y-1.5",
+                                "opacity-0 scale-[0.92] pointer-events-none",
+                                state === "exited" ? "-translate-x-16" : "translate-x-16",
                               ),
                         )}
                       >
