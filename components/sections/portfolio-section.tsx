@@ -1,11 +1,10 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 
 import type { PortfolioItem } from "@/types";
 import portfolioData from "@/content/portfolio.json";
 import { cn } from "@/lib/utils";
-import { useScrollProgress } from "@/hooks/use-scroll-progress";
 import { PortfolioCard } from "@/components/common/portfolio-card";
 
 /**
@@ -18,19 +17,23 @@ import { PortfolioCard } from "@/components/common/portfolio-card";
  */
 const items = (portfolioData as PortfolioItem[]).filter((i) => !i.placeholder);
 
+/** How long each case study stays on screen before the next slides in. */
+const SLIDE_MS = 5000;
+
 /**
- * Pinned case-study carousel driven by scroll.
+ * Case-study carousel that advances on its own every 5 seconds.
+ *
+ * It used to pin itself for (cards x 60 + 20)vh of scrolling and step through
+ * the cards as the visitor scrolled, so the page was locked here until every
+ * case study had been shown. It is now an ordinary section the page scrolls
+ * straight past, and the cards rotate on a timer instead — only while the
+ * section is on screen and the tab is visible, and held while a KEYBOARD user
+ * is tabbing inside the active card. The pills in each card's header jump to
+ * a case study; the active pill fills over the 5 s.
  *
  * Every card in the current filter is rendered once and stacked in a single
- * grid cell. A card before the active one rests "exited" to the left, a card
- * after it waits on the right, so advancing slides the old card out left and
- * the new one in from the right — and scrolling back reverses it — with no
- * direction state at all. The slide is an opacity/translate/scale CSS
- * transition on the compositor.
- *
- * This replaces `AnimatePresence mode="wait"` + motion's `useScroll`, which
- * remounted the whole card (and its screenshot <img>) on every step, fetching
- * and decoding the image mid-scroll.
+ * grid cell. The card just left slides out to the left, the next comes in
+ * from the right; opacity/translate/scale CSS transitions on the compositor.
  */
 export function PortfolioSection() {
   const filters = useMemo(() => {
@@ -44,31 +47,55 @@ export function PortfolioSection() {
     [active],
   );
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeRef = useRef(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [{ activeIndex, prevIndex }, setSlide] = useState({ activeIndex: 0, prevIndex: -1 });
+  const [inView, setInView] = useState(false);
+  const [tabVisible, setTabVisible] = useState(true);
+  const [focusedWithin, setFocusedWithin] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const goTo = (next: number) =>
+    setSlide((cur) =>
+      cur.activeIndex === next ? cur : { activeIndex: next, prevIndex: cur.activeIndex },
+    );
 
   const handleFilterChange = (f: string) => {
     setActive(f);
-    activeRef.current = 0;
-    setActiveIndex(0);
+    setSlide({ activeIndex: 0, prevIndex: -1 });
   };
 
-  // Scroll-driven step: each card owns an equal slice of the track. Called on
-  // every scroll event while the track is near the viewport, so it bails out
-  // before touching React state unless the step actually changed.
-  useScrollProgress(containerRef, 0, 1, (progress) => {
-    if (filtered.length <= 1) return;
-    const step = 1 / filtered.length;
-    const next = Math.min(Math.floor(progress / step), filtered.length - 1);
-    if (next === activeRef.current) return;
-    activeRef.current = next;
-    setActiveIndex(next);
-  });
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(Boolean(entry?.isIntersecting)),
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    const onVisibility = () => setTabVisible(document.visibilityState === "visible");
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+
+  const running = inView && tabVisible && !focusedWithin && filtered.length > 1;
+
+  // One timeout per slide: a slide change (auto or a pill click), a filter
+  // change, or a change of `running` restarts the full 5 s.
+  const advance = useEffectEvent(() => goTo((activeIndex + 1) % filtered.length));
+  useEffect(() => {
+    if (!running) return;
+    const t = window.setTimeout(advance, SLIDE_MS);
+    return () => window.clearTimeout(t);
+  }, [activeIndex, running, active]);
 
   return (
     <section
       id="portfolio"
+      ref={sectionRef}
+      aria-roledescription="carousel"
+      aria-label="Case studies"
       className="relative py-16 sm:py-24 bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-500 overflow-x-clip scroll-mt-24"
     >
       {/* Ambient background glow — gradient + soft mask instead of a
@@ -82,7 +109,7 @@ export function PortfolioSection() {
         {/* Header */}
         <div className="reveal-on-scroll relative text-center max-w-3xl mx-auto pb-8 sm:pb-12">
           {/* Headline */}
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-slate-900 dark:text-white">
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white">
             Selected work &{" "}
             <span className="italic text-[#7138FF] dark:text-[#8B4DFF]">
               case studies
@@ -103,7 +130,7 @@ export function PortfolioSection() {
                   key={f}
                   type="button"
                   onClick={() => handleFilterChange(f)}
-                  className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs font-semibold transition-all duration-300 cursor-pointer ${
+                  className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-sans text-xs font-semibold transition-all duration-300 cursor-pointer ${
                     isActiveFilter
                       ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-md shadow-purple-500/10 scale-105"
                       : "bg-slate-100 dark:bg-white/[0.05] text-slate-600 dark:text-white/60 border border-slate-200/80 dark:border-white/10 hover:bg-slate-200/70 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white"
@@ -119,13 +146,19 @@ export function PortfolioSection() {
           </div>
         </div>
 
-        {/* Scroll Track & Sticky Showcase Frame */}
+        {/* Showcase frame (no scroll pinning: the page scrolls straight past) */}
         <div
-          ref={containerRef}
           className="relative"
-          style={{ height: filtered.length > 1 ? `${filtered.length * 60 + 20}vh` : "auto" }}
+          onFocusCapture={(e) => {
+            // Keyboard focus only: a mouse click also focuses, and must not
+            // freeze the rotation.
+            if ((e.target as HTMLElement).matches(":focus-visible")) setFocusedWithin(true);
+          }}
+          onBlurCapture={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocusedWithin(false);
+          }}
         >
-          <div className="sticky top-14 sm:top-24 flex flex-col gap-2 sm:gap-5 py-1 sm:py-4">
+          <div className="flex flex-col gap-2 sm:gap-5 py-1 sm:py-4">
             {/* In-Place Animated Project Frame */}
             {filtered.length > 0 && (
               <div className="relative overflow-hidden min-h-[400px] sm:min-h-[480px] grid items-start sm:items-center">
@@ -134,19 +167,28 @@ export function PortfolioSection() {
                   return (
                     <div
                       key={item.id}
+                      role="group"
+                      aria-roledescription="slide"
+                      aria-label={`${i + 1} of ${filtered.length}: ${item.client}`}
                       aria-hidden={!isActive || undefined}
                       inert={!isActive}
                       className={cn(
-                        "[grid-area:1/1] w-full transition-[opacity,translate,scale] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                        "[grid-area:1/1] w-full transition-[opacity,translate,scale] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
                         isActive
                           ? "opacity-100 translate-x-0 scale-100 delay-100"
                           : cn(
                               "opacity-0 scale-[0.98] pointer-events-none",
-                              i < activeIndex ? "-translate-x-[140px]" : "translate-x-[140px]",
+                              i === prevIndex ? "-translate-x-[140px]" : "translate-x-[140px]",
                             ),
                       )}
                     >
-                      <PortfolioCard item={item} index={i} total={filtered.length} />
+                      <PortfolioCard
+                        item={item}
+                        index={i}
+                        total={filtered.length}
+                        onSelect={goTo}
+                        progress={isActive ? (running ? "running" : "paused") : undefined}
+                      />
                     </div>
                   );
                 })}
