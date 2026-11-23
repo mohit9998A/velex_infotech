@@ -25,19 +25,6 @@ export const metadata: Metadata = {
     template: "%s | Velex Infotech",
   },
   description: siteConfig.description,
-  // `keywords` has had zero ranking value at Google and Bing for years. Kept
-  // only as human-readable documentation of what each page is meant to target —
-  // deleting it outright tends to invite someone to re-add it worse.
-  keywords: [
-    "AI agent development services",
-    "agentic AI development services",
-    "AI automation services for small business",
-    "AI receptionist for small business",
-    "WhatsApp AI chatbot development company",
-    "data analytics consulting services",
-    "custom software development services",
-    "AI integration services",
-  ],
   authors: [{ name: siteConfig.founder }],
   creator: siteConfig.founder,
   // Defaults only — each page overrides url/title/description via
