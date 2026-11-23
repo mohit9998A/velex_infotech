@@ -162,10 +162,6 @@ export const offices: OfficeConfig[] = [
     country: "India",
     countryCode: "IN",
     hasAddress: true,
-    // TODO(velex): this must be a street, not the city repeated. `streetAddress`
-    // and `addressLocality` currently say the same thing, which is a
-    // placeholder wearing a schema's clothes.
-    streetAddress: "Ludhiana",
     postalCode: "141001",
     geo: { latitude: 30.9009, longitude: 75.8573 },
     timezone: "Asia/Kolkata",

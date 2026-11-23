@@ -39,7 +39,7 @@ function officeSchemaId(office: OfficeConfig) {
 function postalAddress(office: OfficeConfig) {
   return {
     "@type": "PostalAddress",
-    streetAddress: office.streetAddress,
+    ...(office.streetAddress ? { streetAddress: office.streetAddress } : {}),
     addressLocality: office.city,
     addressRegion: office.region,
     postalCode: office.postalCode,
