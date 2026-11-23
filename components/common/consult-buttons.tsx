@@ -5,6 +5,7 @@ import { MessageCircle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
+import { trackEvent } from "@/lib/analytics";
 import { useLeadModal } from "@/lib/store/lead-modal";
 import { prefetchLeadForm } from "@/components/forms/lead-form-modal";
 import { Button } from "@/components/ui/button";
@@ -66,7 +67,12 @@ export function ConsultButtons({
       </Button>
       {secondary ?? (
         <Button size={size} variant="crystal" asChild>
-          <a href={siteConfig.whatsapp} target="_blank" rel="noopener noreferrer">
+          <a
+            href={siteConfig.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent("whatsapp_click")}
+          >
             <MessageCircle className="size-4" /> WhatsApp Us
           </a>
         </Button>

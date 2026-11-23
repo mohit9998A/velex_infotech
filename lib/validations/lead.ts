@@ -116,6 +116,11 @@ export const leadFormSchema = z.object({
     .optional()
     .or(z.literal("")),
   source: z.string().optional(),
+  utm_source: z.string().max(100).optional(),
+  utm_medium: z.string().max(100).optional(),
+  utm_campaign: z.string().max(100).optional(),
+  utm_term: z.string().max(100).optional(),
+  utm_content: z.string().max(100).optional(),
   // Honeypot. Real users never see this field, so anything in it is a bot.
   // Named innocuously because scrapers skip fields called "honeypot".
   //
