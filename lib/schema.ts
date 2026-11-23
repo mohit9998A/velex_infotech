@@ -348,10 +348,21 @@ export function blogPostingSchema(post: {
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     datePublished: post.publishedAt,
     dateModified: post.updatedAt ?? post.publishedAt,
+    image: {
+      "@type": "ImageObject",
+      url: absoluteUrl(`/blog/${post.slug}/opengraph-image`),
+      width: 1200,
+      height: 630,
+    },
     // @id ref plus name: the reference lets the graph resolve to the full
     // Person node on /about, the name keeps it self-describing for parsers
     // that don't cross-reference.
-    author: { "@type": "Person", "@id": PERSON_ID, name: post.author },
+    author: {
+      "@type": "Person",
+      "@id": PERSON_ID,
+      name: post.author,
+      url: absoluteUrl("/about"),
+    },
     publisher: orgRef,
     inLanguage: siteConfig.htmlLang,
   };
