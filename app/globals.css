@@ -1028,3 +1028,17 @@ html.dark .animate-skeleton-shimmer::after {
   }
 }
 
+
+/* Services carousel: the active dot fills over the slide's 5 s
+   (components/sections/services-section.tsx). Transform-only. */
+@keyframes svc-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.svc-progress {
+  animation: svc-progress 5000ms linear both;
+}

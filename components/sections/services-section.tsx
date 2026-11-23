@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, ChevronRight } from "lucide-react";
@@ -8,7 +8,6 @@ import { ArrowRight, ArrowUpRight, ChevronRight } from "lucide-react";
 import type { ServiceItem } from "@/types";
 import servicesData from "@/content/services.json";
 import { cn } from "@/lib/utils";
-import { useScrollProgress } from "@/hooks/use-scroll-progress";
 import { useLeadModal } from "@/lib/store/lead-modal";
 import { prefetchLeadForm } from "@/components/forms/lead-form-modal";
 
@@ -90,79 +89,79 @@ function glowGradient(hex: string) {
   return `radial-gradient(closest-side, ${hex}f2 0%, ${hex}f2 25%, ${hex}80 55%, ${hex}29 78%, transparent 100%)`;
 }
 
-// 6 services: services 0-4 each own 15% of the scroll track (0..0.75) and the
-// 6th owns the last 25%, so the final service stays fully readable while
-// stationary before the page moves on to the next section.
-function indexForProgress(progress: number) {
-  if (progress < 0.15) return 0;
-  if (progress < 0.3) return 1;
-  if (progress < 0.45) return 2;
-  if (progress < 0.6) return 3;
-  if (progress < 0.75) return 4;
-  return 5;
-}
+/** How long each service stays on screen before the next one fades in. */
+const SLIDE_MS = 5000;
 
 /**
- * Pinned "one service at a time" showcase.
+ * "One service at a time" showcase that changes on its own every 5 seconds.
  *
- * Performance notes — this section sits inside a 420–480vh scroll track, so
- * everything here happens while the visitor is actively scrolling:
+ * It used to pin itself for a 420-480vh scroll track and change service as the
+ * visitor scrolled, so getting past it took several screens of scrolling. It is
+ * now an ordinary section: the page scrolls straight through to the next one,
+ * and the services rotate on a timer instead.
  *
- *  - All six services are rendered once and stacked in the same grid cell;
- *    switching only flips classes, and the cross-fade is an opacity/translate
- *    CSS transition on the compositor. It used to be `AnimatePresence` that
- *    unmounted and remounted the copy AND the next/image on every switch, so
- *    each image was fetched and decoded mid-scroll, on the main thread, at
- *    exactly the moment it was needed.
- *  - The ambient glow was two 880px/480px boxes under `blur(140px)` /
- *    `blur(120px)` with `transition-all duration-700` on background-color:
- *    every service change re-rasterised a ~1700x1400px Gaussian blur on every
- *    frame for 700ms, inside a position:sticky container. It is now one
- *    radial-gradient layer per service, cross-faded with opacity.
- *  - Progress comes from `useScrollProgress` (one rect read per scroll event,
- *    only while the track is near the viewport) instead of motion's
- *    `useScroll`, and state only changes when the index changes.
+ * The timer only runs while the section is on screen and the tab is visible,
+ * and pauses while a mouse is over the showcase or keyboard focus is inside it
+ * (so nobody loses the slide they are reading or tabbing through). The dots
+ * jump straight to a service and restart the 5 s count.
+ *
+ * Rendering: all six services are stacked in one grid cell and cross-fade with
+ * opacity/translate CSS transitions (compositor-only). Visuals mount one step
+ * ahead of the active slide and stay mounted, so each is fetched and decoded
+ * before it fades in, without loading all six on first view.
  */
 export function ServicesSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const openModal = useLeadModal((s) => s.openModal);
-
-  // Keyboard focus: if focus is inside the copy column when the service
-  // changes, carry it to the same control in the newly active service rather
-  // than letting it fall back to <body> when the old block becomes inert.
-  const leftColumnRef = useRef<HTMLDivElement>(null);
-  const hadFocusRef = useRef(false);
-  const activeRef = useRef(0);
-
-  // Which visuals have been mounted: the active one and its neighbours, and
-  // never unmounted once fetched. Mounting all six up front added ~250 KB of
-  // images to every first load on phones; one step of look-ahead is enough
-  // for each visual to be fetched and decoded before its cross-fade.
+  const [{ activeIndex, prevIndex }, setSlide] = useState({ activeIndex: 0, prevIndex: -1 });
   const [imageWindow, setImageWindow] = useState({ lo: 0, hi: 1 });
+  const [inView, setInView] = useState(false);
+  const [tabVisible, setTabVisible] = useState(true);
+  const [hovered, setHovered] = useState(false);
+  const [focusedWithin, setFocusedWithin] = useState(false);
+  const openModal = useLeadModal((s) => s.openModal);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  const scrollTrackRef = useRef<HTMLDivElement>(null);
-  useScrollProgress(scrollTrackRef, 0, 1, (progress) => {
-    const next = indexForProgress(progress);
-    if (next === activeRef.current) return;
-    activeRef.current = next;
-    hadFocusRef.current = Boolean(
-      leftColumnRef.current?.contains(document.activeElement),
+  const goTo = (next: number) => {
+    setSlide((cur) =>
+      cur.activeIndex === next ? cur : { activeIndex: next, prevIndex: cur.activeIndex },
     );
-    setImageWindow((w) =>
-      next - 1 >= w.lo && next + 1 <= w.hi
-        ? w
-        : { lo: Math.min(w.lo, next - 1), hi: Math.max(w.hi, next + 1) },
-    );
-    setActiveIndex(next);
-  });
+    const ahead = (next + 1) % services.length;
+    setImageWindow((w) => {
+      const lo = Math.min(w.lo, next, ahead);
+      const hi = Math.max(w.hi, next, ahead);
+      return lo === w.lo && hi === w.hi ? w : { lo, hi };
+    });
+  };
 
   useEffect(() => {
-    if (!hadFocusRef.current) return;
-    hadFocusRef.current = false;
-    leftColumnRef.current
-      ?.querySelector<HTMLElement>("[data-active] a[href], [data-active] button")
-      ?.focus({ preventScroll: true });
-  }, [activeIndex]);
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(Boolean(entry?.isIntersecting)),
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    const onVisibility = () => setTabVisible(document.visibilityState === "visible");
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+
+  const running = inView && tabVisible && !hovered && !focusedWithin;
+
+  // One timeout per slide: any change of slide (auto or a dot click) or of
+  // `running` restarts the full 5 s.
+  const advance = useEffectEvent(() => goTo((activeIndex + 1) % services.length));
+  useEffect(() => {
+    if (!running) return;
+    const t = window.setTimeout(advance, SLIDE_MS);
+    return () => window.clearTimeout(t);
+  }, [activeIndex, running]);
+
+  /** Active slide visible; the one just left exits upward; the rest wait below. */
+  const slideState = (i: number) =>
+    i === activeIndex ? "active" : i === prevIndex ? "exited" : "waiting";
 
   const activeService = services[activeIndex] ?? services[0] ?? allServices[0]!;
   const theme = SERVICE_THEMES[activeService.slug] ?? DEFAULT_THEME;
@@ -170,16 +169,11 @@ export function ServicesSection() {
   return (
     <section
       id="services"
-      className="relative w-full bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-300"
+      ref={sectionRef}
+      aria-roledescription="carousel"
+      aria-label="Our services"
+      className="relative w-full overflow-hidden py-16 sm:py-20 lg:py-24 bg-white dark:bg-[#04040A] text-slate-900 dark:text-white transition-colors duration-300"
     >
-      {/* Outer Scroll Track: pins heading + showcase in place across all 6 services with dedicated dwell for the last service */}
-      <div ref={scrollTrackRef} className="relative h-[420vh] sm:h-[480vh] w-full">
-
-        {/* Sticky Viewport Container: Locks heading + showcase to screen below navbar.
-            `svh`, not `vh`: on phones `100vh` is the LARGE viewport, so with
-            the URL bar showing, the bottom of the panel (the "Explore all
-            capabilities" link) sat underneath the browser chrome. */}
-        <div className="sticky top-14 sm:top-16 h-[calc(100svh-3.5rem)] sm:h-[calc(100svh-4rem)] w-full flex flex-col justify-between py-6 sm:py-8 overflow-hidden z-10">
 
           {/* Dynamic Ambient Background Glow — one gradient layer per service,
               cross-faded (see the component comment). Box = the old
@@ -211,7 +205,7 @@ export function ServicesSection() {
             style={{ backgroundImage: glowGradient(theme.accentLight) }}
           />
 
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 z-10 w-full flex flex-col justify-between h-full">
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 z-10 w-full flex flex-col">
 
             {/* FIXED HEADING */}
             <div className="reveal-on-scroll text-center max-w-3xl mx-auto shrink-0 pt-2 sm:pt-4">
@@ -229,27 +223,40 @@ export function ServicesSection() {
             </div>
 
             {/* 2-Column Showcase (Replaces content at exact same place) */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center my-auto py-1 sm:py-2">
+            <div
+              className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center mt-10 sm:mt-12"
+              onPointerEnter={(e) => {
+                if (e.pointerType === "mouse") setHovered(true);
+              }}
+              onPointerLeave={(e) => {
+                if (e.pointerType === "mouse") setHovered(false);
+              }}
+              onFocusCapture={() => setFocusedWithin(true)}
+              onBlurCapture={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocusedWithin(false);
+              }}
+            >
 
               {/* LEFT COLUMN: all six services stacked in one grid cell; only
                   the active one is visible, interactive and exposed to AT. */}
-              <div
-                ref={leftColumnRef}
-                className="lg:col-span-6 grid items-center min-h-[260px] sm:min-h-[300px]"
-              >
+              <div className="lg:col-span-6 grid items-center min-h-[260px] sm:min-h-[300px]">
                 {services.map((service, i) => {
                   const isActive = i === activeIndex;
+                  const state = slideState(i);
                   return (
                     <div
                       key={service.slug}
+                      role="group"
+                      aria-roledescription="slide"
+                      aria-label={`${i + 1} of ${services.length}: ${service.title}`}
                       data-active={isActive || undefined}
                       aria-hidden={!isActive || undefined}
                       inert={!isActive}
                       className={cn(
                         "[grid-area:1/1] space-y-3 sm:space-y-4 transition-[opacity,translate] duration-300 ease-in-out",
-                        isActive
+                        state === "active"
                           ? "opacity-100 translate-y-0 delay-150"
-                          : i < activeIndex
+                          : state === "exited"
                             ? "opacity-0 -translate-y-3 pointer-events-none"
                             : "opacity-0 translate-y-3 pointer-events-none",
                       )}
@@ -298,12 +305,13 @@ export function ServicesSection() {
                 })}
               </div>
 
-              {/* RIGHT COLUMN: Pinned 3D Visual — all six images stacked and
+              {/* RIGHT COLUMN: 3D Visual — all six images stacked and
                   decoded ahead of time; a switch is a compositor cross-fade. */}
               <div className="lg:col-span-6 relative flex justify-center items-center py-1 lg:py-0">
                 <div className="grid w-full max-w-[500px] lg:max-w-[560px] items-center justify-items-center">
                   {services.map((service, i) => {
                     const isActive = i === activeIndex;
+                    const state = slideState(i);
                     return (
                       <div
                         key={service.slug}
@@ -314,7 +322,7 @@ export function ServicesSection() {
                             ? "opacity-100 scale-100 translate-y-0"
                             : cn(
                                 "opacity-0 scale-[0.96] pointer-events-none",
-                                i < activeIndex ? "-translate-y-1.5" : "translate-y-1.5",
+                                state === "exited" ? "-translate-y-1.5" : "translate-y-1.5",
                               ),
                         )}
                       >
@@ -336,8 +344,40 @@ export function ServicesSection() {
 
             </div>
 
+            {/* Slide picker: one dot per service; the active one fills over the
+                5 s it is on screen (and freezes whenever the rotation pauses). */}
+            <div className="mt-8 flex items-center justify-center gap-2" role="group" aria-label="Choose a service">
+              {services.map((service, i) => {
+                const isActive = i === activeIndex;
+                return (
+                  <button
+                    key={service.slug}
+                    type="button"
+                    onClick={() => goTo(i)}
+                    aria-label={`Show ${service.title}`}
+                    aria-current={isActive || undefined}
+                    className={cn(
+                      "relative h-1.5 overflow-hidden rounded-full transition-[width,background-color] duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7138FF] focus-visible:ring-offset-2",
+                      isActive
+                        ? "w-10 bg-[#7138FF]/20 dark:bg-[#8B4DFF]/25"
+                        : "w-2.5 bg-slate-300 hover:bg-slate-400 dark:bg-white/20 dark:hover:bg-white/35",
+                    )}
+                  >
+                    {isActive && (
+                      <span
+                        key={activeIndex}
+                        aria-hidden="true"
+                        className="svc-progress absolute inset-0 origin-left rounded-full bg-[#7138FF] dark:bg-[#8B4DFF]"
+                        style={{ animationPlayState: running ? "running" : "paused" }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
             {/* Bottom CTA Link */}
-            <div className="flex justify-center pt-2 sm:pt-3 shrink-0">
+            <div className="flex justify-center pt-6 sm:pt-8 shrink-0">
               <Link
                 href="/services"
                 className="group inline-flex items-center gap-2 font-sans text-xs sm:text-sm font-medium pb-0.5 border-b border-slate-300 hover:border-[#7138FF] text-slate-700 hover:text-[#7138FF] dark:border-white/40 dark:text-white dark:hover:text-[#8B4DFF] dark:hover:border-[#8B4DFF] transition-colors"
@@ -351,9 +391,6 @@ export function ServicesSection() {
             </div>
 
           </div>
-        </div>
-
-      </div>
     </section>
   );
 }
