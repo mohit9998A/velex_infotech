@@ -980,10 +980,12 @@ html.dark .option-card:has(:checked) {
   from {
     height: 0;
     opacity: 0;
+    visibility: visible;
   }
   to {
     height: var(--radix-accordion-content-height);
     opacity: 1;
+    visibility: visible;
   }
 }
 
@@ -991,10 +993,12 @@ html.dark .option-card:has(:checked) {
   from {
     height: var(--radix-accordion-content-height);
     opacity: 1;
+    visibility: visible;
   }
   to {
     height: 0;
     opacity: 0;
+    visibility: hidden;
   }
 }
 
