@@ -1,7 +1,7 @@
 import { blogPosts, getPost } from "@/content/blog";
 import { OG_CONTENT_TYPE, OG_SIZE, renderOgImage } from "@/lib/og-template";
 
-export const alt = "Velex Infotech article";
+export const alt = "Velex Infotech technical article & engineering guide";
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 

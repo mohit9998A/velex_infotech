@@ -38,6 +38,7 @@ export async function generateMetadata({
     type: "article",
     publishedTime: post.publishedAt,
     modifiedTime: post.updatedAt,
+    ogImageAlt: `${post.title} — Velex Infotech`,
   });
 }
 
