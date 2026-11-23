@@ -1,7 +1,6 @@
 import { marketsShortLine, pageMetadata } from "@/lib/seo";
 import { HeroSection } from "@/components/sections/hero-section";
 import { LatestPostsSection } from "@/components/sections/latest-posts";
-import { TrustBar } from "@/components/sections/trust-bar";
 import { ServicesSection } from "@/components/sections/services-section";
 import { BentoSection } from "@/components/sections/bento-section";
 import { ProcessSection } from "@/components/sections/process-section";
@@ -36,7 +35,6 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <TrustBar />
       <ServicesSection />
       <BentoSection />
       <ProcessSection />

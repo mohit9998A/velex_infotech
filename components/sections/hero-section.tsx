@@ -8,6 +8,7 @@ import { ConsultButtons } from "@/components/common/consult-buttons";
 import { InteractiveRobotSpline } from "@/components/blocks/interactive-3d-robot";
 import { ScrollIndicator } from "@/components/common/scroll-indicator";
 import { RotatingHeroText } from "@/components/ui/rotating-hero-text";
+import { TrustPanel } from "@/components/sections/trust-bar";
 
 const SPLINE_SCENE =
   "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
@@ -18,21 +19,6 @@ const ROBOT_MOBILE_IMG =
 /** 1x1 transparent GIF: what the robot <picture> resolves to at >= md. */
 const TRANSPARENT_PIXEL =
   "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-
-import statsData from "@/content/stats.json";
-
-interface StatItem {
-  value: number;
-  suffix: string;
-  label: string;
-}
-
-const stats = statsData as StatItem[];
-
-const heroStats = stats.slice(0, 3).map((s) => ({
-  value: `${s.value}${s.suffix}`,
-  label: s.label,
-}));
 
 export function HeroSection() {
   // Mobile robot = the mobile LCP element. Art-directed rather than
@@ -63,22 +49,6 @@ export function HeroSection() {
         scene={SPLINE_SCENE}
         className="hidden md:block absolute inset-0 z-0 h-full w-full md:translate-x-[30%]"
       />
-
-      {/* Mobile 3D Robot Image: renders on < md only, matching reference mockup */}
-      <div
-        aria-hidden="true"
-        className="absolute right-[-15%] sm:right-[-5%] bottom-[75px] sm:bottom-[85px] w-[85%] sm:w-[70%] max-w-[450px] pointer-events-none select-none z-0 md:hidden"
-      >
-        <picture>
-          <source media="(min-width: 768px)" srcSet={TRANSPARENT_PIXEL} />
-          <img
-            {...robotImg}
-            alt=""
-            aria-hidden="true"
-            className="w-full h-auto object-contain drop-shadow-[0_15px_35px_rgba(113,56,255,0.15)] scale-110 origin-bottom-right"
-          />
-        </picture>
-      </div>
 
       {/* Mobile Ambient Glow: soft purple circle behind top annotation and robot.
           The softer outer stops stand in for the `blur-xl` it used to carry —
@@ -208,52 +178,32 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Mobile Stats Card (strictly < md, matching mockup with 2-line labels) */}
-        <div className="block md:hidden mt-6 sm:mt-8 w-full">
-          <div className="w-full rounded-[24px] bg-white/95 dark:bg-[#12121e]/90 border border-slate-200/80 dark:border-white/10 py-4 sm:py-5 px-3 shadow-[0_10px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
-            <dl className="grid grid-cols-3 divide-x divide-slate-200/80 dark:divide-white/10 text-center">
-              {heroStats.map((s) => (
-                <div key={s.label} className="flex flex-col items-center px-1">
-                  <dt className="order-2 font-mono text-[9px] sm:text-[10px] font-bold tracking-[0.12em] uppercase text-[#1E1B4B] dark:text-[#C7D2FE] mt-2 leading-[1.25]">
-                    {s.label.split(" ").map((word, i) => (
-                      <span key={i} className="block">
-                        {word}
-                      </span>
-                    ))}
-                  </dt>
-                  <dd className="order-1 font-sans font-bold text-[24px] sm:text-[28px] text-[#7138FF] dark:text-[#8B4DFF] tracking-tight leading-none">
-                    {s.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+        {/* Trust panel: stats, markets and client brands, inside the hero so
+            they are part of the first view. Replaces the hero's own stat rows
+            (desktop row + mobile card), which repeated the same three numbers. */}
+        {/* Mobile 3D Robot Image (< md only). In the flow between the CTAs
+            and the trust panel now that the panel lives in the hero: it used
+            to be pinned to the hero's bottom edge, which the panel would cover.
+            Negative z keeps it behind the copy and the panel, as before. */}
+        <div
+          aria-hidden="true"
+          className="relative -z-10 -mt-[28%] -mr-[15%] ml-auto w-[85%] max-w-[450px] pointer-events-none select-none sm:-mr-[5%] sm:w-[70%] md:hidden"
+        >
+          <picture>
+            <source media="(min-width: 768px)" srcSet={TRANSPARENT_PIXEL} />
+            <img
+              {...robotImg}
+              alt=""
+              aria-hidden="true"
+              className="w-full h-auto object-contain drop-shadow-[0_15px_35px_rgba(113,56,255,0.15)] scale-110 origin-bottom-right"
+            />
+          </picture>
         </div>
 
-        {/* Desktop Stats (strictly >= md, dt precedes dd in DOM) */}
-        <dl
-          className="hero-fade mt-[clamp(1.75rem,5.5svh,3.5rem)] hidden md:flex flex-wrap items-center gap-y-4 max-w-2xl"
+        <TrustPanel
+          className="hero-fade -mt-8 md:mt-[clamp(1.5rem,4.5svh,3rem)]"
           style={{ "--i": 2 } as CSSProperties}
-        >
-          {heroStats.map((s, idx) => (
-            <div key={s.label} className="flex items-center">
-              <div className="flex flex-col pr-4 sm:pr-6 lg:pr-8">
-                <dt className="order-2 font-mono text-[10px] sm:text-[11px] font-medium tracking-[0.16em] uppercase text-secondary mt-1">
-                  {s.label}
-                </dt>
-                <dd className="order-1 font-sans font-bold text-2xl sm:text-3xl text-[#7138FF] dark:text-[#8B4DFF] tracking-tight">
-                  {s.value}
-                </dd>
-              </div>
-              {idx < heroStats.length - 1 && (
-                <div
-                  aria-hidden="true"
-                  className="h-8 w-px bg-black/15 dark:bg-white/15 mr-4 sm:mr-6 lg:mr-8 shrink-0"
-                />
-              )}
-            </div>
-          ))}
-        </dl>
+        />
       </div>
 
       <ScrollIndicator />

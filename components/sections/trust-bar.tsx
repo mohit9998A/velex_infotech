@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
+
+import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 
 import type { PortfolioItem } from "@/types";
@@ -94,18 +96,33 @@ function cellLines(i: number, bp: keyof typeof singleRowFrom) {
   return `${vLine} ${hLine} ${v} ${h}`;
 }
 
-export function TrustBar() {
+/**
+ * The stats + markets + client-brands card. Rendered inside the hero
+ * (components/sections/hero-section.tsx) so it sits in the first view; the
+ * `TrustBar` wrapper below keeps the standalone-section version available.
+ */
+export function TrustPanel({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: CSSProperties;
+}) {
   return (
-    <section
-      aria-labelledby="trusted-brands-heading"
-      className="relative border-y border-vx-border bg-surface/50 py-8 sm:py-10"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_12px_40px_-16px_rgba(113,56,255,0.18)] sm:rounded-3xl dark:border-white/10 dark:bg-[#0A0818] dark:shadow-none">
-          {/* Ambient glow behind the stats row */}
+        <div
+          role="region"
+          aria-labelledby="trusted-brands-heading"
+          style={style}
+          className={cn(
+            "relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_12px_40px_-16px_rgba(113,56,255,0.18)] sm:rounded-3xl dark:border-white/10 dark:bg-[#0A0818] dark:shadow-none",
+            className,
+          )}
+        >
+          {/* Ambient glow behind the stats row (gradient + soft mask, not a
+              blur filter: this now paints in the hero's first frame) */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -top-24 left-1/2 h-44 w-[70%] -translate-x-1/2 rounded-full bg-[#7138FF]/10 blur-3xl dark:bg-[#7138FF]/30"
+            className="glow-soft pointer-events-none absolute -top-24 left-1/2 h-44 w-[70%] -translate-x-1/2 bg-[#7138FF]/10 dark:bg-[#7138FF]/30"
           />
 
           {/* Row 1: stats + markets */}
@@ -197,6 +214,15 @@ export function TrustBar() {
             </Link>
           </div>
         </div>
+  );
+}
+
+/** Standalone section version of the panel (not used on the homepage). */
+export function TrustBar() {
+  return (
+    <section className="relative border-y border-vx-border bg-surface/50 py-8 sm:py-10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <TrustPanel />
       </div>
     </section>
   );
