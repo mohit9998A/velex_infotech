@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { ConsultButtons } from "@/components/common/consult-buttons";
 import { InteractiveRobotSpline } from "@/components/blocks/interactive-3d-robot";
 import { ScrollIndicator } from "@/components/common/scroll-indicator";
-import { RotatingHeroText } from "@/components/ui/rotating-hero-text";
 import { TrustPanel } from "@/components/sections/trust-bar";
 
 const SPLINE_SCENE =
@@ -34,7 +33,7 @@ export function HeroSection() {
     alt: "",
     width: 600,
     height: 630,
-    sizes: "(min-width: 640px) min(77vw, 495px), 94vw",
+    sizes: "(min-width: 640px) 286px, 51vw",
     loading: "eager",
     fetchPriority: "high",
   });
@@ -74,7 +73,7 @@ export function HeroSection() {
           
         </div>
 
-        <div className="max-w-[52rem] lg:max-w-[58rem] xl:max-w-[62rem]">
+        <div className="relative max-w-[52rem] lg:max-w-[58rem] xl:max-w-[62rem]">
           {/* Eyebrow / Kicker */}
           <div
             className="hero-fade mb-2.5 sm:mb-[clamp(0.85rem,2.4svh,1.75rem)] flex items-center gap-3"
@@ -89,30 +88,21 @@ export function HeroSection() {
             </span>
           </div>
 
-          {/* Mobile Headline (strictly < md, matching mockup with cursive "with") */}
-          <h1 className="md:hidden font-heading text-[clamp(2.4rem,10vw,3.2rem)] font-bold tracking-tight text-primary leading-[1.08]">
-            <span className="block py-0.5">Technology that</span>
-            <span className="block py-0.5">moves your</span>
-            <span className="flex items-baseline gap-[0.3em] py-0.5">
-              <span>business</span>
-              <span>with</span>
-            </span>
-            <span className="block py-0.5">
-              <RotatingHeroText
-                words={[
-                  "Automation.",
-                  "AI Agents.",
-                  "Receptionist.",
-                  "WhatsApp AI.",
-                  "Integrations.",
-                  "AI Strategy.",
-                ]}
-                className="!py-0 !my-0 !pr-0 text-[#7138FF] dark:text-[#8B4DFF]"
-              />
-            </span>
+          {/* Headline — one static line, "business forward." in brand purple.
+              It used to end in a rotating word (Automation / AI Agents /
+              Receptionist ...), which made whichever service happened to be
+              showing read as the whole company, and cost the mobile hero a
+              fourth line. Individual services are featured in the Services
+              section instead. */}
+
+          {/* Mobile Headline (< md): sized so it sets in three lines. */}
+          <h1 className="md:hidden font-heading text-[clamp(2rem,8.6vw,2.9rem)] font-bold tracking-tight text-primary leading-[1.1]">
+            <span className="block">Technology that</span>
+            <span className="block">moves your</span>
+            <span className="block text-[#7138FF] dark:text-[#8B4DFF]">business forward.</span>
           </h1>
 
-          {/* Desktop Headline (strictly >= md, 100% UNTOUCHED) */}
+          {/* Desktop Headline (>= md) */}
           <h1 className="hidden md:block font-heading text-[clamp(2.35rem,5.2vw,4.25rem)] font-bold tracking-tight text-primary leading-[1.08]">
             <span className="block overflow-hidden py-1">
               <span
@@ -130,13 +120,12 @@ export function HeroSection() {
                 moves your
               </span>
             </span>
-            <span className="block py-1">
+            <span className="block overflow-hidden py-1">
               <span
-                className="hero-word inline-flex flex-wrap items-baseline gap-x-3"
+                className="hero-word inline-block text-[#7138FF] dark:text-[#8B4DFF]"
                 style={{ "--i": 2 } as CSSProperties}
               >
-                <span>business</span>
-                <RotatingHeroText />
+                business forward.
               </span>
             </span>
           </h1>
@@ -151,9 +140,9 @@ export function HeroSection() {
           <ConsultButtons
             className="hero-fade mt-4 sm:mt-6 gap-2.5 sm:gap-4 w-fit"
             style={{ "--i": 1 } as CSSProperties}
-            primaryLabel="Start a Conversation"
+            primaryLabel="Book a Free Consultation"
             primaryVariant="blue"
-            primaryClassName="h-[44px] sm:h-13 px-6 sm:px-8 text-[14px] sm:text-base font-semibold bg-[#7138FF] hover:bg-[#6228EE] text-white shadow-[0_6px_20px_rgba(113,56,255,0.38)] hover:shadow-[0_10px_28px_rgba(113,56,255,0.55)] rounded-full w-[190px] sm:w-auto"
+            primaryClassName="relative before:absolute before:-inset-1 before:content-[''] h-[42px] sm:h-13 px-5 sm:px-8 text-[14px] sm:text-base font-semibold bg-[#7138FF] hover:bg-[#6228EE] text-white shadow-[0_4px_14px_rgba(113,56,255,0.32)] sm:shadow-[0_6px_20px_rgba(113,56,255,0.38)] hover:shadow-[0_10px_28px_rgba(113,56,255,0.55)] rounded-full w-[228px] sm:w-auto"
             primaryIcon={
               <ArrowRight className="size-4 ml-1 transition-transform group-hover:translate-x-0.5" />
             }
@@ -161,7 +150,7 @@ export function HeroSection() {
               <Button
                 size="lg"
                 variant="outline"
-                className="h-[44px] sm:h-13 px-6 sm:px-8 text-[14px] sm:text-base font-semibold rounded-full border border-slate-200/90 dark:border-white/15 bg-white dark:bg-white/[0.04] text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-white/[0.08] shadow-sm w-[190px] sm:w-auto"
+                className="relative before:absolute before:-inset-1 before:content-[''] h-[42px] sm:h-13 px-5 sm:px-8 text-[14px] sm:text-base font-semibold rounded-full border border-slate-200/90 dark:border-white/15 bg-white dark:bg-white/[0.04] text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-white/[0.08] shadow-sm w-[228px] sm:w-auto"
                 asChild
               >
                 <Link href="#portfolio">See Our Work</Link>
@@ -176,32 +165,33 @@ export function HeroSection() {
           >
            
           </div>
+
+          {/* Mobile 3D Robot Image (< md only): pinned to the right of the
+              copy, its bottom level with the CTAs, so it sits alongside the
+              headline/lede instead of taking its own row — which is what lets
+              the trust panel come up into the first screen. Negative z keeps
+              it behind the copy. */}
+          <div
+            aria-hidden="true"
+            className="absolute -right-[8%] bottom-0 -z-10 w-[46%] max-w-[260px] opacity-90 pointer-events-none select-none md:hidden"
+          >
+            <picture>
+              <source media="(min-width: 768px)" srcSet={TRANSPARENT_PIXEL} />
+              <img
+                {...robotImg}
+                alt=""
+                aria-hidden="true"
+                className="w-full h-auto object-contain drop-shadow-[0_15px_35px_rgba(113,56,255,0.15)] scale-110 origin-bottom-right"
+              />
+            </picture>
+          </div>
         </div>
 
         {/* Trust panel: stats, markets and client brands, inside the hero so
             they are part of the first view. Replaces the hero's own stat rows
             (desktop row + mobile card), which repeated the same three numbers. */}
-        {/* Mobile 3D Robot Image (< md only). In the flow between the CTAs
-            and the trust panel now that the panel lives in the hero: it used
-            to be pinned to the hero's bottom edge, which the panel would cover.
-            Negative z keeps it behind the copy and the panel, as before. */}
-        <div
-          aria-hidden="true"
-          className="relative -z-10 -mt-[28%] -mr-[15%] ml-auto w-[85%] max-w-[450px] pointer-events-none select-none sm:-mr-[5%] sm:w-[70%] md:hidden"
-        >
-          <picture>
-            <source media="(min-width: 768px)" srcSet={TRANSPARENT_PIXEL} />
-            <img
-              {...robotImg}
-              alt=""
-              aria-hidden="true"
-              className="w-full h-auto object-contain drop-shadow-[0_15px_35px_rgba(113,56,255,0.15)] scale-110 origin-bottom-right"
-            />
-          </picture>
-        </div>
-
         <TrustPanel
-          className="hero-fade -mt-8 md:mt-[clamp(1.5rem,4.5svh,3rem)]"
+          className="hero-fade mt-5 md:mt-[clamp(1.5rem,4.5svh,3rem)]"
           style={{ "--i": 2 } as CSSProperties}
         />
       </div>

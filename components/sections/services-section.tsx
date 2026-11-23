@@ -178,6 +178,7 @@ export function ServicesSection() {
   const [focusedWithin, setFocusedWithin] = useState(false);
   const openModal = useLeadModal((s) => s.openModal);
   const sectionRef = useRef<HTMLElement>(null);
+  const swipeStart = useRef<{ x: number; y: number } | null>(null);
 
   const goTo = (next: number) => {
     setSlide((cur) =>
@@ -284,6 +285,24 @@ export function ServicesSection() {
             {/* 2-Column Showcase (Replaces content at exact same place) */}
             <div
               className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center mt-10 sm:mt-12"
+              // Swipeable on touch: a mostly-horizontal swipe of 50px+ goes to
+              // the next/previous service. Passive listeners, no
+              // preventDefault, so vertical page scrolling is untouched.
+              onTouchStart={(e) => {
+                const t = e.touches[0];
+                if (t) swipeStart.current = { x: t.clientX, y: t.clientY };
+              }}
+              onTouchEnd={(e) => {
+                const start = swipeStart.current;
+                const t = e.changedTouches[0];
+                swipeStart.current = null;
+                if (!start || !t) return;
+                const dx = t.clientX - start.x;
+                const dy = t.clientY - start.y;
+                if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+                const n = services.length;
+                goTo(dx < 0 ? (activeIndex + 1) % n : (activeIndex - 1 + n) % n);
+              }}
               onFocusCapture={(e) => {
                 // Keyboard focus only: a mouse click on a button also focuses
                 // it, and that must not freeze the rotation.

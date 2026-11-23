@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   Menu,
+  Phone,
   ArrowRight,
   Building2,
   FolderKanban,
@@ -192,6 +193,16 @@ export function Navbar() {
               <ArrowRight className="size-4 ml-1.5 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </Button>
+
+          {/* Mobile: one-tap call, next to the menu (compact header = logo +
+              call + menu). Number comes from config/site.ts. */}
+          <a
+            href={`tel:${siteConfig.phone}`}
+            aria-label={`Call ${siteConfig.phoneDisplay}`}
+            className="inline-flex size-10 items-center justify-center rounded-full border border-black/15 dark:border-white/15 bg-black/[0.03] dark:bg-white/[0.04] text-primary hover:bg-black/[0.07] dark:hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7138FF] dark:focus-visible:ring-[#8B4DFF] sm:hidden"
+          >
+            <Phone className="size-[18px]" />
+          </a>
 
           {/* Mobile menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>

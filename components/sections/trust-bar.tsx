@@ -66,9 +66,22 @@ const wordmarks: Record<string, ReactNode> = {
   ),
 };
 
+/**
+ * The industry each published client is in, shown under its wordmark. Every
+ * label is traceable to that client's case study in content/portfolio.json
+ * (AGENTS.md rule 1) — add an entry here when a new case study is published;
+ * a client without one simply shows no label.
+ */
+const industries: Record<string, string> = {
+  DAUR: "Fashion",
+  Laromaire: "Fragrance",
+  "Shudhi Herbals": "Ayurveda & wellness",
+  "FabXpert Metal": "Metal fabrication",
+};
+
 /*
- * Grid hairlines: a short vertical line on a cell's left edge (::before) and a
- * short horizontal one on its top edge (::after), shown only BETWEEN cells.
+ * Grid hairlines: a vertical line on a cell's left edge (::before) and a
+ * horizontal one on its top edge (::after), shown only BETWEEN cells.
  *
  * Both grids are 2 columns on phones and a single row from a breakpoint up, so
  * which cells get which line is a function of index alone. Picking them per
@@ -80,12 +93,29 @@ const wordmarks: Record<string, ReactNode> = {
  */
 const vLine =
   "before:absolute before:left-0 before:top-1/2 before:h-10 before:w-px before:-translate-y-1/2 before:bg-slate-200 dark:before:bg-white/10";
-const hLine =
-  "after:absolute after:left-1/2 after:top-0 after:h-px after:w-3/4 after:-translate-x-1/2 after:bg-slate-200 dark:after:bg-white/10";
+
+/*
+ * Phones get a 2x2 grid with FULL-BLEED dividers (lines run edge to edge and
+ * meet in one clean cross) instead of the short floating hairlines above,
+ * which read as cramped at that size. From the single-row breakpoint up the
+ * short centred vertical hairline returns.
+ */
+const vGrid =
+  "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-px before:bg-slate-200 dark:before:bg-white/10";
+const hGrid =
+  "after:absolute after:left-0 after:right-0 after:top-0 after:h-px after:bg-slate-200 dark:after:bg-white/10";
 
 const singleRowFrom = {
-  sm: { showV: "sm:before:block", hideH: "sm:after:hidden" },
-  md: { showV: "md:before:block", hideH: "md:after:hidden" },
+  sm: {
+    showV: "sm:before:block",
+    hideH: "sm:after:hidden",
+    rowV: "sm:before:top-1/2 sm:before:bottom-auto sm:before:h-10 sm:before:-translate-y-1/2",
+  },
+  md: {
+    showV: "md:before:block",
+    hideH: "md:after:hidden",
+    rowV: "md:before:top-1/2 md:before:bottom-auto md:before:h-10 md:before:-translate-y-1/2",
+  },
 } as const;
 
 function cellLines(i: number, bp: keyof typeof singleRowFrom) {
@@ -93,7 +123,7 @@ function cellLines(i: number, bp: keyof typeof singleRowFrom) {
   const v = i === 0 ? "before:hidden" : i % 2 === 1 ? "" : `before:hidden ${singleRowFrom[bp].showV}`;
   // Phones: everything past the first row. Single row: nothing.
   const h = i < 2 ? "after:hidden" : singleRowFrom[bp].hideH;
-  return `${vLine} ${hLine} ${v} ${h}`;
+  return `${vGrid} ${hGrid} ${singleRowFrom[bp].rowV} ${v} ${h}`;
 }
 
 /**
@@ -133,7 +163,7 @@ export function TrustPanel({
             {stats.map((s, i) => (
               <div
                 key={s.label}
-                className={`relative flex flex-col items-center justify-center px-3 py-5 text-center lg:items-start lg:px-4 lg:text-left xl:px-7 ${cellLines(i, "sm")}`}
+                className={`relative flex flex-col items-center justify-center px-4 py-6 text-center sm:px-3 sm:py-5 lg:items-start lg:px-4 lg:text-left xl:px-7 ${cellLines(i, "sm")}`}
               >
                 {/* dt precedes dd in the DOM; `order` flips them visually. */}
                 <dt className="order-2 mt-1.5 whitespace-nowrap text-xs text-slate-500 sm:text-[13px] dark:text-white/55">
@@ -148,7 +178,7 @@ export function TrustPanel({
 
             {/* Own row below the stats until lg, then joins them. */}
             <div
-              className={`relative col-span-full flex items-center justify-center px-4 py-4 lg:col-span-1 lg:px-5 lg:py-5 xl:px-7 ${vLine} ${hLine} before:hidden lg:before:block lg:after:hidden`}
+              className={`relative col-span-full flex items-center justify-center px-4 py-5 lg:col-span-1 lg:px-5 lg:py-5 xl:px-7 ${vLine} ${hGrid} before:hidden lg:before:block lg:after:hidden`}
             >
               <dt className="sr-only">Markets</dt>
               <dd className="flex items-center gap-3">
@@ -177,8 +207,8 @@ export function TrustPanel({
               id="trusted-brands-heading"
               className="text-center text-sm font-semibold text-slate-900 [grid-area:label] md:text-left xl:whitespace-nowrap xl:pr-6 xl:leading-snug dark:text-white"
             >
-              Trusted by <br className="hidden xl:block" />
-              leading brands
+              Trusted by brands <br className="hidden xl:block" />
+              across industries
             </h2>
 
             <div className="relative [grid-area:logos] xl:px-6 xl:before:absolute xl:before:left-0 xl:before:top-1/2 xl:before:h-10 xl:before:w-px xl:before:-translate-y-1/2 xl:before:bg-slate-200 xl:after:absolute xl:after:right-0 xl:after:top-1/2 xl:after:h-10 xl:after:w-px xl:after:-translate-y-1/2 xl:after:bg-slate-200 dark:xl:before:bg-white/10 dark:xl:after:bg-white/10">
@@ -189,14 +219,25 @@ export function TrustPanel({
                 {brands.map((name, i) => (
                   <li
                     key={name}
-                    className={`relative flex min-h-16 items-center justify-center px-3 py-4 text-slate-800 transition-colors duration-300 hover:text-[#7138FF] [&:last-child:nth-child(odd)]:col-span-2 md:[&:last-child:nth-child(odd)]:col-span-1 dark:text-white/80 dark:hover:text-white ${cellLines(i, "md")}`}
+                    className={`relative flex min-h-16 flex-col items-center justify-center gap-1.5 px-3 py-4 text-slate-800 transition-colors duration-300 hover:text-[#7138FF] [&:last-child:nth-child(odd)]:col-span-2 md:[&:last-child:nth-child(odd)]:col-span-1 dark:text-white/80 dark:hover:text-white ${cellLines(i, "md")}`}
                   >
-                    <span className="sr-only">{name}</span>
+                    <span className="sr-only">
+                      {name}
+                      {industries[name] ? `, ${industries[name]}` : ""}
+                    </span>
                     <span aria-hidden="true" className="whitespace-nowrap">
                       {wordmarks[name] ?? (
                         <span className="font-display text-lg">{name}</span>
                       )}
                     </span>
+                    {industries[name] && (
+                      <span
+                        aria-hidden="true"
+                        className="text-center text-balance text-[10px] font-medium uppercase tracking-[0.14em] text-slate-500 dark:text-white/45"
+                      >
+                        {industries[name]}
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>
