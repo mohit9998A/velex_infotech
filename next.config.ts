@@ -57,6 +57,16 @@ const nextConfig: NextConfig = {
         destination: "/services/ai-receptionist",
         permanent: true,
       },
+      {
+        source: "/portfolio",
+        destination: "/#portfolio",
+        permanent: true,
+      },
+      {
+        source: "/pricing",
+        destination: "/contact",
+        permanent: true,
+      },
     ];
   },
   // Client router cache configuration: cache visited static routes for 3 minutes
