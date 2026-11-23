@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["nodemailer"],
   pageExtensions: ["ts", "tsx", "js", "jsx"],
   images: {
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     // AVIF first, WebP fallback. The 7 service hero PNGs are 680-880 KB each
     // and were previously served raw through a plain <img>; routed through
     // next/image they re-encode to a fraction of that. AVIF is opt-in — the
