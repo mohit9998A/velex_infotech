@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import { ThemeProvider } from "next-themes";
+import { captureUtmParams } from "@/lib/utm";
+import { trackEvent } from "@/lib/analytics";
 
 /**
  * Deliberately just the theme provider.
@@ -15,6 +18,24 @@ import { ThemeProvider } from "next-themes";
  *   (`prefers-reduced-motion` blocks in globals.css).
  */
 export function Providers({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    captureUtmParams();
+
+    const handleClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement)?.closest?.("a");
+      if (!target) return;
+      const href = target.getAttribute("href") || "";
+      if (href.startsWith("tel:")) {
+        trackEvent("tel_click", { destination: href.replace("tel:", "") });
+      } else if (href.startsWith("mailto:")) {
+        trackEvent("mailto_click", { destination: href.replace("mailto:", "") });
+      }
+    };
+
+    document.addEventListener("click", handleClick, { passive: true });
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
+
   return (
     <ThemeProvider
       attribute="class"

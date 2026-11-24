@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["nodemailer"],
   pageExtensions: ["ts", "tsx", "js", "jsx"],
   images: {
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     // AVIF first, WebP fallback. The 7 service hero PNGs are 680-880 KB each
     // and were previously served raw through a plain <img>; routed through
     // next/image they re-encode to a fraction of that. AVIF is opt-in — the
@@ -54,6 +55,16 @@ const nextConfig: NextConfig = {
       {
         source: "/services/voice-agent",
         destination: "/services/ai-receptionist",
+        permanent: true,
+      },
+      {
+        source: "/portfolio",
+        destination: "/#portfolio",
+        permanent: true,
+      },
+      {
+        source: "/pricing",
+        destination: "/contact",
         permanent: true,
       },
     ];
@@ -104,6 +115,25 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Admin routes: strictly non-indexable
+      {
+        source: "/admin",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow",
+          },
+        ],
+      },
+      {
+        source: "/admin/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow",
+          },
+        ],
+      },
       // Never cache API routes
       {
         source: "/api/:path*",
@@ -111,6 +141,10 @@ const nextConfig: NextConfig = {
           {
             key: "Cache-Control",
             value: "no-store, max-age=0",
+          },
+          {
+            key: "X-Robots-Tag",
+            value: "noindex",
           },
         ],
       },

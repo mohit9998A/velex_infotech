@@ -31,6 +31,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ChoiceGroup } from "@/components/forms/choice-group";
 import { PhoneField } from "@/components/forms/phone-field";
+import { trackEvent } from "@/lib/analytics";
+import { getStoredUtmParams } from "@/lib/utm";
 
 interface LeadFormProps {
   defaultService?: string;
@@ -152,6 +154,12 @@ export function LeadForm({
       }
     }
     setValue("source", window.location.href, { shouldDirty: false });
+    const utms = getStoredUtmParams();
+    if (utms.utm_source) setValue("utm_source", utms.utm_source, { shouldDirty: false });
+    if (utms.utm_medium) setValue("utm_medium", utms.utm_medium, { shouldDirty: false });
+    if (utms.utm_campaign) setValue("utm_campaign", utms.utm_campaign, { shouldDirty: false });
+    if (utms.utm_term) setValue("utm_term", utms.utm_term, { shouldDirty: false });
+    if (utms.utm_content) setValue("utm_content", utms.utm_content, { shouldDirty: false });
   }, [setValue]);
 
   const serviceOptions = useMemo(
@@ -173,13 +181,26 @@ export function LeadForm({
   const onSubmit = async (values: LeadFormValues) => {
     setServerError(null);
     try {
+      const utms = getStoredUtmParams();
+      const payload: LeadFormValues = {
+        ...values,
+        ...(utms.utm_source && !values.utm_source ? { utm_source: utms.utm_source } : {}),
+        ...(utms.utm_medium && !values.utm_medium ? { utm_medium: utms.utm_medium } : {}),
+        ...(utms.utm_campaign && !values.utm_campaign ? { utm_campaign: utms.utm_campaign } : {}),
+        ...(utms.utm_term && !values.utm_term ? { utm_term: utms.utm_term } : {}),
+        ...(utms.utm_content && !values.utm_content ? { utm_content: utms.utm_content } : {}),
+      };
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
+        trackEvent("generate_lead", {
+          service: values.service,
+          currency: values.currency,
+        });
         setSubmitted(true);
         onSuccess?.();
         return;
@@ -248,7 +269,12 @@ export function LeadForm({
           anything urgent, reach us on WhatsApp.
         </p>
         <Button variant="gold" className="font-sans font-semibold rounded-full" asChild>
-          <a href={siteConfig.whatsapp} target="_blank" rel="noopener noreferrer">
+          <a
+            href={siteConfig.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent("whatsapp_click")}
+          >
             Message us on WhatsApp
           </a>
         </Button>

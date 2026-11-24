@@ -58,6 +58,7 @@ export async function generateMetadata({
     // it, and having both produced "... | Velex Infotech | Velex Infotech".
     title: service.metaTitle ?? service.title,
     description: service.metaDescription ?? service.description,
+    ogImageAlt: `${service.title} — Velex Infotech`,
   });
 }
 

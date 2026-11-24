@@ -4,7 +4,7 @@ import { OG_CONTENT_TYPE, OG_SIZE, renderOgImage } from "@/lib/og-template";
 
 const services = servicesData as ServiceItem[];
 
-export const alt = "Velex Infotech service";
+export const alt = "Velex Infotech AI & digital engineering service";
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 

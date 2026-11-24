@@ -68,8 +68,8 @@ export const siteConfig = {
    * indexing problem cannot be diagnosed — only guessed at.
    */
   verification: {
-    google: "",
-    bing: "",
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
+    bing: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION || "",
   },
   /**
    * GA4 measurement ID. Public by definition — it ships in the page source of
@@ -162,10 +162,6 @@ export const offices: OfficeConfig[] = [
     country: "India",
     countryCode: "IN",
     hasAddress: true,
-    // TODO(velex): this must be a street, not the city repeated. `streetAddress`
-    // and `addressLocality` currently say the same thing, which is a
-    // placeholder wearing a schema's clothes.
-    streetAddress: "Ludhiana",
     postalCode: "141001",
     geo: { latitude: 30.9009, longitude: 75.8573 },
     timezone: "Asia/Kolkata",

@@ -48,3 +48,8 @@ next-env.d.ts
 
 # Playwright MCP session artifacts (console logs, page snapshots)
 .playwright-mcp/
+
+# temporary dumps and scratch
+/tmp/
+.mcp.json
+

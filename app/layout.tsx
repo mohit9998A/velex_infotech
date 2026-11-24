@@ -25,19 +25,6 @@ export const metadata: Metadata = {
     template: "%s | Velex Infotech",
   },
   description: siteConfig.description,
-  // `keywords` has had zero ranking value at Google and Bing for years. Kept
-  // only as human-readable documentation of what each page is meant to target —
-  // deleting it outright tends to invite someone to re-add it worse.
-  keywords: [
-    "AI agent development services",
-    "agentic AI development services",
-    "AI automation services for small business",
-    "AI receptionist for small business",
-    "WhatsApp AI chatbot development company",
-    "data analytics consulting services",
-    "custom software development services",
-    "AI integration services",
-  ],
   authors: [{ name: siteConfig.founder }],
   creator: siteConfig.founder,
   // Defaults only — each page overrides url/title/description via
@@ -133,7 +120,7 @@ export default function RootLayout({
         <Providers>
           <ScrollProgress />
           <Navbar />
-          <main>{children}</main>
+          <main suppressHydrationWarning>{children}</main>
           <Footer />
           <WhatsAppButton />
           <LeadFormModal />
@@ -155,7 +142,7 @@ export default function RootLayout({
         {siteConfig.gaMeasurementId ? (
           <>
             <Script id="ga-init" strategy="lazyOnload">
-              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${siteConfig.gaMeasurementId}');`}
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{'ad_storage':'denied','analytics_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','region':['GB','AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','CA']});gtag('consent','default',{'ad_storage':'granted','analytics_storage':'granted','ad_user_data':'granted','ad_personalization':'granted'});gtag('js',new Date());gtag('config','${siteConfig.gaMeasurementId}');`}
             </Script>
             <Script
               id="ga"
