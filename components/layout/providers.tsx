@@ -1,29 +1,48 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { useEffect } from "react";
 import { ThemeProvider } from "next-themes";
+import { captureUtmParams } from "@/lib/utm";
+import { trackEvent } from "@/lib/analytics";
 
 /**
- * Loaded as its own chunk after the page is interactive. This keeps gsap,
- * ScrollTrigger and lenis (~135 KiB combined) out of the shared bundle that
- * every route pays for — see the note in smooth-scroll.tsx.
+ * Deliberately just the theme provider.
  *
- * `ssr: false` is correct here: the component renders null and only sets up
- * browser-side scroll behaviour, so there is nothing to server-render.
+ * - No smooth-scroll library. Lenis used to be mounted here; its non-passive
+ *   wheel/touch listeners made every scroll frame wait on the main thread,
+ *   which is what made the site lag and freeze while anything else was
+ *   running. See the note in globals.css.
+ * - No `<MotionConfig>`. It was the only animation-library import in the
+ *   root layout, so it put part of motion into the shared chunk of every
+ *   route. Nothing uses motion any more; reduced-motion handling lives in CSS
+ *   (`prefers-reduced-motion` blocks in globals.css).
  */
-const SmoothScroll = dynamic(() => import("@/components/layout/smooth-scroll"), {
-  ssr: false,
-});
-
 export function Providers({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    captureUtmParams();
+
+    const handleClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement)?.closest?.("a");
+      if (!target) return;
+      const href = target.getAttribute("href") || "";
+      if (href.startsWith("tel:")) {
+        trackEvent("tel_click", { destination: href.replace("tel:", "") });
+      } else if (href.startsWith("mailto:")) {
+        trackEvent("mailto_click", { destination: href.replace("mailto:", "") });
+      }
+    };
+
+    document.addEventListener("click", handleClick, { passive: true });
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
+
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="dark"
+      defaultTheme="light"
       enableSystem={false}
       disableTransitionOnChange
     >
-      <SmoothScroll />
       {children}
     </ThemeProvider>
   );

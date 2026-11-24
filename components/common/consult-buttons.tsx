@@ -5,6 +5,7 @@ import { MessageCircle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
+import { trackEvent } from "@/lib/analytics";
 import { useLeadModal } from "@/lib/store/lead-modal";
 import { prefetchLeadForm } from "@/components/forms/lead-form-modal";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,16 @@ import { Button } from "@/components/ui/button";
 interface ConsultButtonsProps {
   presetService?: string;
   primaryLabel?: string;
+  primaryVariant?:
+    | "primary"
+    | "blue"
+    | "gold"
+    | "outline"
+    | "ghost"
+    | "link"
+    | "crystal";
+  primaryClassName?: string;
+  primaryIcon?: ReactNode;
   /**
    * Replaces the default WhatsApp button entirely. Lets a Server Component
    * keep its own secondary CTA (the hero's "View Our Work" anchor, say) while
@@ -29,6 +40,9 @@ interface ConsultButtonsProps {
 export function ConsultButtons({
   presetService,
   primaryLabel = "Get Free Consultation",
+  primaryVariant = "primary",
+  primaryClassName,
+  primaryIcon,
   secondary,
   size = "lg",
   className,
@@ -40,18 +54,25 @@ export function ConsultButtons({
     <div className={cn("flex flex-col gap-4 sm:flex-row", className)} style={style}>
       <Button
         size={size}
-        className="btn-glow"
+        variant={primaryVariant}
+        className={cn(primaryVariant === "primary" ? "btn-glow" : "", primaryClassName)}
         onClick={() => openModal(presetService)}
         // The dialog is a separate chunk (see lead-form-modal.tsx). Warm it on
         // intent so the first open never waits on a network round-trip.
         onPointerEnter={prefetchLeadForm}
         onFocus={prefetchLeadForm}
       >
-        {primaryLabel}
+        <span>{primaryLabel}</span>
+        {primaryIcon}
       </Button>
       {secondary ?? (
         <Button size={size} variant="crystal" asChild>
-          <a href={siteConfig.whatsapp} target="_blank" rel="noopener noreferrer">
+          <a
+            href={siteConfig.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent("whatsapp_click")}
+          >
             <MessageCircle className="size-4" /> WhatsApp Us
           </a>
         </Button>

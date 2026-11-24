@@ -17,7 +17,7 @@ export const siteDomain = new URL(siteConfig.url).host;
  * places, so "Ludhiana, Punjab, India" had become the site's entire stated
  * geography — including on pages meant to sell to US and UK buyers.
  */
-export const officesLine = `${offices.map((o) => o.city).join(" & ")}, ${offices[0].country}`;
+export const officesLine = `${offices.map((o) => o.city).join(" & ")}, ${offices[0]?.country ?? ""}`;
 
 /** "United States · United Kingdom · Canada · India" */
 export const marketsLine = markets.map((m) => m.countryName).join(" · ");
@@ -25,7 +25,8 @@ export const marketsLine = markets.map((m) => m.countryName).join(" · ");
 /** "US, UK, Canada and India" — the short form for titles and headlines. */
 export const marketsShortLine = (() => {
   const names = markets.map((m) => m.shortName);
-  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+  const last = names[names.length - 1] ?? "";
+  return `${names.slice(0, -1).join(", ")} and ${last}`;
 })();
 
 /**
@@ -63,6 +64,7 @@ interface PageMetadataInput {
   /** ISO date — only meaningful when `type` is "article". */
   modifiedTime?: string;
   robots?: Metadata["robots"];
+  ogImageAlt?: string;
 }
 
 /**
@@ -87,6 +89,7 @@ export function pageMetadata({
   publishedTime,
   modifiedTime,
   robots,
+  ogImageAlt,
 }: PageMetadataInput): Metadata {
   const url = absoluteUrl(path);
 
@@ -107,6 +110,18 @@ export function pageMetadata({
       // calls this helper — which is every page.
       alternateLocale: [...siteConfig.ogLocaleAlternate],
       type,
+      ...(ogImageAlt
+        ? {
+            images: [
+              {
+                url: `${url}/opengraph-image`,
+                width: 1200,
+                height: 630,
+                alt: ogImageAlt,
+              },
+            ],
+          }
+        : {}),
       ...(type === "article" && publishedTime
         ? { publishedTime, modifiedTime: modifiedTime ?? publishedTime }
         : {}),
@@ -115,6 +130,18 @@ export function pageMetadata({
       card: "summary_large_image",
       title,
       description,
+      ...(ogImageAlt
+        ? {
+            images: [
+              {
+                url: `${url}/opengraph-image`,
+                width: 1200,
+                height: 630,
+                alt: ogImageAlt,
+              },
+            ],
+          }
+        : {}),
     },
     ...(robots ? { robots } : {}),
   };

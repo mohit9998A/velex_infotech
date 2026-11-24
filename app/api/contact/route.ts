@@ -104,7 +104,7 @@ export async function POST(request: Request) {
     console.warn("[velex:lead] LEAD_MAIL_DISABLED is set — refusing all sends");
     return NextResponse.json(
       { ok: false, error: "Mail transport unavailable" },
-      { status: 503 },
+      { status: 503, headers: { "Retry-After": "3600" } },
     );
   }
 
@@ -115,15 +115,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Payload too large" }, { status: 413 });
   }
 
-  // 2 — Origin.
-  if (!originAllowed(request)) {
-    return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
-  }
-
-  // 3 — Per-IP request rate, before any parsing.
+  // 2 — Per-IP request rate, before origin check or any body parsing.
   const key = clientKey(request);
   const requestRate = consume(`req:${key}`, REQUEST_RULES);
   if (!requestRate.ok) return tooMany(requestRate.retryAfter);
+
+  // 3 — Origin.
+  if (!originAllowed(request)) {
+    return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
+  }
 
   // 4 — Read and parse. `content-length` is caller-supplied and may lie, so the
   // real length is checked too.
@@ -181,7 +181,7 @@ export async function POST(request: Request) {
       console.error(`[velex:lead] SMTP config incomplete (missing: ${missing}) — lead NOT delivered`);
       return NextResponse.json(
         { ok: false, error: "Mail transport unavailable" },
-        { status: 503 },
+        { status: 503, headers: { "Retry-After": "3600" } },
       );
     }
     console.warn(`[velex:lead] SMTP config incomplete (missing: ${missing}) — email skipped (dev)`);
@@ -213,7 +213,7 @@ export async function POST(request: Request) {
     );
     return NextResponse.json(
       { ok: false, error: "Mail transport unavailable" },
-      { status: 503 },
+      { status: 503, headers: { "Retry-After": String(budget.retryAfter) } },
     );
   }
 

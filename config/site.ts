@@ -41,9 +41,9 @@ export const siteConfig = {
    * server with `npm run verify:smtp`.
    */
   leadInbox: "team@velexinfotech.com",
-  phoneDisplay: "+91 89689 35766",
-  phone: "+918968935766",
-  whatsapp: "https://wa.me/918968935766",
+  phoneDisplay: "+91 70875 02553",
+  phone: "+917087502553",
+  whatsapp: "https://wa.me/917087502553",
   /**
    * Plain `en`, not `en-IN`.
    *
@@ -68,18 +68,19 @@ export const siteConfig = {
    * indexing problem cannot be diagnosed — only guessed at.
    */
   verification: {
-    google: "",
-    bing: "",
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
+    bing: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION || "",
   },
   /**
    * GA4 measurement ID. Public by definition — it ships in the page source of
    * every site that uses it — so it lives here with the rest of the site
    * identity rather than in an env var that silently vanishes on a new deploy.
    *
-   * Rendered via <GoogleAnalytics> from @next/third-parties in app/layout.tsx,
-   * not the raw gtag snippet. The component emits the same two tags, but routes
-   * them through next/script so they load `afterInteractive` and survive client
-   * navigation without re-executing.
+   * Rendered in app/layout.tsx as the standard two gtag tags through
+   * next/script with `strategy="lazyOnload"`, so they survive client
+   * navigation without re-executing and load after the page instead of
+   * competing with it. (Not @next/third-parties' <GoogleAnalytics>: that uses
+   * `afterInteractive`, which preloads gtag.js in <head> on every route.)
    *
    * Note: neither the component nor the raw snippet fires a page_view on an App
    * Router client-side navigation. That is GA4's job — Admin > Data Streams >
@@ -102,6 +103,15 @@ export const siteConfig = {
    */
   social: {
     instagram: "https://instagram.com/velexinfotech.ai",
+  },
+  /**
+   * Legal page update dates kept in sync between page content and sitemap.xml
+   */
+  legalDates: {
+    termsUpdated: "June 2025",
+    termsLastModified: "2025-06-01",
+    privacyUpdated: "August 2026",
+    privacyLastModified: "2026-08-07",
   },
   stats: {
     // TODO(velex): replace with real, defensible counts. A specific small
@@ -152,10 +162,6 @@ export const offices: OfficeConfig[] = [
     country: "India",
     countryCode: "IN",
     hasAddress: true,
-    // TODO(velex): this must be a street, not the city repeated. `streetAddress`
-    // and `addressLocality` currently say the same thing, which is a
-    // placeholder wearing a schema's clothes.
-    streetAddress: "Ludhiana",
     postalCode: "141001",
     geo: { latitude: 30.9009, longitude: 75.8573 },
     timezone: "Asia/Kolkata",

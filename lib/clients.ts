@@ -8,7 +8,7 @@
  * have found the pattern in about thirty seconds, on the exact pages we're
  * trying to build authority with.
  *
- * Bonn and FabXpert Metal are real — both appear in content/portfolio.json with
+ * Laromaire, Shudhi Herbals, and FabXpert Metal are real — all appear in content/portfolio.json with
  * live, linked sites.
  *
  * To add a name here you need WRITTEN PERMISSION from the client. Naming a
@@ -19,8 +19,10 @@
  * rule is how one of them goes stale.
  */
 export const permittedClients = [
-  "Bonn",
+  "Laromaire",
+  "Shudhi Herbals",
   "FabXpert Metal",
   "Ground Zero",
   "DAUR",
 ] as const;
+

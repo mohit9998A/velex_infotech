@@ -1,5 +1,3 @@
-import type { LucideIcon } from "lucide-react";
-
 export interface ServiceBenefit {
   title: string;
   description: string;
@@ -71,29 +69,6 @@ export interface IndustryItem {
   relatedServices: string[];
 }
 
-export interface PricingTier {
-  id: string;
-  name: string;
-  tagline: string;
-  monthly: number | null; // null => "Custom"
-  annual: number | null;
-  currency: string;
-  unit: string;
-  popular?: boolean;
-  features: string[];
-  cta: string;
-}
-
-export interface Testimonial {
-  id: string;
-  quote: string;
-  author: string;
-  role: string;
-  company: string;
-  rating: number;
-  placeholder?: boolean;
-}
-
 export interface FaqItem {
   id: string;
   question: string;
@@ -156,6 +131,8 @@ export interface PortfolioItem {
   accent: string; // tailwind gradient classes for the cover
   placeholder?: boolean;
   preview?: PortfolioPreview;
+  highlights?: string[];
+  techStack?: string[];
 }
 
 /**
@@ -179,6 +156,10 @@ export interface BlogPost {
   readingMinutes: number;
   /** Service slugs this post links to, used to render "related services". */
   relatedServices: string[];
+  /** Optional post body content (for database-stored posts). */
+  content?: string;
+  /** Optional status flag (defaults to published). */
+  status?: "published" | "hidden";
 }
 
 export interface NavLink {
@@ -191,5 +172,3 @@ export interface NavGroup {
   label: string;
   links: NavLink[];
 }
-
-export type IconComponent = LucideIcon;

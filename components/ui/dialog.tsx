@@ -63,8 +63,9 @@ const DialogContent = React.forwardRef<
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
+      data-lenis-prevent
       className={cn(
-        "fixed left-1/2 top-1/2 z-[130] grid w-[calc(100vw-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-2xl border border-vx-border-bright bg-elevated/95 p-6 shadow-[0_0_80px_rgba(107,33,255,0.25)] backdrop-blur-xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 max-h-[92vh] overflow-y-auto",
+        "fixed left-1/2 top-1/2 z-[130] grid w-[calc(100vw-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-2xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-[#080614] p-6 shadow-[0_25px_70px_rgba(113,56,255,0.12),0_10px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_30px_90px_rgba(0,0,0,0.8),0_0_80px_rgba(113,56,255,0.25)] backdrop-blur-xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 max-h-[92vh] overflow-y-auto",
         dialogSizes[size],
         className,
       )}
@@ -72,7 +73,7 @@ const DialogContent = React.forwardRef<
     >
       {children}
       {!hideClose && (
-        <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-1 text-secondary opacity-80 transition hover:bg-white/5 hover:text-primary focus:outline-none">
+        <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-1 text-secondary opacity-80 transition hover:bg-white/5 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7138FF] dark:focus-visible:ring-[#8B4DFF] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#080614]">
           <X className="size-5" />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>
@@ -81,14 +82,6 @@ const DialogContent = React.forwardRef<
   </DialogPortal>
 ));
 DialogContent.displayName = "DialogContent";
-
-const DialogHeader = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("flex flex-col space-y-2 text-left", className)} {...props} />
-);
-DialogHeader.displayName = "DialogHeader";
 
 const DialogTitle = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Title>,
@@ -121,7 +114,6 @@ export {
   DialogTrigger,
   DialogClose,
   DialogContent,
-  DialogHeader,
   DialogTitle,
   DialogDescription,
 };

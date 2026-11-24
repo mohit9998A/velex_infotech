@@ -52,7 +52,7 @@ npm run verify:smtp -- --send  # also deliver a real test email
 > environment and fails forever in the other. Regenerating the password as 24
 > alphanumeric characters avoids the problem entirely.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to self-host [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans) (headings) and [Inter](https://fonts.google.com/specimen/Inter) (body and UI). See `lib/fonts.ts` and `design.md` §3.
 
 ## Learn More
 

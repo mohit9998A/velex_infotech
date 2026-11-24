@@ -36,6 +36,7 @@ const SheetContent = React.forwardRef<
     <SheetOverlay />
     <SheetPrimitive.Content
       ref={ref}
+      data-lenis-prevent
       className={cn(
         "fixed z-[130] flex h-full w-[85vw] max-w-sm flex-col gap-6 border-vx-border bg-elevated/95 p-6 backdrop-blur-xl shadow-[0_0_80px_rgba(107,33,255,0.2)] transition data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-300",
         side === "right"
@@ -46,7 +47,7 @@ const SheetContent = React.forwardRef<
       {...props}
     >
       {children}
-      <SheetPrimitive.Close className="absolute right-4 top-4 rounded-full p-1 text-secondary transition hover:bg-white/5 hover:text-primary focus:outline-none">
+      <SheetPrimitive.Close className="absolute right-4 top-4 rounded-full p-1 text-secondary transition hover:bg-white/5 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7138FF] dark:focus-visible:ring-[#8B4DFF] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900">
         <X className="size-5" />
         <span className="sr-only">Close</span>
       </SheetPrimitive.Close>

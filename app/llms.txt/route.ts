@@ -86,6 +86,8 @@ ${markets.map((m) => `- [${m.countryName}](${absoluteUrl(m.path)}): Delivery, co
 - [Locations](${absoluteUrl("/locations")})
 - [Blog](${absoluteUrl("/blog")})
 - [Contact](${absoluteUrl("/contact")})
+- [Privacy Policy](${absoluteUrl("/privacy-policy")})
+- [Terms of Service](${absoluteUrl("/terms-of-service")})
 `;
 
   return new Response(body, {

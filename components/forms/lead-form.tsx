@@ -31,6 +31,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ChoiceGroup } from "@/components/forms/choice-group";
 import { PhoneField } from "@/components/forms/phone-field";
+import { trackEvent } from "@/lib/analytics";
+import { getStoredUtmParams } from "@/lib/utm";
 
 interface LeadFormProps {
   defaultService?: string;
@@ -152,6 +154,12 @@ export function LeadForm({
       }
     }
     setValue("source", window.location.href, { shouldDirty: false });
+    const utms = getStoredUtmParams();
+    if (utms.utm_source) setValue("utm_source", utms.utm_source, { shouldDirty: false });
+    if (utms.utm_medium) setValue("utm_medium", utms.utm_medium, { shouldDirty: false });
+    if (utms.utm_campaign) setValue("utm_campaign", utms.utm_campaign, { shouldDirty: false });
+    if (utms.utm_term) setValue("utm_term", utms.utm_term, { shouldDirty: false });
+    if (utms.utm_content) setValue("utm_content", utms.utm_content, { shouldDirty: false });
   }, [setValue]);
 
   const serviceOptions = useMemo(
@@ -173,13 +181,26 @@ export function LeadForm({
   const onSubmit = async (values: LeadFormValues) => {
     setServerError(null);
     try {
+      const utms = getStoredUtmParams();
+      const payload: LeadFormValues = {
+        ...values,
+        ...(utms.utm_source && !values.utm_source ? { utm_source: utms.utm_source } : {}),
+        ...(utms.utm_medium && !values.utm_medium ? { utm_medium: utms.utm_medium } : {}),
+        ...(utms.utm_campaign && !values.utm_campaign ? { utm_campaign: utms.utm_campaign } : {}),
+        ...(utms.utm_term && !values.utm_term ? { utm_term: utms.utm_term } : {}),
+        ...(utms.utm_content && !values.utm_content ? { utm_content: utms.utm_content } : {}),
+      };
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
+        trackEvent("generate_lead", {
+          service: values.service,
+          currency: values.currency,
+        });
         setSubmitted(true);
         onSuccess?.();
         return;
@@ -205,7 +226,7 @@ export function LeadForm({
           if (field === "website") continue;
           setError(field as keyof LeadFormValues, {
             type: "server",
-            message: messages[0],
+            message: messages[0] ?? "Invalid value",
           });
           mapped = true;
         }
@@ -240,13 +261,20 @@ export function LeadForm({
         className="flex flex-col items-center gap-4 py-8 text-center"
       >
         <CheckCircle2 className="size-12 text-success" />
-        <h3 className="font-display text-2xl text-primary">Request received</h3>
-        <p className="max-w-xs text-sm text-secondary">
+        <h3 className="font-heading text-2xl sm:text-3xl font-semibold tracking-tight text-primary">
+          Request received
+        </h3>
+        <p className="max-w-xs font-sans text-sm text-secondary leading-relaxed">
           Thank you. The Velex team will respond within one business day. For
           anything urgent, reach us on WhatsApp.
         </p>
-        <Button variant="gold" asChild>
-          <a href={siteConfig.whatsapp} target="_blank" rel="noopener noreferrer">
+        <Button variant="gold" className="font-sans font-semibold rounded-full" asChild>
+          <a
+            href={siteConfig.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent("whatsapp_click")}
+          >
             Message us on WhatsApp
           </a>
         </Button>
@@ -273,6 +301,9 @@ export function LeadForm({
           inputSize="lg"
           placeholder="Your full name"
           autoComplete="name"
+          aria-required="true"
+          aria-invalid={errors.name ? "true" : undefined}
+          aria-describedby={errors.name ? "lead-name-error" : undefined}
           {...register("name")}
         />
       </Field>
@@ -285,6 +316,9 @@ export function LeadForm({
           inputMode="email"
           placeholder="you@company.com"
           autoComplete="email"
+          aria-required="true"
+          aria-invalid={errors.email ? "true" : undefined}
+          aria-describedby={errors.email ? "lead-email-error" : undefined}
           {...register("email")}
         />
       </Field>
@@ -306,6 +340,9 @@ export function LeadForm({
               onBlur={field.onBlur}
               country={phoneCountry}
               onCountryChange={setPhoneCountry}
+              aria-required="true"
+              aria-invalid={errors.phone ? "true" : undefined}
+              aria-describedby={errors.phone ? "lead-phone-error" : undefined}
             />
           )}
         />
@@ -366,10 +403,10 @@ export function LeadForm({
                   userPickedCurrency.current = true;
                   field.onChange(e.target.value as Currency);
                 }}
-                className="rounded-md border border-vx-border bg-transparent px-1.5 py-0.5 text-xs text-secondary outline-none focus-visible:border-purple-glow"
+                className="rounded-md border border-slate-200 bg-white/80 px-2 py-0.5 text-xs text-slate-700 outline-none focus-visible:border-[#7138FF] dark:border-white/10 dark:bg-white/[0.04] dark:text-white/80 dark:focus-visible:border-[#8B4DFF]"
               >
                 {CURRENCIES.map((c) => (
-                  <option key={c} value={c} className="bg-surface text-primary">
+                  <option key={c} value={c} className="bg-white text-slate-900 dark:bg-[#0A0818] dark:text-white">
                     {c}
                   </option>
                 ))}
@@ -382,13 +419,14 @@ export function LeadForm({
       <Field
         label="Tell us about your project"
         htmlFor="lead-message"
+        error={errors.message?.message}
         action={
           <span
             className={cn(
               "text-xs tabular-nums",
               message.length > MESSAGE_MAX_LENGTH * 0.9
                 ? "text-warning"
-                : "text-secondary",
+                : "text-slate-500 dark:text-white/50",
             )}
           >
             {message.length} / {MESSAGE_MAX_LENGTH}
@@ -402,6 +440,8 @@ export function LeadForm({
           placeholder={
             'Example: "I want to automate customer support using an AI chatbot integrated with WhatsApp and our CRM."'
           }
+          aria-invalid={errors.message ? "true" : undefined}
+          aria-describedby={errors.message ? "lead-message-error" : undefined}
           {...register("message")}
         />
       </Field>
@@ -426,12 +466,10 @@ export function LeadForm({
           { icon: Zap, title: "Quick response", note: "Within one business day" },
         ].map(({ icon: Icon, title, note }) => (
           <li key={title} className="flex items-center gap-2">
-            <Icon className="size-4 shrink-0 text-purple-glow" aria-hidden="true" />
+            <Icon className="size-4 shrink-0 text-[#7138FF] dark:text-[#8B4DFF]" aria-hidden="true" />
             <span className="text-xs leading-tight">
-              <span className="block font-medium text-primary">{title}</span>
-              {/* text-secondary, not text-muted: #5c5c7a on the modal surface
-                  is 3.0:1, which fails AA for text this size. Same in light. */}
-              <span className="block text-secondary">{note}</span>
+              <span className="block font-medium text-slate-800 dark:text-white/90">{title}</span>
+              <span className="block text-slate-500 dark:text-white/60">{note}</span>
             </span>
           </li>
         ))}
@@ -449,13 +487,13 @@ export function LeadForm({
         className={cn(
           "flex flex-col gap-3",
           stickySubmit &&
-            "sticky bottom-0 z-10 -mx-5 mt-1 border-t bg-elevated px-5 pb-5 pt-4 sm:-mx-8 sm:px-8 sm:pb-8 lg:-mx-10 lg:px-10 lg:pb-10",
+            "sticky bottom-0 z-10 -mx-5 mt-1 border-t border-slate-200/80 bg-white/95 px-5 pb-5 pt-4 backdrop-blur-md sm:-mx-8 sm:px-8 sm:pb-8 lg:-mx-10 lg:px-10 lg:pb-8 dark:border-white/10 dark:bg-[#0A0818]/95",
         )}
       >
         <Button
           type="submit"
           size="xl"
-          className="btn-gradient btn-glow w-full flex-col gap-0.5"
+          className="btn-gradient btn-glow w-full flex-col gap-0.5 rounded-xl py-3.5"
           disabled={isSubmitting}
         >
           {isSubmitting ? (
@@ -464,18 +502,18 @@ export function LeadForm({
             </span>
           ) : (
             <>
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-2 font-semibold tracking-wide">
                 <Sparkles className="size-4" /> Get My Free Strategy Call
               </span>
-              <span className="text-xs font-normal opacity-80">
+              <span className="text-xs font-normal opacity-85">
                 No obligation. We reply within one business day.
               </span>
             </>
           )}
         </Button>
 
-        <p className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 text-center text-xs text-secondary">
-          <Lock className="size-3.5 shrink-0" aria-hidden="true" />
+        <p className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 text-center text-xs text-slate-500 dark:text-white/60">
+          <Lock className="size-3.5 shrink-0 text-slate-400 dark:text-white/40" aria-hidden="true" />
           <span>
             Your details are only used to answer your enquiry, and we never sell
             them.
@@ -486,9 +524,18 @@ export function LeadForm({
             href="/privacy-policy"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-primary"
+            className="underline underline-offset-2 text-slate-700 hover:text-[#7138FF] transition-colors dark:text-white/80 dark:hover:text-[#8B4DFF]"
           >
             Privacy policy
+          </a>
+          <span>and</span>
+          <a
+            href="/terms-of-service"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 text-slate-700 hover:text-[#7138FF] transition-colors dark:text-white/80 dark:hover:text-[#8B4DFF]"
+          >
+            Terms of service
           </a>
         </p>
       </div>
@@ -512,10 +559,11 @@ function Field({
   required?: boolean;
   children: React.ReactNode;
 }) {
+  const errorId = error ? `${htmlFor}-error` : undefined;
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between gap-2">
-        <Label htmlFor={htmlFor}>
+        <Label htmlFor={htmlFor} className="text-xs sm:text-sm font-medium text-slate-800 dark:text-white/90">
           {label}
           {required && (
             <span className="ml-0.5 text-error" aria-hidden="true">
@@ -526,7 +574,11 @@ function Field({
         {action}
       </div>
       {children}
-      {error && <span className="text-xs text-error">{error}</span>}
+      {error && (
+        <span id={errorId} role="alert" className="text-xs text-error">
+          {error}
+        </span>
+      )}
     </div>
   );
 }

@@ -46,7 +46,7 @@ export default function NotFound() {
 
       <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
         <div className="text-center">
-          <span className="font-mono-label text-purple-glow">404</span>
+          <span className="font-label text-purple-glow">404</span>
           <h1 className="mt-4 font-display text-h1 text-balance text-primary">
             This page doesn&apos;t exist
           </h1>

@@ -35,8 +35,10 @@ export const metadata = pageMetadata({
 const localFaqs = [
   {
     question: "Where is your office in Ludhiana?",
-    answer:
-      "We are based in Ludhiana, Punjab (141001). We meet clients in person across the city and the wider Ludhiana district, and work remotely with clients elsewhere in Punjab and across India. Call +91 89689 35766 to arrange a visit.",
+    // Read from siteConfig rather than written out: this answer is also
+    // emitted as FAQPage JSON-LD, and a hard-coded copy is how the old number
+    // survived here after config/site.ts had moved on.
+    answer: `We are based in Ludhiana, Punjab (141001). We meet clients in person across the city and the wider Ludhiana district, and work remotely with clients elsewhere in Punjab and across India. Call ${siteConfig.phoneDisplay} to arrange a visit.`,
   },
   {
     question: "Do you work with Ludhiana's manufacturing and export businesses?",
@@ -116,7 +118,7 @@ export default function LudhianaPage() {
 
           <span className="badge-pill w-fit">
             <MapPin className="size-3.5 text-gold" />
-            <span className="font-mono-label text-primary">Ludhiana, Punjab</span>
+            <span className="font-label text-primary">Ludhiana, Punjab</span>
           </span>
 
           <h1 className="mt-6 font-display text-h1 text-balance text-primary">
@@ -137,7 +139,7 @@ export default function LudhianaPage() {
             <div className="glass-card flex items-start gap-3 p-5">
               <MapPin className="mt-0.5 size-5 shrink-0 text-purple-glow" />
               <span className="flex flex-col">
-                <span className="font-mono-label text-muted">Office</span>
+                <span className="font-label text-muted">Office</span>
                 <span className="text-primary">Ludhiana, Punjab 141001</span>
               </span>
             </div>
@@ -147,14 +149,14 @@ export default function LudhianaPage() {
             >
               <Phone className="mt-0.5 size-5 shrink-0 text-purple-glow" />
               <span className="flex flex-col">
-                <span className="font-mono-label text-muted">Call</span>
+                <span className="font-label text-muted">Call</span>
                 <span className="text-primary">{siteConfig.phoneDisplay}</span>
               </span>
             </a>
             <div className="glass-card flex items-start gap-3 p-5">
               <Clock className="mt-0.5 size-5 shrink-0 text-purple-glow" />
               <span className="flex flex-col">
-                <span className="font-mono-label text-muted">Hours</span>
+                <span className="font-label text-muted">Hours</span>
                 <span className="text-primary">Mon–Fri, 9am–7pm</span>
               </span>
             </div>

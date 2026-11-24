@@ -4,6 +4,7 @@ import type { IndustryItem, ServiceItem } from "@/types";
 import servicesData from "@/content/services.json";
 import industriesData from "@/content/industries.json";
 import { blogPosts } from "@/content/blog";
+import { siteConfig } from "@/config/site";
 import { absoluteUrl } from "@/lib/seo";
 
 const services = servicesData as ServiceItem[];
@@ -47,8 +48,8 @@ const staticRoutes: {
   { path: "/locations/uk", priority: 0.8, changeFrequency: "monthly", lastModified: "2026-08-07" },
   { path: "/locations/canada", priority: 0.8, changeFrequency: "monthly", lastModified: "2026-08-07" },
   // Gained an analytics-and-cookies section when GA4 was added.
-  { path: "/privacy-policy", priority: 0.3, changeFrequency: "yearly", lastModified: "2026-08-07" },
-  { path: "/terms-of-service", priority: 0.3, changeFrequency: "yearly", lastModified: "2026-08-03" },
+  { path: "/privacy-policy", priority: 0.3, changeFrequency: "yearly", lastModified: siteConfig.legalDates.privacyLastModified },
+  { path: "/terms-of-service", priority: 0.3, changeFrequency: "yearly", lastModified: siteConfig.legalDates.termsLastModified },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

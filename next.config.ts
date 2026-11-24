@@ -16,9 +16,9 @@ const nextConfig: NextConfig = {
   // the one route where failure costs a lead. It is not on Next's built-in
   // auto-externalized list, so it has to be named here.
   serverExternalPackages: ["nodemailer"],
-  // Blog posts are .mdx files imported by app/blog/[slug]/page.tsx.
-  pageExtensions: ["ts", "tsx", "js", "jsx", "mdx"],
+  pageExtensions: ["ts", "tsx", "js", "jsx"],
   images: {
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     // AVIF first, WebP fallback. The 7 service hero PNGs are 680-880 KB each
     // and were previously served raw through a plain <img>; routed through
     // next/image they re-encode to a fraction of that. AVIF is opt-in — the
@@ -32,6 +32,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "prod.spline.design" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
     ],
   },
   async redirects() {
@@ -56,7 +57,25 @@ const nextConfig: NextConfig = {
         destination: "/services/ai-receptionist",
         permanent: true,
       },
+      {
+        source: "/portfolio",
+        destination: "/#portfolio",
+        permanent: true,
+      },
+      {
+        source: "/pricing",
+        destination: "/contact",
+        permanent: true,
+      },
     ];
+  },
+  // Client router cache configuration: cache visited static routes for 3 minutes
+  // and dynamic routes for 30 seconds to speed up client-side navigations.
+  experimental: {
+    staleTimes: {
+      dynamic: 30,
+      static: 180,
+    },
   },
   async headers() {
     return [
@@ -68,8 +87,64 @@ const nextConfig: NextConfig = {
           { key: "X-DNS-Prefetch-Control", value: "on" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+          {
             key: "Strict-Transport-Security",
             value: "max-age=63072000; includeSubDomains; preload",
+          },
+        ],
+      },
+      // Static images and public assets
+      {
+        source: "/images/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/:path*.(svg|jpg|jpeg|png|webp|avif|ico|woff|woff2)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      // Admin routes: strictly non-indexable
+      {
+        source: "/admin",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow",
+          },
+        ],
+      },
+      {
+        source: "/admin/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow",
+          },
+        ],
+      },
+      // Never cache API routes
+      {
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store, max-age=0",
+          },
+          {
+            key: "X-Robots-Tag",
+            value: "noindex",
           },
         ],
       },

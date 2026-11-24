@@ -270,6 +270,11 @@ export async function sendLeadNotification(
         ${row("Budget", formatBudget(lead.budget, lead.currency))}
         ${row("Company", lead.company || "Not provided")}
         ${row("Source", lead.source || "Not provided")}
+        ${lead.utm_source ? row("UTM Source", lead.utm_source) : ""}
+        ${lead.utm_medium ? row("UTM Medium", lead.utm_medium) : ""}
+        ${lead.utm_campaign ? row("UTM Campaign", lead.utm_campaign) : ""}
+        ${lead.utm_term ? row("UTM Term", lead.utm_term) : ""}
+        ${lead.utm_content ? row("UTM Content", lead.utm_content) : ""}
         <hr />
         <p><strong>Message:</strong></p>
         <p>${escapeHtml(lead.message || "Not provided").replace(/\n/g, "<br />")}</p>

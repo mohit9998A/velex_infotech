@@ -1,9 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
-import { cn } from "@/lib/utils";
-import { usePrefersReducedMotion } from "@/hooks/use-media-query";
+import { useEffect, useRef } from "react";
 
 interface CountUpProps {
   value: number;
@@ -12,69 +9,81 @@ interface CountUpProps {
   durationMs?: number;
 }
 
-/** Counts from 0 to `value` once it scrolls into view. */
-export function CountUp({ value, suffix = "", prefix = "", durationMs = 1600 }: CountUpProps) {
+/**
+ * Counts from 0 to `value` each time it scrolls into view (both scrolling down
+ * and above).
+ *
+ * - The server HTML carries the REAL number. It used to render `0`, so every
+ *   crawler, no-JS visitor and link preview read "0+ Projects Delivered".
+ *   The reset to 0 happens on the client, only once the number is off screen.
+ * - The tween writes straight to the text node instead of calling `setState`
+ *   on every animation frame: four instances re-rendering through React at
+ *   60 fps for 1.4 s, restarting on every re-entry, landed exactly while the
+ *   visitor was scrolling the bento grid into view.
+ */
+export function CountUp({ value, suffix = "", prefix = "", durationMs = 1400 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState(0);
-  const started = useRef(false);
-  const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
-    if (reducedMotion) {
-      setDisplay(value);
-      return;
-    }
     const el = ref.current;
     if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    const render = (n: number) => {
+      el.textContent = `${prefix}${n}${suffix}`;
+    };
+
+    let frame = 0;
+    let first = true;
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries[0].isIntersecting || started.current) return;
-        started.current = true;
-        const start = performance.now();
-        const tick = (now: number) => {
-          const progress = Math.min((now - start) / durationMs, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          setDisplay(Math.round(eased * value));
-          if (progress < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
+      ([entry]) => {
+        if (!entry) return;
+        cancelAnimationFrame(frame);
+
+        if (entry.isIntersecting) {
+          // Already on screen at mount: keep the server-rendered final value
+          // rather than flashing it back to 0.
+          if (first) {
+            first = false;
+            return;
+          }
+          const start = performance.now();
+          let shown = -1;
+          const tick = (now: number) => {
+            const progress = Math.min((now - start) / durationMs, 1);
+            // Smooth easeOutCubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const n = Math.round(eased * value);
+            if (n !== shown) {
+              shown = n;
+              render(n);
+            }
+            if (progress < 1) frame = requestAnimationFrame(tick);
+          };
+          frame = requestAnimationFrame(tick);
+        } else {
+          first = false;
+          // Reset while off screen so the next entry counts up again.
+          render(0);
+        }
       },
-      { threshold: 0.4 },
+      { threshold: 0.2, rootMargin: "0px 0px -40px 0px" },
     );
     observer.observe(el);
-    return () => observer.disconnect();
-  }, [value, durationMs, reducedMotion]);
 
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+      render(value);
+    };
+  }, [value, prefix, suffix, durationMs]);
+
+  // ONE string child, so React manages it as the element's text content —
+  // the same channel the tween writes to — rather than as three text nodes
+  // that the tween would orphan.
   return (
-    <span ref={ref}>
-      {prefix}
-      {display}
-      {suffix}
+    <span ref={ref} className="inline-block tabular-nums">
+      {`${prefix}${value}${suffix}`}
     </span>
-  );
-}
-
-interface StatCardProps {
-  value: number;
-  suffix?: string;
-  prefix?: string;
-  label: string;
-  className?: string;
-}
-
-export function StatCard({ value, suffix, prefix, label, className }: StatCardProps) {
-  return (
-    <div
-      className={cn(
-        "glass-card flex flex-col justify-center p-6",
-        className,
-      )}
-    >
-      <span className="font-display text-4xl text-gradient md:text-5xl">
-        <CountUp value={value} suffix={suffix} prefix={prefix} />
-      </span>
-      <span className="mt-2 font-mono-label text-muted">{label}</span>
-    </div>
   );
 }
