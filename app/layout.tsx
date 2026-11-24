@@ -120,7 +120,7 @@ export default function RootLayout({
         <Providers>
           <ScrollProgress />
           <Navbar />
-          <main>{children}</main>
+          <main suppressHydrationWarning>{children}</main>
           <Footer />
           <WhatsAppButton />
           <LeadFormModal />

@@ -198,6 +198,12 @@ export function InteractiveRobotSpline({
               appRef.current = app as SplineApp;
               runningRef.current = true;
               setLoaded(true);
+              try {
+                const objs = app.getAllObjects().map(o => ({ name: o.name, id: o.uuid, pos: o.position }));
+                console.log("SPLINE_OBJECTS_DUMP:", JSON.stringify(objs));
+              } catch (e) {
+                console.error("Spline dump err:", e);
+              }
               // The hero may already be off screen (or the tab hidden) by the
               // time the scene arrives.
               syncRunning();
