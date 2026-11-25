@@ -198,6 +198,18 @@ body {
    rule beats every Tailwind utility regardless of specificity (see the border
    note under LEAD MODAL), so a heading styled as a label with `font-sans` —
    the footer column titles, for one — would silently stay IBM Plex Sans. */
+/* Spline watermark suppression */
+#spline-watermark,
+a[href*="spline.design"],
+a[href*="spline"],
+[class*="spline-watermark"],
+[aria-label*="Spline"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 @layer base {
   h1,
   h2,
