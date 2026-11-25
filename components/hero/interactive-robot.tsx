@@ -145,6 +145,26 @@ export const InteractiveRobot = memo(function InteractiveRobot({
     return () => clearTimeout(blinkTimeout);
   }, []);
 
+  // Aggressively remove / hide any Spline watermark DOM element if injected
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const hide = () => {
+      const targets = el.querySelectorAll(
+        'a[href*="spline"], #spline-watermark, [class*="watermark"], [aria-label*="Spline"]'
+      );
+      targets.forEach((t) => {
+        (t as HTMLElement).style.setProperty("display", "none", "important");
+        (t as HTMLElement).style.setProperty("opacity", "0", "important");
+        (t as HTMLElement).style.setProperty("visibility", "hidden", "important");
+      });
+    };
+    hide();
+    const obs = new MutationObserver(hide);
+    obs.observe(el, { childList: true, subtree: true });
+    return () => obs.disconnect();
+  }, []);
+
   // Determine if Spline should load (enabled across mobile, tablet, and desktop)
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -311,8 +331,8 @@ export const InteractiveRobot = memo(function InteractiveRobot({
             splineLoaded ? "opacity-100" : "opacity-0 pointer-events-none"
           )}
         >
-          {/* Overscan container pushes Spline's bottom-right watermark out of bounds */}
-          <div className="absolute top-0 left-0 w-[calc(100%+48px)] h-[calc(100%+48px)] -bottom-12 -right-12 scale-[0.66] sm:scale-[0.78] md:scale-[0.88] origin-center">
+          {/* Overscan container pushes Spline's bottom-right watermark out of bounds while remaining dead-center */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%+84px)] h-[calc(100%+84px)] origin-center flex items-center justify-center">
             <Spline
               scene={scene}
               onLoad={(app) => {
@@ -443,12 +463,6 @@ export const InteractiveRobot = memo(function InteractiveRobot({
           />
         </div>
       </div>
-
-      {/* Guarantee the Spline watermark is completely hidden */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-1 -right-1 z-30 h-28 w-64 bg-gradient-to-tl from-[var(--vx-void)] via-[var(--vx-void)] to-transparent"
-      />
     </div>
   );
 });

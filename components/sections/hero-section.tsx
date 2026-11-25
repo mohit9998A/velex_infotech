@@ -14,7 +14,6 @@ import {
   DEFAULT_HERO_HEADLINE,
   DEFAULT_HERO_LEDE,
   DEFAULT_HERO_SHORT_LEDE,
-  DEFAULT_HERO_EYEBROW,
 } from "@/config/service-showcase";
 import { cn } from "@/lib/utils";
 
@@ -45,38 +44,8 @@ export function HeroSection() {
       >
         {/* Two-Column Grid: Copy on Left, Interactive Robot Showcase on Right */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-8 lg:gap-10 items-center flex-1 my-auto pt-1 pb-3 md:py-0">
-          {/* Left Column: Eyebrow, Headline, Lede, Stepper, CTAs */}
+          {/* Left Column: Headline, Lede, Stepper, CTAs */}
           <div className="md:col-span-6 lg:col-span-6 xl:col-span-6 z-10 flex flex-col justify-center">
-            {/* Eyebrow / Kicker */}
-            <div
-              className="hero-fade mb-1.5 sm:mb-[clamp(0.85rem,2.4svh,1.75rem)] flex items-center gap-2.5 sm:gap-3"
-              style={{ "--i": 0 } as CSSProperties}
-            >
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "h-[2px] sm:h-[2.5px] rounded-full transition-all duration-300",
-                  currentService
-                    ? "w-6 sm:w-7 bg-[#7138FF] dark:bg-[#8B4DFF] animate-pulse"
-                    : "w-5 sm:w-7 bg-[#7138FF] dark:bg-[#8B4DFF]"
-                )}
-              />
-              {currentService ? (
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <span className="font-mono text-[9.5px] sm:text-[11px] font-bold px-1.5 py-0.5 rounded bg-[#7138FF]/15 text-[#7138FF] dark:text-[#A855F7] border border-[#7138FF]/20">
-                    {currentService.number} / 06
-                  </span>
-                  <span className="font-sans text-[10.5px] sm:text-xs font-semibold uppercase tracking-[0.18em] sm:tracking-[0.2em] text-[#7138FF] dark:text-[#8B4DFF]">
-                    {currentService.tagline}
-                  </span>
-                </div>
-              ) : (
-                <span className="font-sans text-[10.5px] sm:text-xs font-medium uppercase tracking-[0.2em] sm:tracking-[0.22em] text-[#7138FF] dark:text-[#8B4DFF]">
-                  {DEFAULT_HERO_EYEBROW}
-                </span>
-              )}
-            </div>
-
             {/* Headline H1 with responsive spans and stable min-height to eliminate CLS */}
             <div className="min-h-[58px] sm:min-h-[110px] md:min-h-[175px] lg:min-h-[205px] flex flex-col justify-center">
               <h1
@@ -206,10 +175,10 @@ export function HeroSection() {
             />
           </div>
 
-          {/* Right Column: Interactive AI Robot Service Showcase (Properly sized and scaled) */}
-          <div className="md:col-span-6 lg:col-span-6 xl:col-span-6 relative z-10 w-full flex items-center justify-center h-[340px] sm:h-[420px] md:h-full min-h-[320px] sm:min-h-[400px] md:min-h-[560px] lg:min-h-[620px]">
+          {/* Right Column: Interactive AI Robot Service Showcase (Centered on mobile & desktop) */}
+          <div className="md:col-span-6 lg:col-span-6 xl:col-span-6 relative z-10 w-full flex items-center justify-center h-[340px] sm:h-[420px] md:h-full min-h-[320px] sm:min-h-[400px] md:min-h-[560px] lg:min-h-[620px] mx-auto">
             <HeroServiceShowcase
-              className="w-full h-full"
+              className="w-full h-full max-w-[360px] sm:max-w-none mx-auto"
               activeServiceIndex={activeServiceIndex}
               onActiveServiceChange={setActiveServiceIndex}
             />
