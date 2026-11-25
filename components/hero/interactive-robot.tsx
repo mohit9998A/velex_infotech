@@ -332,7 +332,7 @@ export const InteractiveRobot = memo(function InteractiveRobot({
           )}
         >
           {/* Overscan container pushes Spline's bottom-right watermark out of bounds while remaining dead-center */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%+84px)] h-[calc(100%+84px)] origin-center flex items-center justify-center">
+          <div className="absolute left-[calc(50%-8px)] sm:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%+84px)] h-[calc(100%+84px)] origin-center flex items-center justify-center">
             <Spline
               scene={scene}
               onLoad={(app) => {

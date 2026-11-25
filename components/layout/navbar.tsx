@@ -178,7 +178,7 @@ export function Navbar() {
             className="hidden h-10 px-5 text-sm font-medium rounded-full border border-black/15 bg-black/[0.03] text-primary hover:bg-black/[0.07] hover:border-black/25 dark:border-white/15 dark:bg-white/[0.04] dark:hover:bg-white/[0.08] md:inline-flex"
             asChild
           >
-            <a href={siteConfig.whatsapp} target="_blank" rel="noopener noreferrer">
+            <a href={`tel:${siteConfig.phone}`}>
               Book a Call
             </a>
           </Button>
