@@ -175,10 +175,10 @@ export function HeroSection() {
             />
           </div>
 
-          {/* Right Column: Interactive AI Robot Service Showcase (Centered on mobile & desktop) */}
+          {/* Right Column: Interactive AI Robot Service Showcase (Balanced equal margins on mobile & desktop) */}
           <div className="md:col-span-6 lg:col-span-6 xl:col-span-6 relative z-10 w-full flex items-center justify-center h-[340px] sm:h-[420px] md:h-full min-h-[320px] sm:min-h-[400px] md:min-h-[560px] lg:min-h-[620px] mx-auto">
             <HeroServiceShowcase
-              className="w-full h-full max-w-[360px] sm:max-w-none mx-auto"
+              className="w-full h-full max-w-[360px] sm:max-w-none mx-auto -translate-x-3 sm:translate-x-0"
               activeServiceIndex={activeServiceIndex}
               onActiveServiceChange={setActiveServiceIndex}
             />
